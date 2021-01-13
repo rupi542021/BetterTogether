@@ -160,6 +160,19 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Answers.cs" />
+    <Compile Include="Models\Course.cs" />
+    <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\ExternalGroups.cs" />
+    <Compile Include="Models\Hobby.cs" />
+    <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\Pleasure.cs" />
+    <Compile Include="Models\Questionnaire.cs" />
+    <Compile Include="Models\Student.cs" />
+    <Compile Include="Models\StudentCommentOnMessage.cs" />
+    <Compile Include="Models\StudentFavorites.cs" />
+    <Compile Include="Models\StudentInCourse.cs" />
+    <Compile Include="Models\StudentsAnswers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -215,7 +228,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
