@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BetterTogetherProj.Models.DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -75,5 +76,12 @@ namespace project_classes.Models
         public List<Pleasure> Plist { get => plist; set => plist = value; }
         public List<Student> Friendslist { get => friendslist; set => friendslist = value; }
         public List<StudentInCourse> StudInCourse { get => studInCourse; set => studInCourse = value; }
+
+        public Student checkStudentRuppin(string email)
+        {
+            DBServices dbs = new DBServices();
+            Student stud = dbs.checkStudentRuppin(email);
+            return stud;
+        }
     }
 }
