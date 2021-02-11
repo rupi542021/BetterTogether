@@ -62,9 +62,11 @@ namespace BetterTogetherProj.Models.DAL
                         stud.Lname = (string)(dr["lastName"]);
                         stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
                         stud.Dep = getStudDep(Convert.ToInt32(dr["department"])); 
-                        stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]); 
+                        stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
+                        return stud;
                     }
                 }
+                stud.Mail = null;
                 return stud;
             }
             catch (Exception ex)
