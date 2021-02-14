@@ -79,7 +79,7 @@ namespace project_classes.Models
 
         public Student checkStudentRuppin(string email)
         {
-            DBServices dbs = new DBServices();
+            DBServicesReact dbs = new DBServicesReact();
             Student stud = dbs.checkStudentRuppin(email);
             return stud;
         }

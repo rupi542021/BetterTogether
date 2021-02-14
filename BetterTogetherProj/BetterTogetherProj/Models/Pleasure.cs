@@ -30,7 +30,7 @@ namespace project_classes.Models
 
         public List<Pleasure> Read()
         {
-            DBServices db = new DBServices();
+            DBServicesReact db = new DBServicesReact();
             List<Pleasure> PList = db.GetAllPleasures();
             return PList;
         }

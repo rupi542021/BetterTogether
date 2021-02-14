@@ -31,7 +31,7 @@ namespace project_classes.Models
 
         public List<Hobby> Read()
         {
-            DBServices db = new DBServices();
+            DBServicesReact db = new DBServicesReact();
             List<Hobby> HList = db.GetAllHoddies();
             return HList;
         }
