@@ -83,5 +83,13 @@ namespace project_classes.Models
             Student stud = dbs.checkStudentRuppin(email);
             return stud;
         }
+
+        public void Insert()
+        {
+            DBServicesReact dbs = new DBServicesReact();
+            dbs.InsertStudent(this);
+        
+        }
+       
     }
 }

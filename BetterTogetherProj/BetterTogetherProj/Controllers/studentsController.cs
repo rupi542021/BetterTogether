@@ -67,8 +67,18 @@ namespace BetterTogetherProj.Controllers
         }
 
         // POST api/<controller>
-        public void Post([FromBody] string value)
+        public HttpResponseMessage Post([FromBody] Student student)
         {
+           // Student s = new Student();
+            try
+            {
+                student.Insert()
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
+            }
         }
 
         // PUT api/<controller>/5
