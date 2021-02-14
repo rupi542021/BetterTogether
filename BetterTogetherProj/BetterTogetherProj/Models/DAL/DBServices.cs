@@ -11,11 +11,6 @@ namespace BetterTogetherProj.Models.DAL
 {
     public class DBServices
     {
-<<<<<<< HEAD
-        public SqlConnection connect(String conString)
-        {
-
-=======
         public SqlDataAdapter da;
         public DataTable dt;
 
@@ -27,40 +22,62 @@ namespace BetterTogetherProj.Models.DAL
         }
         public SqlConnection connect(String conString)
         {
->>>>>>> 6604b7c39b791e5a388c14375836282b341355da
             // read the connection string from the configuration file
             string cStr = WebConfigurationManager.ConnectionStrings[conString].ConnectionString;
             SqlConnection con = new SqlConnection(cStr);
             con.Open();
             return con;
         }
+
         private SqlCommand CreateCommand(String CommandSTR, SqlConnection con)
         {
-<<<<<<< HEAD
-
-            SqlCommand cmd = new SqlCommand(); // create the command object
-
-            cmd.Connection = con;              // assign the connection to the command object
-
-            cmd.CommandText = CommandSTR;      // can be Select, Insert, Update, Delete 
-
-            cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
-
-            cmd.CommandType = System.Data.CommandType.Text; // the type of the command, can also be stored procedure
-
-            return cmd;
-        }
-        public List<Questionnaire> GetQuestionnaire()
-        {
-            SqlConnection con = null;
-            List<Questionnaire> qrList = new List<Questionnaire>();
-=======
             SqlCommand cmd = new SqlCommand(); // create the command object
             cmd.Connection = con; // assign the connection to the command object
             cmd.CommandText = CommandSTR; // can be Select, Insert, Update, Delete
             cmd.CommandTimeout = 10; // Time to wait for the execution' The default is 30 seconds
             cmd.CommandType = System.Data.CommandType.Text; // the type of the command, can also be stored procedure
             return cmd;
+        }
+        public List<Questionnaire> GetQuestionnaire()
+        {
+            SqlConnection con = null;
+            List<Questionnaire> qrList = new List<Questionnaire>();
+            try
+            {
+                con = connect("DBConnectionString");
+                String selectSTR = "select * from questionnaire_P2";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Questionnaire qr = new Questionnaire();
+
+                    qr.QuestionnaireNum = Convert.ToInt16(dr["qrCode"]);
+                    qr.QuestionnairePublish = Convert.ToDateTime(dr["publishDate"]);
+                    qr.EndPublishDate = Convert.ToDateTime(dr["endPublishDate"]);
+                    qr.SubQr = (string)dr["subQ"];
+                    qr.Status = Convert.ToBoolean(dr["status"]);
+                    qr.NumResponders = Convert.ToInt32(dr["numResponders"]);
+
+                    qrList.Add(qr);
+                }
+
+                return qrList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
         }
 
         public Student checkStudentRuppin(string email)
@@ -86,7 +103,7 @@ namespace BetterTogetherProj.Models.DAL
                         stud.Fname = (string)(dr["firstName"]);
                         stud.Lname = (string)(dr["lastName"]);
                         stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
-                        stud.Dep = getStudDep(Convert.ToInt32(dr["department"])); 
+                        stud.Dep = getStudDep(Convert.ToInt32(dr["department"]));
                         stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
                         return stud;
                     }
@@ -112,16 +129,11 @@ namespace BetterTogetherProj.Models.DAL
         {
             SqlConnection con = null;
             Department Dep = new Department();
->>>>>>> 6604b7c39b791e5a388c14375836282b341355da
 
             try
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-<<<<<<< HEAD
-                String selectSTR = "select * from questionnaire_P2";
-
-=======
                 String selectSTR = "SELECT * FROM department_P";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
@@ -162,29 +174,13 @@ namespace BetterTogetherProj.Models.DAL
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
                 String selectSTR = "SELECT * FROM pleasure_P";
->>>>>>> 6604b7c39b791e5a388c14375836282b341355da
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
                 // get a reader
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
 
                 while (dr.Read())
-                {   // Read till the end of the data into a row
-<<<<<<< HEAD
-                    Questionnaire qr = new Questionnaire();
-
-                    qr.QuestionnaireNum = Convert.ToInt16(dr["qrCode"]);
-                    qr.QuestionnairePublish= Convert.ToDateTime(dr["publishDate"]);
-                    qr.EndPublishDate= Convert.ToDateTime(dr["endPublishDate"]);
-                    qr.SubQr= (string)dr["subQ"];
-                    qr.Status = Convert.ToBoolean(dr["status"]);
-                    qr.NumResponders = Convert.ToInt32(dr["numResponders"]);
-                  
-                    qrList.Add(qr);
-                }
-
-                return qrList;
-=======
+                {
                     Pleasure p = new Pleasure();
                     p.Pcode = Convert.ToInt32(dr["pCode"]);
                     p.Pname = (string)(dr["pName"]);
@@ -192,7 +188,7 @@ namespace BetterTogetherProj.Models.DAL
                     PList.Add(p);
                 }
                 return PList;
->>>>>>> 6604b7c39b791e5a388c14375836282b341355da
+
             }
             catch (Exception ex)
             {
@@ -207,11 +203,9 @@ namespace BetterTogetherProj.Models.DAL
                 }
 
             }
-<<<<<<< HEAD
 
         }
-=======
-        }
+
         public List<Hobby> GetAllHoddies()
         {
             SqlConnection con = null;
@@ -253,7 +247,5 @@ namespace BetterTogetherProj.Models.DAL
         }
 
 
-
->>>>>>> 6604b7c39b791e5a388c14375836282b341355da
     }
-}
+    }
