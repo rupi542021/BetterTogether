@@ -17,6 +17,7 @@ namespace project_classes.Models
         }
 
         public string Student1mail { get => student1mail; set => student1mail = value; }
-        public string Student2mail { get => student2mail; set => student2mail = value; }
+        public string Student2mail { get => Student2mail1; set => Student2mail1 = value; }
+        public string Student2mail1 { get => student2mail; set => student2mail = value; }
     }
 }

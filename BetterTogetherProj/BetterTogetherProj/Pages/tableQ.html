@@ -1,0 +1,448 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+
+    <script src="../Scripts/jquery-3.4.1.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script>
+
+
+        // will run when the document is ready
+        $(document).ready(function () {
+
+
+            mode = "";
+
+            $("#cancelSaveBTN").on("click", function () { //מבטל טופס NEW
+                console.log("nessy")
+                camp = null;
+                $("#editDiv").hide();
+                $("#EditViewDiv").hide();
+
+                $("#pForm").show();
+                mode = "";
+            });
+            $("#cancelSaveBTN1").on("click", function () {//מבטל אופציית עריכה
+                console.log("gal")
+                camp = null;
+                $("#editDiv").hide();
+                $("#EditViewDiv").hide();
+
+                mode = "";
+            });
+
+
+            $("#newBTN").on("click", function () {
+              //  ajaxCall("GET", "../api/businesses", "", GetsuccessAllRes, error);///מבצע עדכון ל Allres
+                camp = null;
+                mode = "new";
+                $("#pForm").hide();
+                $("#editDiv").show();
+                $("#EditViewDiv").hide();
+
+                clearFields();
+              //  $("#Viewing_number").val(0);
+              //  $("#Clicks_number").val(0);
+                $("#editDiv :input").prop("disabled", false); // new mode: enable all controls in the form
+            });
+
+            /*ajaxCall("GET", "../api/businesses", "", GetsuccessAllRes, error);*/// לא מבצע עדכון ל Allres
+
+            // once the document is ready we fetch a list of cars from the server
+
+            ajaxCall("GET", "../api/Questionnaire/qr", "", getSuccess, error);
+
+            $("#ManagerForm1").submit(onSubmitFunc);
+            $("#ManagerForm").submit(onSubmitFunc);// wire the submit event to a function called f1
+
+            $("#editDiv").hide();
+
+            $("#EditViewDiv").hide();
+
+
+            buttonEvents();
+        });
+
+        //function GetsuccessAllRes(allres) {
+          //  console.log(allres);
+          //  Allres = allres;
+            //str = "";
+           // for (var i = 0; i < Allres.length; i++) {
+              //  str += "<option value='" + Allres[i].Idd1 + "'>" + Allres[i].Idd1 + "-" + Allres[i].Namee1 + "</option></br>"
+
+           // }
+           // document.getElementById("Restaurant_Id").innerHTML += str;
+
+      //  }
+
+        // wire all the buttons to their functions
+        function buttonEvents() {
+
+            $(document).on("click", ".editBtn", function () {
+                mode = "edit";
+                markSelected(this);
+                $("#EditViewDiv").show();
+                $("#editDiv").hide();
+
+                $("#Restaurant_Id1").prop("disabled", true);
+                $("#Balance1").prop("disabled", true);
+                $("#Viewing_number1").prop("disabled", true);
+                $("#Clicks_number1").prop("disabled", true);
+                $("#Campain_Budget1").prop("disabled", false);
+                $("#Status1").prop("disabled", false);
+                $("#saveBTN1").prop("disabled", false);
+
+
+                // edit mode: disable all controls in the form
+                populateFields(this.getAttribute('data-carId')); // fill the form fields according to the selected row
+
+            });
+
+            $(document).on("click", ".viewBtn", function () {
+                mode = "view";
+
+                markSelected(this);
+                $("#editDiv").hide();
+                $("#EditViewDiv").show();
+
+
+                /* $("#EditViewDiv :input").attr("disabled", "disabled");*/ // view mode: disable all controls in the form
+
+                $("#Restaurant_Id1").prop("disabled", true);
+                $("#Balance1").prop("disabled", true);
+                $("#Viewing_number1").prop("disabled", true);
+                $("#Clicks_number1").prop("disabled", true);
+                $("#Campain_Budget1").prop("disabled", true);
+                $("#Status1").prop("disabled", true);
+                $("#saveBTN1").prop("disabled", true);
+                populateFields(this.getAttribute('data-carId'));
+
+            });
+        }
+
+        // mark the selected row
+        function markSelected(btn) {
+            $("#QTable tr").removeClass("selected"); // remove seleced class from rows that were selected before
+            row = (btn.parentNode).parentNode; // button is in TD which is in Row
+            row.className = 'selected'; // mark as selected
+        }
+
+
+
+        function onSubmitFunc() {
+
+            //var Campid = -1;
+            if (mode == "edit") {
+                Campid = camp.Campid;
+                Resid = camp.Resid;
+                Viewing = camp.Viewing;
+                Clicks = camp.Clicks;
+                //Balance = camp.Budget - (0.5 * camp.Clicks + 0.1 * camp.Viewing);
+                //Status = camp.Status;
+                camptoSave = {
+                    Campid: Campid,
+                    Resid: Resid,
+                    Budget: $("#Campain_Budget1").val(),
+                    Viewing: Viewing,
+                    Clicks: Clicks,
+                    //Balance:Balance,
+                    Status: $("#Status1").is(":checked")
+                }
+
+            }
+
+            else if (mode == "new") {
+
+                Resid = $("#Restaurant_Id").val();
+                Viewing = 0;
+                Clicks = 0;
+                //Balance = $("#Balance").val(Budget - (0.5 *Clicks + 0.1 *Viewing));
+                //Status = $("#Status").is(":checked")
+                //Budget= $("#Campain_Budget").val();
+                camptoSave = {
+                    //Campid: Campid,
+                    Resid: Resid,
+                    Budget: $("#Campain_Budget").val(),
+                    Viewing: Viewing,
+                    Clicks: Clicks,
+                    //Balance:Balance,
+                    Status: $("#Status").is(":checked")
+                }
+
+            }
+
+
+            // add a new Car record to the server
+            if (mode == "edit")
+
+                ajaxCall("PUT", "../api/campain", JSON.stringify(camptoSave), updateSuccess, error);
+            else if (mode == "new")
+                ajaxCall("POST", "../api/campain", JSON.stringify(camptoSave), insertSuccess, error);
+            return false;
+        }
+
+        // fill the form fields
+        function populateFields(campId) {
+            camp = getCamp(campId); //מחזיר את האובייקט שבשורה שלחצנו לפי ID
+            $("#Restaurant_Id1").val(camp.Resid);
+            $("#Campain_Budget1").val(camp.Budget);
+            $("#Balance1").val(camp.Budget - (0.5 * camp.Clicks + 0.1 * camp.Viewing));
+            $("#Viewing_number1").val(camp.Viewing);
+            $("#Clicks_number1").val(camp.Clicks);
+            $("#Status1").prop('checked', camp.Status);
+
+
+        }
+
+
+        // clear the form fields
+        function clearFields() {
+            $("#Restaurant_Id").val("");
+            $("#Campain_Budget").val("");
+            $("#Balance").val("");
+            $("#Viewing_number").val("");
+            $("#Clicks_number").val("");
+            $("#Status").prop('checked', false);
+        }
+
+        // get a car according to its Id
+        function getCamp(id) {
+            for (i in questionnaires) {
+                if (questionnaires[i].Campid == id)
+                    return questionnaires[i];
+            }
+            return null;
+        }
+
+        // success callback function after update
+        function updateSuccess(questionnaireData) {
+            tbl.clear();
+            console.log(questionnaireData);
+            ajaxCall("GET", "../api/campain/camp", "", getSuccessupdate, error);
+
+        }
+
+        function getSuccessupdate(questionnaireData) {
+            questionnaires = questionnaireData;
+            console.log(questionnaires);
+            redrawTable(tbl, questionnaires);
+            buttonEvents();
+            $("#editDiv").hide();
+            $("#EditViewDiv").hide();
+
+            swal("Updated Successfuly!", "Great Job", "success");
+            mode = "";
+        }
+        // success callback function after update
+        function insertSuccess(questionnaireData) {
+            console.log(questionnaireData);
+            ajaxCall("GET", "../api/campain/camp", "", getSuccessinsert, error);
+
+        }
+        function getSuccessinsert(questionnaireData) {
+            questionnaires = questionnaireData;
+            console.log(questionnaireData);
+            $("#pForm").show();
+            tbl.clear();
+            redrawTable(tbl,questionnaireData);
+            buttonEvents();
+            $("#editDiv").hide();
+            $("#EditViewDiv").hide();
+
+            swal("Inserted Successfuly!", "Great Job", "success");
+            mode = "";
+
+        }
+
+
+
+        // redraw a datatable with new data
+        function redrawTable(tbl, data) {
+            tbl.clear();
+            for (var i = 0; i < data.length; i++) {
+                tbl.row.add(data[i]);
+            }
+            tbl.draw();
+        }
+
+        // this function is activated in case of a success
+        function getSuccess(questionnaireData) {
+            console.log(questionnaireData);
+            questionnaires = questionnaireData; // keep the cars array in a global variable;
+            try {
+                tbl = $('#QTable').DataTable({
+                    data: questionnaireData,
+                    pageLength: 5,
+                    columns: [
+                        {
+                            render: function (data, type, row, meta) {
+                                let dataQ = "data-carId='" + row.QuestionnaireNum + "'";
+
+                                editBtn = "<button type='button' class = 'editBtn btn btn-success' " + dataQ + "> Edit </button>";
+                                viewBtn = "<button type='button' class = 'viewBtn btn btn-info' " + dataQ + "> View </button>";
+
+                                return editBtn + viewBtn;
+                            }
+                        },
+                        { data: "QuestionnaireNum" },
+                        { data: "QuestionnairePublish" },
+                        { data: "EndPublishDate" },
+                        { data: "SubQr" },
+                        { data: "DepList" },
+                        { data: "NumResponders" },
+                       
+                        {
+                            data: "Status",
+                            render: function (data, type, row, meta) {
+                                if (data == true)
+                                    return '<input type="checkbox" checked disabled="disabled" />';
+                                else
+                                    return '<input type="checkbox" disabled="disabled"/>';
+                            }
+                        },
+
+                    ],
+                });
+
+            }
+
+            catch (err) {
+                alert(err);
+            }
+        }
+
+        // this function is activated in case of a failure
+        function error(err) {
+            swal("Error: " + err);
+        }
+
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <input type="button" value="New" class="btn btn-primary btn-lg" id="newBTN" />
+        <form id="pForm">
+            <table id="QTable" class="display nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th> מספר שאלון</th>
+                        <th>תאריך הפצה</th>
+                        <th>תאריך סיום הפצה</th>
+                        <th>נושא השאלון</th>
+                        <th>מחלקות</th>
+                        <th>מספר משיבים</th>
+                        <th>סטטוס</th>
+
+                    </tr>
+                </thead>
+            </table>
+
+        </form>
+
+        <div id="editDiv">
+            <form id="ManagerForm">
+                <div class="form-group row">
+
+
+
+                    <div class="form-group col-sm-4">
+                        <label for="publishDate"><span class="red-star">★ </span>תאריך הפצה</label>
+                        <input type="date" class="form-control" id="publishDate" placeholder="" required>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label for="EndpublishDate"><span class="red-star">★ </span>תאריך סיום הפצה </label>
+                        <input type="date" class="form-control" id="EndpublishDate" placeholder="" required>
+                    </div>
+
+
+                    <div class="form-group col-sm-3">
+                        <label for="subQr"><span class="red-star">★ </span>נושא השאלון</label>
+                        <input type="text" class="form-control" id="subQr" placeholder="" required>
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        <label for="publishList"><span class="red-star">★ </span>רשימת תפוצה</label>
+                        <input type="text" class="form-control" id="publishList" placeholder="" />
+                    </div>
+
+                    <div class="form-group col-sm-2">
+                        <label for="numResponders"><span class="red-star">★ </span>מספר משיבים</label>
+                        <input type="text" class="form-control" id="numResponders" placeholder="" required />
+
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        <label for="Status"><span class="red-star">★ </span>סטטוס</label>
+                        <input type="checkbox" class="form-control" id="Status" checked />
+                    </div>
+
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">Save</button>
+                <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN" value="Cancel" />
+            </form>
+        </div>
+    </div>
+    <div id="EditViewDiv">
+        <form id="ManagerForm1">
+            <div class="form-group row">
+
+
+
+                <div class="form-group col-sm-4">
+                    <label for="Restaurant_Id1"><span class="red-star">★ </span>Restaurant Id</label>
+                    <input type="text" class="form-control" id="Restaurant_Id1" placeholder="" required>
+                </div>
+
+
+                <div class="form-group col-sm-3">
+                    <label for="Campain_Budget1"><span class="red-star">★ </span>Campain Budget</label>
+                    <input type="text" class="form-control" id="Campain_Budget1" placeholder="" required>
+                </div>
+
+                <div class="form-group col-sm-3">
+                    <label for="Balance1"><span class="red-star">★ </span>Balance</label>
+                    <input type="text" class="form-control" id="Balance1" placeholder="" />
+                </div>
+
+                <div class="form-group col-sm-2">
+                    <label for="Viewing_number1"><span class="red-star">★ </span>Viewing number</label>
+                    <input type="text" class="form-control" id="Viewing_number1" placeholder="" required />
+
+                </div>
+                <div class="form-group col-sm-3">
+                    <label for="Clicks_number1"><span class="red-star">★ </span>Clicks number</label>
+                    <input type="text" class="form-control" id="Clicks_number1" placeholder="" required />
+                </div>
+
+                <div class="form-group col-sm-3">
+                    <label for="Status1"><span class="red-star">★ </span>Status</label>
+                    <input type="checkbox" class="form-control" id="Status1" checked />
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg" id="saveBTN1">Save</button>
+            <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN1" value="Cancel" />
+        </form>
+    </div>
+  
+
+</body>
+</html>

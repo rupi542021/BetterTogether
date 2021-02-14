@@ -11,22 +11,26 @@ namespace project_classes.Models
         string departmentName;
         List<Student> slist;
         List<ExternalGroups> exgList;
+        int year;
 
-        public Department() { }
-
-        public Department(int departmentCode, string departmentName, List<Student> slist, List<ExternalGroups> exgList)
+        public Department(int departmentCode, string departmentName, List<Student> slist, List<ExternalGroups> exgList, int year)
         {
             DepartmentCode = departmentCode;
             DepartmentName = departmentName;
             Slist = slist;
             ExgList = exgList;
+            Year = year;
         }
 
         public int DepartmentCode { get => departmentCode; set => departmentCode = value; }
         public string DepartmentName { get => departmentName; set => departmentName = value; }
         public List<Student> Slist { get => slist; set => slist = value; }
         public List<ExternalGroups> ExgList { get => exgList; set => exgList = value; }
+        public int Year { get => year; set => year = value; }
 
-      // public List<Student> GetStudentsByYear(int year) { }
+        public Department() { }
+
+
+        // public List<Student> GetStudentsByYear(int year) { }
     }
 }
