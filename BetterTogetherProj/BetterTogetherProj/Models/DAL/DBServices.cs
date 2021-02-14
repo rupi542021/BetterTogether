@@ -122,7 +122,85 @@ namespace BetterTogetherProj.Models.DAL
 
             }
         }
-    
+        public List<Pleasure> GetAllPleasures()
+        {
+            SqlConnection con = null;
+            List<Pleasure> PList = new List<Pleasure>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT * FROM pleasure_P";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Pleasure p = new Pleasure();
+                    p.Pcode = Convert.ToInt32(dr["pCode"]);
+                    p.Pname = (string)(dr["pName"]);
+                    p.Picon = (string)(dr["pIcon"]);
+                    PList.Add(p);
+                }
+                return PList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+        }
+        public List<Hobby> GetAllHoddies()
+        {
+            SqlConnection con = null;
+            List<Hobby> HList = new List<Hobby>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT * FROM hobby_P";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Hobby h = new Hobby();
+                    h.Hcode = Convert.ToInt32(dr["hCode"]);
+                    h.Hname = (string)(dr["hName"]);
+                    h.Hicon = (string)(dr["hIcon"]);
+                    HList.Add(h);
+                }
+                return HList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+        }
+
 
 
     }

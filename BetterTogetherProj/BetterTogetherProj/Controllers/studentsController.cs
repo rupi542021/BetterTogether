@@ -25,6 +25,38 @@ namespace BetterTogetherProj.Controllers
                 return Content(HttpStatusCode.BadRequest, e);
             }
         }
+        [HttpGet]
+        [Route("api/students/GetAllPleasures")]
+        public IHttpActionResult GetAllPleasures()
+        {
+            try
+            {
+                Pleasure p = new Pleasure();
+                List<Pleasure> PList = p.Read();
+                return Ok(PList);
+            }
+            catch (Exception e)
+            {
+                //return badrequest(e.message);
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
+        [HttpGet]
+        [Route("api/students/GetAllHoddies")]
+        public IHttpActionResult GetAllHoddies()
+        {
+            try
+            {
+                Hobby h = new Hobby();
+                List<Hobby> HList = h.Read();
+                return Ok(HList);
+            }
+            catch (Exception e)
+            {
+                //return badrequest(e.message);
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
 
 
 
