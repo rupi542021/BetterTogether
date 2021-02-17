@@ -56,5 +56,21 @@ namespace BetterTogetherProj.Controllers
             return cmp.GetQuestionnaire();
 
         }
+        [HttpPost]
+        [Route("api/Questionnaire/postqr")]
+        public HttpResponseMessage PostQuestionnaire([FromBody] Questionnaire qr)
+        {
+            try
+            {
+                qr.Insert();
+
+                return Request.CreateResponse(HttpStatusCode.OK, "Added to favorite page successfully");
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
+            }
+
+        }
     }
 }

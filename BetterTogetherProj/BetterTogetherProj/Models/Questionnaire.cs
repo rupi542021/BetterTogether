@@ -16,7 +16,7 @@ namespace project_classes.Models
         List<Department> depList;
         int numResponders;
         bool status;
-        List<Question> listQ;
+       List<Question> listQ;
 
        
         public Questionnaire() { }
@@ -48,6 +48,12 @@ namespace project_classes.Models
             List<Questionnaire> qrList = dbs.GetQuestionnaire();
             return qrList;
 
+        }
+        public void Insert()
+        {
+            DBServices dbs = new DBServices();
+            dbs.Insert(this);
+            
         }
     }
 }

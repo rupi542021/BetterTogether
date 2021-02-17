@@ -29,7 +29,7 @@
 
             $("#cancelSaveBTN").on("click", function () { //מבטל טופס NEW
                 console.log("nessy")
-                camp = null;
+                qrId = null;
                 $("#editDiv").hide();
                 $("#EditViewDiv").hide();
 
@@ -38,7 +38,7 @@
             });
             $("#cancelSaveBTN1").on("click", function () {//מבטל אופציית עריכה
                 console.log("gal")
-                camp = null;
+                qrId = null;
                 $("#editDiv").hide();
                 $("#EditViewDiv").hide();
 
@@ -48,7 +48,7 @@
 
             $("#newBTN").on("click", function () {
               //  ajaxCall("GET", "../api/businesses", "", GetsuccessAllRes, error);///מבצע עדכון ל Allres
-                camp = null;
+                qrId= null;
                 mode = "new";
                 $("#pForm").hide();
                 $("#editDiv").show();
@@ -136,7 +136,7 @@
 
         // mark the selected row
         function markSelected(btn) {
-            $("#QTable tr").removeClass("selected"); // remove seleced class from rows that were selected before
+            $("#QTabletr").removeClass("selected"); // remove seleced class from rows that were selected before
             row = (btn.parentNode).parentNode; // button is in TD which is in Row
             row.className = 'selected'; // mark as selected
         }
@@ -147,10 +147,10 @@
 
             //var Campid = -1;
             if (mode == "edit") {
-                Campid = camp.Campid;
-                Resid = camp.Resid;
-                Viewing = camp.Viewing;
-                Clicks = camp.Clicks;
+                Campid = qrId.Campid;
+                Resid = qrId.Resid;
+                Viewing = qrId.Viewing;
+                Clicks = qrId.Clicks;
                 //Balance = camp.Budget - (0.5 * camp.Clicks + 0.1 * camp.Viewing);
                 //Status = camp.Status;
                 camptoSave = {
@@ -166,20 +166,22 @@
             }
 
             else if (mode == "new") {
-
-                Resid = $("#Restaurant_Id").val();
-                Viewing = 0;
-                Clicks = 0;
-                //Balance = $("#Balance").val(Budget - (0.5 *Clicks + 0.1 *Viewing));
+               
+                QuestionnairePublish = $("#publishDate").val();
+                EndPublishDate = $("#EndpublishDate").val();
+                SubQr = $("#subQr").val();
+               // DepList = 0;
+                NumResponders = 0;
+                
                 //Status = $("#Status").is(":checked")
                 //Budget= $("#Campain_Budget").val();
-                camptoSave = {
-                    //Campid: Campid,
-                    Resid: Resid,
-                    Budget: $("#Campain_Budget").val(),
-                    Viewing: Viewing,
-                    Clicks: Clicks,
-                    //Balance:Balance,
+                QrtoSave = {
+                    
+                    QuestionnairePublish:QuestionnairePublish,
+                    EndPublishDate: EndPublishDate,
+                    SubQr: SubQr,
+                  //  DepList:DepList,
+                    NumResponders:NumResponders,
                     Status: $("#Status").is(":checked")
                 }
 
@@ -191,38 +193,36 @@
 
                 ajaxCall("PUT", "../api/campain", JSON.stringify(camptoSave), updateSuccess, error);
             else if (mode == "new")
-                ajaxCall("POST", "../api/campain", JSON.stringify(camptoSave), insertSuccess, error);
+                ajaxCall("POST", "../api/Questionnaire/postqr", JSON.stringify(QrtoSave), insertSuccess, error);
             return false;
         }
 
         // fill the form fields
-        function populateFields(campId) {
-            camp = getCamp(campId); //מחזיר את האובייקט שבשורה שלחצנו לפי ID
-            $("#Restaurant_Id1").val(camp.Resid);
-            $("#Campain_Budget1").val(camp.Budget);
-            $("#Balance1").val(camp.Budget - (0.5 * camp.Clicks + 0.1 * camp.Viewing));
-            $("#Viewing_number1").val(camp.Viewing);
-            $("#Clicks_number1").val(camp.Clicks);
-            $("#Status1").prop('checked', camp.Status);
-
+        function populateFields(qrId) {
+            qrId = getQ(qrId); //מחזיר את האובייקט שבשורה שלחצנו לפי ID
+            
+            $("#publishDate").val(qrId.QuestionnairePublish);
+            $("#EndpublishDate").val(qrId.EndPublishDate);
+            $("#subQr").val(qrId.SubQr);
+            $("#numResponders").val(qrId.NumResponders);
+            $("#Status").prop('checked', qrId.Status);
 
         }
 
 
         // clear the form fields
         function clearFields() {
-            $("#Restaurant_Id").val("");
-            $("#Campain_Budget").val("");
-            $("#Balance").val("");
-            $("#Viewing_number").val("");
-            $("#Clicks_number").val("");
+            $("#publishDate").val("");
+            $("#EndpublishDate").val("");
+            $("#subQr").val("");
+            $("#numResponders").val("");  
             $("#Status").prop('checked', false);
         }
 
         // get a car according to its Id
-        function getCamp(id) {
+        function getQ(id) {
             for (i in questionnaires) {
-                if (questionnaires[i].Campid == id)
+                if (questionnaires[i].QuestionnaireNum == id)
                     return questionnaires[i];
             }
             return null;
@@ -238,8 +238,8 @@
 
         function getSuccessupdate(questionnaireData) {
             questionnaires = questionnaireData;
-            console.log(questionnaires);
-            redrawTable(tbl, questionnaires);
+            console.log(questionnaireData);
+            redrawTable(tbl, questionnaireData);
             buttonEvents();
             $("#editDiv").hide();
             $("#EditViewDiv").hide();
@@ -250,10 +250,11 @@
         // success callback function after update
         function insertSuccess(questionnaireData) {
             console.log(questionnaireData);
-            ajaxCall("GET", "../api/campain/camp", "", getSuccessinsert, error);
+            ajaxCall("GET", "../api/Questionnaire/qr", "", getSuccessinsert, error);
 
         }
         function getSuccessinsert(questionnaireData) {
+            console.log("rain");
             questionnaires = questionnaireData;
             console.log(questionnaireData);
             $("#pForm").show();
@@ -281,6 +282,7 @@
 
         // this function is activated in case of a success
         function getSuccess(questionnaireData) {
+            
             console.log(questionnaireData);
             questionnaires = questionnaireData; // keep the cars array in a global variable;
             try {
@@ -298,11 +300,11 @@
                                 return editBtn + viewBtn;
                             }
                         },
-                        { data: "QuestionnaireNum" },
+                        { data: "QuestionnaireNum"},
                         { data: "QuestionnairePublish" },
                         { data: "EndPublishDate" },
                         { data: "SubQr" },
-                        { data: "DepList" },
+                        //{ data: "DepList" },
                         { data: "NumResponders" },
                        
                         {
@@ -327,6 +329,7 @@
 
         // this function is activated in case of a failure
         function error(err) {
+            console.log("sun");
             swal("Error: " + err);
         }
 
@@ -341,11 +344,11 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th> מספר שאלון</th>
+                        <th>מספר שאלון</th>
                         <th>תאריך הפצה</th>
                         <th>תאריך סיום הפצה</th>
                         <th>נושא השאלון</th>
-                        <th>מחלקות</th>
+                        <!--<th>מחלקות</th>-->
                         <th>מספר משיבים</th>
                         <th>סטטוס</th>
 
@@ -364,6 +367,7 @@
                     <div class="form-group col-sm-4">
                         <label for="publishDate"><span class="red-star">★ </span>תאריך הפצה</label>
                         <input type="date" class="form-control" id="publishDate" placeholder="" required>
+                        
                     </div>
                     <div class="form-group col-sm-4">
                         <label for="EndpublishDate"><span class="red-star">★ </span>תאריך סיום הפצה </label>
@@ -376,14 +380,14 @@
                         <input type="text" class="form-control" id="subQr" placeholder="" required>
                     </div>
 
-                    <div class="form-group col-sm-3">
+                    <!--<div class="form-group col-sm-3">
                         <label for="publishList"><span class="red-star">★ </span>רשימת תפוצה</label>
                         <input type="text" class="form-control" id="publishList" placeholder="" />
-                    </div>
+                    </div>-->
 
                     <div class="form-group col-sm-2">
                         <label for="numResponders"><span class="red-star">★ </span>מספר משיבים</label>
-                        <input type="text" class="form-control" id="numResponders" placeholder="" required />
+                        <input type="text" class="form-control" id="numResponders" />
 
                     </div>
 
