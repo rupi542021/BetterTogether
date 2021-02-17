@@ -93,7 +93,6 @@ namespace BetterTogetherProj.Models.DAL
 
             }
         }
-<<<<<<< Updated upstream
         public Student checkStudentLogin(string email,string password)
         {
             SqlConnection con = null;
@@ -134,8 +133,8 @@ namespace BetterTogetherProj.Models.DAL
                 }
                 stud.Mail = null;
                 return stud;
-=======
-
+            }
+        }
         public bool checkIfExist(string email)
         {
             SqlConnection con = null;
@@ -153,7 +152,6 @@ namespace BetterTogetherProj.Models.DAL
                 }
 
                 return false;
->>>>>>> Stashed changes
             }
             catch (Exception ex)
             {
@@ -169,11 +167,7 @@ namespace BetterTogetherProj.Models.DAL
 
             }
         }
-<<<<<<< Updated upstream
-=======
 
-
->>>>>>> Stashed changes
         public Department getStudDep(int DepID)
         {
             SqlConnection con = null;
