@@ -26,6 +26,22 @@ namespace BetterTogetherProj.Controllers
             }
         }
         [HttpGet]
+        [Route("API/students/{email}/{password}")]
+        public IHttpActionResult GetStudentLogin(string email,string password)
+        {
+            Student student1 = new Student();
+            try
+            {
+                student1 = student1.checkStudentLogin(email, password);
+                return Ok(student1);
+            }
+            catch (Exception e)
+            {
+                //return badrequest(e.message);
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
+        [HttpGet]
         [Route("api/students/GetAllPleasures")]
         public IHttpActionResult GetAllPleasures()
         {
@@ -67,8 +83,18 @@ namespace BetterTogetherProj.Controllers
         }
 
         // POST api/<controller>
-        public void Post([FromBody] string value)
+        public HttpResponseMessage Post([FromBody] Student student)
         {
+           // Student s = new Student();
+            try
+            {
+                student.Insert();
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
+            }
         }
 
         // PUT api/<controller>/5
