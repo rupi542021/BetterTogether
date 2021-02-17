@@ -72,7 +72,7 @@ namespace BetterTogetherProj.Controllers
            // Student s = new Student();
             try
             {
-                student.Insert()
+                student.Insert();
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (Exception ex)

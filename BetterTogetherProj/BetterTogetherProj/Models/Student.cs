@@ -88,7 +88,15 @@ namespace project_classes.Models
         {
             DBServicesReact dbs = new DBServicesReact();
             dbs.InsertStudent(this);
-        
+            if (this.Plist.Count > 0)
+            {
+                dbs.InsertStudentPleasures(this);
+            }
+            if (this.Hlist.Count > 0)
+            {
+                dbs.InsertStudentHobbies(this);
+            }
+
         }
        
     }
