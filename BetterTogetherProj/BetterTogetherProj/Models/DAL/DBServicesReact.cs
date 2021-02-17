@@ -23,7 +23,7 @@ namespace BetterTogetherProj.Models.DAL
         }
         public SqlConnection connect(String conString)
         {
-            // read the connection string from the configuration file
+
             string cStr = WebConfigurationManager.ConnectionStrings[conString].ConnectionString;
             SqlConnection con = new SqlConnection(cStr);
             con.Open();
@@ -32,11 +32,11 @@ namespace BetterTogetherProj.Models.DAL
 
         private SqlCommand CreateCommand(String CommandSTR, SqlConnection con)
         {
-            SqlCommand cmd = new SqlCommand(); // create the command object
-            cmd.Connection = con; // assign the connection to the command object
-            cmd.CommandText = CommandSTR; // can be Select, Insert, Update, Delete
-            cmd.CommandTimeout = 10; // Time to wait for the execution' The default is 30 seconds
-            cmd.CommandType = System.Data.CommandType.Text; // the type of the command, can also be stored procedure
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = con;
+            cmd.CommandText = CommandSTR;
+            cmd.CommandTimeout = 10;
+            cmd.CommandType = System.Data.CommandType.Text;
             return cmd;
         }
        
@@ -48,25 +48,32 @@ namespace BetterTogetherProj.Models.DAL
 
             try
             {
-                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+                con = connect("DBConnectionString"); 
 
                 String selectSTR = "SELECT * FROM Ruppin_StudentsData_P";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
-
-                // get a reader
-                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
                     if (email == (string)dr["email"])
                     {
-                        stud.Mail = (string)dr["email"];
-                        stud.Fname = (string)(dr["firstName"]);
-                        stud.Lname = (string)(dr["lastName"]);
-                        stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
-                        stud.Dep = getStudDep(Convert.ToInt32(dr["department"]));
-                        stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
-                        return stud;
+                        bool alreadyExist = checkIfExist(email);
+                        if (alreadyExist == false)
+                        {
+                            stud.Mail = (string)dr["email"];
+                            stud.Fname = (string)(dr["firstName"]);
+                            stud.Lname = (string)(dr["lastName"]);
+                            stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
+                            stud.Dep = getStudDep(Convert.ToInt32(dr["department"]));
+                            stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
+                            return stud;
+                        }
+
+                        else {
+                            stud.Mail = null;
+                            return stud;
+                        }
                     }
                 }
                 stud.Mail = null;
@@ -86,6 +93,7 @@ namespace BetterTogetherProj.Models.DAL
 
             }
         }
+<<<<<<< Updated upstream
         public Student checkStudentLogin(string email,string password)
         {
             SqlConnection con = null;
@@ -126,6 +134,26 @@ namespace BetterTogetherProj.Models.DAL
                 }
                 stud.Mail = null;
                 return stud;
+=======
+
+        public bool checkIfExist(string email)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+
+                String selectSTR = "SELECT mail FROM student_P where [mail] ='" + email + "'";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                if (dr.HasRows)
+                {
+                    return true;
+                }
+
+                return false;
+>>>>>>> Stashed changes
             }
             catch (Exception ex)
             {
@@ -141,6 +169,11 @@ namespace BetterTogetherProj.Models.DAL
 
             }
         }
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
         public Department getStudDep(int DepID)
         {
             SqlConnection con = null;
