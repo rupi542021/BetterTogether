@@ -83,7 +83,12 @@ namespace project_classes.Models
             Student stud = dbs.checkStudentRuppin(email);
             return stud;
         }
-
+        public Student checkStudentLogin(string email,string password)
+        {
+            DBServicesReact dbs = new DBServicesReact();
+            Student stud = dbs.checkStudentLogin(email, password);
+            return stud;
+        }
         public void Insert()
         {
             DBServicesReact dbs = new DBServicesReact();

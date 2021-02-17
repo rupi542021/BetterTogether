@@ -26,6 +26,22 @@ namespace BetterTogetherProj.Controllers
             }
         }
         [HttpGet]
+        [Route("API/students/{email}/{password}")]
+        public IHttpActionResult GetStudentLogin(string email,string password)
+        {
+            Student student1 = new Student();
+            try
+            {
+                student1 = student1.checkStudentLogin(email, password);
+                return Ok(student1);
+            }
+            catch (Exception e)
+            {
+                //return badrequest(e.message);
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
+        [HttpGet]
         [Route("api/students/GetAllPleasures")]
         public IHttpActionResult GetAllPleasures()
         {
