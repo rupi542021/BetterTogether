@@ -93,33 +93,7 @@ namespace BetterTogetherProj.Models.DAL
 
             }
         }
-
-
-        public bool checkIfExist(string email)
-        {
-            SqlConnection con = null;
-            try
-            {
-                con = connect("DBConnectionString");
-
-                String selectSTR = "SELECT mail FROM student_P where [mail] ='" + email + "'";
-                SqlCommand cmd = new SqlCommand(selectSTR, con);
-                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-                if (dr.HasRows)
-                {
-                    return true;
-                }
-
-                return false;
-            }
-            catch (Exception ex)
-            {
-
-                throw (ex);
-            }
-    }
-    public Student checkStudentLogin(string email,string password)
+        public Student checkStudentLogin(string email,string password)
         {
             SqlConnection con = null;
             Student stud = new Student();
@@ -160,6 +134,25 @@ namespace BetterTogetherProj.Models.DAL
                 stud.Mail = null;
                 return stud;
             }
+        }
+        public bool checkIfExist(string email)
+        {
+            SqlConnection con = null;
+            try
+            {
+                con = connect("DBConnectionString");
+
+                String selectSTR = "SELECT mail FROM student_P where [mail] ='" + email + "'";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                if (dr.HasRows)
+                {
+                    return true;
+                }
+
+                return false;
+            }
             catch (Exception ex)
             {
                 // write to log
@@ -174,6 +167,7 @@ namespace BetterTogetherProj.Models.DAL
 
             }
         }
+
         public Department getStudDep(int DepID)
         {
             SqlConnection con = null;
