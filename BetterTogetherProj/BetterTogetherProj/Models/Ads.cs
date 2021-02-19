@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BetterTogetherProj.Models.DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -29,5 +30,13 @@ namespace BetterTogetherProj.Models
         public string AdsImage { get => adsImage; set => adsImage = value; }
 
         public Ads() { }
+        public List<Ads> Getads()
+        {
+            DBServices dbs = new DBServices();
+            List<Ads> adList = dbs.Getads();
+            return adList;
+
+        }
     }
+
 }

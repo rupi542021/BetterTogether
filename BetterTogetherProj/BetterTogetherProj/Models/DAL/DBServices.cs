@@ -59,6 +59,8 @@ namespace BetterTogetherProj.Models.DAL
                     qr.SubQr = (string)dr["subQ"];
                     qr.Status = Convert.ToBoolean(dr["status"]);
                     qr.NumResponders = Convert.ToInt32(dr["numResponders"]);
+                    qr.Dep.DepartmentName= (string)dr["depName"];
+                    
 
                     qrList.Add(qr);
                 }
@@ -132,13 +134,55 @@ namespace BetterTogetherProj.Models.DAL
             StringBuilder sb = new StringBuilder();
             
             if (qr.Status == true)
-                sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}')", qr.QuestionnairePublish.ToString("yyyy-MM-dd"), qr.SubQr, 1, qr.NumResponders, qr.EndPublishDate.ToString("yyyy-MM-dd"));
+                sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}','{5}','{6}')", qr.QuestionnairePublish.ToString("yyyy-MM-dd"), qr.SubQr, 1, qr.NumResponders, qr.EndPublishDate.ToString("yyyy-MM-dd"));
             else
-                sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}')", qr.QuestionnairePublish.ToString("yyyy-MM-dd"), qr.SubQr, 0, qr.NumResponders, qr.EndPublishDate.ToString("yyyy-MM-dd"));
+                sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}','{5}','{6}')", qr.QuestionnairePublish.ToString("yyyy-MM-dd"), qr.SubQr, 0, qr.NumResponders, qr.EndPublishDate.ToString("yyyy-MM-dd"));
             String prefix = "INSERT INTO questionnaire_P3 " + "(publishDate,subQ,status,numResponders,endPublishDate)";
             command = prefix + sb.ToString();
 
             return command;
+        }
+        public List<Ads> Getads()
+        {
+            SqlConnection con = null;
+            List<Ads> qrList = new List<Ads>();
+            try
+            {
+                con = connect1("DBConnectionString");
+                String selectSTR = "select * from  [dbo].[ads_P3]";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Ads ad = new Ads();
+
+                    ad.AdsCode = Convert.ToInt16(dr["adCode"]);
+                    ad.AdsDate = Convert.ToDateTime(dr["adsdate"]);
+                    ad.AdsText = (string)dr["adsText"];
+                    ad.Subject.SubNAme = (string)dr["subName"];
+                    ad.AdsImage = (string)dr["adsimage"];
+                   
+
+
+                    qrList.Add(qr);
+                }
+
+                return qrList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
         }
 
 

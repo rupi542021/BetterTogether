@@ -37,6 +37,13 @@ namespace BetterTogetherProj.Controllers
         public void Delete(int id)
         {
         }
-       
+        [HttpGet]
+        [Route("api/Ads/ad")]
+        public List<Ads> Getads()
+        {
+            Ads ad = new Ads();
+            return ad.Getads();
+
+        }
     }
 }
