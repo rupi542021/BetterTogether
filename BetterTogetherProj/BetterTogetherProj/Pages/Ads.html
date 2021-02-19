@@ -4,19 +4,42 @@
     <meta charset="utf-8" />
     <title></title>
 
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="../Scripts/jquery-3.4.1.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
 
     <script>
         $(document).ready(function () {
-            
-            ajaxCall("GET", "../api/Ads/ad", "", getSuccess, error);
+
+            ajaxCall("GET", "../api/Ads/sub", "", getSuccessAllsubs, error);
+
         });
+
+        function getSuccessAllsubs(allsubs) {
+            console.log(allsubs);
+            Allsubs = allsubs;
+            str = "";
+            for (var i = 0; i < Allsubs.length; i++) {
+                str += "<option value='" + Allsubs[i].SubCode + "'>" + Allsubs[i].SubName + "</option></br>";
+
+            }
+            document.getElementById("SubjName").innerHTML += str;
+            idsub=$("#SubjName").val()
+            ajaxCall("GET", "../api/Ads/sub", "", getSuccessSubsubs, error);
+        }
+        
+
+        function error(err) {
+            console.log(err);
+        }
+        function getSuccessSubsubs() {
+
+        }
 
     </script>
 </head>

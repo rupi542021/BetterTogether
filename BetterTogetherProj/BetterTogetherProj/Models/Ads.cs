@@ -30,13 +30,13 @@ namespace BetterTogetherProj.Models
         public string AdsImage { get => adsImage; set => adsImage = value; }
 
         public Ads() { }
-        public List<Ads> Getads()
-        {
-            DBServices dbs = new DBServices();
-            List<Ads> adList = dbs.Getads();
-            return adList;
+        //public List<Ads> Getads()
+        //{
+        //    DBServices dbs = new DBServices();
+        //    List<Ads> adList = dbs.Getads();
+        //    return adList;
 
-        }
+        //}
     }
 
 }

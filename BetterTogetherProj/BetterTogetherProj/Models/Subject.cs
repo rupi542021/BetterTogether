@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BetterTogetherProj.Models.DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,17 +9,24 @@ namespace BetterTogetherProj.Models
     public class Subject
     {
         int subCode;
-        string subNAme;
+        string subName;
 
         public Subject(int subCode, string subNAme)
         {
             SubCode = subCode;
-            SubNAme = subNAme;
+            SubName = subName;
         }
 
         public int SubCode { get => subCode; set => subCode = value; }
-        public string SubNAme { get => subNAme; set => subNAme = value; }
+        public string SubName { get => subName; set => subName = value; }
 
         public Subject() {}
+        public List<Subject> Getsub()
+        {
+            DBServices dbs = new DBServices();
+            List<Subject> subList = dbs.Getsub();
+            return subList;
+
+        }
     }
 }

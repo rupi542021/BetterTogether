@@ -13,21 +13,21 @@ namespace project_classes.Models
         DateTime questionnairePublish;
         DateTime endPublishDate;
         string subQr;
-        List<Department> depList;
+        Department dep;
         int numResponders;
         bool status;
-       List<Question> listQ;
+        List<Question> listQ;
 
        
         public Questionnaire() { }
 
-        public Questionnaire(int questionnaireNum, DateTime questionnairePublish, DateTime endPublishDate, string subQr, List<Department> depList, int numResponders, bool status, List<Question> listQ)
+        public Questionnaire(int questionnaireNum, DateTime questionnairePublish, DateTime endPublishDate, string subQr, Department dep, int numResponders, bool status, List<Question> listQ)
         {
             QuestionnaireNum = questionnaireNum;
             QuestionnairePublish = questionnairePublish;
             EndPublishDate = endPublishDate;
             SubQr = subQr;
-            DepList = depList;
+            Dep = dep;
             NumResponders = numResponders;
             Status = status;
             ListQ = listQ;
@@ -37,7 +37,7 @@ namespace project_classes.Models
         public DateTime QuestionnairePublish { get => questionnairePublish; set => questionnairePublish = value; }
         public DateTime EndPublishDate { get => endPublishDate; set => endPublishDate = value; }
         public string SubQr { get => subQr; set => subQr = value; }
-        public List<Department> DepList { get => depList; set => depList = value; }
+        public Department Dep { get => dep; set => dep = value; }
         public int NumResponders { get => numResponders; set => numResponders = value; }
         public bool Status { get => status; set => status = value; }
         public List<Question> ListQ { get => listQ; set => listQ = value; }

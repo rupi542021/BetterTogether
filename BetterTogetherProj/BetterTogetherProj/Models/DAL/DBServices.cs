@@ -142,32 +142,68 @@ namespace BetterTogetherProj.Models.DAL
 
             return command;
         }
-        public List<Ads> Getads()
+        //public List<Ads> Getads()
+        //{
+        //    SqlConnection con = null;
+        //    List<Ads> qrList = new List<Ads>();
+        //    try
+        //    {
+        //        con = connect1("DBConnectionString");
+        //        String selectSTR = "select * from  [dbo].[subject_P3]";
+        //        SqlCommand cmd = new SqlCommand(selectSTR, con);
+        //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+        //        while (dr.Read())
+        //        {   // Read till the end of the data into a row
+        //            Ads ad = new Ads();
+        //            ad.Subject.SubNAme= (string)dr["subName"];
+
+        //            //ad.AdsCode = Convert.ToInt16(dr["adCode"]);
+        //            //ad.AdsDate = Convert.ToDateTime(dr["adsdate"]);
+        //            //ad.AdsText = (string)dr["adsText"];
+        //            //ad.Subject.SubNAme = (string)dr["subName"];
+        //            //ad.AdsImage = (string)dr["adsimage"];
+
+
+
+        //            qrList.Add(ad);
+        //        }
+
+        //        return qrList;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // write to log
+        //        throw (ex);
+        //    }
+        //    finally
+        //    {
+        //        if (con != null)
+        //        {
+        //            con.Close();
+        //        }
+
+        //    }
+
+        //}
+        public List<Subject> Getsub()
         {
             SqlConnection con = null;
-            List<Ads> qrList = new List<Ads>();
+            List<Subject> subList = new List<Subject>();
             try
             {
                 con = connect1("DBConnectionString");
-                String selectSTR = "select * from  [dbo].[ads_P3]";
+                String selectSTR = "select * from  [dbo].[subject_P3]";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
                 {   // Read till the end of the data into a row
-                    Ads ad = new Ads();
-
-                    ad.AdsCode = Convert.ToInt16(dr["adCode"]);
-                    ad.AdsDate = Convert.ToDateTime(dr["adsdate"]);
-                    ad.AdsText = (string)dr["adsText"];
-                    ad.Subject.SubNAme = (string)dr["subName"];
-                    ad.AdsImage = (string)dr["adsimage"];
-                   
-
-
-                    qrList.Add(qr);
+                    Subject sub = new Subject();
+                    sub.SubName = (string)dr["subName"];
+                    sub.SubCode= Convert.ToInt16(dr["subCode"]);
+                    subList.Add(sub);
                 }
 
-                return qrList;
+                return subList;
             }
             catch (Exception ex)
             {

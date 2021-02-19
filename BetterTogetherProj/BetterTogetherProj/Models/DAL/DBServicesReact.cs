@@ -134,6 +134,19 @@ namespace BetterTogetherProj.Models.DAL
                 stud.Mail = null;
                 return stud;
             }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
         }
         public bool checkIfExist(string email)
         {
