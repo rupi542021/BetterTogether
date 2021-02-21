@@ -11,18 +11,30 @@ namespace BetterTogetherProj.Controllers
     public class studentsController : ApiController
     {
         // GET api/<controller>
-        public IHttpActionResult GetStudentFromRuppin(string email)
+        public HttpResponseMessage GetStudentFromRuppin(string email)
         {
             Student student = new Student();
             try
             {
                 student = student.checkStudentRuppin(email);
-                return Ok(student);
+                return Request.CreateResponse(HttpStatusCode.OK,student);
             }
             catch (Exception e)
             {
-                //return badrequest(e.message);
-                return Content(HttpStatusCode.BadRequest, e);
+                switch (e.Message)
+                {
+                    case "email not found":
+                        return Request.CreateResponse(HttpStatusCode.NotFound, e);
+                    case "email already exists":
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, e);
+                    default:
+                        return Request.CreateResponse(HttpStatusCode.InternalServerError, e);
+                }
+                //if (e.Message == "email not found")
+                //{
+                //    return Request.CreateResponse(HttpStatusCode.NotFound, e);
+                //}
+                //return Request.CreateResponse(HttpStatusCode.BadRequest,e);
             }
         }
         [HttpGet]

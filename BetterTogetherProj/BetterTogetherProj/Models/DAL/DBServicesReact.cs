@@ -71,13 +71,15 @@ namespace BetterTogetherProj.Models.DAL
                         }
 
                         else {
-                            stud.Mail = null;
-                            return stud;
+                            Exception ex = new Exception("email already exists");  
+                            throw (ex);
                         }
                     }
                 }
-                stud.Mail = null;
-                return stud;
+                //stud.Mail = null;
+                //return stud;
+                Exception e = new Exception("email not found");
+                throw (e);
             }
             catch (Exception ex)
             {
