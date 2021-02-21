@@ -128,6 +128,8 @@ namespace BetterTogetherProj.Models.DAL
                         stud.Gender = (string)(dr["gender"]);
                         stud.RegistrationDate = Convert.ToDateTime(dr["registrationDate"]);
                         stud.ActiveStatus = Convert.ToBoolean(dr["active"]);
+                        stud.Plist = GetPlistByUser((string)dr["mail"]);
+                        stud.Hlist = GetHlistByUser((string)dr["mail"]);
                         return stud;
                     }
                 }
@@ -205,6 +207,84 @@ namespace BetterTogetherProj.Models.DAL
                     }
                 }
                 return Dep;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+        }
+        public List<Pleasure> GetPlistByUser(string email)
+        {
+            SqlConnection con = null;
+            List<Pleasure> userPList = new List<Pleasure>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT * FROM student_pleasure_P INNER JOIN pleasure_P ON pleasurepCode = pCode where studentmail = '"+email+"'";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {
+                    Pleasure p = new Pleasure();
+                    p.Pcode = Convert.ToInt32(dr["pCode"]);
+                    p.Pname = (string)(dr["pName"]);
+                    p.Picon = (string)(dr["pIcon"]);
+                    userPList.Add(p);
+                }
+                return userPList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+        }
+        public List<Hobby> GetHlistByUser(string email)
+        {
+            SqlConnection con = null;
+            List<Hobby> userHList = new List<Hobby>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT * FROM student_hobby_P INNER JOIN hobby_P ON hobbyhCode = hCode where studentmail ='" + email + "'";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {
+                    Hobby h = new Hobby();
+                    h.Hcode = Convert.ToInt32(dr["hCode"]);
+                    h.Hname = (string)(dr["hName"]);
+                    h.Hicon = (string)(dr["hIcon"]);
+                    userHList.Add(h);
+                }
+                return userHList;
             }
             catch (Exception ex)
             {
