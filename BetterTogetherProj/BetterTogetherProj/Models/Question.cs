@@ -10,6 +10,7 @@ namespace project_classes.Models
         int qcode;
         string question1;
         List<Answers> ans;
+        Questionnaire qr;
 
         public Question(int qcode, string question1, List<Answers> ans)
         {
