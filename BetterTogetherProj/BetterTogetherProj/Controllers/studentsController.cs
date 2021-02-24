@@ -86,7 +86,22 @@ namespace BetterTogetherProj.Controllers
             }
         }
 
-
+        [HttpGet]
+        [Route("api/students/GetAllUsers")]
+        public IHttpActionResult GetAllUsers()
+        {
+            try
+            {
+                Student s = new Student();
+                List<Student> studentsList = s.ReadAllStudent();
+                return Ok(studentsList);
+            }
+            catch (Exception e)
+            {
+                //return badrequest(e.message);
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
 
         // GET api/<controller>/5
         public string Get(int id)

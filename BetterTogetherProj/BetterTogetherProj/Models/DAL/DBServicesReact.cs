@@ -548,7 +548,62 @@ namespace BetterTogetherProj.Models.DAL
             }
             return prefix;
         }
+        public List<Student> GetAllStudents()
+        {
+            SqlConnection con = null;
+            List<Student> studList = new List<Student>();
 
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT * FROM student_P";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {
+                    Student stud = new Student();
+                    stud.Mail = (string)dr["mail"];
+                    stud.Password = (string)dr["password"];
+                    stud.Fname = (string)(dr["firstName"]);
+                    stud.Lname = (string)(dr["lastName"]);
+                    stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
+                    stud.Dep = getStudDep(Convert.ToInt32(dr["departmentCode"]));
+                    stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
+                    stud.HomeTown = (string)(dr["homeTown"]);
+                    stud.AddressStudying = (string)(dr["adrressStudying"]);
+                    stud.PersonalStatus = (string)(dr["personalStatus"]);
+                    stud.IsAvailableCar = Convert.ToBoolean(dr["isAvailableCar"]);
+                    stud.IntrestedInCarPool = Convert.ToBoolean(dr["intrestedInCarPool"]);
+                    stud.Photo = (string)(dr["photo"]);
+                    stud.Gender = (string)(dr["gender"]);
+                    stud.RegistrationDate = Convert.ToDateTime(dr["registrationDate"]);
+                    stud.ActiveStatus = Convert.ToBoolean(dr["active"]);
+                    stud.Plist = GetPlistByUser((string)dr["mail"]);
+                    stud.Hlist = GetHlistByUser((string)dr["mail"]);
+                    studList.Add(stud);
+                }
+                return studList;
+
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
 
     }
 }
