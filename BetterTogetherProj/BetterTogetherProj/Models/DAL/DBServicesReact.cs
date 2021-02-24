@@ -208,7 +208,7 @@ namespace BetterTogetherProj.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "SELECT * FROM department_P";
+                String selectSTR = "SELECT * FROM department_P where departmentCode="+DepID;
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
                 // get a reader
@@ -216,10 +216,10 @@ namespace BetterTogetherProj.Models.DAL
 
                 while (dr.Read())
                 {
-                    if (DepID == Convert.ToInt32(dr["departmentCode"]))
+                    //if (DepID == Convert.ToInt32(dr["departmentCode"]))
                     {
                         Dep.DepartmentCode = Convert.ToInt32(dr["departmentCode"]);
-                        Dep.DepartmentName = (string)(dr["departmnetName"]);
+                        Dep.DepartmentName = (string)(dr["departmentName"]);
                     }
                 }
                 return Dep;
@@ -548,7 +548,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             return prefix;
         }
-        public List<Student> GetAllStudents()
+        public List<Student> GetAllStudents(string mail)
         {
             SqlConnection con = null;
             List<Student> studList = new List<Student>();
@@ -557,7 +557,7 @@ namespace BetterTogetherProj.Models.DAL
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "SELECT * FROM student_P";
+                String selectSTR = "SELECT * FROM student_P where mail<> '"+mail+"'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
                 // get a reader

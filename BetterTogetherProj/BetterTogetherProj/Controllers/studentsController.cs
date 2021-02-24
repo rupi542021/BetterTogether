@@ -87,13 +87,13 @@ namespace BetterTogetherProj.Controllers
         }
 
         [HttpGet]
-        [Route("api/students/GetAllUsers")]
-        public IHttpActionResult GetAllUsers()
+        [Route("API/students/{mail}/without")]
+        public IHttpActionResult GetAllUsers(string mail)
         {
             try
             {
                 Student s = new Student();
-                List<Student> studentsList = s.ReadAllStudent();
+                List<Student> studentsList = s.ReadAllStudent(mail);
                 return Ok(studentsList);
             }
             catch (Exception e)

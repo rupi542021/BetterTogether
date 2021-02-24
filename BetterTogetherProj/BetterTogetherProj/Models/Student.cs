@@ -103,10 +103,10 @@ namespace project_classes.Models
             }
 
         }
-        public List<Student> ReadAllStudent()
+        public List<Student> ReadAllStudent(string mail)
         {
             DBServicesReact db = new DBServicesReact();
-            List<Student> studentsList = db.GetAllStudents();
+            List<Student> studentsList = db.GetAllStudents(mail);
             return studentsList;
         }
 
