@@ -125,8 +125,19 @@ namespace BetterTogetherProj.Controllers
         }
 
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        [Route("api/students/updateStudentPtofile")]
+        public IHttpActionResult updateStudentPtofile([FromBody] Student student)
         {
+            try
+            {
+                student.UpdateStudentPtofile();
+                    return Ok(student);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // DELETE api/<controller>/5

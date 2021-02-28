@@ -605,5 +605,157 @@ namespace BetterTogetherProj.Models.DAL
 
         }
 
+        public int UpdateStudentPtofile(Student student)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString");
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            String cStr = BuildUpdateStudentProfileCommand(student);
+            cmd = CreateCommand(cStr, con);
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery();
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildUpdateStudentProfileCommand(Student student)
+        {
+            int carPool = student.IntrestedInCarPool == true ? 1 : 0;
+            String prefix = "UPDATE[dbo].[student_P] SET ";
+            prefix += "[photo] = '" + student.Photo + "', ";
+            prefix += "[homeTown] = '" + student.HomeTown + "' , [adrressStudying] = '" + student.AddressStudying + "'";
+            prefix += " , [personalStatus] = '" + student.PersonalStatus + "' , [intrestedInCarPool] = " + carPool;
+            prefix += " WHERE [mail] = '"+ student.Mail +"'";
+            return prefix;
+        }
+
+        public int UpdateStudentPleasures(Student student)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString");
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            String cStr = BuildUpdateStudentPleasuresCommand(student);
+            cmd = CreateCommand(cStr, con);
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery();
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildUpdateStudentPleasuresCommand(Student student)
+        {
+            String prefix = "DELETE FROM [dbo].[student_pleasure_P] where [studentmail] = '" + student.Mail + "' ";
+            for (int i = 0; i < student.Plist.Count; i++)
+            {
+                prefix += "INSERT INTO student_pleasure_P (studentmail, pleasurepCode) Values('" + student.Mail + "'," + student.Plist[i].Pcode + ") ";
+            }
+            return prefix;
+        }
+
+        public int UpdateStudentHobbies(Student student)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString");
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            String cStr = BuildUpdateStudentHobbiesCommand(student);
+            cmd = CreateCommand(cStr, con);
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery();
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildUpdateStudentHobbiesCommand(Student student)
+        {
+            String prefix = "DELETE FROM [dbo].[student_hobby_P] where [studentmail] = '" + student.Mail + "' ";
+            foreach (var hobby in student.Hlist)
+            {
+                prefix += "INSERT INTO student_hobby_P (studentmail, hobbyhCode) Values('" + student.Mail + "'," + hobby.Hcode + ") ";
+
+            }
+            return prefix;
+        }
+
     }
 }

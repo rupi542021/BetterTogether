@@ -110,5 +110,18 @@ namespace project_classes.Models
             return studentsList;
         }
 
+        public void UpdateStudentPtofile() {
+            DBServicesReact dbs = new DBServicesReact();
+            dbs.UpdateStudentPtofile(this);
+            if (this.Plist.Count > 0)
+            {
+                dbs.UpdateStudentPleasures(this);
+            }
+            if (this.Hlist.Count > 0)
+            {
+                dbs.UpdateStudentHobbies(this);
+            }
+        }
+
     }
 }
