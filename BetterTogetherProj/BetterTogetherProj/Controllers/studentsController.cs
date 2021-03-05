@@ -1,4 +1,5 @@
-﻿using project_classes.Models;
+﻿using BetterTogetherProj.Models;
+using project_classes.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -137,6 +138,24 @@ namespace BetterTogetherProj.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet]
+        [Route("api/students/GetAllResidences")]
+        public IHttpActionResult GetAllResidences()
+        {
+            try
+            {
+                Residence r = new Residence();
+                List<Residence> rList = r.Read();
+                return Ok(rList);
+            }
+            catch (Exception e)
+            {
+                //return badrequest(e.message);
+                return Content(HttpStatusCode.BadRequest, e);
             }
         }
 

@@ -230,6 +230,7 @@
     <Compile Include="Models\Pleasure.cs" />
     <Compile Include="Models\Question.cs" />
     <Compile Include="Models\Questionnaire.cs" />
+    <Compile Include="Models\Residence.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\StudentCommentOnMessage.cs" />
     <Compile Include="Models\StudentFavorites.cs" />
@@ -240,6 +241,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\XMLResidence.xml" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="bin\Antlr3.Runtime.dll" />
     <Content Include="bin\Antlr3.Runtime.pdb" />
@@ -388,7 +390,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="obj\Debug\TempPE\" />
   </ItemGroup>
   <ItemGroup>
