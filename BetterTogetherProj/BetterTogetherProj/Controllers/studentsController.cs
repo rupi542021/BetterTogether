@@ -25,11 +25,11 @@ namespace BetterTogetherProj.Controllers
                 switch (e.Message)
                 {
                     case "email not found":
-                        return Request.CreateResponse(HttpStatusCode.NotFound, e);
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, e);
                     case "email already exists":
-                        return Request.CreateResponse(HttpStatusCode.BadRequest, e);
+                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e);
                     default:
-                        return Request.CreateResponse(HttpStatusCode.InternalServerError, e);
+                        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e);
                 }
                 //if (e.Message == "email not found")
                 //{
@@ -39,19 +39,26 @@ namespace BetterTogetherProj.Controllers
             }
         }
         [HttpGet]
-        [Route("API/students/{email}/{password}")]
-        public IHttpActionResult GetStudentLogin(string email,string password)
+        [Route("api/students/{email}/{password}")]
+        public HttpResponseMessage GetStudentLogin(string email,string password)
         {
-            Student student1 = new Student();
+            Student student = new Student();
             try
             {
-                student1 = student1.checkStudentLogin(email, password);
-                return Ok(student1);
+                student = student.checkStudentLogin(email, password);
+                return Request.CreateResponse(HttpStatusCode.OK, student);
             }
             catch (Exception e)
             {
-                //return badrequest(e.message);
-                return Content(HttpStatusCode.BadRequest, e);
+                switch (e.Message)
+                {
+                    case "email not found":
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, e);
+                    case "incorrect password":
+                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e);
+                    default:
+                        return Request.CreateResponse(HttpStatusCode.InternalServerError, e);
+                }
             }
         }
         [HttpGet]

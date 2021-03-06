@@ -102,15 +102,10 @@ namespace BetterTogetherProj.Models.DAL
 
             try
             {
-                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
-
+                con = connect("DBConnectionString");
                 String selectSTR = "SELECT * FROM student_P where mail='"+ email + "'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
-
-                // get a reader
-                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
-                //bool mailExist = checkIfExist(email);
-                
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                     if (dr.HasRows == true)
                 {
                     while (dr.Read())
@@ -137,19 +132,20 @@ namespace BetterTogetherProj.Models.DAL
                             stud.Hlist = GetHlistByUser((string)dr["mail"]);
                             return stud;
                         }
-
                             stud.Mail = (string)dr["mail"];
                             stud.Fname = (string)(dr["firstName"]);
                             stud.Lname = (string)(dr["lastName"]);
-                            stud.Password = null;
-                            return stud;
-
+                        //stud.Password = null;
+                        //return stud;
+                        Exception ex = new Exception("incorrect password");
+                        throw(ex);
                     }
-                    }
+                 }
 
-                    stud.Mail = null;
-                    return stud;
-
+                //stud.Mail = null;
+                //return stud;
+                Exception e = new Exception("email not found");
+                throw (e);
 
             }
             catch (Exception ex)
