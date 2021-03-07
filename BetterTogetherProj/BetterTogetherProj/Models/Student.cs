@@ -28,11 +28,11 @@ namespace project_classes.Models
         List<Pleasure> plist;
         List<Student> friendslist;
         List<StudentInCourse> studInCourse;
-
+        double match;
 
         public Student(){}
 
-        public Student(string mail, string password, string fname, string lname, DateTime dateOfBirth, Department dep, int studyingYear, string homeTown, string addressStudying, string personalStatus, bool isAvailableCar, bool intrestedInCarPool, string photo, string gender, DateTime registrationDate, bool activeStatus, List<Hobby> hlist, List<Pleasure> plist, List<Student> friendslist, List<StudentInCourse> studInCourse)
+        public Student(string mail, string password, string fname, string lname, DateTime dateOfBirth, Department dep, int studyingYear, string homeTown, string addressStudying, string personalStatus, bool isAvailableCar, bool intrestedInCarPool, string photo, string gender, DateTime registrationDate, bool activeStatus, List<Hobby> hlist, List<Pleasure> plist, List<Student> friendslist, List<StudentInCourse> studInCourse, double match)
         {
             Mail = mail;
             Password = password;
@@ -54,6 +54,7 @@ namespace project_classes.Models
             Plist = plist;
             Friendslist = friendslist;
             StudInCourse = studInCourse;
+            Match = match;
         }
 
         public string Mail { get => mail; set => mail = value; }
@@ -76,7 +77,8 @@ namespace project_classes.Models
         public List<Pleasure> Plist { get => plist; set => plist = value; }
         public List<Student> Friendslist { get => friendslist; set => friendslist = value; }
         public List<StudentInCourse> StudInCourse { get => studInCourse; set => studInCourse = value; }
-
+        public double Match { get => match; set => match = value; }
+        
         public Student checkStudentRuppin(string email)
         {
             DBServicesReact dbs = new DBServicesReact();
