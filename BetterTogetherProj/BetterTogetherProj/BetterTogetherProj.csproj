@@ -223,6 +223,7 @@
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\DAL\DBServices.cs" />
     <Compile Include="Models\DAL\DBServicesReact.cs" />
+    <Compile Include="Models\DAL\XMLServices.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\ExternalGroups.cs" />
     <Compile Include="Models\Hobby.cs" />
