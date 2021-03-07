@@ -9,49 +9,72 @@ namespace BetterTogetherProj.Models
 {
     public class Residence
     {
+        int id;
         string name;
+        double x;
+        double y;
 
-        public Residence(string name)
-        {
-            Name = name;
-        }
+
         public Residence()
         {
 
         }
 
+        public Residence(int id, string name, double x, double y)
+        {
+            Id = id;
+            Name = name;
+            X = x;
+            Y = y;
+        }
+
+        public int Id { get => id; set => id = value; }
         public string Name { get => name; set => name = value; }
+        public double X { get => x; set => x = value; }
+        public double Y { get => y; set => y = value; }
 
         public List<Residence> Read()
-        {
-            List<Residence> lr = new List<Residence>();
-            // Start with XmlReader object  
-            //here, we try to setup Stream between the XML file nad xmlReader  
+        { 
+            List<Residence> ResidenceList = new List<Residence>();
+            List<string> NamesList = new List<string>();
+            List<double> YList = new List<double>();
+            List<double> XList = new List<double>();
             using (XmlReader reader = XmlReader.Create("C:\\Users\\User\\Documents\\GitHub\\ProjectFinal\\BetterTogetherProj\\BetterTogetherProj\\App_Data\\XMLResidence.xml"))
             {
                 while (reader.Read())
                 {
                     if (reader.IsStartElement())
                     {
-                        //return only when you have START tag  
-                        switch (reader.Name.ToString())
+                        if (reader.Name.ToString() == "Value")
                         {
-                            case "Value":
-                                //Console.WriteLine("Value of the Element is : " + reader.ReadString());
-                                Residence r = new Residence();
-                                r.Name = reader.ReadString();
-                                lr.Add(r);
-                                break;
-
+                            NamesList.Add(reader.ReadString());
                         }
-                    }
-                    //Console.WriteLine("");
-                    
+                        if (reader.Name.ToString() == "Y")
+                        {
+                            YList.Add(Convert.ToDouble(reader.ReadString()));
+                        }
+                        if (reader.Name.ToString() == "X")
+                        {
+                            XList.Add(Convert.ToDouble(reader.ReadString()));
+                        }
+                    }   
                 }
+
+                int s = 1;
+                for (int t = 4; t < NamesList.Count; t=t+9)
+                {
+                    Residence r = new Residence();
+                    r.Id = s;
+                    r.Name = NamesList[t];
+                    r.Y = YList[s - 1];
+                    r.X = XList[s - 1];
+                    ResidenceList.Add(r);
+                    s++;
+                }
+                var newList = ResidenceList.OrderBy(x => x.Name).ToList();
+                return newList;
             }
-            //Console.ReadKey();
-            return lr;
         }
     }
-}   
+}
     
