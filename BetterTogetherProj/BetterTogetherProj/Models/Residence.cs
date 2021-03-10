@@ -37,8 +37,14 @@ namespace BetterTogetherProj.Models
         public List<Residence> Read()
         {
                 XMLServices xml = new XMLServices();
-                List<Residence> ResidenceList = xml.GetAllResidence();
+                List<Residence> ResidenceList = xml.GetAllResidences();
                 return ResidenceList;  
+        }
+        public Residence Read(string RName)
+        {
+            XMLServices xml = new XMLServices();
+            Residence Res = xml.GetResidence(RName);
+            return Res;
         }
     }
 }

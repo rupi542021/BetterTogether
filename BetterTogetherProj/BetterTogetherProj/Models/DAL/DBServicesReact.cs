@@ -119,8 +119,8 @@ namespace BetterTogetherProj.Models.DAL
                             stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
                             stud.Dep = getStudDep(Convert.ToInt32(dr["departmentCode"]));
                             stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
-                            stud.HomeTown = (string)(dr["homeTown"]);
-                            stud.AddressStudying = (string)(dr["adrressStudying"]);
+                            stud.HomeTown = getResidenceH((string)(dr["homeTown"]));
+                            stud.AddressStudying = getResidenceS((string)(dr["adrressStudying"]));
                             stud.PersonalStatus = (string)(dr["personalStatus"]);
                             stud.IsAvailableCar = Convert.ToBoolean(dr["isAvailableCar"]);
                             stud.IntrestedInCarPool = Convert.ToBoolean(dr["intrestedInCarPool"]);
@@ -219,6 +219,52 @@ namespace BetterTogetherProj.Models.DAL
                     }
                 }
                 return Dep;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+        }
+        public Residence getResidenceH(string ResidenceName)
+        {
+            SqlConnection con = null;
+            Residence res = new Residence();
+            try
+            {
+                res = res.Read(ResidenceName);
+                return res;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+        }
+        public Residence getResidenceS(string ResidenceName)
+        {
+            SqlConnection con = null;
+            Residence res = new Residence();
+            try
+            {
+                res = res.Read(ResidenceName);
+                return res;
             }
             catch (Exception ex)
             {
@@ -439,7 +485,7 @@ namespace BetterTogetherProj.Models.DAL
             String command;
             StringBuilder sb = new StringBuilder();
             String prefix = "INSERT INTO Student_P" + "(mail, password, firstName, lastName, dateOfBirth, departmentCode, studyingYear, homeTown, adrressStudying, personalStatus, isAvailableCar, intrestedInCarpool, photo, gender, registrationDate, active) ";
-            sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}','{4}', '{5}','{6}', '{7}','{8}', '{9}','{10}', '{11}','{12}', '{13}','{14}', '{15}')", student.Mail, student.Password, student.Fname, student.Lname, student.DateOfBirth.ToString("yyyy-MM-dd H:mm:ss"), student.Dep.DepartmentCode, student.StudyingYear, student.HomeTown, student.AddressStudying, student.PersonalStatus, student.IsAvailableCar, student.IntrestedInCarPool, student.Photo, student.Gender, student.RegistrationDate.ToString("yyyy-MM-dd H:mm:ss"), true);
+            sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}','{4}', '{5}','{6}', '{7}','{8}', '{9}','{10}', '{11}','{12}', '{13}','{14}', '{15}')", student.Mail, student.Password, student.Fname, student.Lname, student.DateOfBirth.ToString("yyyy-MM-dd H:mm:ss"), student.Dep.DepartmentCode, student.StudyingYear, student.HomeTown.Name, student.AddressStudying.Name, student.PersonalStatus, student.IsAvailableCar, student.IntrestedInCarPool, student.Photo, student.Gender, student.RegistrationDate.ToString("yyyy-MM-dd H:mm:ss"), true);
             command = prefix + sb.ToString();
             return command;
         }
@@ -569,8 +615,8 @@ namespace BetterTogetherProj.Models.DAL
                     stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
                     stud.Dep = getStudDep(Convert.ToInt32(dr["departmentCode"]));
                     stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
-                    stud.HomeTown = (string)(dr["homeTown"]);
-                    stud.AddressStudying = (string)(dr["adrressStudying"]);
+                    stud.HomeTown = getResidenceH((string)(dr["homeTown"]));
+                    stud.AddressStudying = getResidenceS((string)(dr["adrressStudying"]));
                     stud.PersonalStatus = (string)(dr["personalStatus"]);
                     stud.IsAvailableCar = Convert.ToBoolean(dr["isAvailableCar"]);
                     stud.IntrestedInCarPool = Convert.ToBoolean(dr["intrestedInCarPool"]);
@@ -646,7 +692,7 @@ namespace BetterTogetherProj.Models.DAL
             int carPool = student.IntrestedInCarPool == true ? 1 : 0;
             String prefix = "UPDATE[dbo].[student_P] SET ";
             prefix += "[photo] = '" + student.Photo + "', ";
-            prefix += "[homeTown] = '" + student.HomeTown + "' , [adrressStudying] = '" + student.AddressStudying + "'";
+            prefix += "[homeTown] = '" + student.HomeTown.Name + "' , [adrressStudying] = '" + student.AddressStudying.Name + "'";
             prefix += " , [personalStatus] = '" + student.PersonalStatus + "' , [intrestedInCarPool] = " + carPool;
             prefix += " WHERE [mail] = '"+ student.Mail +"'";
             return prefix;

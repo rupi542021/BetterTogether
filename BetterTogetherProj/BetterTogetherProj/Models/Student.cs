@@ -1,4 +1,5 @@
-﻿using BetterTogetherProj.Models.DAL;
+﻿using BetterTogetherProj.Models;
+using BetterTogetherProj.Models.DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +16,8 @@ namespace project_classes.Models
         DateTime dateOfBirth;
         Department dep;
         int studyingYear;
-        string homeTown;
-        string addressStudying;
+        Residence homeTown;
+        Residence addressStudying;
         string personalStatus;
         bool isAvailableCar;
         bool intrestedInCarPool;
@@ -32,7 +33,7 @@ namespace project_classes.Models
 
         public Student(){}
 
-        public Student(string mail, string password, string fname, string lname, DateTime dateOfBirth, Department dep, int studyingYear, string homeTown, string addressStudying, string personalStatus, bool isAvailableCar, bool intrestedInCarPool, string photo, string gender, DateTime registrationDate, bool activeStatus, List<Hobby> hlist, List<Pleasure> plist, List<Student> friendslist, List<StudentInCourse> studInCourse, double match)
+        public Student(string mail, string password, string fname, string lname, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, bool isAvailableCar, bool intrestedInCarPool, string photo, string gender, DateTime registrationDate, bool activeStatus, List<Hobby> hlist, List<Pleasure> plist, List<Student> friendslist, List<StudentInCourse> studInCourse, double match)
         {
             Mail = mail;
             Password = password;
@@ -64,8 +65,8 @@ namespace project_classes.Models
         public DateTime DateOfBirth { get => dateOfBirth; set => dateOfBirth = value; }
         public Department Dep { get => dep; set => dep = value; }
         public int StudyingYear { get => studyingYear; set => studyingYear = value; }
-        public string HomeTown { get => homeTown; set => homeTown = value; }
-        public string AddressStudying { get => addressStudying; set => addressStudying = value; }
+        public Residence HomeTown { get => homeTown; set => homeTown = value; }
+        public Residence AddressStudying { get => addressStudying; set => addressStudying = value; }
         public string PersonalStatus { get => personalStatus; set => personalStatus = value; }
         public bool IsAvailableCar { get => isAvailableCar; set => isAvailableCar = value; }
         public bool IntrestedInCarPool { get => intrestedInCarPool; set => intrestedInCarPool = value; }
