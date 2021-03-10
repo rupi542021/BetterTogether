@@ -116,14 +116,8 @@ namespace project_classes.Models
         public void UpdateStudentPtofile() {
             DBServicesReact dbs = new DBServicesReact();
             dbs.UpdateStudentPtofile(this);
-            if (this.Plist.Count > 0)
-            {
-                dbs.UpdateStudentPleasures(this);
-            }
-            if (this.Hlist.Count > 0)
-            {
-                dbs.UpdateStudentHobbies(this);
-            }
+            dbs.UpdateStudentPleasures(this);
+            dbs.UpdateStudentHobbies(this);
         }
 
     }

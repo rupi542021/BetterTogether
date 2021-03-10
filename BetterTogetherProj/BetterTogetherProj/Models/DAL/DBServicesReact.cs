@@ -690,10 +690,11 @@ namespace BetterTogetherProj.Models.DAL
         private String BuildUpdateStudentProfileCommand(Student student)
         {
             int carPool = student.IntrestedInCarPool == true ? 1 : 0;
+            int withCar = student.IsAvailableCar == true ? 1 : 0;
             String prefix = "UPDATE[dbo].[student_P] SET ";
             prefix += "[photo] = '" + student.Photo + "', ";
             prefix += "[homeTown] = '" + student.HomeTown.Name + "' , [adrressStudying] = '" + student.AddressStudying.Name + "'";
-            prefix += " , [personalStatus] = '" + student.PersonalStatus + "' , [intrestedInCarPool] = " + carPool;
+            prefix += " , [personalStatus] = '" + student.PersonalStatus + "' , [isAvailableCar] = " + withCar + " , [intrestedInCarPool] = " + carPool;
             prefix += " WHERE [mail] = '"+ student.Mail +"'";
             return prefix;
         }
