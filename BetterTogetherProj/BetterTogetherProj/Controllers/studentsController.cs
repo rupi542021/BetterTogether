@@ -132,6 +132,21 @@ namespace BetterTogetherProj.Controllers
             }
         }
 
+        [Route("api/students/AddToFavorites")]
+        [HttpPost]
+        public HttpResponseMessage AddToFavorites([FromBody] StudentFavorites sf)
+        {
+            try
+            {
+                sf.Insert();
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
+            }
+        }
+
         // PUT api/<controller>/5
         [HttpPut]
         [Route("api/students/updateStudentPtofile")]

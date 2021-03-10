@@ -130,6 +130,7 @@ namespace BetterTogetherProj.Models.DAL
                             stud.ActiveStatus = Convert.ToBoolean(dr["active"]);
                             stud.Plist = GetPlistByUser((string)dr["mail"]);
                             stud.Hlist = GetHlistByUser((string)dr["mail"]);
+                            stud.Friendslist = GetFriendsListByUser(((string)dr["mail"]));
                             return stud;
                         }
                             stud.Mail = (string)dr["mail"];
@@ -319,6 +320,45 @@ namespace BetterTogetherProj.Models.DAL
 
             }
         }
+
+        public List<Student> GetFriendsListByUser(string email)
+        {
+            SqlConnection con = null;
+            List<Student> userFriendsList = new List<Student>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT sf.student2Mail FROM student_favorites_P sf where sf.Student1Mail ='" + email + "'";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {
+                    Student s = new Student();
+                    s.Mail = (string)dr["student2Mail"];
+                    userFriendsList.Add(s);
+                }
+                return userFriendsList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+        }
+
         public List<Hobby> GetHlistByUser(string email)
         {
             SqlConnection con = null;
@@ -800,5 +840,54 @@ namespace BetterTogetherProj.Models.DAL
             return prefix;
         }
 
+        public int InsertFavorite(StudentFavorites sf)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString");
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            String cStr = BuildInsertFavoriteCommand(sf);
+            cmd = CreateCommand(cStr, con);
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery();
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildInsertFavoriteCommand(StudentFavorites sf)
+        {
+            String command;
+            StringBuilder sb = new StringBuilder();
+            String prefix = "INSERT INTO student_favorites_P" + "(Student1Mail, student2Mail) ";
+            sb.AppendFormat("Values('{0}', '{1}')", sf.Student1mail, sf.Student2mail);
+            command = prefix + sb.ToString();
+            return command;
+        }
     }
 }
