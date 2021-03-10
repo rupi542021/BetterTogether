@@ -692,7 +692,7 @@ namespace BetterTogetherProj.Models.DAL
             int carPool = student.IntrestedInCarPool == true ? 1 : 0;
             int withCar = student.IsAvailableCar == true ? 1 : 0;
             String prefix = "UPDATE[dbo].[student_P] SET ";
-            prefix += "[photo] = '" + student.Photo + "', ";
+            prefix += "[photo] = '" + student.Photo + "', [gender] = '" + student.Gender +"', ";
             prefix += "[homeTown] = '" + student.HomeTown.Name + "' , [adrressStudying] = '" + student.AddressStudying.Name + "'";
             prefix += " , [personalStatus] = '" + student.PersonalStatus + "' , [isAvailableCar] = " + withCar + " , [intrestedInCarPool] = " + carPool;
             prefix += " WHERE [mail] = '"+ student.Mail +"'";
