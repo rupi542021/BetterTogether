@@ -2,9 +2,12 @@
 using project_classes.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
+using System.Web.Hosting;
 using System.Web.Http;
 
 namespace BetterTogetherProj.Controllers
@@ -178,6 +181,38 @@ namespace BetterTogetherProj.Controllers
             {
                 //return badrequest(e.message);
                 return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
+
+        [HttpPost]
+        [Route("api/students/uploadedFiles")]
+        public HttpResponseMessage Post()
+        {
+            string imageLink;
+            var httpContext = HttpContext.Current;
+            string imgpath = "";
+            try
+            {
+                if (httpContext.Request.Files.Count > 0)
+                {
+                    HttpPostedFile httpPostedFile = httpContext.Request.Files[0];
+                    string name = httpContext.Request.Form["name"];
+
+                    if (httpPostedFile != null)
+                    {
+                        string fname = httpPostedFile.FileName.Split('\\').Last();
+                        string sfname = fname.Split('.').Last();
+                        var fileSavePath = Path.Combine(HostingEnvironment.MapPath("~/uploadedFiles"), name + "." + sfname);
+                        httpPostedFile.SaveAs(fileSavePath);
+                        imgpath = fileSavePath;
+                        imageLink = $"uploadedFiles/{name}.{sfname}";
+                    }
+                }
+                return Request.CreateResponse(HttpStatusCode.Created, imgpath);
+            }
+            catch(Exception e)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "connecting error");
             }
         }
 
