@@ -198,6 +198,14 @@ namespace BetterTogetherProj.Controllers
                     HttpPostedFile httpPostedFile = httpContext.Request.Files[0];
                     string name = httpContext.Request.Form["name"];
 
+
+                    DirectoryInfo hdDirectoryInWhichToSearch = new DirectoryInfo(HostingEnvironment.MapPath("~/uploadedFiles"));
+                    FileInfo[] filesInDir = hdDirectoryInWhichToSearch.GetFiles("*" + name + "*.*");
+                    foreach (FileInfo foundFile in filesInDir)
+                    {
+                        foundFile.Delete();
+                    }
+
                     if (httpPostedFile != null)
                     {
                         string fname = httpPostedFile.FileName.Split('\\').Last();
@@ -215,6 +223,8 @@ namespace BetterTogetherProj.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "connecting error");
             }
         }
+
+        
 
         // DELETE api/<controller>/5
         public void Delete(int id)
