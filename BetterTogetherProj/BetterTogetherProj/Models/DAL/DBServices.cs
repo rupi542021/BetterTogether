@@ -672,47 +672,84 @@ namespace BetterTogetherProj.Models.DAL
             return command;
         }
 
-        //public List<StudentFeedToAds> GetFBAds(string subnameFB)
-        //{
-        //    SqlConnection con = null;
-        //    List<StudentFeedToAds> FBList = new List<StudentFeedToAds>();
-        //    try
-        //    {
-        //        con = connect1("DBConnectionString");
-        //        String selectSTR = "select * from feedbackstudenttoads_P3 inner join ads_P3 on ads_P3.adCode=feedbackstudenttoads_P3.adCode inner join student_P on student_P.mail=feedbackstudenttoads_P3.studentmail where subName='" + subnameFB + "'";
-        //        SqlCommand cmd = new SqlCommand(selectSTR, con);
-        //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-        //        while (dr.Read())
-        //        {   // Read till the end of the data into a row
-        //            StudentFeedToAds FB = new StudentFeedToAds();
-        //            FB.Student = (new Student { Fname = (string)dr["firstName"] });
-        //            FB.Student.Mail = (string)dr["mail"];
-        //            FB.Ads = new Ads();
-        //            FB.Ads.SubSubject = (string)dr["subSubName"];
-        //            FB.Ads.AdsCode = Convert.ToInt16(dr["adCode"]);
-        //            FB.CommentText = (string)dr["commenttext"];
-        //            FB.CommentDate = Convert.ToDateTime(dr["commentdate"]);
-        //            FB.Managercomment = (string)dr["managercomment"];
-        //            FBList.Add(FB);
-        //        }
+        public List<Ads> GetAdBySub(string subnameFB)
+        {
+            SqlConnection con = null;
+            List<Ads> AdList = new List<Ads>();
+            try
+            {
+                con = connect1("DBConnectionString");
+                //String selectSTR = "select * from feedbackstudenttoads_P3 inner join ads_P3 on ads_P3.adCode=feedbackstudenttoads_P3.adCode inner join student_P on student_P.mail=feedbackstudenttoads_P3.studentmail where subName='" + subnameFB + "'";
+                String selectSTR = "select * from ads_P3 where subName='" + subnameFB + "'";
+                 SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Ads ad = new Ads();
+                    ad.AdsCode = Convert.ToInt16(dr["adCode"]);
+                    ad.Fbads = GetFBGG(ad.AdsCode);
+                    ad.SubSubject= (string)dr["subSubName"];
+                    AdList.Add(ad);
+                }
 
-        //        return FBList;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // write to log
-        //        throw (ex);
-        //    }
-        //    finally
-        //    {
-        //        if (con != null)
-        //        {
-        //            con.Close();
-        //        }
+                return AdList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
 
-        //    }
+            }
 
-        //}
+        }
+
+        public List<AdsFeedback> GetFBGG(int adCode)
+        {
+            SqlConnection con = null;
+            List<AdsFeedback> FBList = new List<AdsFeedback>();
+            try
+            {
+                con = connect1("DBConnectionString");
+                String selectSTR = "select * from feedbackstudenttoads_P3 inner join student_P on student_P.mail=feedbackstudenttoads_P3.studentmail where adCode=" + adCode;
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    AdsFeedback FB = new AdsFeedback();
+                    FB.Student = (new Student { Fname = (string)dr["firstName"] });
+                    FB.Student.Mail = (string)dr["mail"];
+                    FB.CommentText = (string)dr["commenttext"];
+                    FB.CommentDate = Convert.ToDateTime(dr["commentdate"]);
+                    FB.Managercomment = (string)dr["managercomment"];
+
+
+                    FBList.Add(FB);
+                }
+
+                return FBList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
 
         //public List<StudentFeedToEvents> GetFBEvents(string evtypeFB)
         //{

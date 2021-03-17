@@ -60,40 +60,55 @@
         function getFBSuccess(FBData) {
 
             console.log(FBData);
-            data = FBData; // keep the cars array in a global variable;
+            
+            data = FBData; 
             if ($.fn.dataTable.isDataTable('#FBtable')) {//destroy the old table on existence and then create new instance of jQuery DataTable
                 $('#FBtable').DataTable().clear().destroy();
             }
+            
+                try {
+                    tbl = $('#FBtable').DataTable({
+                        data: FBData,
+                        pageLength: 5,
+                        columns: [
 
-            try {
-                tbl = $('#FBtable').DataTable({
-                    data: FBData,
-                    pageLength: 5,
-                    columns: [
+                            { data: "SubSubject" },
 
-                        { data: "Ads.SubSubject.SubSubjectName" },
-                        { data: "Student.Fname" },
-                        { data: "CommentText" },
-                        { data: "CommentDate" },
-                        {
-                            render: function (data, type, row, meta) {
-                              
-                                plusBtn = "<i type='button'   class='fas fa-plus-circle' id='" + row.Student.Mail + "," + row.Ads.AdsCode+"'></i>";
+                            {
+                                data: "Fbads[].Student.Fname",
+                            },
+                            {
+                                data: "Fbads[].CommentText",
+                             
+                            },
+                            {
+                                data: "Fbads[].CommentDate",
 
-                                return plusBtn;
-                            }
-                        },
-                        { data:"Managercomment"}
+                               },
+                            //{
+                            //    render: function (data, type, row, meta) {
 
-                    ],
+                            //        plusBtn = "<i type='button'   class='fas fa-plus-circle' id='" + row.Student.Mail + "," + row.Ads.AdsCode+"'></i>";
 
-                });
+                            //        return plusBtn;
+                            //    }
+                            //},
+                            {
+                                data: "Fbads[].Managercomment",
+                               }
 
+                        ],
+
+                    });
+
+                }
+
+
+                catch (err) {
+                    alert(err);
+                }
             }
-            catch (err) {
-                alert(err);
-            }
-        }
+        
 
         function addcomment() {
             idcom = $(this).attr("id");
@@ -159,7 +174,7 @@
                         <th>שם הסטודנט</th>
                         <th>תוכן תגובה</th>
                         <th>תאריך תגובה</th>              
-                        <th> </th>
+                        <!--<th> </th>-->
                         <th>תגובתך</th>
                     </tr>
                 </thead>

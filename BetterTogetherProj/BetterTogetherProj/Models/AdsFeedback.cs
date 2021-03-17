@@ -7,40 +7,33 @@ using System.Web;
 
 namespace BetterTogetherProj.Models
 {
-    public class StudentFeedToAds
+    public class AdsFeedback
     {
         Student student;
-        Ads ads;
         DateTime commentDate;
         string commentText;
         string managercomment;
         
   
 
-        public StudentFeedToAds() { }
+        public AdsFeedback() { }
 
-        public StudentFeedToAds(Student student, Ads ads, DateTime commentDate, string commentText, string managercomment)
+        public AdsFeedback(Student student, DateTime commentDate, string commentText, string managercomment)
         {
             Student = student;
-            Ads = ads;
             CommentDate = commentDate;
             CommentText = commentText;
             Managercomment = managercomment;
         }
 
         public Student Student { get => student; set => student = value; }
-        public Ads Ads { get => ads; set => ads = value; }
         public DateTime CommentDate { get => commentDate; set => commentDate = value; }
         public string CommentText { get => commentText; set => commentText = value; }
         public string Managercomment { get => managercomment; set => managercomment = value; }
 
-        //public List<StudentFeedToAds> GetFBAds(string subnameFB)
-        //{
-        //    DBServices dbs = new DBServices();
-        //    List<StudentFeedToAds> studentFBList = dbs.GetFBAds(subnameFB);
-        //    return studentFBList;
 
-        //}
+
+    
 
         //public void Insertcomment()
         //{
