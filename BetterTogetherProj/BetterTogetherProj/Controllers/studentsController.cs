@@ -237,72 +237,72 @@ namespace BetterTogetherProj.Controllers
         //        ? (IHttpActionResult)NotFound()
         //        : new FileResult(fileInfo.FullName);
         //}
-        [HttpGet]
-        [Route("API/students/photos")]
-        public IHttpActionResult GetImageTest()
-        {
-            try
-            {
-                var fileName = "";
-                string imgURL = "";
-                List<string> fileList = new List<string>();
-                DirectoryInfo hdDirectoryInWhichToSearch = new DirectoryInfo(HostingEnvironment.MapPath("~/uploadedFiles"));
-                FileInfo[] filesInDir = hdDirectoryInWhichToSearch.GetFiles();
-                foreach (FileInfo foundFile in filesInDir)
-                {
-                    fileName = foundFile.Name;
-                    imgURL = HttpContext.Current.Server.MapPath("~/uploadedFiles/" + fileName);
-                    fileList.Add(fileName);
-                }
+        //[HttpGet]
+        //[Route("API/students/photos")]
+        //public IHttpActionResult GetImageTest()
+        //{
+        //    try
+        //    {
+        //        var fileName = "";
+        //        string imgURL = "";
+        //        List<string> fileList = new List<string>();
+        //        DirectoryInfo hdDirectoryInWhichToSearch = new DirectoryInfo(HostingEnvironment.MapPath("~/uploadedFiles"));
+        //        FileInfo[] filesInDir = hdDirectoryInWhichToSearch.GetFiles();
+        //        foreach (FileInfo foundFile in filesInDir)
+        //        {
+        //            fileName = foundFile.Name;
+        //            imgURL = HttpContext.Current.Server.MapPath("~/uploadedFiles/" + fileName);
+        //            fileList.Add(fileName);
+        //        }
 
-                //var stream = File.OpenRead(fileName);
+        //        //var stream = File.OpenRead(fileName);
 
-                //var response = new HttpResponseMessage(HttpStatusCode.OK);
-                //response.Content = new StreamContent(stream);
+        //        //var response = new HttpResponseMessage(HttpStatusCode.OK);
+        //        //response.Content = new StreamContent(stream);
 
-                //response.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpg");
-                //response.Content.Headers.ContentLength = stream.Length;
+        //        //response.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpg");
+        //        //response.Content.Headers.ContentLength = stream.Length;
 
-                //return ResponseMessage(response);
+        //        //return ResponseMessage(response);
                 
 
-                return Ok(fileList);
-            }
-            catch (Exception e)
-            {
-                //return badrequest(e.message);
-                return Content(HttpStatusCode.BadRequest, e);
-            }
+        //        return Ok(fileList);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        //return badrequest(e.message);
+        //        return Content(HttpStatusCode.BadRequest, e);
+        //    }
 
             
-        }
+        //}
 
-        [HttpGet]
-        [Route("API/students/{mail}/photos")]
-        public IHttpActionResult GetImageByMail(string mail)
-        {
-            try
-            {
-                var fileName = "";
-                //string imgURL = "";
-                DirectoryInfo hdDirectoryInWhichToSearch = new DirectoryInfo(HostingEnvironment.MapPath("~/uploadedFiles"));
-                FileInfo[] filesInDir = hdDirectoryInWhichToSearch.GetFiles("*" + mail + "*.*");
-                foreach (FileInfo foundFile in filesInDir)
-                {
-                    fileName = foundFile.Name;
-                    //imgURL = HttpContext.Current.Server.MapPath("~/uploadedFiles/" + fileName);
-                }
+        //[HttpGet]
+        //[Route("API/students/{mail}/photos")]
+        //public IHttpActionResult GetImageByMail(string mail)
+        //{
+        //    try
+        //    {
+        //        var fileName = "";
+        //        //string imgURL = "";
+        //        DirectoryInfo hdDirectoryInWhichToSearch = new DirectoryInfo(HostingEnvironment.MapPath("~/uploadedFiles"));
+        //        FileInfo[] filesInDir = hdDirectoryInWhichToSearch.GetFiles("*" + mail + "*.*");
+        //        foreach (FileInfo foundFile in filesInDir)
+        //        {
+        //            fileName = foundFile.Name;
+        //            //imgURL = HttpContext.Current.Server.MapPath("~/uploadedFiles/" + fileName);
+        //        }
 
 
-                return Ok(fileName);
-            }
-            catch (Exception e)
-            {
-                //return badrequest(e.message);
-                return Content(HttpStatusCode.BadRequest, e);
-            }
+        //        return Ok(fileName);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        //return badrequest(e.message);
+        //        return Content(HttpStatusCode.BadRequest, e);
+        //    }
 
-        }
+        //}
         // DELETE api/<controller>/5
         public void Delete(int id)
         {
