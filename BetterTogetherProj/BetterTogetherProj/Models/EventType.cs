@@ -9,16 +9,21 @@ namespace BetterTogetherProj.Models
     public class EventType
 
     {
-        string eventTypeName;
+        string eventtype;
+        List<string> eventName;
 
-        public EventType(string eventTypeName)
-        {
-            EventTypeName = eventTypeName;
-        }
-
-        public string EventTypeName { get => eventTypeName; set => eventTypeName = value; }
+        
 
         public EventType() { }
+
+        public EventType(string eventtype, List<string> eventName)
+        {
+            Eventtype = eventtype;
+            EventName = eventName;
+        }
+
+        public string Eventtype { get => eventtype; set => eventtype = value; }
+        public List<string> EventName { get => eventName; set => eventName = value; }
 
         public List<EventType> Getevtype()
         {
@@ -33,6 +38,19 @@ namespace BetterTogetherProj.Models
             DBServices dbs = new DBServices();
             dbs.InsertEventtype(this);
         }
-        
+
+        public List<string> Getsametype(string evtypename)
+        {
+            DBServices dbs = new DBServices();
+            List<string> evnameList = dbs.Getsametype(evtypename);
+            return evnameList;
+
+        }
+     
+        public void InsertEventname()
+        {
+            DBServices dbs = new DBServices();
+            dbs.InsertEventname(this);
+        }
     }
 }

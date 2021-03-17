@@ -34,18 +34,18 @@ namespace BetterTogetherProj.Models
         public string CommentText { get => commentText; set => commentText = value; }
         public string Managercomment { get => managercomment; set => managercomment = value; }
 
-        public List<StudentFeedToAds> GetFBAds(string subnameFB)
-        {
-            DBServices dbs = new DBServices();
-            List<StudentFeedToAds> studentFBList = dbs.GetFBAds(subnameFB);
-            return studentFBList;
+        //public List<StudentFeedToAds> GetFBAds(string subnameFB)
+        //{
+        //    DBServices dbs = new DBServices();
+        //    List<StudentFeedToAds> studentFBList = dbs.GetFBAds(subnameFB);
+        //    return studentFBList;
 
-        }
+        //}
 
-        public void Insertcomment()
-        {
-            DBServices dbs = new DBServices();
-            dbs.Insertcomment(this);
-        }
+        //public void Insertcomment()
+        //{
+        //    DBServices dbs = new DBServices();
+        //    dbs.Insertcomment(this);
+        //}
     }
 }

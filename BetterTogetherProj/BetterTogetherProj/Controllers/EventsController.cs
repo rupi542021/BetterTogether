@@ -50,9 +50,9 @@ namespace BetterTogetherProj.Controllers
 
         [HttpGet]
         [Route("api/Events/getsametype")]
-        public List<EventName> Getsametype(string evtypename)
+        public List<string> Getsametype(string evtypename)
         {
-            EventName evname = new EventName();
+            EventType evname = new EventType();
             return evname.Getsametype(evtypename);
 
         }
@@ -93,7 +93,7 @@ namespace BetterTogetherProj.Controllers
 
         [HttpPost]
         [Route("api/Events/addeventname")]
-        public HttpResponseMessage InsertEventname([FromBody] EventName evname)
+        public HttpResponseMessage InsertEventname([FromBody] EventType evname)
         {
             try
             {
@@ -109,40 +109,40 @@ namespace BetterTogetherProj.Controllers
 
         }
 
-        [HttpGet]
-        [Route("api/Events/getFB")]
-        public List<StudentFeedToEvents> GetFBEvents(string evtypeFB)
-        {
-            StudentFeedToEvents FB = new StudentFeedToEvents();
-            return FB.GetFBEvents(evtypeFB);
+        //[HttpGet]
+        //[Route("api/Events/getFB")]
+        //public List<StudentFeedToEvents> GetFBEvents(string evtypeFB)
+        //{
+        //    StudentFeedToEvents FB = new StudentFeedToEvents();
+        //    return FB.GetFBEvents(evtypeFB);
 
-        }
+        //}
 
-        [HttpPut]
-        [Route("api/Events/addcomment")]
-        public HttpResponseMessage Insertcomment([FromBody] StudentFeedToEvents addmngcom)
-        {
-            try
-            {
-                addmngcom.Insertcomment();
+        //[HttpPut]
+        //[Route("api/Events/addcomment")]
+        //public HttpResponseMessage Insertcomment([FromBody] StudentFeedToEvents addmngcom)
+        //{
+        //    try
+        //    {
+        //        addmngcom.Insertcomment();
 
-                return Request.CreateResponse(HttpStatusCode.OK, "Comment added successfully");
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
+        //        return Request.CreateResponse(HttpStatusCode.OK, "Comment added successfully");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
+        //    }
 
 
-        }
+        //}
 
-        [HttpGet]
-        [Route("api/Events/geteventdetail")]
-        public List<Events> Geteventdetail()
-        {
-            Events evdetail = new Events();
-            return evdetail.Geteventdetail();
+        //[HttpGet]
+        //[Route("api/Events/geteventdetail")]
+        //public List<Events> Geteventdetail()
+        //{
+        //    Events evdetail = new Events();
+        //    return evdetail.Geteventdetail();
 
-        }
+        //}
     }
 }

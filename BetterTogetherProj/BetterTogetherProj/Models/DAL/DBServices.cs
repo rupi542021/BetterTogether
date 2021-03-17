@@ -325,7 +325,7 @@ namespace BetterTogetherProj.Models.DAL
                 while (dr.Read())
                 {   // Read till the end of the data into a row
                     EventType evtype = new EventType();
-                    evtype.EventTypeName = (string)dr["eventTypeName"];
+                    evtype.Eventtype = (string)dr["eventTypeName"];
                     evtypeList.Add(evtype);
                 }
 
@@ -347,10 +347,10 @@ namespace BetterTogetherProj.Models.DAL
 
         }
 
-        public List<EventName> Getsametype(string evtypename)
+        public List<string> Getsametype(string evtypename)
         {
             SqlConnection con = null;
-            List<EventName> evnameList = new List<EventName>();
+            List<string> evnameList = new List<string>();
             try
             {
                 con = connect1("DBConnectionString");
@@ -359,11 +359,9 @@ namespace BetterTogetherProj.Models.DAL
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
                 {   // Read till the end of the data into a row
-                    EventName evname = new EventName();
-                    evname.Eventname = (string)dr["eventname"];
-                    evname.Eventtype = (new EventType { EventTypeName = (string)dr["eventTypeName"] });
+                 
+                    evnameList.Add((string)dr["eventname"]);
 
-                    evnameList.Add(evname);
                 }
 
                 return evnameList;
@@ -435,7 +433,7 @@ namespace BetterTogetherProj.Models.DAL
 
             StringBuilder sb = new StringBuilder();
             // use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}')", ev.EventDate.ToString("yyyy-MM-dd"), ev.EventText, ev.EventImage, ev.Eventname.Eventname, ev.Eventtype.EventTypeName);
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}')", ev.EventDate.ToString("yyyy-MM-dd"), ev.EventText, ev.EventImage, ev.Eventname, ev.Eventtype);
             String prefix = "INSERT INTO events_P3" + "(eventDate, eventText, eventImage, eventname, eventTypeName )";
             command = prefix + sb.ToString();
 
@@ -458,7 +456,7 @@ namespace BetterTogetherProj.Models.DAL
                 throw (ex);
             }
 
-            String cStr = BuildInsertCommand(evtype);      // helper method to build the insert string
+            String cStr = BuildInsertCommandevtype(evtype);      // helper method to build the insert string
 
             cmd = CreateCommand1(cStr, con);             // create the command
 
@@ -487,20 +485,20 @@ namespace BetterTogetherProj.Models.DAL
         //--------------------------------------------------------------------
         // Build the Insert command String
         //--------------------------------------------------------------------
-        private String BuildInsertCommand(EventType evtype)
+        private String BuildInsertCommandevtype(EventType evtype)
         {
             String command;
 
             StringBuilder sb = new StringBuilder();
             // use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}')", evtype.EventTypeName);
+            sb.AppendFormat("Values('{0}')", evtype.Eventtype);
             String prefix = "INSERT INTO eventType_P3" + "(eventTypeName)";
             command = prefix + sb.ToString();
 
             return command;
         }
 
-        public int InsertEventname(EventName evname)
+        public int InsertEventname(EventType evname)
         {
 
             SqlConnection con;
@@ -516,7 +514,7 @@ namespace BetterTogetherProj.Models.DAL
                 throw (ex);
             }
 
-            String cStr = BuildInsertCommand(evname);      // helper method to build the insert string
+            String cStr = BuildInsertCommandevname(evname);      // helper method to build the insert string
 
             cmd = CreateCommand1(cStr, con);             // create the command
 
@@ -545,16 +543,15 @@ namespace BetterTogetherProj.Models.DAL
         //--------------------------------------------------------------------
         // Build the Insert command String
         //--------------------------------------------------------------------
-        private String BuildInsertCommand(EventName evname)
+        private String BuildInsertCommandevname(EventType evname)
         {
             String command;
 
             StringBuilder sb = new StringBuilder();
             // use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}', '{1}')", evname.Eventname, evname.Eventtype.EventTypeName);
-            String prefix = "INSERT INTO eventName_P3" + "(eventname, eventTypeName )";
+            sb.AppendFormat("Values('{0}', '{1}')", evname.Eventtype, evname.EventName[evname.EventName.Count-1]);
+            String prefix = "INSERT INTO eventName_P3" + "(eventTypeName,eventname )";
             command = prefix + sb.ToString();
-
             return command;
         }
 
@@ -675,90 +672,90 @@ namespace BetterTogetherProj.Models.DAL
             return command;
         }
 
-        public List<StudentFeedToAds> GetFBAds(string subnameFB)
-        {
-            SqlConnection con = null;
-            List<StudentFeedToAds> FBList = new List<StudentFeedToAds>();
-            try
-            {
-                con = connect1("DBConnectionString");
-                String selectSTR = "select * from feedbackstudenttoads_P3 inner join ads_P3 on ads_P3.adCode=feedbackstudenttoads_P3.adCode inner join student_P on student_P.mail=feedbackstudenttoads_P3.studentmail where subName='" + subnameFB + "'";
-                SqlCommand cmd = new SqlCommand(selectSTR, con);
-                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-                while (dr.Read())
-                {   // Read till the end of the data into a row
-                    StudentFeedToAds FB = new StudentFeedToAds();
-                    FB.Student = (new Student { Fname = (string)dr["firstName"] });
-                    FB.Student.Mail = (string)dr["mail"];
-                    FB.Ads = new Ads();
-                    FB.Ads.SubSubject = (string)dr["subSubName"];
-                    FB.Ads.AdsCode = Convert.ToInt16(dr["adCode"]);
-                    FB.CommentText = (string)dr["commenttext"];
-                    FB.CommentDate = Convert.ToDateTime(dr["commentdate"]);
-                    FB.Managercomment = (string)dr["managercomment"];
-                    FBList.Add(FB);
-                }
+        //public List<StudentFeedToAds> GetFBAds(string subnameFB)
+        //{
+        //    SqlConnection con = null;
+        //    List<StudentFeedToAds> FBList = new List<StudentFeedToAds>();
+        //    try
+        //    {
+        //        con = connect1("DBConnectionString");
+        //        String selectSTR = "select * from feedbackstudenttoads_P3 inner join ads_P3 on ads_P3.adCode=feedbackstudenttoads_P3.adCode inner join student_P on student_P.mail=feedbackstudenttoads_P3.studentmail where subName='" + subnameFB + "'";
+        //        SqlCommand cmd = new SqlCommand(selectSTR, con);
+        //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+        //        while (dr.Read())
+        //        {   // Read till the end of the data into a row
+        //            StudentFeedToAds FB = new StudentFeedToAds();
+        //            FB.Student = (new Student { Fname = (string)dr["firstName"] });
+        //            FB.Student.Mail = (string)dr["mail"];
+        //            FB.Ads = new Ads();
+        //            FB.Ads.SubSubject = (string)dr["subSubName"];
+        //            FB.Ads.AdsCode = Convert.ToInt16(dr["adCode"]);
+        //            FB.CommentText = (string)dr["commenttext"];
+        //            FB.CommentDate = Convert.ToDateTime(dr["commentdate"]);
+        //            FB.Managercomment = (string)dr["managercomment"];
+        //            FBList.Add(FB);
+        //        }
 
-                return FBList;
-            }
-            catch (Exception ex)
-            {
-                // write to log
-                throw (ex);
-            }
-            finally
-            {
-                if (con != null)
-                {
-                    con.Close();
-                }
+        //        return FBList;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // write to log
+        //        throw (ex);
+        //    }
+        //    finally
+        //    {
+        //        if (con != null)
+        //        {
+        //            con.Close();
+        //        }
 
-            }
+        //    }
 
-        }
+        //}
 
-        public List<StudentFeedToEvents> GetFBEvents(string evtypeFB)
-        {
-            SqlConnection con = null;
-            List<StudentFeedToEvents> FBList = new List<StudentFeedToEvents>();
-            try
-            {
-                con = connect1("DBConnectionString");
-                String selectSTR = "select * from feedbackstudenttoevents_P3 inner join events_P3 on events_P3.eventCode=feedbackstudenttoevents_P3.eventCode inner join student_P on student_P.mail=feedbackstudenttoevents_P3.studentmail where eventTypeName='" + evtypeFB + "'";
-                SqlCommand cmd = new SqlCommand(selectSTR, con);
-                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-                while (dr.Read())
-                {   // Read till the end of the data into a row
-                    StudentFeedToEvents FB = new StudentFeedToEvents();
-                    FB.Student = (new Student { Fname = (string)dr["firstName"] });
-                    FB.Student.Mail = (string)dr["mail"];
-                    FB.Events = new Events();
-                    FB.Events.Eventname = (new EventName { Eventname = (string)dr["eventname"] });
-                    FB.Events.EventCode = Convert.ToInt16(dr["eventCode"]);
-                    FB.CommentText = (string)dr["commenttext"];
-                    FB.CommentDate = Convert.ToDateTime(dr["commentdate"]);
-                    FB.Managercomment = (string)dr["managercomment"];
+        //public List<StudentFeedToEvents> GetFBEvents(string evtypeFB)
+        //{
+        //    SqlConnection con = null;
+        //    List<StudentFeedToEvents> FBList = new List<StudentFeedToEvents>();
+        //    try
+        //    {
+        //        con = connect1("DBConnectionString");
+        //        String selectSTR = "select * from feedbackstudenttoevents_P3 inner join events_P3 on events_P3.eventCode=feedbackstudenttoevents_P3.eventCode inner join student_P on student_P.mail=feedbackstudenttoevents_P3.studentmail where eventTypeName='" + evtypeFB + "'";
+        //        SqlCommand cmd = new SqlCommand(selectSTR, con);
+        //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+        //        while (dr.Read())
+        //        {   // Read till the end of the data into a row
+        //            StudentFeedToEvents FB = new StudentFeedToEvents();
+        //            FB.Student = (new Student { Fname = (string)dr["firstName"] });
+        //            FB.Student.Mail = (string)dr["mail"];
+        //            FB.Events = new Events();
+        //            FB.Events.Eventname = (new EventName { Eventname = (string)dr["eventname"] });
+        //            FB.Events.EventCode = Convert.ToInt16(dr["eventCode"]);
+        //            FB.CommentText = (string)dr["commenttext"];
+        //            FB.CommentDate = Convert.ToDateTime(dr["commentdate"]);
+        //            FB.Managercomment = (string)dr["managercomment"];
 
-                    FBList.Add(FB);
-                }
+        //            FBList.Add(FB);
+        //        }
 
-                return FBList;
-            }
-            catch (Exception ex)
-            {
-                // write to log
-                throw (ex);
-            }
-            finally
-            {
-                if (con != null)
-                {
-                    con.Close();
-                }
+        //        return FBList;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // write to log
+        //        throw (ex);
+        //    }
+        //    finally
+        //    {
+        //        if (con != null)
+        //        {
+        //            con.Close();
+        //        }
 
-            }
+        //    }
 
-        }
+        //}
 
 
         //public int Insertquestion(Question q)
@@ -819,153 +816,153 @@ namespace BetterTogetherProj.Models.DAL
         //}
 
 
-        public int Insertcomment(StudentFeedToAds mngcom)
-        {
+        //public int Insertcomment(StudentFeedToAds mngcom)
+        //{
 
-            SqlConnection con;
-            SqlCommand cmd;
+        //    SqlConnection con;
+        //    SqlCommand cmd;
 
-            try
-            {
-                con = connect1("DBConnectionString"); // create the connection
-            }
-            catch (Exception ex)
-            {
-                // write to log
-                throw (ex);
-            }
+        //    try
+        //    {
+        //        con = connect1("DBConnectionString"); // create the connection
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // write to log
+        //        throw (ex);
+        //    }
 
-            String cStr = BuildInsertCommand(mngcom);      // helper method to build the insert string
+        //    String cStr = BuildInsertCommand(mngcom);      // helper method to build the insert string
 
-            cmd = CreateCommand1(cStr, con);             // create the command
+        //    cmd = CreateCommand1(cStr, con);             // create the command
 
-            try
-            {
-                int numEffected = cmd.ExecuteNonQuery(); // execute the command
-                return numEffected;
-            }
-            catch (Exception ex)
-            {
-                // write to log
-                throw (ex);
-            }
+        //    try
+        //    {
+        //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
+        //        return numEffected;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // write to log
+        //        throw (ex);
+        //    }
 
-            finally
-            {
-                if (con != null)
-                {
-                    // close the db connection
-                    con.Close();
-                }
-            }
+        //    finally
+        //    {
+        //        if (con != null)
+        //        {
+        //            // close the db connection
+        //            con.Close();
+        //        }
+        //    }
 
-        }
+        //}
 
-        //--------------------------------------------------------------------
-        // Build the Insert command String
-        //--------------------------------------------------------------------
-        private String BuildInsertCommand(StudentFeedToAds mngcom)
-        {
-            String command;
+        ////--------------------------------------------------------------------
+        //// Build the Insert command String
+        ////--------------------------------------------------------------------
+        //private String BuildInsertCommand(StudentFeedToAds mngcom)
+        //{
+        //    String command;
 
-            command = "update feedbackstudenttoads_P3 set managercomment ='" + mngcom.Managercomment + "' where feedbackstudenttoads_P3.studentmail ='" + mngcom.Student.Mail + "' and feedbackstudenttoads_P3.adCode =" + mngcom.Ads.AdsCode;
+        //    command = "update feedbackstudenttoads_P3 set managercomment ='" + mngcom.Managercomment + "' where feedbackstudenttoads_P3.studentmail ='" + mngcom.Student.Mail + "' and feedbackstudenttoads_P3.adCode =" + mngcom.Ads.AdsCode;
 
-            return command;
-        }
+        //    return command;
+        //}
 
-        public int Insertcomment(StudentFeedToEvents mngcom)
-        {
+        //public int Insertcomment(StudentFeedToEvents mngcom)
+        //{
 
-            SqlConnection con;
-            SqlCommand cmd;
+        //    SqlConnection con;
+        //    SqlCommand cmd;
 
-            try
-            {
-                con = connect1("DBConnectionString"); // create the connection
-            }
-            catch (Exception ex)
-            {
-                // write to log
-                throw (ex);
-            }
+        //    try
+        //    {
+        //        con = connect1("DBConnectionString"); // create the connection
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // write to log
+        //        throw (ex);
+        //    }
 
-            String cStr = BuildInsertCommand(mngcom);      // helper method to build the insert string
+        //    String cStr = BuildInsertCommand(mngcom);      // helper method to build the insert string
 
-            cmd = CreateCommand1(cStr, con);             // create the command
+        //    cmd = CreateCommand1(cStr, con);             // create the command
 
-            try
-            {
-                int numEffected = cmd.ExecuteNonQuery(); // execute the command
-                return numEffected;
-            }
-            catch (Exception ex)
-            {
-                // write to log
-                throw (ex);
-            }
+        //    try
+        //    {
+        //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
+        //        return numEffected;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // write to log
+        //        throw (ex);
+        //    }
 
-            finally
-            {
-                if (con != null)
-                {
-                    // close the db connection
-                    con.Close();
-                }
-            }
+        //    finally
+        //    {
+        //        if (con != null)
+        //        {
+        //            // close the db connection
+        //            con.Close();
+        //        }
+        //    }
 
-        }
+        //}
 
-        //--------------------------------------------------------------------
-        // Build the Insert command String
-        //--------------------------------------------------------------------
-        private String BuildInsertCommand(StudentFeedToEvents mngcom)
-        {
-            String command;
+        ////--------------------------------------------------------------------
+        //// Build the Insert command String
+        ////--------------------------------------------------------------------
+        //private String BuildInsertCommand(StudentFeedToEvents mngcom)
+        //{
+        //    String command;
 
-            command = "update feedbackstudenttoevents_P3 set managercomment ='" + mngcom.Managercomment + "' where feedbackstudenttoevents_P3.studentmail ='" + mngcom.Student.Mail + "' and feedbackstudenttoevents_P3.eventCode =" + mngcom.Events.EventCode;
+        //    command = "update feedbackstudenttoevents_P3 set managercomment ='" + mngcom.Managercomment + "' where feedbackstudenttoevents_P3.studentmail ='" + mngcom.Student.Mail + "' and feedbackstudenttoevents_P3.eventCode =" + mngcom.Events.EventCode;
 
-            return command;
-        }
+        //    return command;
+        //}
 
-        public List<Events> Geteventdetail()
-        {
-            SqlConnection con = null;
-            List<Events> evdetailList = new List<Events>();
-            try
-            {
-                con = connect1("DBConnectionString");
-                String selectSTR = "select * from events_P3";
-                SqlCommand cmd = new SqlCommand(selectSTR, con);
-                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-                while (dr.Read())
-                {   // Read till the end of the data into a row
-                    Events evdetail = new Events();
-                    evdetail.EventCode = Convert.ToInt16(dr["eventCode"]);
-                    evdetail.Eventtype = (new EventType { EventTypeName = (string)dr["eventTypeName"] });
-                    evdetail.Eventname = (new EventName { Eventname = (string)dr["eventname"] });
-                    evdetail.EventDate = Convert.ToDateTime(dr["eventDate"]);
-                    evdetail.ParticipantQu = Convert.ToInt32(dr["participantQu"]);
-                    evdetail.NotparticipantQu = Convert.ToInt32(dr["notparticipantQu"]);
+        //public List<Events> Geteventdetail()
+        //{
+        //    SqlConnection con = null;
+        //    List<Events> evdetailList = new List<Events>();
+        //    try
+        //    {
+        //        con = connect1("DBConnectionString");
+        //        String selectSTR = "select * from events_P3";
+        //        SqlCommand cmd = new SqlCommand(selectSTR, con);
+        //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+        //        while (dr.Read())
+        //        {   // Read till the end of the data into a row
+        //            Events evdetail = new Events();
+        //            evdetail.EventCode = Convert.ToInt16(dr["eventCode"]);
+        //            evdetail.Eventtype = (new EventType { EventTypeName = (string)dr["eventTypeName"] });
+        //            evdetail.Eventname = (new EventName { Eventname = (string)dr["eventname"] });
+        //            evdetail.EventDate = Convert.ToDateTime(dr["eventDate"]);
+        //            evdetail.ParticipantQu = Convert.ToInt32(dr["participantQu"]);
+        //            evdetail.NotparticipantQu = Convert.ToInt32(dr["notparticipantQu"]);
 
-                    evdetailList.Add(evdetail);
-                }
+        //            evdetailList.Add(evdetail);
+        //        }
 
-                return evdetailList;
-            }
-            catch (Exception ex)
-            {
-                // write to log
-                throw (ex);
-            }
-            finally
-            {
-                if (con != null)
-                {
-                    con.Close();
-                }
+        //        return evdetailList;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // write to log
+        //        throw (ex);
+        //    }
+        //    finally
+        //    {
+        //        if (con != null)
+        //        {
+        //            con.Close();
+        //        }
 
-            }
+        //    }
 
-        }
+        //}
     }
 }

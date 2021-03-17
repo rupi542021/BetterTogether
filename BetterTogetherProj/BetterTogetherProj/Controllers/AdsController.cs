@@ -116,31 +116,31 @@ namespace BetterTogetherProj.Controllers
 
         }
 
-        [HttpGet]
-        [Route("api/Ads/getFB")]
-        public List<StudentFeedToAds> GetFBAds(string subnameFB)
-        {
-            StudentFeedToAds FB = new StudentFeedToAds();
-            return FB.GetFBAds(subnameFB);
+        //[HttpGet]
+        //[Route("api/Ads/getFB")]
+        //public List<StudentFeedToAds> GetFBAds(string subnameFB)
+        //{
+        //    StudentFeedToAds FB = new StudentFeedToAds();
+        //    return FB.GetFBAds(subnameFB);
 
-        }
+        //}
 
-        [HttpPut]
-        [Route("api/Ads/addcomment")]
-        public HttpResponseMessage Insertcomment([FromBody] StudentFeedToAds addmngcom)
-        {
-            try
-            {
-                addmngcom.Insertcomment();
+        //[HttpPut]
+        //[Route("api/Ads/addcomment")]
+        //public HttpResponseMessage Insertcomment([FromBody] StudentFeedToAds addmngcom)
+        //{
+        //    try
+        //    {
+        //        addmngcom.Insertcomment();
 
-                return Request.CreateResponse(HttpStatusCode.OK, "Comment added successfully");
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
+        //        return Request.CreateResponse(HttpStatusCode.OK, "Comment added successfully");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
+        //    }
 
 
-        }
+        //}
     }
 }

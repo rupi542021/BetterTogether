@@ -138,12 +138,9 @@
         function AddEvent() {
             // createa a JSON object called customer
             Event = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
-                Eventtype: {
-                    EventTypeName: $("#EventType :selected").text()
-                },
-                Eventname: {
-                    Eventname: $("#EventName :selected").text()
-                },
+                
+                Eventtype: $("#EventType :selected").text(),
+                Eventname: $("#EventName :selected").text(),
                 EventDate: $("#datedis").val(),
                 EventText: $("#content").val(),
                 EventImage: picName
@@ -178,7 +175,7 @@
             Allevtype = allevtype;
             str = "";
             for (var i = 0; i < Allevtype.length; i++) {
-                str += "<option value='" + i + "'>" + Allevtype[i].EventTypeName + "</option></br>";
+                str += "<option value='" + i + "'>" + Allevtype[i].Eventtype + "</option></br>";
 
             }
             document.getElementById("EventType").innerHTML += str;
@@ -198,7 +195,7 @@
             Allevname = allevname;
             let str = "";
             for (var i = 0; i < Allevname.length; i++) {
-                str += "<option value='" + i + "'>" + Allevname[i].Eventname + "</option></br>";
+                str += "<option value='" + i + "'>" + Allevname[i] + "</option></br>";
 
             }
 
@@ -221,7 +218,7 @@
         function Inserteventtypetolist() {
 
             let addeventtypee = {
-                EventTypeName: $("#addtypeeventtext").val()
+                Eventtype: $("#addtypeeventtext").val()
             }
             ajaxCall("POST", "../api/Events/addeventtype", JSON.stringify(addeventtypee), inserteventtypesuccess, error);
         }
@@ -251,12 +248,12 @@
             });
         }
         function Inserteventnametolist() {
+            Allevname.push($("#addnameventtext").val());
 
             let addeventnamee = {
-                Eventname: $("#addnameventtext").val(),
-                Eventtype: {
-                    EventTypeName: $("#EventType :selected").text()
-                }
+                Eventtype: $("#EventType :selected").text(),
+                EventName: Allevname
+                
             }
             ajaxCall("POST", "../api/Events/addeventname", JSON.stringify(addeventnamee), inserteventnamesuccess, erroreventname);
         }

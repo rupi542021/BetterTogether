@@ -232,13 +232,11 @@
     <Compile Include="Models\EventType.cs" />
     <Compile Include="Models\ExternalGroups.cs" />
     <Compile Include="Models\Hobby.cs" />
-    <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Pleasure.cs" />
     <Compile Include="Models\Question.cs" />
     <Compile Include="Models\Questionnaire.cs" />
     <Compile Include="Models\Residence.cs" />
     <Compile Include="Models\Student.cs" />
-    <Compile Include="Models\StudentCommentOnMessage.cs" />
     <Compile Include="Models\StudentFavorites.cs" />
     <Compile Include="Models\StudentFeedToAds.cs" />
     <Compile Include="Models\StudentFeedToEvents.cs" />
@@ -334,10 +332,7 @@
     <Content Include="obj\Debug\BetterTogetherProj.dll" />
     <Content Include="obj\Debug\BetterTogetherProj.pdb" />
     <Content Include="Pages\Ads.html" />
-    <Content Include="Pages\AdsFeedBack.html" />
     <Content Include="Pages\Events.html" />
-    <Content Include="Pages\EventsFeedBack.html" />
-    <Content Include="Pages\EventTB.html" />
     <Content Include="Pages\KERENMACABI_web_hands_white.jpg" />
     <Content Include="Pages\tableQ.html" />
     <Content Include="Scripts\ajaxCalls.js" />
