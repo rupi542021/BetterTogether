@@ -1,15 +1,15 @@
 ﻿using BetterTogetherProj.Models;
-using project_classes.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace BetterTogetherProj.Controllers
 {
-    public class AdsController : ApiController
+    public class EventsController : ApiController
     {
         // GET api/<controller>
         public IEnumerable<string> Get()
@@ -24,12 +24,12 @@ namespace BetterTogetherProj.Controllers
         }
 
         // POST api/<controller>
-        public void Post([FromBody]string value)
+        public void Post([FromBody] string value)
         {
         }
 
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody] string value)
         {
         }
 
@@ -37,40 +37,33 @@ namespace BetterTogetherProj.Controllers
         public void Delete(int id)
         {
         }
-        //[HttpGet]
-        //[Route("api/Ads/ad")]
-        //public List<Ads> Getads()
-        //{
-        //    Ads ad = new Ads();
-        //    return ad.Getads();
 
-        //}
+
         [HttpGet]
-        [Route("api/Ads/getsub")]
-        public List<Subject> Getsub()
+        [Route("api/Events/getevent")]
+        public List<EventType> Getevent()
         {
-            Subject sub = new Subject();
-            return sub.Getsub();
+            EventType evtype = new EventType();
+            return evtype.Getevtype();
 
         }
 
         [HttpGet]
-        [Route("api/Ads/getsamename")]
-        public List<string> Getsamename(string subname)
+        [Route("api/Events/getsametype")]
+        public List<EventName> Getsametype(string evtypename)
         {
-
-            Subject sub = new Subject();
-            return sub.Getsamename(subname);
+            EventName evname = new EventName();
+            return evname.Getsametype(evtypename);
 
         }
 
         [HttpPost]
-        [Route("api/Ads/addad")]
-        public HttpResponseMessage InsertToTable([FromBody] Ads ad)
+        [Route("api/Events/addevent")]
+        public HttpResponseMessage InsertEvent([FromBody] Events ev)
         {
             try
             {
-                ad.InsertToTable();
+                ev.InsertEvent();
 
                 return Request.CreateResponse(HttpStatusCode.OK, "Added successfully");
             }
@@ -81,30 +74,30 @@ namespace BetterTogetherProj.Controllers
         }
 
         [HttpPost]
-        [Route("api/Ads/addsub")]
-        public HttpResponseMessage InsertSubject([FromBody] Subject sub)
+        [Route("api/Events/addeventtype")]
+        public HttpResponseMessage InsertEventtype([FromBody] EventType evtype)
         {
             try
             {
-                sub.InsertSubject();
+                 evtype.InsertEventtype();
 
-                return Request.CreateResponse(HttpStatusCode.OK, "Added successfully");
+                 return  Request.CreateResponse(HttpStatusCode.OK, "Added successfully");
             }
             catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
+                 return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
-
+            
         }
 
         [HttpPost]
-        [Route("api/Ads/addsubsub")]
-        public HttpResponseMessage InsertSubsub([FromBody] Subject subsub)
+        [Route("api/Events/addeventname")]
+        public HttpResponseMessage InsertEventname([FromBody] EventName evname)
         {
             try
             {
-                subsub.InsertSubsub();
+                evname.InsertEventname();
 
                 return Request.CreateResponse(HttpStatusCode.OK, "Added successfully");
             }
@@ -117,17 +110,17 @@ namespace BetterTogetherProj.Controllers
         }
 
         [HttpGet]
-        [Route("api/Ads/getFB")]
-        public List<StudentFeedToAds> GetFBAds(string subnameFB)
+        [Route("api/Events/getFB")]
+        public List<StudentFeedToEvents> GetFBEvents(string evtypeFB)
         {
-            StudentFeedToAds FB = new StudentFeedToAds();
-            return FB.GetFBAds(subnameFB);
+            StudentFeedToEvents FB = new StudentFeedToEvents();
+            return FB.GetFBEvents(evtypeFB);
 
         }
 
         [HttpPut]
-        [Route("api/Ads/addcomment")]
-        public HttpResponseMessage Insertcomment([FromBody] StudentFeedToAds addmngcom)
+        [Route("api/Events/addcomment")]
+        public HttpResponseMessage Insertcomment([FromBody] StudentFeedToEvents addmngcom)
         {
             try
             {
@@ -140,6 +133,15 @@ namespace BetterTogetherProj.Controllers
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
+
+        }
+
+        [HttpGet]
+        [Route("api/Events/geteventdetail")]
+        public List<Events> Geteventdetail()
+        {
+            Events evdetail = new Events();
+            return evdetail.Geteventdetail();
 
         }
     }

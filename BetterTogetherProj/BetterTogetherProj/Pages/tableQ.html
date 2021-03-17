@@ -32,16 +32,18 @@
                 qrId = null;
                 $("#editDiv").hide();
                 $("#EditViewDiv").hide();
+                $("#Addquestion").hide();
 
                 $("#pForm").show();
                 mode = "";
-                Console.log("gal")
             });
             $("#cancelSaveBTN1").on("click", function () {//מבטל אופציית עריכה
                 console.log("gal")
                 qrId = null;
                 $("#editDiv").hide();
                 $("#EditViewDiv").hide();
+                $("#Addquestion").hide();
+
 
                 mode = "";
             });
@@ -54,6 +56,8 @@
                 $("#pForm").hide();
                 $("#editDiv").show();
                 $("#EditViewDiv").hide();
+                $("#Addquestion").show();
+
 
                 clearFields();
               //  $("#Viewing_number").val(0);
@@ -64,31 +68,56 @@
             /*ajaxCall("GET", "../api/businesses", "", GetsuccessAllRes, error);*/// לא מבצע עדכון ל Allres
 
             // once the document is ready we fetch a list of cars from the server
+            ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
 
-            ajaxCall("GET", "../api/Questionnaire/qr", "", getSuccess, error);
+            
+            let api = "../api/Questionnaire/qr"
+            ajaxCall("GET", api, "", getSuccess, error);
 
+            $("#ManagerForm2").submit(onSubmitFunc);
             $("#ManagerForm1").submit(onSubmitFunc);
             $("#ManagerForm").submit(onSubmitFunc);// wire the submit event to a function called f1
 
             $("#editDiv").hide();
 
             $("#EditViewDiv").hide();
+            $("#Addquestion").hide();
 
 
             buttonEvents();
+           
+            $("#publishList").change(getyearbydep)
+
         });
 
-        //function GetsuccessAllRes(allres) {
-          //  console.log(allres);
-          //  Allres = allres;
-            //str = "";
-           // for (var i = 0; i < Allres.length; i++) {
-              //  str += "<option value='" + Allres[i].Idd1 + "'>" + Allres[i].Idd1 + "-" + Allres[i].Namee1 + "</option></br>"
+        function getSuccessalldep(alldep) {
+            console.log(alldep);
+            Alldep = alldep;
+            let str = "";
+            for (var i = 0; i < Alldep.length; i++) {
+                str += "<option value='" + Alldep[i].DepartmentCode + "'>" + Alldep[i].DepartmentName + "</option></br>"
 
-           // }
-           // document.getElementById("Restaurant_Id").innerHTML += str;
+            }
+            document.getElementById("publishList").innerHTML += str;
+            
+        }
+        function getyearbydep() {
 
-      //  }
+            let depp = $("#publishList").val()
+            let stryear = "";
+            var years = ["",'א', 'ב', 'ג', 'ד',];           
+                for (var j = 1; j < years.length; j++) {
+                    if (depp == 1 || depp == 2 || depp == 3 || depp == 6 ||depp == 10)
+                        stryear += "<option value="+ j +">" + years[j] + "</option>";
+                    else
+                    for (var j = 1; j < years.length - 1; j++) {
+                        stryear += "<option value="+ j +">" + years[j] + "</option>";
+                    }         
+            }
+            document.getElementById("yearList").innerHTML = stryear;
+
+            }
+        
 
         // wire all the buttons to their functions
         function buttonEvents() {
@@ -98,6 +127,7 @@
                 markSelected(this);
                 $("#EditViewDiv").show();
                 $("#editDiv").hide();
+                $("#Addquestion").hide();
 
                 $("#Restaurant_Id1").prop("disabled", true);
                 $("#Balance1").prop("disabled", true);
@@ -119,6 +149,7 @@
                 markSelected(this);
                 $("#editDiv").hide();
                 $("#EditViewDiv").show();
+                $("#Addquestion").hide();
 
 
                 /* $("#EditViewDiv :input").attr("disabled", "disabled");*/ // view mode: disable all controls in the form
@@ -171,20 +202,40 @@
                 QuestionnairePublish = $("#publishDate").val();
                 EndPublishDate = $("#EndpublishDate").val();
                 SubQr = $("#subQr").val();
-               // DepList = 0;
+                Depchosen = $("#publishList").val();
                 NumResponders = 0;
-                
-                //Status = $("#Status").is(":checked")
-                //Budget= $("#Campain_Budget").val();
+                QuestionnaireYear = $("#yearList").val();
                 QrtoSave = {
                     
                     QuestionnairePublish:QuestionnairePublish,
                     EndPublishDate: EndPublishDate,
                     SubQr: SubQr,
-                  //  DepList:DepList,
-                    NumResponders:NumResponders,
-                    Status: $("#Status").is(":checked")
+                    Dep: {
+                        DepartmentCode: Depchosen
+                    },
+                    NumResponders: NumResponders,
+                    Status: $("#Status").is(":checked"),
+                    QuestionnaireYear: QuestionnaireYear
                 }
+
+                //Questionnum= $("#Questionnum").val();
+                //QuestionText = $("#QuestionText").val();
+                //QuestionType = $("#QuestionType :selected").text();
+                ////if (QuestionType == "שאלת עם תשובה אחת לבחירה") {
+                ////    let str = "";
+                ////    str += "<input type='radio'/>"
+                ////    $("#radioo").append(str);
+                ////}
+                //question = {
+                //    Questionnum: Questionnum,
+                //    QuestionText: QuestionText,
+                //    QuestionType: QuestionType,
+                //    qr: {
+                //        QuestionnaireNum: QuestionnaireNum
+                //    }
+                //}
+              
+                
 
             }
 
@@ -193,20 +244,24 @@
             if (mode == "edit")
 
                 ajaxCall("PUT", "../api/campain", JSON.stringify(camptoSave), updateSuccess, error);
-            else if (mode == "new")
+            else if (mode == "new") 
                 ajaxCall("POST", "../api/Questionnaire/postqr", JSON.stringify(QrtoSave), insertSuccess, error);
+                //ajaxCall("POST", "../api/Questionnaire/postquestion", JSON.stringify(question), insertQuestionSuccess, error);
+            
             return false;
         }
 
         // fill the form fields
         function populateFields(qrId) {
             qrId = getQ(qrId); //מחזיר את האובייקט שבשורה שלחצנו לפי ID
-            
+           
             $("#publishDate").val(qrId.QuestionnairePublish);
             $("#EndpublishDate").val(qrId.EndPublishDate);
             $("#subQr").val(qrId.SubQr);
             $("#numResponders").val(qrId.NumResponders);
+            $("#publishList").val(qrId.Dep.DepartmentCode);
             $("#Status").prop('checked', qrId.Status);
+            $("#yearList").val(qrId.QuestionnaireYear);
 
         }
 
@@ -217,7 +272,10 @@
             $("#EndpublishDate").val("");
             $("#subQr").val("");
             $("#numResponders").val("");  
+            $("#publishList").val(""); 
             $("#Status").prop('checked', false);
+            $("#yearList").val(""); 
+
         }
 
         // get a car according to its Id
@@ -255,7 +313,6 @@
 
         }
         function getSuccessinsert(questionnaireData) {
-            console.log("rain");
             questionnaires = questionnaireData;
             console.log(questionnaireData);
             $("#pForm").show();
@@ -269,7 +326,9 @@
             mode = "";
 
         }
-
+        //function insertQuestionSuccess(data) {
+        //    console.log(data);
+        //}
 
 
         // redraw a datatable with new data
@@ -283,9 +342,10 @@
 
         // this function is activated in case of a success
         function getSuccess(questionnaireData) {
-            
+                
             console.log(questionnaireData);
             questionnaires = questionnaireData; // keep the cars array in a global variable;
+           
             try {
                 tbl = $('#QTable').DataTable({
                     data: questionnaireData,
@@ -305,7 +365,29 @@
                         { data: "QuestionnairePublish" },
                         { data: "EndPublishDate" },
                         { data: "SubQr" },
-                        //{ data: "DepList" },
+                        { data: "Dep.DepartmentName" },
+                        {
+                            data: "QuestionnaireYear",
+                            render: function (data, type, row, meta) {
+                                switch (data) {
+                                    case 1:
+                                        return 'א';
+                                        break;
+                                    case 2:
+                                        return 'ב';
+                                        break;
+                                    case 3:
+                                        return 'ג';
+                                        break;
+                                    case 4:
+                                        return 'ד';
+                                        break;
+                                    default:
+
+                                }
+
+                            }
+                        },
                         { data: "NumResponders" },
                        
                         {
@@ -349,7 +431,8 @@
                         <th>תאריך הפצה</th>
                         <th>תאריך סיום הפצה</th>
                         <th>נושא השאלון</th>
-                        <!--<th>מחלקות</th>-->
+                        <th>מחלקות</th>
+                        <th>שנה</th>
                         <th>מספר משיבים</th>
                         <th>סטטוס</th>
 
@@ -368,7 +451,7 @@
                     <div class="form-group col-sm-4">
                         <label for="publishDate"><span class="red-star">★ </span>תאריך הפצה</label>
                         <input type="date" class="form-control" id="publishDate" placeholder="" required>
-                        
+
                     </div>
                     <div class="form-group col-sm-4">
                         <label for="EndpublishDate"><span class="red-star">★ </span>תאריך סיום הפצה </label>
@@ -381,10 +464,19 @@
                         <input type="text" class="form-control" id="subQr" placeholder="" required>
                     </div>
 
-                    <!--<div class="form-group col-sm-3">
+                    <div class="form-group col-sm-3">
                         <label for="publishList"><span class="red-star">★ </span>רשימת תפוצה</label>
-                        <input type="text" class="form-control" id="publishList" placeholder="" />
-                    </div>-->
+                        <select class="form-control" id="publishList" required>
+                            <option value="">בחרי מחלקה</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        <label for="yearList" id="yearListText"><span class="red-star">★ </span>שנת תפוצה</label>
+                        <select class="form-control" id="yearList" required>
+                            <option value="">בחרי שנה</option>
+                        </select>
+                    </div>
 
                     <div class="form-group col-sm-2">
                         <label for="numResponders"><span class="red-star">★ </span>מספר משיבים</label>
@@ -404,6 +496,39 @@
             </form>
         </div>
     </div>
+
+    <div id="Addquestion">
+        <form id="ManagerForm2">
+            <div class="form-group row">
+
+
+                <div class="form-group col-sm-4">
+                    <label for="Questionnum"><span class="red-star">★ </span>מספר שאלה</label>
+                    <input type="number" class="form-control" id="Questionnum" placeholder="" required>
+                </div>
+
+                <div class="form-group col-sm-4">
+                    <label for="QuestionText"><span class="red-star">★ </span>תוכן שאלה</label>
+                    <input type="text" class="form-control" id="QuestionText" placeholder="" required>
+                </div>
+
+
+                <div class="form-group col-sm-3">
+                    <label for="QuestionType"><span class="red-star">★ </span></label>
+                    <select class="form-control" id="QuestionType" required>
+                        <option value="">בחרי סוג שאלה</option>
+                        <option value="1">שאלת עם תשובה אחת לבחירה</option>
+                        <option value="2">שאלה עם מספר תשובות לבחירה</option>
+                        <option value="3">שאלה פתוחה</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">Save</button>
+                <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN" value="Cancel" />
+            </div>
+
+        </form>
+    </div>
+
     <div id="EditViewDiv">
         <form id="ManagerForm1">
             <div class="form-group row">
@@ -447,7 +572,7 @@
             <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN1" value="Cancel" />
         </form>
     </div>
-  
+
 
 </body>
 </html>

@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+
+    <meta charset="utf-8" />
+    <title></title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+
+    <script src="../Scripts/jquery-3.4.1.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+
+            ajaxCall("GET", "../api/Events/geteventdetail", "", getSuccessAlleventdetail, error);
+            $(document).on("click", ".view", addpiechart);
+            google.charts.load('current', { 'packages': ['corechart'] });
+
+
+          
+        });
+
+        function getSuccessAlleventdetail(eventdetail) {
+            console.log(eventdetail);
+            data = eventdetail;
+
+            try {
+                tbl = $('#detaileventtable').DataTable({
+                    data: eventdetail,
+                    pageLength: 5,
+                    columns: [
+
+                        { data: "Eventtype.EventTypeName" },
+                        { data: "Eventname.Eventname" },
+                        { data: "EventDate" },
+                        {
+                            render: function (data, type, row, meta) {
+                                ViewBtn = "<button class='view' id='" + row.EventCode + "'>צפי באישורי הגעה </button>";
+                                return ViewBtn;
+                            }
+                        }
+                    ],
+
+                });
+
+            }
+
+            catch (err) {
+                alert(err);
+            }
+        }
+
+        function addpiechart() {
+            alert("s");
+            google.charts.setOnLoadCallback(drawChart);
+        }
+      
+
+        function drawChart() {
+
+            var data = google.visualization.arrayToDataTable([
+                ['Task', 'Hours per Day'],
+                ['Work', 11],
+                ['Eat', 2],
+                ['Commute', 2],
+                ['Watch TV', 2],
+                ['Sleep', 7]
+            ]);
+
+            var options = {
+                title: 'My Daily Activities',
+                is3D: true,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+            chart.draw(data, options);
+        }
+
+
+
+        function error(err) {
+            console.log(err);
+        }
+
+
+    </script>
+</head>
+<body>
+    <form id="pForm">
+        <table id="detaileventtable" class="display nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th> סוג אירוע</th>
+                    <th>שם אירוע</th>
+                    <th>תאריך אירוע</th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+    </form>
+
+    <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
+</body>
+</html>

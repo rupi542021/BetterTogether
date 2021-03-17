@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+
+    <script src="../Scripts/jquery-3.4.1.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+
+    <style type="text/css">
+    </style>
+
+    <script>
+        $(document).ready(function () {
+
+            ajaxCall("GET", "../api/Events/getevent", "", getSuccessAlleventstype, error);
+            $("#EventType").change(getallfeed);
+            $("#FBtable").hide();
+            $(document).on("click", ".fa-plus-circle", addcomment);
+            $(document).on("click", ".swal-button.swal-button--confirm", insertcomment);
+        })
+
+        function getSuccessAlleventstype(allevtype) {
+            console.log(allevtype);
+            Allevtype = allevtype;
+            str = "";
+            for (var i = 0; i < Allevtype.length; i++) {
+                str += "<option value='" + i + "'>" + Allevtype[i].EventTypeName + "</option></br>";
+
+            }
+            document.getElementById("EventType").innerHTML += str;
+        }
+
+        function getallfeed() {
+            $("#FBtable").show();
+
+            let evtypeFB = $("#EventType :selected").text()
+            let api = "../api/Events/getFB?evtypeFB=" + evtypeFB;
+            ajaxCall("GET", api, "", getFBSuccess, error);
+
+        }
+
+        function getFBSuccess(FBEvents) {
+
+            console.log(FBEvents);
+            data = FBEvents; // keep the cars array in a global variable;
+            if ($.fn.dataTable.isDataTable('#FBtable')) {//destroy the old table on existence and then create new instance of jQuery DataTable
+                $('#FBtable').DataTable().clear().destroy();
+            }
+
+            try {
+                tbl = $('#FBtable').DataTable({
+                    data: FBEvents,
+                    pageLength: 5,
+                    columns: [
+
+                        { data: "Events.Eventname.Eventname" },
+                        { data: "Student.Fname" },
+                        { data: "CommentText" },
+                        { data: "CommentDate" },
+                        {
+                            render: function (data, type, row, meta) {
+
+                                plusBtn = "<i type='button'   class='fas fa-plus-circle' id='" + row.Student.Mail + "," + row.Events.EventCode + "'></i>";
+
+                                return plusBtn;
+                            }
+                        },
+                        { data: "Managercomment" }
+
+                    ],
+
+                });
+
+            }
+
+            catch (err) {
+                alert(err);
+            }
+        }
+
+        function addcomment() {
+            idcom = $(this).attr("id");
+            combo = idcom.split(",");
+            mail = combo[0];
+            eventcode = combo[1];
+
+            swal({
+                content: {
+                    element: "input",
+                    attributes: {
+                        placeholder: "הכניסי את תגובתך",
+                        type: "text",
+                    },
+                },
+            });
+
+
+        }
+
+        function insertcomment() {
+            let managercomment = $(".swal-content__input").val();
+            let Addcomment = {
+                Managercomment: managercomment,
+                Student: {
+                    Mail: mail
+                },
+                Events: {
+                    EventCode: eventcode
+                },
+            }
+
+            ajaxCall("PUT", "../api/Events/addcomment", JSON.stringify(Addcomment), insertmngcomsuccess, error);
+        }
+
+        function insertmngcomsuccess(data) {
+            console.log(data);
+            getallfeed();
+
+        }
+
+        function error(err) {
+            console.log(err);
+            alert(err);
+        }
+    </script>
+
+</head>
+<body>
+
+    <h1> פידבק סטודנטים לארועים חברתיים</h1>
+
+    <select id="EventType">
+        <option>
+            בחרי סוג אירוע לתצוגה
+        </option>
+    </select>
+
+    <form id="pForm">
+        <table id="FBtable" class="display nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th>שם אירוע</th>
+                    <th>שם הסטודנט</th>
+                    <th>תוכן תגובה</th>
+                    <th>תאריך תגובה</th>
+                    <th> </th>
+                    <th>תגובתך</th>
+                </tr>
+            </thead>
+        </table>
+    </form>
+
+
+
+</body>
+</html>

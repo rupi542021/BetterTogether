@@ -22,12 +22,12 @@
             background-attachment: fixed;
         }
 
-        #SubjName, #SubsubjName, #datedis {
+        #EventType, #EventName, #datedis {
             width: 200px;
             background-color: pink;
         }
 
-        #datedisText, #SubjNameText, #SubsubjNameText, #SubjName, #datedis, #SubsubjName, h2 {
+        #datedisText, #EventTypeText, #EventNameText, #EventType, #EventName, #datedis, h2 {
             margin-left: 50%;
             margin-bottom: 20px;
         }
@@ -59,40 +59,37 @@
             margin-left: 900px;
             margin-top: -300px
         }
-        div#addS {
+
+        div#addET {
             margin-left: 810px;
             margin-top: -790px;
         }
 
-        div#addSS {
+        div#addEN {
             margin-left: 810px;
             margin-top: 70px;
         }
-
-        .fa-plus-circle:before {
-            font-size: 25px
-        }
-
-        input#addsubjecttext, input#addsubsubtext {
+        .fa-plus-circle:before{font-size:25px}
+        input#addtypeeventtext, input#addnameventtext {
             margin-left: 20px;
             margin-top: 5px;
         }
+       
     </style>
     <script>
         $(document).ready(function () {
 
-            ajaxCall("GET", "../api/Ads/getsub", "", getSuccessAllsubs, error);
-            $("#SubjName").change(getsubsub);
+            ajaxCall("GET", "../api/Events/getevent", "", getSuccessAlleventstype, error);
+            $("#EventType").change(getevname);
+            
 
-            $("#addsubject").click(AddSubject);
-            $("#addsubjecttext").hide();
-            $('#buttonaddsubject').hide();
+            $("#addeventtype").click(AddEventType);
+            $("#addtypeeventtext").hide();
+            $('#buttoneventtype').hide();
 
-            $("#AddSubsub").click(AddSubsub);
-            $("#addsubsubtext").hide();
-            $('#buttonaddsubsub').hide();
-
-
+            $("#addeventname").click(AddEventName);
+            $("#addnameventtext").hide();
+            $('#buttoneventname').hide();
 
             $("#pForm").submit(f1); // bind the submit event to a function called f1
             picName = "";
@@ -138,27 +135,28 @@
         }
 
 
-
-        function AddAd() {
+        function AddEvent() {
             // createa a JSON object called customer
-            Ad = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
-                
-                Subject: $("#SubjName :selected").text(),   
-                SubSubject: $("#SubsubjName :selected").text(),
-                
-                AdsDate: $("#datedis").val(),
-                AdsText: $("#content").val(),
-                AdsImage: picName
+            Event = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
+                Eventtype: {
+                    EventTypeName: $("#EventType :selected").text()
+                },
+                Eventname: {
+                    Eventname: $("#EventName :selected").text()
+                },
+                EventDate: $("#datedis").val(),
+                EventText: $("#content").val(),
+                EventImage: picName
             }
-            ajaxCall("POST", "../api/Ads/addad", JSON.stringify(Ad), success, errorr);
+            ajaxCall("POST", "../api/Events/addevent", JSON.stringify(Event), inserteventsuccess, errorr);
 
 
         }
 
         // This function is called in case of a success
-        function success(data) {
+        function inserteventsuccess(data) {
             console.log(data);
-            swal({ title: "!הפרסום נוסף בהצלחה", icon: "success" })
+            swal({ title: "!האירוע נוסף בהצלחה", icon: "success" })
         }
 
         // This function is called in case of an error
@@ -169,150 +167,159 @@
         }
 
         function f1() {
-            AddAd();
+            AddEvent();
 
             return false; // the return false will prevent the form from being submitted
             // hence the page will not reload
         }
 
-        function getSuccessAllsubs(allsubs) {
-            console.log(allsubs);
-            Allsubs = allsubs;
+        function getSuccessAlleventstype(allevtype) {
+            console.log(allevtype);
+            Allevtype = allevtype;
             str = "";
-            for (var i = 0; i < Allsubs.length; i++) {
-                str += "<option value='" + i + "'>" + Allsubs[i].SubName + "</option></br>";
+            for (var i = 0; i < Allevtype.length; i++) {
+                str += "<option value='" + i + "'>" + Allevtype[i].EventTypeName + "</option></br>";
 
             }
-            document.getElementById("SubjName").innerHTML += str;
-
-
+            document.getElementById("EventType").innerHTML += str;
         }
 
-        function getsubsub() {
 
-            subname = $("#SubjName :selected").text()
-            let api = "../api/Ads/getsamename?subname=" + subname;
-            ajaxCall("GET", api, "", getSuccessSubsubs, error);
+        function getevname() {
+       
+            evtypename = $("#EventType :selected").text();
+            let api = "../api/Events/getsametype?evtypename=" + evtypename;
+            ajaxCall("GET", api, "", getSuccessevname, error);
         }
 
-        function getSuccessSubsubs(allsubsub) {
+        function getSuccessevname(allevname) {
 
-            console.log(allsubsub);
-            Allsubsub = allsubsub;
+            console.log(allevname);
+            Allevname = allevname;
             let str = "";
-            for (var i = 0; i < Allsubsub.length; i++) {
-                str += "<option value='" + i + "'>" + Allsubsub[i] + "</option></br>";
+            for (var i = 0; i < Allevname.length; i++) {
+                str += "<option value='" + i + "'>" + Allevname[i].Eventname + "</option></br>";
 
             }
 
-            document.getElementById("SubsubjName").innerHTML = str;
+            document.getElementById("EventName").innerHTML = str;
 
         }
 
-        function AddSubject() {
-            $("#addsubjecttext").show();
+        function AddEventType() {
+            $("#addtypeeventtext").show();
             $('input').keyup(function () {
                 if ($.trim(this.value).length > 0) {
-                    $('#buttonaddsubject').show();
+                    $('#buttoneventtype').show();
                 }
                 else
-                    $('#buttonaddsubject').hide()
+                    $('#buttoneventtype').hide()
             });
 
         }
 
-        function Insertsubtolist() {
+        function Inserteventtypetolist() {
 
-            let addsubject = {
-                SubName: $("#addsubjecttext").val()
+            let addeventtypee = {
+                EventTypeName: $("#addtypeeventtext").val()
             }
-            ajaxCall("POST", "../api/Ads/addsub", JSON.stringify(addsubject), insertsubsuccess, error);
+            ajaxCall("POST", "../api/Events/addeventtype", JSON.stringify(addeventtypee), inserteventtypesuccess, error);
         }
 
-        function insertsubsuccess(data) {
+        function inserteventtypesuccess(data) {
             console.log(data);
-            ajaxCall("GET", "../api/Ads/getsub", "", getSuccessAllnewsub, error);
+            ajaxCall("GET", "../api/Events/getevent", "", getSuccessAllneweventstypee, error);
         }
 
-        function getSuccessAllnewsub(allsub) {
-            console.log(allsub);
-            $("#SubjName").empty();
-            getSuccessAllsubs(allsub);
+        function getSuccessAllneweventstypee(allevtype) {
+            console.log(allevtype);
+            $("#EventType").empty();
+            getSuccessAlleventstype(allevtype);
             swal({ title: "!סוג האירוע נוסף בהצלחה", icon: "success" });
 
         }
 
 
-        function AddSubsub() {
-            $("#addsubsubtext").show();
+        function AddEventName() {
+            $("#addnameventtext").show();
             $('input').keyup(function () {
                 if ($.trim(this.value).length > 0) {
-                    $('#buttonaddsubsub').show();
+                    $('#buttoneventname').show();
                 }
                 else
-                    $('#buttonaddsubsub').hide()
+                    $('#buttoneventname').hide()
             });
         }
-        function Insertsubsubtolist() {
+        function Inserteventnametolist() {
 
-            Allsubsub.push($("#addsubsubtext").val());
-
-            let addsubsub = {
-                SubName: $("#SubjName :selected").text(),
-                SubSubject: Allsubsub,           
+            let addeventnamee = {
+                Eventname: $("#addnameventtext").val(),
+                Eventtype: {
+                    EventTypeName: $("#EventType :selected").text()
+                }
             }
-           
-            ajaxCall("POST", "../api/Ads/addsubsub", JSON.stringify(addsubsub), insertsubsubsuccess, erroreventname);
+            ajaxCall("POST", "../api/Events/addeventname", JSON.stringify(addeventnamee), inserteventnamesuccess, erroreventname);
         }
 
-        function insertsubsubsuccess(data) {
+        function inserteventnamesuccess(data) {
 
             console.log(data);
-            swal({ title: "!שם התת נושא נוסף בהצלחה", icon: "success" });
-            getsubsub();
-           
+            swal({ title: "!שם האירוע נוסף בהצלחה", icon: "success" });
+            getevname();
+            //evtypename = $("#EventType :selected").text();
+            //let api = "../api/Events/getsametype?evtypename=" + evtypename;
+            //ajaxCall("GET", api, "", getSuccessAlleventsname, error);
+
         }
 
         function erroreventname(err) {
             console.log(err);
-            swal({ icon: 'error', title: 'Sorry', text: " תת הנושא כבר קיים!" })
+            swal({ icon: 'error', title: 'Sorry', text: "שם האירוע כבר קיים!" })
         }
+
+        //function getSuccessAlleventsname(allevname) {
+        //    $("#EventName").empty();
+        //    getSuccessevname(allevname);
+        //    swal({ title: "!שם האירוע נוסף בהצלחה", icon: "success" });
+
+        //}
 
         function error(err) {
             console.log(err);
             alert(err);
         }
 
-      
-
     </script>
 </head>
 
 
 <body>
+
+
     <div class="container">
+
         <form id="pForm">
-            <h2 id="h2">הוספת פרסום חדש</h2>
+            <h2 id="h2">הוספת אירוע חדש</h2>
 
             <div class="form-group">
-                <label for="SubjName" id="SubjNameText">בחרי נושא</label>
-                <select class="form-control" id="SubjName" required>
+                <label for="EventType" id="EventTypeText">בחרי סוג אירוע</label>
+                <select class="form-control" id="EventType" required>
                     <option>    </option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="SubsubjName" id="SubsubjNameText">בחרי תת נושא</label>
-                <select class="form-control" id="SubsubjName" required>
+                <label for="EventName" id="EventNameText">בחרי שם אירוע</label>
+                <select class="form-control" id="EventName" required>
                 </select>
             </div>
             <div class="form-group">
-                <label for="datedis" id="datedisText">בחרי תאריך פרסום</label>
+                <label for="datedis" id="datedisText">בחרי תאריך אירוע</label>
                 <input type="date" class="form-control" id="datedis" required />
 
             </div>
             <div class="form-group">
                 <label for="content" id="contentText"></label>
-                <textarea class="form-control" id="content" placeholder="הכניסי את תוכן הפרסום כאן..." required></textarea>
+                <textarea class="form-control" id="content" placeholder="הכניסי את תוכן האירוע כאן..." required></textarea>
             </div>
 
             <div id="uploadddiv">
@@ -323,22 +330,22 @@
                 <br />
                 <button type="button" id="buttonUpload">Upload image</button>
             </div>
-            <input type="submit" value="הפיצי שאלון" id="submitt" />
+            <input type="submit" value="הפיצי אירוע" id="submitt" />
         </form>
 
-        <div id="addS">
+        <div id="addET">
 
-            <i type="button" id="addsubject" class="fas fa-plus-circle"></i>
-            <input type="text" id="addsubjecttext" />
-            <input type="button" value="הוסיפי סוג אירוע" id="buttonaddsubject" onclick="Insertsubtolist()" />
+            <i type="button" id="addeventtype" class="fas fa-plus-circle"></i>
+            <input type="text" id="addtypeeventtext" />
+            <input type="button" value="הוסיפי סוג אירוע" id="buttoneventtype" onclick="Inserteventtypetolist()" />
         </div>
-        <div id="addSS">
-            <i type="button" id="AddSubsub" class="fas fa-plus-circle"></i>
-            <input type="text" id="addsubsubtext" />
-            <input type="button" value="הוסיפי שם אירוע" id="buttonaddsubsub" onclick="Insertsubsubtolist()" />
+        <div id="addEN">
+            <i type="button" id="addeventname" class="fas fa-plus-circle"></i>
+            <input type="text" id="addnameventtext" />
+            <input type="button" value="הוסיפי שם אירוע" id="buttoneventname" onclick="Inserteventnametolist()" />
         </div>
-
     </div>
+ 
     <div id="ph"></div>
 
     <!--<h1>פרסומים</h1>

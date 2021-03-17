@@ -211,7 +211,9 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AdsController.cs" />
+    <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImageUploadController.cs" />
     <Compile Include="Controllers\QuestionnaireController.cs" />
     <Compile Include="Controllers\studentsController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -225,6 +227,9 @@
     <Compile Include="Models\DAL\DBServicesReact.cs" />
     <Compile Include="Models\DAL\XMLServices.cs" />
     <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\EventName.cs" />
+    <Compile Include="Models\Events.cs" />
+    <Compile Include="Models\EventType.cs" />
     <Compile Include="Models\ExternalGroups.cs" />
     <Compile Include="Models\Hobby.cs" />
     <Compile Include="Models\Message.cs" />
@@ -235,6 +240,8 @@
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\StudentCommentOnMessage.cs" />
     <Compile Include="Models\StudentFavorites.cs" />
+    <Compile Include="Models\StudentFeedToAds.cs" />
+    <Compile Include="Models\StudentFeedToEvents.cs" />
     <Compile Include="Models\StudentInCourse.cs" />
     <Compile Include="Models\StudentsAnswers.cs" />
     <Compile Include="Models\Subject.cs" />
@@ -327,6 +334,11 @@
     <Content Include="obj\Debug\BetterTogetherProj.dll" />
     <Content Include="obj\Debug\BetterTogetherProj.pdb" />
     <Content Include="Pages\Ads.html" />
+    <Content Include="Pages\AdsFeedBack.html" />
+    <Content Include="Pages\Events.html" />
+    <Content Include="Pages\EventsFeedBack.html" />
+    <Content Include="Pages\EventTB.html" />
+    <Content Include="Pages\KERENMACABI_web_hands_white.jpg" />
     <Content Include="Pages\tableQ.html" />
     <Content Include="Scripts\ajaxCalls.js" />
     <Content Include="Scripts\bootstrap.js" />

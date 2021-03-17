@@ -1,27 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿//using BetterTogetherProj.Models.DAL;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Web;
 
-namespace BetterTogetherProj.Models
-{
-    public class SubSubject
-    {
-        int subSubjectCode;
-        string subSubjectName;
-        Subject subject;
+//namespace BetterTogetherProj.Models
+//{
+//    public class SubSubject
+//    {
+//        string subSubjectName;
+//        Subject subject;
 
-        public SubSubject(int subSubjectCode, string subSubjectName, Subject subject)
-        {
-            SubSubjectCode = subSubjectCode;
-            SubSubjectName = subSubjectName;
-            Subject = subject;
-        }
+//        public SubSubject(string subSubjectName, Subject subject)
+//        {
+//            SubSubjectName = subSubjectName;
+//            Subject = subject;
+//        }
 
-        public int SubSubjectCode { get => subSubjectCode; set => subSubjectCode = value; }
-        public string SubSubjectName { get => subSubjectName; set => subSubjectName = value; }
-        public Subject Subject { get => subject; set => subject = value; }
+//        public string SubSubjectName { get => subSubjectName; set => subSubjectName = value; }
+//        public Subject Subject { get => subject; set => subject = value; }
 
-        public SubSubject() { }
-    }
-}
+//        public SubSubject() { }
+
+//        public List<SubSubject> Getsamename(string subname)
+//        {
+//            DBServices dbs = new DBServices();
+//            List<SubSubject> subsubList = dbs.Getsamename(subname);
+//            return subsubList;
+
+//        }
+
+//        public void InsertSubsub()
+//        {
+//            DBServices dbs = new DBServices();
+//            dbs.InsertSubsub(this);
+//        }
+//    }
+//}

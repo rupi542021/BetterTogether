@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BetterTogetherProj.Models.DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,10 +13,6 @@ namespace project_classes.Models
         List<Student> slist;
         List<ExternalGroups> exgList;
         
-
-        
-
-      
 
 
         public Department() { }
@@ -32,5 +29,14 @@ namespace project_classes.Models
         public string DepartmentName { get => departmentName; set => departmentName = value; }
         public List<Student> Slist { get => slist; set => slist = value; }
         public List<ExternalGroups> ExgList { get => exgList; set => exgList = value; }
+
+
+        public List<Department> GetDepartment()
+        {
+            DBServices dbs = new DBServices();
+            List<Department> depList = dbs.GetDepartment();
+            return depList;
+
+        }
     }
 }

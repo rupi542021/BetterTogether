@@ -23,21 +23,21 @@ namespace BetterTogetherProj.Controllers
         }
 
         // POST api/<controller>
-        public HttpResponseMessage Post([FromBody] Questionnaire qr)
-        {
+        //public HttpResponseMessage Post([FromBody] Questionnaire qr)
+        //{
 
-            try
-            {
+        //    try
+        //    {
 
-               // qr.Insertqr();
+        //       // qr.Insertqr();
 
-                return Request.CreateResponse(HttpStatusCode.OK, "Success");
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
-            }
-        }
+        //        return Request.CreateResponse(HttpStatusCode.OK, "Success");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
+        //    }
+        //}
 
         // PUT api/<controller>/5
         public void Put(int id, [FromBody]string value)
@@ -48,6 +48,7 @@ namespace BetterTogetherProj.Controllers
         public void Delete(int id)
         {
         }
+
         [HttpGet]
         [Route("api/Questionnaire/qr")]
         public List<Questionnaire> GetQuestionnaire()
@@ -56,6 +57,7 @@ namespace BetterTogetherProj.Controllers
             return cmp.GetQuestionnaire();
 
         }
+
         [HttpPost]
         [Route("api/Questionnaire/postqr")]
         public HttpResponseMessage PostQuestionnaire([FromBody] Questionnaire qr)
@@ -71,6 +73,34 @@ namespace BetterTogetherProj.Controllers
                 return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
             }
 
+         
         }
+
+        [HttpGet]
+        [Route("api/Questionnaire/dep")]
+        public List<Department> GetDepartment()
+        {
+            Department dep = new Department();
+            return dep.GetDepartment();
+
+        }
+
+        //[HttpPost]
+        //[Route("api/Questionnaire/postquestion")]
+        //public HttpResponseMessage PostQuestion([FromBody] Question q)
+        //{
+        //    try
+        //    {
+        //        q.Insertquestion();
+
+        //        return Request.CreateResponse(HttpStatusCode.OK, "Added to favorite page successfully");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
+        //    }
+
+
+        //}
     }
 }
