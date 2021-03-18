@@ -2,6 +2,8 @@
 using project_classes.Models;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -224,8 +226,32 @@ namespace BetterTogetherProj.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "connecting error");
             }
         }
+        [HttpGet]
+        [Route("API/students/{fileName}/photos")]
+        public byte[] GetImage(string fileName)
+        {
+            //using (var dashboardService = new DashboardService())
+            {
+                //var component = dashboardService.GetImage(componentId);
+                var context = HttpContext.Current;
+                string filePath = context.Server.MapPath("~/uploadedFiles/" + fileName);
+                context.Response.ContentType = "image/jpeg";
+                using (FileStream fileStream = new FileStream(filePath, FileMode.Open))
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        fileStream.CopyTo(memoryStream);
+                        Bitmap image = new Bitmap(1, 1);
+                        image.Save(memoryStream, ImageFormat.Jpeg);
+
+                        byte[] byteImage = memoryStream.ToArray();
+                        return byteImage;
+                    }
+                }
+            }
+        }
         //[HttpGet]
-        //[Route("api/students/uploadedFiles/{fileName}")]
+        //[Route("API/students/{fileName}/photos")]
         //public IHttpActionResult GetThumbnail(string fileName)
         //{
         //    var mediaRoot = System.Web.HttpContext.Current.Server.MapPath("~/uploadedFiles");
@@ -264,7 +290,7 @@ namespace BetterTogetherProj.Controllers
         //        //response.Content.Headers.ContentLength = stream.Length;
 
         //        //return ResponseMessage(response);
-                
+
 
         //        return Ok(fileList);
         //    }
@@ -274,7 +300,7 @@ namespace BetterTogetherProj.Controllers
         //        return Content(HttpStatusCode.BadRequest, e);
         //    }
 
-            
+
         //}
 
         //[HttpGet]
