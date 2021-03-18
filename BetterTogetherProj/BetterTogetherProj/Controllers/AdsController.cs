@@ -116,14 +116,14 @@ namespace BetterTogetherProj.Controllers
 
         }
 
-        //[HttpGet]
-        //[Route("api/Ads/getFB")]
-        //public List<StudentFeedToAds> GetFBAds(string subnameFB)
-        //{
-        //    StudentFeedToAds FB = new StudentFeedToAds();
-        //    return FB.GetFBAds(subnameFB);
+        [HttpGet]
+        [Route("api/Ads/getFB")]
+        public List<Ads> GetAdBySub(string subnameFB)
+        {
+            Ads ad = new Ads();
+            return ad.GetAdBySub(subnameFB);
 
-        //}
+        }
 
         //[HttpPut]
         //[Route("api/Ads/addcomment")]

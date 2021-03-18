@@ -14,11 +14,12 @@ namespace BetterTogetherProj.Models
         string subject;
         string adsImage;
         string subSubject;
+        List<AdsFeedback> fbads;
 
 
         public Ads() { }
 
-        public Ads(int adsCode, DateTime adsDate, string adsText, string subject, string adsImage, string subSubject)
+        public Ads(int adsCode, DateTime adsDate, string adsText, string subject, string adsImage, string subSubject, List<AdsFeedback> fbads)
         {
             AdsCode = adsCode;
             AdsDate = adsDate;
@@ -26,6 +27,7 @@ namespace BetterTogetherProj.Models
             Subject = subject;
             AdsImage = adsImage;
             SubSubject = subSubject;
+            Fbads = fbads;
         }
 
         public int AdsCode { get => adsCode; set => adsCode = value; }
@@ -34,11 +36,20 @@ namespace BetterTogetherProj.Models
         public string Subject { get => subject; set => subject = value; }
         public string AdsImage { get => adsImage; set => adsImage = value; }
         public string SubSubject { get => subSubject; set => subSubject = value; }
+        public List<AdsFeedback> Fbads { get => fbads; set => fbads = value; }
 
         public void InsertToTable()
         {
             DBServices dbs = new DBServices();
             dbs.InsertToTable(this);
+        }
+
+        public List<Ads> GetAdBySub(string subnameFB)
+        {
+            DBServices dbs = new DBServices();
+            List<Ads> AdFBList = dbs.GetAdBySub(subnameFB);
+            return AdFBList;
+
         }
     }
 

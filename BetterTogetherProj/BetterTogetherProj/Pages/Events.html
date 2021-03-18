@@ -263,23 +263,14 @@
             console.log(data);
             swal({ title: "!שם האירוע נוסף בהצלחה", icon: "success" });
             getevname();
-            //evtypename = $("#EventType :selected").text();
-            //let api = "../api/Events/getsametype?evtypename=" + evtypename;
-            //ajaxCall("GET", api, "", getSuccessAlleventsname, error);
-
+          
         }
 
         function erroreventname(err) {
             console.log(err);
-            swal({ icon: 'error', title: 'Sorry', text: "שם האירוע כבר קיים!" })
+            swal({ icon: 'error', title: 'Sorry', text: "יש לבחור ראשית סוג אירוע!" })
         }
 
-        //function getSuccessAlleventsname(allevname) {
-        //    $("#EventName").empty();
-        //    getSuccessevname(allevname);
-        //    swal({ title: "!שם האירוע נוסף בהצלחה", icon: "success" });
-
-        //}
 
         function error(err) {
             console.log(err);
