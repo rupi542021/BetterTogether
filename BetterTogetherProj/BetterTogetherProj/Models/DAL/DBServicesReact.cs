@@ -879,6 +879,133 @@ namespace BetterTogetherProj.Models.DAL
             }
 
         }
+        //הבאה של כל היוזרים עם אחוז התאמה
+        public List<Student> GetStudentsWithRecommend(string mail)
+        {
+            SqlConnection con = null;
+            List<Student> studList = new List<Student>();
+
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT * FROM student_P where mail<> '" + mail + "'";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {
+                    Student stud = new Student();
+                    stud.Mail = (string)dr["mail"];
+                    stud.Password = (string)dr["password"];
+                    stud.Fname = (string)(dr["firstName"]);
+                    stud.Lname = (string)(dr["lastName"]);
+                    stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
+                    stud.Dep = getStudDep(Convert.ToInt32(dr["departmentCode"]));
+                    stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
+                    stud.HomeTown = getResidenceH((string)(dr["homeTown"]));
+                    stud.AddressStudying = getResidenceS((string)(dr["adrressStudying"]));
+                    stud.PersonalStatus = (string)(dr["personalStatus"]);
+                    stud.IsAvailableCar = Convert.ToBoolean(dr["isAvailableCar"]);
+                    stud.IntrestedInCarPool = Convert.ToBoolean(dr["intrestedInCarPool"]);
+                    stud.Photo = (string)(dr["photo"]);
+                    stud.Gender = (string)(dr["gender"]);
+                    stud.RegistrationDate = Convert.ToDateTime(dr["registrationDate"]);
+                    stud.ActiveStatus = Convert.ToBoolean(dr["active"]);
+                    stud.Plist = GetPlistByUser((string)dr["mail"]);
+                    stud.Hlist = GetHlistByUser((string)dr["mail"]);
+
+                    stud.Match = calMatch(mail,stud.DateOfBirth, stud.Dep, stud.StudyingYear, stud.HomeTown, stud.AddressStudying, stud.PersonalStatus, stud.Hlist,stud.Plist);
+                    studList.Add(stud);
+                }
+                return studList;
+
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
+        private double calMatch(string mail,DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, List<Hobby> hlist, List<Pleasure> plist)
+        {
+            SqlConnection con = null;
+            double match=0;
+            int countP = 0;
+            int countH = 0;
+            try
+            {
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT * FROM student_P where mail='" + mail + "'";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+                while (dr.Read())
+                {
+                    Student stud = new Student();
+                    stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
+                    stud.Dep = getStudDep(Convert.ToInt32(dr["departmentCode"]));
+                    stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
+                    stud.HomeTown = getResidenceH((string)(dr["homeTown"]));
+                    stud.AddressStudying = getResidenceS((string)(dr["adrressStudying"]));
+                    stud.PersonalStatus = (string)(dr["personalStatus"]);
+                    stud.Plist = GetPlistByUser((string)dr["mail"]);
+                    stud.Hlist = GetHlistByUser((string)dr["mail"]);
+
+                    if (stud.Dep == dep)
+                        match += 0.05;
+                    if (stud.StudyingYear == studyingYear)
+                        match += 0.1;
+                    if (stud.PersonalStatus == personalStatus)
+                        match += 0.05;
+                    for (int i = 0; i < plist.Count; i++)
+                    {
+                        if (stud.Plist.Contains(plist[i]))
+                            countP++;
+                    }
+                    match += 0.2 * (countP / plist.Count);
+                    for (int i = 0; i < hlist.Count; i++)
+                    {
+                        if (stud.Hlist.Contains(hlist[i]))
+                            countH++;
+                    }
+                    match += 0.2 * (countH / hlist.Count);
+                    if (stud.DateOfBirth.Year - dateOfBirth.Year < 3 || dateOfBirth.Year - stud.DateOfBirth.Year < 3)
+                        match += 0.05;
+
+                }
+                return match;
+
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+        }
+
 
         private String BuildInsertFavoriteCommand(StudentFavorites sf)
         {
