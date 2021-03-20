@@ -405,13 +405,12 @@ namespace BetterTogetherProj.Models.DAL
 
             try
             {
-                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+                con = connect("DBConnectionString");
 
                 String selectSTR = "SELECT * FROM pleasure_P";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
-                // get a reader
-                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -426,9 +425,9 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
                 throw (ex);
             }
+
             finally
             {
                 if (con != null)
@@ -447,16 +446,15 @@ namespace BetterTogetherProj.Models.DAL
 
             try
             {
-                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+                con = connect("DBConnectionString");
 
                 String selectSTR = "SELECT * FROM hobby_P";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
-                // get a reader
-                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
-                {   // Read till the end of the data into a row
+                { 
                     Hobby h = new Hobby();
                     h.Hcode = Convert.ToInt32(dr["hCode"]);
                     h.Hname = (string)(dr["hName"]);
@@ -467,7 +465,6 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
                 throw (ex);
             }
             finally
@@ -492,7 +489,6 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
                 throw (ex);
             }
 

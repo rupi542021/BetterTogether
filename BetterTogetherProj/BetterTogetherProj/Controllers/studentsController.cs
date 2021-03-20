@@ -37,11 +37,6 @@ namespace BetterTogetherProj.Controllers
                     default:
                         return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e);
                 }
-                //if (e.Message == "email not found")
-                //{
-                //    return Request.CreateResponse(HttpStatusCode.NotFound, e);
-                //}
-                //return Request.CreateResponse(HttpStatusCode.BadRequest,e);
             }
         }
         [HttpGet]
@@ -63,40 +58,38 @@ namespace BetterTogetherProj.Controllers
                     case "incorrect password":
                         return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e);
                     default:
-                        return Request.CreateResponse(HttpStatusCode.InternalServerError, e);
+                        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e);
                 }
             }
         }
         [HttpGet]
         [Route("api/students/GetAllPleasures")]
-        public IHttpActionResult GetAllPleasures()
+        public HttpResponseMessage GetAllPleasures()
         {
             try
             {
                 Pleasure p = new Pleasure();
                 List<Pleasure> PList = p.Read();
-                return Ok(PList);
+                return Request.CreateResponse(HttpStatusCode.OK,PList);
             }
             catch (Exception e)
             {
-                //return badrequest(e.message);
-                return Content(HttpStatusCode.BadRequest, e);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e);
             }
         }
         [HttpGet]
         [Route("api/students/GetAllHoddies")]
-        public IHttpActionResult GetAllHoddies()
+        public HttpResponseMessage GetAllHoddies()
         {
             try
             {
                 Hobby h = new Hobby();
                 List<Hobby> HList = h.Read();
-                return Ok(HList);
+                return Request.CreateResponse(HttpStatusCode.OK, HList);
             }
             catch (Exception e)
             {
-                //return badrequest(e.message);
-                return Content(HttpStatusCode.BadRequest, e);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e);
             }
         }
 
