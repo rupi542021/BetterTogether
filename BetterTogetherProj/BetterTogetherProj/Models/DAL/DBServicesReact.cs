@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Device.Location;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -940,6 +941,10 @@ namespace BetterTogetherProj.Models.DAL
             double match=0;
             int countP = 0;
             int countH = 0;
+            double xHome = 0;
+            double yHome = 0;
+            double xCurrent = 0;
+            double yCurrent = 0;
             try
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
@@ -947,7 +952,6 @@ namespace BetterTogetherProj.Models.DAL
                 String selectSTR = "SELECT * FROM student_P where mail='" + mail + "'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
-                // get a reader
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
 
                 while (dr.Read())
@@ -973,15 +977,29 @@ namespace BetterTogetherProj.Models.DAL
                         if (stud.Plist.Contains(plist[i]))
                             countP++;
                     }
-                    match += 0.2 * (countP / plist.Count);
+                    if(plist.Count!=0 && countP != 0) 
+                        match += 0.2 * (countP / plist.Count);
                     for (int i = 0; i < hlist.Count; i++)
                     {
                         if (stud.Hlist.Contains(hlist[i]))
                             countH++;
                     }
-                    match += 0.2 * (countH / hlist.Count);
+                    if (hlist.Count != 0&&countH!=0)
+                        match += 0.2 * (countH / hlist.Count);
                     if (stud.DateOfBirth.Year - dateOfBirth.Year < 3 || dateOfBirth.Year - stud.DateOfBirth.Year < 3)
                         match += 0.05;
+
+                    //xHome = (stud.HomeTown.X/1000) - (homeTown.X/1000);
+                    //yHome = (stud.HomeTown.Y/1000) - (homeTown.Y/1000);
+                    //if(Math.Sqrt(Math.Pow(xHome, 2) + Math.Pow(yHome, 2))<15)
+                    //    match += 0.1;
+
+                    //xCurrent = (stud.AddressStudying.X / 1000) - (addressStudying.X / 1000);
+                    //yCurrent = (stud.AddressStudying.Y / 1000) - (addressStudying.Y / 1000);
+                    //if (Math.Sqrt(Math.Pow(xCurrent, 2) + Math.Pow(yCurrent, 2)) < 15)
+                    //    match += 0.1;
+
+
 
                 }
                 return match;

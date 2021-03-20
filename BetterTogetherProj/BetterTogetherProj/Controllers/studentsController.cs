@@ -109,7 +109,22 @@ namespace BetterTogetherProj.Controllers
                 return Content(HttpStatusCode.BadRequest, e);
             }
         }
-
+        [HttpGet]
+        [Route("API/students/{mail}/Recommend")]
+        public IHttpActionResult GetStudentsWithRecommend(string mail)
+        {
+            try
+            {
+                Student s = new Student();
+                List<Student> studentsList = s.GetStudentsWithRecommend(mail);
+                return Ok(studentsList);
+            }
+            catch (Exception e)
+            {
+                //return badrequest(e.message);
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
         // GET api/<controller>/5
         public string Get(int id)
         {
