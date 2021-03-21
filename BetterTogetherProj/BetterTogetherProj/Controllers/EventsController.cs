@@ -109,14 +109,14 @@ namespace BetterTogetherProj.Controllers
 
         }
 
-        //[HttpGet]
-        //[Route("api/Events/getFB")]
-        //public List<StudentFeedToEvents> GetFBEvents(string evtypeFB)
-        //{
-        //    StudentFeedToEvents FB = new StudentFeedToEvents();
-        //    return FB.GetFBEvents(evtypeFB);
+        [HttpGet]
+        [Route("api/Events/getFB")]
+        public List<Events> GetEventByevtype(string evtypeFB)
+        {
+            Events FB = new Events();
+            return FB.GetEventByevtype(evtypeFB);
 
-        //}
+        }
 
         //[HttpPut]
         //[Route("api/Events/addcomment")]

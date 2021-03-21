@@ -240,7 +240,7 @@
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\StudentFavorites.cs" />
     <Compile Include="Models\AdsFeedback.cs" />
-    <Compile Include="Models\StudentFeedToEvents.cs" />
+    <Compile Include="Models\EventsFeedback.cs" />
     <Compile Include="Models\StudentInCourse.cs" />
     <Compile Include="Models\StudentsAnswers.cs" />
     <Compile Include="Models\Subject.cs" />

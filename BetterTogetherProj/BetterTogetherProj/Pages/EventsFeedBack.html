@@ -39,7 +39,7 @@
             Allevtype = allevtype;
             str = "";
             for (var i = 0; i < Allevtype.length; i++) {
-                str += "<option value='" + i + "'>" + Allevtype[i].EventTypeName + "</option></br>";
+                str += "<option value='" + i + "'>" + Allevtype[i].Eventtype + "</option></br>";
 
             }
             document.getElementById("EventType").innerHTML += str;
@@ -53,46 +53,77 @@
             ajaxCall("GET", api, "", getFBSuccess, error);
 
         }
+        function getFBSuccess(FBData) {
 
-        function getFBSuccess(FBEvents) {
+            console.log(FBData);
 
-            console.log(FBEvents);
-            data = FBEvents; // keep the cars array in a global variable;
+            FBarr = FBData.filter(r => r.Fbevents.length > 0);// במקום לעשות לולאה, ניגש לפרסומים כך ונבדוק עבור על פרסום אם מערך פידבק גדול מאפס.
+            var onlyFB = [];
+            for (var i = 0; i < FBarr.length; i++) {
+                for (var j = 0; j < FBarr[i].Fbevents.length; j++) {
+                    FBarr[i].Fbevents[j].Eventn = FBarr[i].Eventname;
+                    onlyFB.push(FBarr[i].Fbevents[j]);
+                }
+
+            }
+            console.log(FBarr);
             if ($.fn.dataTable.isDataTable('#FBtable')) {//destroy the old table on existence and then create new instance of jQuery DataTable
                 $('#FBtable').DataTable().clear().destroy();
             }
 
+            console.log(onlyFB);
+            onlyFB1 = onlyFB;
+
             try {
+
                 tbl = $('#FBtable').DataTable({
-                    data: FBEvents,
+                    retrieve: true,
+
+                    data: onlyFB1,
                     pageLength: 5,
+
                     columns: [
 
-                        { data: "Events.Eventname.Eventname" },
-                        { data: "Student.Fname" },
-                        { data: "CommentText" },
-                        { data: "CommentDate" },
+                        { data: "Eventn" },
+
+                        {
+                            data: "Student.Fname",
+                        },
+                        {
+                            data: "CommentText",
+
+                        },
+                        {
+                            data: "CommentDate",
+
+                        },
                         {
                             render: function (data, type, row, meta) {
-
-                                plusBtn = "<i type='button'   class='fas fa-plus-circle' id='" + row.Student.Mail + "," + row.Events.EventCode + "'></i>";
-
+                                let i = 0;
+                                plusBtn = "<i type='button'   class='fas fa-plus-circle' id='" + row.Student.Mail + "','" + FBarr[i].AdsCode + "'></i>";
+                                i++;
                                 return plusBtn;
                             }
                         },
-                        { data: "Managercomment" }
+                        {
+                            data: "Managercomment",
+                        }
 
-                    ],
+                    ]
+                    ,
 
                 });
 
             }
 
+
             catch (err) {
                 alert(err);
             }
         }
+        
 
+     
         function addcomment() {
             idcom = $(this).attr("id");
             combo = idcom.split(",");

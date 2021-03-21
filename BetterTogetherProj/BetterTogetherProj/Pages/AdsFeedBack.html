@@ -22,7 +22,6 @@
     <script src="../Scripts/ajaxCalls.js"></script>
 
     <style type="text/css">
-    
     </style>
 
     <script>
@@ -33,7 +32,7 @@
             $("#FBtable").hide();
             $(document).on("click", ".fa-plus-circle", addcomment);
             $(document).on("click", ".swal-button.swal-button--confirm", insertcomment);
-            
+
 
         })
 
@@ -60,71 +59,73 @@
         function getFBSuccess(FBData) {
 
             console.log(FBData);
-
-            arr = FBData.filter(r => r.Fbads.length > 0);// במקום לעשות לולאה, ניגש לפרסומים כך ונבדוק עבור על פרסום אם מערך פידבק גדול מאפס.
-
-            for (var i = 0; i < arr.length; i++) {
-                for (var j = 0; j < arr[i].Fbads.length; j++) {
-                    arr[i].Fbads[j].SubD = arr[i].SubSubject;
+          
+            FBarr = FBData.filter(r => r.Fbads.length > 0);// במקום לעשות לולאה, ניגש לפרסומים כך ונבדוק עבור על פרסום אם מערך פידבק גדול מאפס.
+            var onlyFB = [];
+            for (var i = 0; i < FBarr.length; i++) {
+                for (var j = 0; j < FBarr[i].Fbads.length; j++) {
+                    FBarr[i].Fbads[j].SubD = FBarr[i].SubSubject;
+                    onlyFB.push(FBarr[i].Fbads[j]);
                 }
 
             }
-            console.log(arr);
+            console.log(FBarr);
             if ($.fn.dataTable.isDataTable('#FBtable')) {//destroy the old table on existence and then create new instance of jQuery DataTable
                 $('#FBtable').DataTable().clear().destroy();
             }
-            
-              
-                try
-                {
-                    for (var i = 0; i < arr.length; i++) {
-                        tbl = $('#FBtable').DataTable({
-                            retrieve: true,
 
-                            data: arr[i].Fbads,
-                            pageLength: 5,
+            console.log(onlyFB);
+            onlyFB1 = onlyFB;
 
-                            columns: [
+            try {
+                
+                    tbl = $('#FBtable').DataTable({
+                        retrieve: true,
 
-                                { data: "SubD" },
+                        data: onlyFB1,
+                        pageLength: 5,
 
-                                {
-                                    data: "Student.Fname",
-                                },
-                                {
-                                    data: "CommentText",
+                        columns: [
 
-                                },
-                                {
-                                    data: "CommentDate",
+                            { data: "SubD" },
 
-                                },
-                                //{
-                                //    render: function (data, type, row, meta) {
+                            {
+                                data: "Student.Fname",
+                            },
+                            {
+                                data: "CommentText",
 
-                                //        plusBtn = "<i type='button'   class='fas fa-plus-circle' id='" + row.Student.Mail + "," + row.Ads.AdsCode+"'></i>";
+                            },
+                            {
+                                data: "CommentDate",
 
-                                //        return plusBtn;
-                                //    }
-                                //},
-                                {
-                                    data: "Managercomment",
+                            },
+                            {
+                                render: function (data, type, row, meta) {
+                                    let i = 0;
+                                    plusBtn = "<i type='button'   class='fas fa-plus-circle' id='"+row.Student.Mail+"','" + FBarr[i].AdsCode + "'></i>";
+                                    i++;
+                                    return plusBtn;
                                 }
+                            },
+                            {
+                                data: "Managercomment",
+                            }
 
-                            ]
-                            ,
+                        ]
+                        ,
 
-                        });
-
-                    }
+                    });
 
                 }
-                catch (err) {
-                    alert(err);
-                }
-            }
+
             
-        
+            catch (err) {
+                alert(err);
+            }
+        }
+
+
 
         function addcomment() {
             idcom = $(this).attr("id");
@@ -141,7 +142,7 @@
                     },
                 },
             });
-            
+
 
         }
 
@@ -152,10 +153,9 @@
                 Student: {
                     Mail: mail
                 },
-                Ads: {
-                    AdsCode: adcode
-                },
+              
             }
+            
 
             ajaxCall("PUT", "../api/Ads/addcomment", JSON.stringify(Addcomment), insertmngcomsuccess, error);
         }
@@ -182,21 +182,21 @@
         </option>
     </select>
 
-        <form id="pForm">
-            <table id="FBtable" class="display nowrap" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>תת נושא</th>
-                        <th>שם הסטודנט</th>
-                        <th>תוכן תגובה</th>
-                        <th>תאריך תגובה</th>              
-                        <!--<th> </th>-->
-                        <th>תגובתך</th>
-                    </tr>
-                </thead>
-            </table>
-        </form>
-   
+    <form id="pForm">
+        <table id="FBtable" class="display nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th>תת נושא</th>
+                    <th>שם הסטודנט</th>
+                    <th>תוכן תגובה</th>
+                    <th>תאריך תגובה</th>
+                    <th> </th>
+                    <th>תגובתך</th>
+                </tr>
+            </thead>
+        </table>
+    </form>
+
 
 </body>
 </html>

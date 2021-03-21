@@ -752,7 +752,86 @@ namespace BetterTogetherProj.Models.DAL
             }
 
         }
+        public List<Events> GetEventByevtype(string evtypeFB)
+        {
+            SqlConnection con = null;
+            List<Events> EventList = new List<Events>();
+            try
+            {
+                con = connect1("DBConnectionString");
+                //String selectSTR = "select * from feedbackstudenttoads_P3 inner join ads_P3 on ads_P3.adCode=feedbackstudenttoads_P3.adCode inner join student_P on student_P.mail=feedbackstudenttoads_P3.studentmail where subName='" + subnameFB + "'";
+                String selectSTR = "select * from events_P3 where eventTypeName='" + evtypeFB + "'";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Events ev = new Events();
+                    ev.EventCode = Convert.ToInt16(dr["eventCode"]);
+                    ev.Fbevents = GetFBev(ev.EventCode);
+                    ev.Eventname = (string)dr["eventname"];
+                    EventList.Add(ev);
+                }
 
+                return EventList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
+
+        public List<EventsFeedback> GetFBev(int eventCode)
+        {
+            SqlConnection con = null;
+            List<EventsFeedback> FBList = new List<EventsFeedback>();
+            try
+            {
+                con = connect1("DBConnectionString");
+                String selectSTR = "select * from feedbackstudenttoevents_P3 inner join student_P on student_P.mail=feedbackstudenttoevents_P3.studentmail  where feedbackstudenttoevents_P3.eventCode=" + eventCode;
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    EventsFeedback FB = new EventsFeedback();
+                    FB.Student = (new Student { Fname = (string)dr["firstName"] });
+                    FB.Student.Mail = (string)dr["mail"];
+                    FB.CommentText = (string)dr["commenttext"];
+                    FB.CommentDate = Convert.ToDateTime(dr["commentdate"]);
+                    FB.Managercomment = Convert.ToString(dr["managercomment"]);
+
+
+                    FBList.Add(FB);
+
+                }
+                return FBList;
+
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
         //public List<StudentFeedToEvents> GetFBEvents(string evtypeFB)
         //{
         //    SqlConnection con = null;
@@ -855,7 +934,7 @@ namespace BetterTogetherProj.Models.DAL
         //}
 
 
-        //public int Insertcomment(StudentFeedToAds mngcom)
+        //public int Insertcomment(AdsFeedback mngcom)
         //{
 
         //    SqlConnection con;
@@ -900,7 +979,7 @@ namespace BetterTogetherProj.Models.DAL
         ////--------------------------------------------------------------------
         //// Build the Insert command String
         ////--------------------------------------------------------------------
-        //private String BuildInsertCommand(StudentFeedToAds mngcom)
+        //private String BuildInsertCommand(AdsFeedback mngcom)
         //{
         //    String command;
 

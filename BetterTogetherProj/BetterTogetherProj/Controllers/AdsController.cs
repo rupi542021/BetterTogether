@@ -127,7 +127,7 @@ namespace BetterTogetherProj.Controllers
 
         //[HttpPut]
         //[Route("api/Ads/addcomment")]
-        //public HttpResponseMessage Insertcomment([FromBody] StudentFeedToAds addmngcom)
+        //public HttpResponseMessage Insertcomment([FromBody] AdsFeedback addmngcom)
         //{
         //    try
         //    {
