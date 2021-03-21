@@ -27,13 +27,13 @@ namespace project_classes.Models
         bool activeStatus;
         List<Hobby> hlist;
         List<Pleasure> plist;
-        List<Student> friendslist;
+        List<string> friendslist;
         List<StudentInCourse> studInCourse;
         double match;
 
         public Student(){}
 
-        public Student(string mail, string password, string fname, string lname, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, bool isAvailableCar, bool intrestedInCarPool, string photo, string gender, DateTime registrationDate, bool activeStatus, List<Hobby> hlist, List<Pleasure> plist, List<Student> friendslist, List<StudentInCourse> studInCourse, double match)
+        public Student(string mail, string password, string fname, string lname, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, bool isAvailableCar, bool intrestedInCarPool, string photo, string gender, DateTime registrationDate, bool activeStatus, List<Hobby> hlist, List<Pleasure> plist, List<string> friendslist, List<StudentInCourse> studInCourse, double match)
         {
             Mail = mail;
             Password = password;
@@ -76,7 +76,7 @@ namespace project_classes.Models
         public bool ActiveStatus { get => activeStatus; set => activeStatus = value; }
         public List<Hobby> Hlist { get => hlist; set => hlist = value; }
         public List<Pleasure> Plist { get => plist; set => plist = value; }
-        public List<Student> Friendslist { get => friendslist; set => friendslist = value; }
+        public List<string> Friendslist { get => friendslist; set => friendslist = value; }
         public List<StudentInCourse> StudInCourse { get => studInCourse; set => studInCourse = value; }
         public double Match { get => match; set => match = value; }
         
@@ -109,7 +109,7 @@ namespace project_classes.Models
         public List<Student> ReadAllStudent(string mail)
         {
             DBServicesReact db = new DBServicesReact();
-            List<Student> studentsList = db.GetAllStudents(mail);
+            List<Student> studentsList = db.GetStudentsWithRecommend(mail);
             return studentsList;
         }
         public List<Student> GetStudentsWithRecommend(string mail)

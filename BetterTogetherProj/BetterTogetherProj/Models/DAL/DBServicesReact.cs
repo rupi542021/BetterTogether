@@ -322,10 +322,10 @@ namespace BetterTogetherProj.Models.DAL
             }
         }
 
-        public List<Student> GetFriendsListByUser(string email)
+        public List<string> GetFriendsListByUser(string email)
         {
             SqlConnection con = null;
-            List<Student> userFriendsList = new List<Student>();
+            List<string> userFriendsList = new List<string>();
 
             try
             {
@@ -339,9 +339,7 @@ namespace BetterTogetherProj.Models.DAL
 
                 while (dr.Read())
                 {
-                    Student s = new Student();
-                    s.Mail = (string)dr["student2Mail"];
-                    userFriendsList.Add(s);
+                    userFriendsList.Add((string)dr["student2Mail"]);
                 }
                 return userFriendsList;
             }
@@ -627,62 +625,62 @@ namespace BetterTogetherProj.Models.DAL
             }
             return prefix;
         }
-        public List<Student> GetAllStudents(string mail)
-        {
-            SqlConnection con = null;
-            List<Student> studList = new List<Student>();
+        //public List<Student> GetAllStudents(string mail)
+        //{
+        //    SqlConnection con = null;
+        //    List<Student> studList = new List<Student>();
 
-            try
-            {
-                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+        //    try
+        //    {
+        //        con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "SELECT * FROM student_P where mail<> '"+mail+"'";
-                SqlCommand cmd = new SqlCommand(selectSTR, con);
+        //        String selectSTR = "SELECT * FROM student_P where mail<> '"+mail+"'";
+        //        SqlCommand cmd = new SqlCommand(selectSTR, con);
 
-                // get a reader
-                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+        //        // get a reader
+        //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
 
-                while (dr.Read())
-                {
-                    Student stud = new Student();
-                    stud.Mail = (string)dr["mail"];
-                    stud.Password = (string)dr["password"];
-                    stud.Fname = (string)(dr["firstName"]);
-                    stud.Lname = (string)(dr["lastName"]);
-                    stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
-                    stud.Dep = getStudDep(Convert.ToInt32(dr["departmentCode"]));
-                    stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
-                    stud.HomeTown = getResidenceH((string)(dr["homeTown"]));
-                    stud.AddressStudying = getResidenceS((string)(dr["adrressStudying"]));
-                    stud.PersonalStatus = (string)(dr["personalStatus"]);
-                    stud.IsAvailableCar = Convert.ToBoolean(dr["isAvailableCar"]);
-                    stud.IntrestedInCarPool = Convert.ToBoolean(dr["intrestedInCarPool"]);
-                    stud.Photo = (string)(dr["photo"]);
-                    stud.Gender = (string)(dr["gender"]);
-                    stud.RegistrationDate = Convert.ToDateTime(dr["registrationDate"]);
-                    stud.ActiveStatus = Convert.ToBoolean(dr["active"]);
-                    stud.Plist = GetPlistByUser((string)dr["mail"]);
-                    stud.Hlist = GetHlistByUser((string)dr["mail"]);
-                    studList.Add(stud);
-                }
-                return studList;
+        //        while (dr.Read())
+        //        {
+        //            Student stud = new Student();
+        //            stud.Mail = (string)dr["mail"];
+        //            stud.Password = (string)dr["password"];
+        //            stud.Fname = (string)(dr["firstName"]);
+        //            stud.Lname = (string)(dr["lastName"]);
+        //            stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
+        //            stud.Dep = getStudDep(Convert.ToInt32(dr["departmentCode"]));
+        //            stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
+        //            stud.HomeTown = getResidenceH((string)(dr["homeTown"]));
+        //            stud.AddressStudying = getResidenceS((string)(dr["adrressStudying"]));
+        //            stud.PersonalStatus = (string)(dr["personalStatus"]);
+        //            stud.IsAvailableCar = Convert.ToBoolean(dr["isAvailableCar"]);
+        //            stud.IntrestedInCarPool = Convert.ToBoolean(dr["intrestedInCarPool"]);
+        //            stud.Photo = (string)(dr["photo"]);
+        //            stud.Gender = (string)(dr["gender"]);
+        //            stud.RegistrationDate = Convert.ToDateTime(dr["registrationDate"]);
+        //            stud.ActiveStatus = Convert.ToBoolean(dr["active"]);
+        //            stud.Plist = GetPlistByUser((string)dr["mail"]);
+        //            stud.Hlist = GetHlistByUser((string)dr["mail"]);
+        //            studList.Add(stud);
+        //        }
+        //        return studList;
 
-            }
-            catch (Exception ex)
-            {
-                // write to log
-                throw (ex);
-            }
-            finally
-            {
-                if (con != null)
-                {
-                    con.Close();
-                }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // write to log
+        //        throw (ex);
+        //    }
+        //    finally
+        //    {
+        //        if (con != null)
+        //        {
+        //            con.Close();
+        //        }
 
-            }
+        //    }
 
-        }
+        //}
 
         public int UpdateStudentPtofile(Student student)
         {
@@ -913,8 +911,8 @@ namespace BetterTogetherProj.Models.DAL
                     stud.ActiveStatus = Convert.ToBoolean(dr["active"]);
                     stud.Plist = GetPlistByUser((string)dr["mail"]);
                     stud.Hlist = GetHlistByUser((string)dr["mail"]);
-
-                    stud.Match = calMatch(mail,stud.DateOfBirth, stud.Dep, stud.StudyingYear, stud.HomeTown, stud.AddressStudying, stud.PersonalStatus, stud.Hlist,stud.Plist);
+                    stud.Friendslist = GetFriendsListByUser(((string)dr["mail"]));
+                    stud.Match = calMatch(mail, stud.Friendslist,stud.DateOfBirth, stud.Dep, stud.StudyingYear, stud.HomeTown, stud.AddressStudying, stud.PersonalStatus, stud.Hlist,stud.Plist);
                     studList.Add(stud);
                 }
                 return studList;
@@ -935,12 +933,13 @@ namespace BetterTogetherProj.Models.DAL
             }
 
         }
-        private double calMatch(string mail,DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, List<Hobby> hlist, List<Pleasure> plist)
+        private double calMatch(string mail, List<string> friendsList,DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, List<Hobby> hlist, List<Pleasure> plist)
         {
             SqlConnection con = null;
             double match=0;
             int countP = 0;
             int countH = 0;
+            int countFriends = 0;
             double xHome = 0;
             double yHome = 0;
             double xCurrent = 0;
@@ -965,6 +964,7 @@ namespace BetterTogetherProj.Models.DAL
                     stud.PersonalStatus = (string)(dr["personalStatus"]);
                     stud.Plist = GetPlistByUser((string)dr["mail"]);
                     stud.Hlist = GetHlistByUser((string)dr["mail"]);
+                    stud.Friendslist = GetFriendsListByUser(((string)dr["mail"]));
 
                     if (stud.Dep == dep)
                         match += 5;
@@ -978,14 +978,14 @@ namespace BetterTogetherProj.Models.DAL
                             countP++;
                     }
                     if(stud.Plist.Count !=0 && countP != 0) 
-                        match += 20 * (countP / stud.Plist.Count);
+                        match += 20 * (Convert.ToDouble(countP) / Convert.ToDouble(stud.Plist.Count));
                     for (int i = 0; i < stud.Hlist.Count; i++)
                     {
                         if (hlist.Contains(stud.Hlist[i]))
                             countH++;
                     }
                     if (stud.Hlist.Count != 0&&countH!=0)
-                        match += 20 * (countH / stud.Hlist.Count);
+                        match += 20 * (Convert.ToDouble(countH) / Convert.ToDouble(stud.Hlist.Count));
 
                     if (Math.Abs(stud.DateOfBirth.Year - dateOfBirth.Year) < 3 )
                         match += 5;
@@ -1000,8 +1000,17 @@ namespace BetterTogetherProj.Models.DAL
                     if (Math.Sqrt(Math.Pow(xCurrent, 2) + Math.Pow(yCurrent, 2)) < 15)
                         match += 10;
 
-
-
+                    for (int i = 0; i < stud.Friendslist.Count; i++)
+                    {
+                        if (friendsList.Contains(stud.Friendslist[i]))
+                            countFriends++;
+                    }
+                    if (stud.Friendslist.Count != 0 && countFriends != 0)
+                    {
+                        if (countFriends > 2)
+                            countFriends = 2;
+                        match += 20 * (Convert.ToDouble(countFriends) / 2);
+                    }
                 }
                 return match;
 
