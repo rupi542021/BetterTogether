@@ -1040,5 +1040,51 @@ namespace BetterTogetherProj.Models.DAL
             command = prefix + sb.ToString();
             return command;
         }
+        public int DeleteFavorite(StudentFavorites sf)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString");
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            String cStr = BuildDeleteFavoriteCommand(sf);
+            cmd = CreateCommand(cStr, con);
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery();
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+
+        }
+        private String BuildDeleteFavoriteCommand(StudentFavorites sf)
+        {
+            String command = "DELETE from [dbo].[student_favorites_P] where [Student1Mail] = '" + sf.Student1mail +"' and [student2Mail] = '" +  sf.Student2mail +"'";
+            return command;
+        }
+
+
     }
 }

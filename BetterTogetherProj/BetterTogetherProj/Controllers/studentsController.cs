@@ -95,7 +95,7 @@ namespace BetterTogetherProj.Controllers
 
         [HttpGet]
         [Route("API/students/{mail}/without")]
-        public IHttpActionResult GetAllUsers(string mail)
+        public IHttpActionResult GetAllUsers (string mail)
         {
             try
             {
@@ -340,6 +340,20 @@ namespace BetterTogetherProj.Controllers
         // DELETE api/<controller>/5
         public void Delete(int id)
         {
+        }
+        [HttpDelete]
+        [Route("api/students/DeleteFromFavorites")]
+        public IHttpActionResult DeleteFromFavorites([FromBody] StudentFavorites sf)
+        {
+            try
+            {
+                sf.Delete();
+                    return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
