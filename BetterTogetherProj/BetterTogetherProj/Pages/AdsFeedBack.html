@@ -60,54 +60,70 @@
         function getFBSuccess(FBData) {
 
             console.log(FBData);
-            
-            data = FBData; 
+
+            arr = FBData.filter(r => r.Fbads.length > 0);// במקום לעשות לולאה, ניגש לפרסומים כך ונבדוק עבור על פרסום אם מערך פידבק גדול מאפס.
+
+            for (var i = 0; i < arr.length; i++) {
+                for (var j = 0; j < arr[i].Fbads.length; j++) {
+                    arr[i].Fbads[j].SubD = arr[i].SubSubject;
+                }
+
+            }
+            console.log(arr);
             if ($.fn.dataTable.isDataTable('#FBtable')) {//destroy the old table on existence and then create new instance of jQuery DataTable
                 $('#FBtable').DataTable().clear().destroy();
             }
             
-                try {
-                    tbl = $('#FBtable').DataTable({
-                        data: FBData,
-                        pageLength: 5,
-                        columns: [
+              
+                try
+                {
+                    for (var i = 0; i < arr.length; i++) {
+                        tbl = $('#FBtable').DataTable({
+                            retrieve: true,
 
-                            { data: "SubSubject" },
+                            data: arr[i].Fbads,
+                            pageLength: 5,
 
-                            {
-                                data: "Fbads[].Student.Fname",
-                            },
-                            {
-                                data: "Fbads[].CommentText",
-                             
-                            },
-                            {
-                                data: "Fbads[].CommentDate",
+                            columns: [
 
-                               },
-                            //{
-                            //    render: function (data, type, row, meta) {
+                                { data: "SubD" },
 
-                            //        plusBtn = "<i type='button'   class='fas fa-plus-circle' id='" + row.Student.Mail + "," + row.Ads.AdsCode+"'></i>";
+                                {
+                                    data: "Student.Fname",
+                                },
+                                {
+                                    data: "CommentText",
 
-                            //        return plusBtn;
-                            //    }
-                            //},
-                            {
-                                data: "Fbads[].Managercomment",
-                               }
+                                },
+                                {
+                                    data: "CommentDate",
 
-                        ],
+                                },
+                                //{
+                                //    render: function (data, type, row, meta) {
 
-                    });
+                                //        plusBtn = "<i type='button'   class='fas fa-plus-circle' id='" + row.Student.Mail + "," + row.Ads.AdsCode+"'></i>";
+
+                                //        return plusBtn;
+                                //    }
+                                //},
+                                {
+                                    data: "Managercomment",
+                                }
+
+                            ]
+                            ,
+
+                        });
+
+                    }
 
                 }
-
-
                 catch (err) {
                     alert(err);
                 }
             }
+            
         
 
         function addcomment() {

@@ -717,9 +717,10 @@ namespace BetterTogetherProj.Models.DAL
             try
             {
                 con = connect1("DBConnectionString");
-                String selectSTR = "select * from feedbackstudenttoads_P3 inner join student_P on student_P.mail=feedbackstudenttoads_P3.studentmail where adCode=" + adCode;
+                String selectSTR = "select * from feedbackstudenttoads_P3 inner join student_P on student_P.mail=feedbackstudenttoads_P3.studentmail  where feedbackstudenttoads_P3.adCode=" + adCode;
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+               
                 while (dr.Read())
                 {   // Read till the end of the data into a row
                     AdsFeedback FB = new AdsFeedback();
@@ -727,13 +728,14 @@ namespace BetterTogetherProj.Models.DAL
                     FB.Student.Mail = (string)dr["mail"];
                     FB.CommentText = (string)dr["commenttext"];
                     FB.CommentDate = Convert.ToDateTime(dr["commentdate"]);
-                    FB.Managercomment = (string)dr["managercomment"];
+                    FB.Managercomment = Convert.ToString(dr["managercomment"]);
 
 
                     FBList.Add(FB);
-                }
 
+                }
                 return FBList;
+
             }
             catch (Exception ex)
             {
