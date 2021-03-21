@@ -9,6 +9,7 @@ namespace BetterTogetherProj.Models
 {
     public class AdsFeedback
     {
+        int fbAdsNum;
         Student student;
         DateTime commentDate;
         string commentText;
@@ -18,14 +19,16 @@ namespace BetterTogetherProj.Models
 
         public AdsFeedback() { }
 
-        public AdsFeedback(Student student, DateTime commentDate, string commentText, string managercomment)
+        public AdsFeedback(int fbAdsNum, Student student, DateTime commentDate, string commentText, string managercomment)
         {
+            FbAdsNum = fbAdsNum;
             Student = student;
             CommentDate = commentDate;
             CommentText = commentText;
             Managercomment = managercomment;
         }
 
+        public int FbAdsNum { get => fbAdsNum; set => fbAdsNum = value; }
         public Student Student { get => student; set => student = value; }
         public DateTime CommentDate { get => commentDate; set => commentDate = value; }
         public string CommentText { get => commentText; set => commentText = value; }
@@ -33,12 +36,10 @@ namespace BetterTogetherProj.Models
 
 
 
-
-
-        //public void Insertcomment()
-        //{
-        //    DBServices dbs = new DBServices();
-        //    dbs.Insertcomment(this);
-        //}
+        public void Insertcomment()
+        {
+            DBServices dbs = new DBServices();
+            dbs.Insertcomment(this);
+        }
     }
 }

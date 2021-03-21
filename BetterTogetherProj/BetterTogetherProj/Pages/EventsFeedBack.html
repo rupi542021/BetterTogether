@@ -99,9 +99,9 @@
                         },
                         {
                             render: function (data, type, row, meta) {
-                                let i = 0;
-                                plusBtn = "<i type='button'   class='fas fa-plus-circle' id='" + row.Student.Mail + "','" + FBarr[i].AdsCode + "'></i>";
-                                i++;
+                               
+                                plusBtn = "<i type='button'   class='fas fa-plus-circle' id='" +row.FbEventNum + "'></i>";
+                               
                                 return plusBtn;
                             }
                         },
@@ -126,10 +126,7 @@
      
         function addcomment() {
             idcom = $(this).attr("id");
-            combo = idcom.split(",");
-            mail = combo[0];
-            eventcode = combo[1];
-
+           
             swal({
                 content: {
                     element: "input",
@@ -146,13 +143,9 @@
         function insertcomment() {
             let managercomment = $(".swal-content__input").val();
             let Addcomment = {
+                FbEventNum :idcom,
                 Managercomment: managercomment,
-                Student: {
-                    Mail: mail
-                },
-                Events: {
-                    EventCode: eventcode
-                },
+               
             }
 
             ajaxCall("PUT", "../api/Events/addcomment", JSON.stringify(Addcomment), insertmngcomsuccess, error);

@@ -724,6 +724,7 @@ namespace BetterTogetherProj.Models.DAL
                 while (dr.Read())
                 {   // Read till the end of the data into a row
                     AdsFeedback FB = new AdsFeedback();
+                    FB.FbAdsNum= Convert.ToInt16(dr["fbAdsNum"]);
                     FB.Student = (new Student { Fname = (string)dr["firstName"] });
                     FB.Student.Mail = (string)dr["mail"];
                     FB.CommentText = (string)dr["commenttext"];
@@ -766,6 +767,7 @@ namespace BetterTogetherProj.Models.DAL
                 while (dr.Read())
                 {   // Read till the end of the data into a row
                     Events ev = new Events();
+
                     ev.EventCode = Convert.ToInt16(dr["eventCode"]);
                     ev.Fbevents = GetFBev(ev.EventCode);
                     ev.Eventname = (string)dr["eventname"];
@@ -804,6 +806,7 @@ namespace BetterTogetherProj.Models.DAL
                 while (dr.Read())
                 {   // Read till the end of the data into a row
                     EventsFeedback FB = new EventsFeedback();
+                    FB.FbEventNum= Convert.ToInt16(dr["fbEventNum"]);
                     FB.Student = (new Student { Fname = (string)dr["firstName"] });
                     FB.Student.Mail = (string)dr["mail"];
                     FB.CommentText = (string)dr["commenttext"];
@@ -934,113 +937,113 @@ namespace BetterTogetherProj.Models.DAL
         //}
 
 
-        //public int Insertcomment(AdsFeedback mngcom)
-        //{
+        public int Insertcomment(AdsFeedback mngcom)
+        {
 
-        //    SqlConnection con;
-        //    SqlCommand cmd;
+            SqlConnection con;
+            SqlCommand cmd;
 
-        //    try
-        //    {
-        //        con = connect1("DBConnectionString"); // create the connection
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // write to log
-        //        throw (ex);
-        //    }
+            try
+            {
+                con = connect1("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
 
-        //    String cStr = BuildInsertCommand(mngcom);      // helper method to build the insert string
+            String cStr = BuildInsertCommand(mngcom);      // helper method to build the insert string
 
-        //    cmd = CreateCommand1(cStr, con);             // create the command
+            cmd = CreateCommand1(cStr, con);             // create the command
 
-        //    try
-        //    {
-        //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
-        //        return numEffected;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // write to log
-        //        throw (ex);
-        //    }
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
 
-        //    finally
-        //    {
-        //        if (con != null)
-        //        {
-        //            // close the db connection
-        //            con.Close();
-        //        }
-        //    }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
 
-        //}
+        }
 
-        ////--------------------------------------------------------------------
-        //// Build the Insert command String
-        ////--------------------------------------------------------------------
-        //private String BuildInsertCommand(AdsFeedback mngcom)
-        //{
-        //    String command;
+        //--------------------------------------------------------------------
+        // Build the Insert command String
+        //--------------------------------------------------------------------
+        private String BuildInsertCommand(AdsFeedback mngcom)
+        {
+            String command;
 
-        //    command = "update feedbackstudenttoads_P3 set managercomment ='" + mngcom.Managercomment + "' where feedbackstudenttoads_P3.studentmail ='" + mngcom.Student.Mail + "' and feedbackstudenttoads_P3.adCode =" + mngcom.Ads.AdsCode;
+            command = "update feedbackstudenttoads_P3 set managercomment ='" + mngcom.Managercomment + "' where feedbackstudenttoads_P3.fbAdsNum=" + mngcom.FbAdsNum;
 
-        //    return command;
-        //}
+            return command;
+        }
 
-        //public int Insertcomment(StudentFeedToEvents mngcom)
-        //{
+        public int Insertcomment(EventsFeedback mngcom)
+        {
 
-        //    SqlConnection con;
-        //    SqlCommand cmd;
+            SqlConnection con;
+            SqlCommand cmd;
 
-        //    try
-        //    {
-        //        con = connect1("DBConnectionString"); // create the connection
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // write to log
-        //        throw (ex);
-        //    }
+            try
+            {
+                con = connect1("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
 
-        //    String cStr = BuildInsertCommand(mngcom);      // helper method to build the insert string
+            String cStr = BuildInsertCommand(mngcom);      // helper method to build the insert string
 
-        //    cmd = CreateCommand1(cStr, con);             // create the command
+            cmd = CreateCommand1(cStr, con);             // create the command
 
-        //    try
-        //    {
-        //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
-        //        return numEffected;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // write to log
-        //        throw (ex);
-        //    }
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
 
-        //    finally
-        //    {
-        //        if (con != null)
-        //        {
-        //            // close the db connection
-        //            con.Close();
-        //        }
-        //    }
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
 
-        //}
+        }
 
-        ////--------------------------------------------------------------------
-        //// Build the Insert command String
-        ////--------------------------------------------------------------------
-        //private String BuildInsertCommand(StudentFeedToEvents mngcom)
-        //{
-        //    String command;
+        //--------------------------------------------------------------------
+        // Build the Insert command String
+        //--------------------------------------------------------------------
+        private String BuildInsertCommand(EventsFeedback mngcom)
+        {
+            String command;
 
-        //    command = "update feedbackstudenttoevents_P3 set managercomment ='" + mngcom.Managercomment + "' where feedbackstudenttoevents_P3.studentmail ='" + mngcom.Student.Mail + "' and feedbackstudenttoevents_P3.eventCode =" + mngcom.Events.EventCode;
+            command = "update feedbackstudenttoevents_P3 set managercomment ='" + mngcom.Managercomment + "' where feedbackstudenttoevents_P3.fbEventNum="+mngcom.FbEventNum;
 
-        //    return command;
-        //}
+            return command;
+        }
 
         //public List<Events> Geteventdetail()
         //{

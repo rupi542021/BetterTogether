@@ -125,22 +125,22 @@ namespace BetterTogetherProj.Controllers
 
         }
 
-        //[HttpPut]
-        //[Route("api/Ads/addcomment")]
-        //public HttpResponseMessage Insertcomment([FromBody] AdsFeedback addmngcom)
-        //{
-        //    try
-        //    {
-        //        addmngcom.Insertcomment();
+        [HttpPut]
+        [Route("api/Ads/addcomment")]
+        public HttpResponseMessage Insertcomment([FromBody] AdsFeedback addmngcom)
+        {
+            try
+            {
+                addmngcom.Insertcomment();
 
-        //        return Request.CreateResponse(HttpStatusCode.OK, "Comment added successfully");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
-        //    }
+                return Request.CreateResponse(HttpStatusCode.OK, "Comment added successfully");
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
 
 
-        //}
+        }
     }
 }

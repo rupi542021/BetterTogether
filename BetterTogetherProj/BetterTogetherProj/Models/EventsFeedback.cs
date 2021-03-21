@@ -9,6 +9,7 @@ namespace BetterTogetherProj.Models
 {
     public class EventsFeedback
     {
+        int fbEventNum;
         Student student;
         DateTime commentDate;
         string commentText;
@@ -18,18 +19,24 @@ namespace BetterTogetherProj.Models
 
         public EventsFeedback() { }
 
-        public EventsFeedback(Student student, DateTime commentDate, string commentText, string managercomment)
+        public EventsFeedback(int fbEventNum, Student student, DateTime commentDate, string commentText, string managercomment)
         {
+            FbEventNum = fbEventNum;
             Student = student;
             CommentDate = commentDate;
             CommentText = commentText;
             Managercomment = managercomment;
         }
 
+        public int FbEventNum { get => fbEventNum; set => fbEventNum = value; }
         public Student Student { get => student; set => student = value; }
         public DateTime CommentDate { get => commentDate; set => commentDate = value; }
         public string CommentText { get => commentText; set => commentText = value; }
         public string Managercomment { get => managercomment; set => managercomment = value; }
+
+
+
+
 
 
 
@@ -41,10 +48,10 @@ namespace BetterTogetherProj.Models
 
         //}
 
-        //public void Insertcomment()
-        //{
-        //    DBServices dbs = new DBServices();
-        //    dbs.Insertcomment(this);
-        //}
+        public void Insertcomment()
+        {
+            DBServices dbs = new DBServices();
+            dbs.Insertcomment(this);
+        }
     }
 }
