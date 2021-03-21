@@ -972,32 +972,33 @@ namespace BetterTogetherProj.Models.DAL
                         match += 0.1;
                     if (stud.PersonalStatus == personalStatus)
                         match += 0.05;
-                    for (int i = 0; i < plist.Count; i++)
+                    for (int i = 0; i < stud.Plist.Count; i++)
                     {
-                        if (stud.Plist.Contains(plist[i]))
+                        if (plist.Contains(stud.Plist[i]))
                             countP++;
                     }
-                    if(plist.Count!=0 && countP != 0) 
-                        match += 0.2 * (countP / plist.Count);
-                    for (int i = 0; i < hlist.Count; i++)
+                    if(stud.Plist.Count !=0 && countP != 0) 
+                        match += 0.2 * (countP / stud.Plist.Count);
+                    for (int i = 0; i < stud.Hlist.Count; i++)
                     {
-                        if (stud.Hlist.Contains(hlist[i]))
+                        if (hlist.Contains(stud.Hlist[i]))
                             countH++;
                     }
-                    if (hlist.Count != 0&&countH!=0)
-                        match += 0.2 * (countH / hlist.Count);
-                    if (stud.DateOfBirth.Year - dateOfBirth.Year < 3 || dateOfBirth.Year - stud.DateOfBirth.Year < 3)
+                    if (stud.Hlist.Count != 0&&countH!=0)
+                        match += 0.2 * (countH / stud.Hlist.Count);
+
+                    if (Math.Abs(stud.DateOfBirth.Year - dateOfBirth.Year) < 3 )
                         match += 0.05;
 
-                    //xHome = (stud.HomeTown.X/1000) - (homeTown.X/1000);
-                    //yHome = (stud.HomeTown.Y/1000) - (homeTown.Y/1000);
-                    //if(Math.Sqrt(Math.Pow(xHome, 2) + Math.Pow(yHome, 2))<15)
-                    //    match += 0.1;
+                    xHome = (stud.HomeTown.X / 1000) - (homeTown.X / 1000);
+                    yHome = (stud.HomeTown.Y / 1000) - (homeTown.Y / 1000);
+                    if (Math.Sqrt(Math.Pow(xHome, 2) + Math.Pow(yHome, 2)) < 15)
+                        match += 0.1;
 
-                    //xCurrent = (stud.AddressStudying.X / 1000) - (addressStudying.X / 1000);
-                    //yCurrent = (stud.AddressStudying.Y / 1000) - (addressStudying.Y / 1000);
-                    //if (Math.Sqrt(Math.Pow(xCurrent, 2) + Math.Pow(yCurrent, 2)) < 15)
-                    //    match += 0.1;
+                    xCurrent = (stud.AddressStudying.X / 1000) - (addressStudying.X / 1000);
+                    yCurrent = (stud.AddressStudying.Y / 1000) - (addressStudying.Y / 1000);
+                    if (Math.Sqrt(Math.Pow(xCurrent, 2) + Math.Pow(yCurrent, 2)) < 15)
+                        match += 0.1;
 
 
 
