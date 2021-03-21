@@ -25,5 +25,11 @@ namespace project_classes.Models
             DBServicesReact dbs = new DBServicesReact();
             dbs.InsertFavorite(this);
         }
+
+        public void Delete()
+        {
+            DBServicesReact dbs = new DBServicesReact();
+            dbs.DeleteFavorite(this);
+        }
     }
 }
