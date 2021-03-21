@@ -967,38 +967,38 @@ namespace BetterTogetherProj.Models.DAL
                     stud.Hlist = GetHlistByUser((string)dr["mail"]);
 
                     if (stud.Dep == dep)
-                        match += 0.05;
+                        match += 5;
                     if (stud.StudyingYear == studyingYear)
-                        match += 0.1;
+                        match += 10;
                     if (stud.PersonalStatus == personalStatus)
-                        match += 0.05;
+                        match += 5;
                     for (int i = 0; i < stud.Plist.Count; i++)
                     {
                         if (plist.Contains(stud.Plist[i]))
                             countP++;
                     }
                     if(stud.Plist.Count !=0 && countP != 0) 
-                        match += 0.2 * (countP / stud.Plist.Count);
+                        match += 20 * (countP / stud.Plist.Count);
                     for (int i = 0; i < stud.Hlist.Count; i++)
                     {
                         if (hlist.Contains(stud.Hlist[i]))
                             countH++;
                     }
                     if (stud.Hlist.Count != 0&&countH!=0)
-                        match += 0.2 * (countH / stud.Hlist.Count);
+                        match += 20 * (countH / stud.Hlist.Count);
 
                     if (Math.Abs(stud.DateOfBirth.Year - dateOfBirth.Year) < 3 )
-                        match += 0.05;
+                        match += 5;
 
                     xHome = (stud.HomeTown.X / 1000) - (homeTown.X / 1000);
                     yHome = (stud.HomeTown.Y / 1000) - (homeTown.Y / 1000);
                     if (Math.Sqrt(Math.Pow(xHome, 2) + Math.Pow(yHome, 2)) < 15)
-                        match += 0.1;
+                        match += 10;
 
                     xCurrent = (stud.AddressStudying.X / 1000) - (addressStudying.X / 1000);
                     yCurrent = (stud.AddressStudying.Y / 1000) - (addressStudying.Y / 1000);
                     if (Math.Sqrt(Math.Pow(xCurrent, 2) + Math.Pow(yCurrent, 2)) < 15)
-                        match += 0.1;
+                        match += 10;
 
 
 
