@@ -915,7 +915,9 @@ namespace BetterTogetherProj.Models.DAL
                     stud.Match = calMatch(mail, stud.Friendslist,stud.DateOfBirth, stud.Dep, stud.StudyingYear, stud.HomeTown, stud.AddressStudying, stud.PersonalStatus, stud.Hlist,stud.Plist);
                     studList.Add(stud);
                 }
-                return studList;
+
+                var newStudList = studList.OrderByDescending(x => x.Match).ToList();
+                return newStudList;
 
             }
             catch (Exception ex)
