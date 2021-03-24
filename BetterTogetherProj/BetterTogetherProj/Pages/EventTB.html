@@ -23,15 +23,19 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
+   
+
 
 
     <script>
+
+       
         $(document).ready(function () {
 
             ajaxCall("GET", "../api/Events/geteventdetail", "", getSuccessAlleventdetail, error);
-            $(document).on("click", ".view", addpiechart );
             google.charts.load('current', { 'packages': ['corechart'] });
-               
+            $(document).on("click", ".view", addpiechart);
+           
         });
 
         function getSuccessAlleventdetail(eventdetail) {
@@ -47,9 +51,10 @@
                         { data: "Eventtype" },
                         { data: "Eventname" },
                         { data: "EventDate" },
+
                         {
                             render: function (data, type, row, meta) {
-                                ViewBtn = "<button  class='view' id='" + row.EventCode + "'>צפי באישורי הגעה </button>";
+                                ViewBtn = "<button class='view' par='" + row.ParticipantQu + "'nopar='" + row.NotparticipantQu +"' name='"+row.Eventname+"' >צפי באישורי הגעה </button>";
                                 return ViewBtn;
                             }
                         }
@@ -65,24 +70,29 @@
         }
 
         function addpiechart() {
-            EventId = $(this).attr("id");
+            participant = parseInt($(this).attr("par"));
+            Noparticipant =parseInt( $(this).attr("nopar"));
+            eventName=$(this).attr("name");
             
             google.charts.setOnLoadCallback(drawChart);
+            
         }
-      
+
 
         function drawChart() {
-
+          
             var data = google.visualization.arrayToDataTable([
-                //['מגיעים', 'Hours per Day'],
-                ['משתתפים', data.ParticipantQu],
-                ['לא משתתפים', data.NotparticipantQu ],
-               
+                ['מגיעים', 'Hours per Day'],
+                ['משתתפים', participant],
+                ['לא משתתפים', Noparticipant],
+
             ]);
 
             var options = {
-                title: 'My Daily Activities',
+                title:'השתתפות באירוע:'+eventName,
                 is3D: true,
+                
+
             };
 
             var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
@@ -99,7 +109,7 @@
     </script>
 </head>
 <body>
-    <form id="pForm">
+    
         <table id="detaileventtable" class="display nowrap" style="width:100%">
             <thead>
                 <tr>
@@ -110,7 +120,7 @@
                 </tr>
             </thead>
         </table>
-    </form>
+   
 
     <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
 </body>
