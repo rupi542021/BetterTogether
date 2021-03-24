@@ -338,9 +338,7 @@ namespace BetterTogetherProj.Controllers
 
         //}
         // DELETE api/<controller>/5
-        public void Delete(int id)
-        {
-        }
+
         [HttpDelete]
         [Route("api/students/DeleteFromFavorites")]
         public IHttpActionResult DeleteFromFavorites([FromBody] StudentFavorites sf)
