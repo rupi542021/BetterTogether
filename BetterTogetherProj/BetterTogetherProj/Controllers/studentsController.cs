@@ -234,43 +234,42 @@ namespace BetterTogetherProj.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "connecting error");
             }
         }
-        [HttpGet]
-        [Route("API/students/{fileName}/photos")]
-        public byte[] GetImage(string fileName)
-        {
-            //using (var dashboardService = new DashboardService())
-            {
-                //var component = dashboardService.GetImage(componentId);
-                var context = HttpContext.Current;
-                string filePath = context.Server.MapPath("~/uploadedFiles/" + fileName);
-                context.Response.ContentType = "image/jpeg";
-                using (FileStream fileStream = new FileStream(filePath, FileMode.Open))
-                {
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        fileStream.CopyTo(memoryStream);
-                        Bitmap image = new Bitmap(1, 1);
-                        image.Save(memoryStream, ImageFormat.Jpeg);
-
-                        byte[] byteImage = memoryStream.ToArray();
-                        return byteImage;
-                    }
-                }
-            }
-        }
         //[HttpGet]
         //[Route("API/students/{fileName}/photos")]
-        //public IHttpActionResult GetThumbnail(string fileName)
+        //public byte[] GetImage(string fileName)
         //{
-        //    var mediaRoot = System.Web.HttpContext.Current.Server.MapPath("~/uploadedFiles");
+        //    //using (var dashboardService = new DashboardService())
+        //    {
+        //        //var component = dashboardService.GetImage(componentId);
+        //        var context = HttpContext.Current;
+        //        string filePath = context.Server.MapPath("~/uploadedFiles/" + fileName);
+        //        context.Response.ContentType = "image/jpeg";
+        //        using (FileStream fileStream = new FileStream(filePath, FileMode.Open))
+        //        {
+        //            using (var memoryStream = new MemoryStream())
+        //            {
+        //                fileStream.CopyTo(memoryStream);
+        //                Bitmap image = new Bitmap(1, 1);
+        //                image.Save(memoryStream, ImageFormat.Jpeg);
 
-        //    var imgPath = Path.Combine(mediaRoot, fileName);
-        //    var fileInfo = new FileInfo(imgPath);
-
-        //    return !fileInfo.Exists
-        //        ? (IHttpActionResult)NotFound()
-        //        : new FileResult(fileInfo.FullName);
+        //                byte[] byteImage = memoryStream.ToArray();
+        //                return byteImage;
+        //            }
+        //        }
+        //    }
         //}
+        [HttpGet]
+        [Route("API/students/{fileName}/photos")]
+        public IHttpActionResult GetThumbnail(string fileName)
+        {
+            var mediaRoot = System.Web.HttpContext.Current.Server.MapPath("~/uploadedFiles");
+
+            var imgPath = Path.Combine(mediaRoot, fileName);
+            var fileInfo = new FileInfo(imgPath);
+            return Ok(imgPath);
+            
+
+        }
         //[HttpGet]
         //[Route("API/students/photos")]
         //public IHttpActionResult GetImageTest()
