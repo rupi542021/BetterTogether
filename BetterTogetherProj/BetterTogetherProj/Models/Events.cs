@@ -56,13 +56,13 @@ namespace BetterTogetherProj.Models
             return EvFBList;
 
         }
-        //public List<Events> Geteventdetail()
-        //{
-        //    DBServices dbs = new DBServices();
-        //    List<Events> evdetailList = dbs.Geteventdetail();
-        //    return evdetailList;
+        public List<Events> Geteventdetail()
+        {
+            DBServices dbs = new DBServices();
+            List<Events> evdetailList = dbs.Geteventdetail();
+            return evdetailList;
 
-        //}
+        }
 
     }
 }

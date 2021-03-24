@@ -687,7 +687,7 @@ namespace BetterTogetherProj.Models.DAL
                 {   // Read till the end of the data into a row
                     Ads ad = new Ads();
                     ad.AdsCode = Convert.ToInt16(dr["adCode"]);
-                    ad.Fbads = GetFBGG(ad.AdsCode);
+                    ad.Fbads = GetFBad(ad.AdsCode);
                     ad.SubSubject= (string)dr["subSubName"];
                     AdList.Add(ad);
                 }
@@ -710,7 +710,7 @@ namespace BetterTogetherProj.Models.DAL
 
         }
 
-        public List<AdsFeedback> GetFBGG(int adCode)
+        public List<AdsFeedback> GetFBad(int adCode)
         {
             SqlConnection con = null;
             List<AdsFeedback> FBList = new List<AdsFeedback>();
@@ -835,48 +835,6 @@ namespace BetterTogetherProj.Models.DAL
             }
 
         }
-        //public List<StudentFeedToEvents> GetFBEvents(string evtypeFB)
-        //{
-        //    SqlConnection con = null;
-        //    List<StudentFeedToEvents> FBList = new List<StudentFeedToEvents>();
-        //    try
-        //    {
-        //        con = connect1("DBConnectionString");
-        //        String selectSTR = "select * from feedbackstudenttoevents_P3 inner join events_P3 on events_P3.eventCode=feedbackstudenttoevents_P3.eventCode inner join student_P on student_P.mail=feedbackstudenttoevents_P3.studentmail where eventTypeName='" + evtypeFB + "'";
-        //        SqlCommand cmd = new SqlCommand(selectSTR, con);
-        //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-        //        while (dr.Read())
-        //        {   // Read till the end of the data into a row
-        //            StudentFeedToEvents FB = new StudentFeedToEvents();
-        //            FB.Student = (new Student { Fname = (string)dr["firstName"] });
-        //            FB.Student.Mail = (string)dr["mail"];
-        //            FB.Events = new Events();
-        //            FB.Events.Eventname = (new EventName { Eventname = (string)dr["eventname"] });
-        //            FB.Events.EventCode = Convert.ToInt16(dr["eventCode"]);
-        //            FB.CommentText = (string)dr["commenttext"];
-        //            FB.CommentDate = Convert.ToDateTime(dr["commentdate"]);
-        //            FB.Managercomment = (string)dr["managercomment"];
-
-        //            FBList.Add(FB);
-        //        }
-
-        //        return FBList;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // write to log
-        //        throw (ex);
-        //    }
-        //    finally
-        //    {
-        //        if (con != null)
-        //        {
-        //            con.Close();
-        //        }
-
-        //    }
-
-        //}
 
 
         //public int Insertquestion(Question q)
@@ -1045,45 +1003,45 @@ namespace BetterTogetherProj.Models.DAL
             return command;
         }
 
-        //public List<Events> Geteventdetail()
-        //{
-        //    SqlConnection con = null;
-        //    List<Events> evdetailList = new List<Events>();
-        //    try
-        //    {
-        //        con = connect1("DBConnectionString");
-        //        String selectSTR = "select * from events_P3";
-        //        SqlCommand cmd = new SqlCommand(selectSTR, con);
-        //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-        //        while (dr.Read())
-        //        {   // Read till the end of the data into a row
-        //            Events evdetail = new Events();
-        //            evdetail.EventCode = Convert.ToInt16(dr["eventCode"]);
-        //            evdetail.Eventtype = (new EventType { EventTypeName = (string)dr["eventTypeName"] });
-        //            evdetail.Eventname = (new EventName { Eventname = (string)dr["eventname"] });
-        //            evdetail.EventDate = Convert.ToDateTime(dr["eventDate"]);
-        //            evdetail.ParticipantQu = Convert.ToInt32(dr["participantQu"]);
-        //            evdetail.NotparticipantQu = Convert.ToInt32(dr["notparticipantQu"]);
+        public List<Events> Geteventdetail()
+        {
+            SqlConnection con = null;
+            List<Events> evdetailList = new List<Events>();
+            try
+            {
+                con = connect1("DBConnectionString");
+                String selectSTR = "select * from events_P3";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Events evdetail = new Events();
+                    evdetail.EventCode = Convert.ToInt16(dr["eventCode"]);
+                    evdetail.Eventtype = (string)dr["eventTypeName"];
+                    evdetail.Eventname = (string)dr["eventname"];
+                    evdetail.EventDate = Convert.ToDateTime(dr["eventDate"]);
+                    evdetail.ParticipantQu = Convert.ToInt32(dr["participantQu"]);
+                    evdetail.NotparticipantQu = Convert.ToInt32(dr["notparticipantQu"]);
 
-        //            evdetailList.Add(evdetail);
-        //        }
+                    evdetailList.Add(evdetail);
+                }
 
-        //        return evdetailList;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // write to log
-        //        throw (ex);
-        //    }
-        //    finally
-        //    {
-        //        if (con != null)
-        //        {
-        //            con.Close();
-        //        }
+                return evdetailList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
 
-        //    }
+            }
 
-        //}
+        }
     }
 }

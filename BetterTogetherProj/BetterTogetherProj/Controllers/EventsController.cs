@@ -136,13 +136,13 @@ namespace BetterTogetherProj.Controllers
 
         }
 
-        //[HttpGet]
-        //[Route("api/Events/geteventdetail")]
-        //public List<Events> Geteventdetail()
-        //{
-        //    Events evdetail = new Events();
-        //    return evdetail.Geteventdetail();
+        [HttpGet]
+        [Route("api/Events/geteventdetail")]
+        public List<Events> Geteventdetail()
+        {
+            Events evdetail = new Events();
+            return evdetail.Geteventdetail();
 
-        //}
+        }
     }
 }
