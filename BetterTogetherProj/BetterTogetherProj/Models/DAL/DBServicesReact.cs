@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Device.Location;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -85,6 +86,7 @@ namespace BetterTogetherProj.Models.DAL
             catch (Exception ex)
             {
                 // write to log
+                writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -709,6 +711,7 @@ namespace BetterTogetherProj.Models.DAL
             catch (Exception ex)
             {
                 // write to log
+                writeToLog(ex);
                 throw (ex);
             }
 
@@ -946,6 +949,8 @@ namespace BetterTogetherProj.Models.DAL
             double yHome = 0;
             double xCurrent = 0;
             double yCurrent = 0;
+            List<int> hlistCode = new List<int>();
+            List<int> plistCode = new List<int>();
             try
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
@@ -968,39 +973,45 @@ namespace BetterTogetherProj.Models.DAL
                     stud.Hlist = GetHlistByUser((string)dr["mail"]);
                     stud.Friendslist = GetFriendsListByUser(((string)dr["mail"]));
 
-                    if (stud.Dep == dep)
+                    if (stud.Dep.DepartmentCode == dep.DepartmentCode)
                         match += 5;
                     if (stud.StudyingYear == studyingYear)
                         match += 10;
                     if (stud.PersonalStatus == personalStatus)
                         match += 5;
+                    
+                    for (int i = 0; i < plist.Count; i++)
+                    { plistCode.Add(plist[i].Pcode); }
                     for (int i = 0; i < stud.Plist.Count; i++)
                     {
-                        if (plist.Contains(stud.Plist[i]))
+                        if (plistCode.Contains(stud.Plist[i].Pcode))
                             countP++;
                     }
                     if(stud.Plist.Count !=0 && countP != 0) 
                         match += 20 * (Convert.ToDouble(countP) / Convert.ToDouble(stud.Plist.Count));
+                    
+                    for (int i = 0; i < hlist.Count; i++)
+                    {hlistCode.Add(hlist[i].Hcode);}
                     for (int i = 0; i < stud.Hlist.Count; i++)
                     {
-                        if (hlist.Contains(stud.Hlist[i]))
+                        if (hlistCode.Contains(stud.Hlist[i].Hcode))
                             countH++;
                     }
                     if (stud.Hlist.Count != 0&&countH!=0)
                         match += 20 * (Convert.ToDouble(countH) / Convert.ToDouble(stud.Hlist.Count));
 
-                    if (Math.Abs(stud.DateOfBirth.Year - dateOfBirth.Year) < 3 )
+                    if (Math.Abs(stud.DateOfBirth.Year - dateOfBirth.Year) <= 3 )
                         match += 5;
 
                     xHome = (stud.HomeTown.X / 1000) - (homeTown.X / 1000);
                     yHome = (stud.HomeTown.Y / 1000) - (homeTown.Y / 1000);
                     if (Math.Sqrt(Math.Pow(xHome, 2) + Math.Pow(yHome, 2)) < 15)
-                        match += 10;
+                        match += 20;
 
                     xCurrent = (stud.AddressStudying.X / 1000) - (addressStudying.X / 1000);
                     yCurrent = (stud.AddressStudying.Y / 1000) - (addressStudying.Y / 1000);
                     if (Math.Sqrt(Math.Pow(xCurrent, 2) + Math.Pow(yCurrent, 2)) < 15)
-                        match += 10;
+                        match += 20;
 
                     for (int i = 0; i < stud.Friendslist.Count; i++)
                     {
@@ -1011,10 +1022,13 @@ namespace BetterTogetherProj.Models.DAL
                     {
                         if (countFriends > 2)
                             countFriends = 2;
-                        match += 20 * (Convert.ToDouble(countFriends) / 2);
+                        match += 15 * (Convert.ToDouble(countFriends) / 2);
                     }
                 }
-                return match;
+                if (match > 100)
+                    return 100;
+                else
+                    return Math.Round(match,1);
 
             }
             catch (Exception ex)
@@ -1087,6 +1101,21 @@ namespace BetterTogetherProj.Models.DAL
             return command;
         }
 
+        public void writeToLog(Exception ex)
+        {
+            // Create a string array with the lines of text
+            string line = ex.Message;
+
+            // Set a variable to the Documents path.
+            string docPath =
+              Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            // Write the string array to a new file named "WriteLines.txt".
+            using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "Exceptions.txt"),true))
+            {
+                    outputFile.WriteLine(line);
+            }
+        }
 
     }
 }
