@@ -949,6 +949,8 @@ namespace BetterTogetherProj.Models.DAL
             double yHome = 0;
             double xCurrent = 0;
             double yCurrent = 0;
+            List<int> hlistCode = new List<int>();
+            List<int> plistCode = new List<int>();
             try
             {
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
@@ -971,28 +973,34 @@ namespace BetterTogetherProj.Models.DAL
                     stud.Hlist = GetHlistByUser((string)dr["mail"]);
                     stud.Friendslist = GetFriendsListByUser(((string)dr["mail"]));
 
-                    if (stud.Dep == dep)
+                    if (stud.Dep.DepartmentCode == dep.DepartmentCode)
                         match += 5;
                     if (stud.StudyingYear == studyingYear)
                         match += 10;
                     if (stud.PersonalStatus == personalStatus)
                         match += 5;
+                    
+                    for (int i = 0; i < plist.Count; i++)
+                    { plistCode.Add(plist[i].Pcode); }
                     for (int i = 0; i < stud.Plist.Count; i++)
                     {
-                        if (plist.Contains(stud.Plist[i]))
+                        if (plistCode.Contains(stud.Plist[i].Pcode))
                             countP++;
                     }
                     if(stud.Plist.Count !=0 && countP != 0) 
                         match += 15 * (Convert.ToDouble(countP) / Convert.ToDouble(stud.Plist.Count));
+                    
+                    for (int i = 0; i < hlist.Count; i++)
+                    {hlistCode.Add(hlist[i].Hcode);}
                     for (int i = 0; i < stud.Hlist.Count; i++)
                     {
-                        if (hlist.Contains(stud.Hlist[i]))
+                        if (hlistCode.Contains(stud.Hlist[i].Hcode))
                             countH++;
                     }
                     if (stud.Hlist.Count != 0&&countH!=0)
                         match += 15 * (Convert.ToDouble(countH) / Convert.ToDouble(stud.Hlist.Count));
 
-                    if (Math.Abs(stud.DateOfBirth.Year - dateOfBirth.Year) < 3 )
+                    if (Math.Abs(stud.DateOfBirth.Year - dateOfBirth.Year) <= 3 )
                         match += 5;
 
                     xHome = (stud.HomeTown.X / 1000) - (homeTown.X / 1000);
@@ -1017,7 +1025,7 @@ namespace BetterTogetherProj.Models.DAL
                         match += 15 * (Convert.ToDouble(countFriends) / 2);
                     }
                 }
-                return match;
+                return Math.Round(match,1);
 
             }
             catch (Exception ex)
