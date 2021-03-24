@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Device.Location;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -85,6 +86,7 @@ namespace BetterTogetherProj.Models.DAL
             catch (Exception ex)
             {
                 // write to log
+                writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -709,6 +711,7 @@ namespace BetterTogetherProj.Models.DAL
             catch (Exception ex)
             {
                 // write to log
+                writeToLog(ex);
                 throw (ex);
             }
 
@@ -1087,6 +1090,21 @@ namespace BetterTogetherProj.Models.DAL
             return command;
         }
 
+        public void writeToLog(Exception ex)
+        {
+            // Create a string array with the lines of text
+            string line = ex.Message;
+
+            // Set a variable to the Documents path.
+            string docPath =
+              Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            // Write the string array to a new file named "WriteLines.txt".
+            using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "Exceptions.txt"),true))
+            {
+                    outputFile.WriteLine(line);
+            }
+        }
 
     }
 }
