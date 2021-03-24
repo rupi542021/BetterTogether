@@ -142,7 +142,8 @@ namespace BetterTogetherProj.Controllers
             }
             catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
+                throw (ex);
+                //return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
             }
         }
 
