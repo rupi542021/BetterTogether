@@ -29,11 +29,9 @@
         $(document).ready(function () {
 
             ajaxCall("GET", "../api/Events/geteventdetail", "", getSuccessAlleventdetail, error);
-            $(document).on("click", ".view", addpiechart);
+            $(document).on("click", ".view", addpiechart );
             google.charts.load('current', { 'packages': ['corechart'] });
-
-
-          
+               
         });
 
         function getSuccessAlleventdetail(eventdetail) {
@@ -51,7 +49,7 @@
                         { data: "EventDate" },
                         {
                             render: function (data, type, row, meta) {
-                                ViewBtn = "<button class='view' id='" + row.EventCode + "'>צפי באישורי הגעה </button>";
+                                ViewBtn = "<button  class='view' id='" + row.EventCode + "'>צפי באישורי הגעה </button>";
                                 return ViewBtn;
                             }
                         }
@@ -67,7 +65,8 @@
         }
 
         function addpiechart() {
-            alert("s");
+            EventId = $(this).attr("id");
+            
             google.charts.setOnLoadCallback(drawChart);
         }
       
@@ -75,12 +74,10 @@
         function drawChart() {
 
             var data = google.visualization.arrayToDataTable([
-                ['Task', 'Hours per Day'],
-                ['Work', 11],
-                ['Eat', 2],
-                ['Commute', 2],
-                ['Watch TV', 2],
-                ['Sleep', 7]
+                //['מגיעים', 'Hours per Day'],
+                ['משתתפים', data.ParticipantQu],
+                ['לא משתתפים', data.NotparticipantQu ],
+               
             ]);
 
             var options = {
