@@ -980,14 +980,14 @@ namespace BetterTogetherProj.Models.DAL
                             countP++;
                     }
                     if(stud.Plist.Count !=0 && countP != 0) 
-                        match += 20 * (Convert.ToDouble(countP) / Convert.ToDouble(stud.Plist.Count));
+                        match += 15 * (Convert.ToDouble(countP) / Convert.ToDouble(stud.Plist.Count));
                     for (int i = 0; i < stud.Hlist.Count; i++)
                     {
                         if (hlist.Contains(stud.Hlist[i]))
                             countH++;
                     }
                     if (stud.Hlist.Count != 0&&countH!=0)
-                        match += 20 * (Convert.ToDouble(countH) / Convert.ToDouble(stud.Hlist.Count));
+                        match += 15 * (Convert.ToDouble(countH) / Convert.ToDouble(stud.Hlist.Count));
 
                     if (Math.Abs(stud.DateOfBirth.Year - dateOfBirth.Year) < 3 )
                         match += 5;
@@ -995,12 +995,12 @@ namespace BetterTogetherProj.Models.DAL
                     xHome = (stud.HomeTown.X / 1000) - (homeTown.X / 1000);
                     yHome = (stud.HomeTown.Y / 1000) - (homeTown.Y / 1000);
                     if (Math.Sqrt(Math.Pow(xHome, 2) + Math.Pow(yHome, 2)) < 15)
-                        match += 10;
+                        match += 15;
 
                     xCurrent = (stud.AddressStudying.X / 1000) - (addressStudying.X / 1000);
                     yCurrent = (stud.AddressStudying.Y / 1000) - (addressStudying.Y / 1000);
                     if (Math.Sqrt(Math.Pow(xCurrent, 2) + Math.Pow(yCurrent, 2)) < 15)
-                        match += 10;
+                        match += 15;
 
                     for (int i = 0; i < stud.Friendslist.Count; i++)
                     {
@@ -1011,7 +1011,7 @@ namespace BetterTogetherProj.Models.DAL
                     {
                         if (countFriends > 2)
                             countFriends = 2;
-                        match += 20 * (Convert.ToDouble(countFriends) / 2);
+                        match += 15 * (Convert.ToDouble(countFriends) / 2);
                     }
                 }
                 return match;
