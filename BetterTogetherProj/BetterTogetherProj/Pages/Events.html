@@ -81,7 +81,7 @@
 
             ajaxCall("GET", "../api/Events/getevent", "", getSuccessAlleventstype, error);
             $("#EventType").change(getevname);
-            
+            $("#addeventname").hide();
 
             $("#addeventtype").click(AddEventType);
             $("#addtypeeventtext").hide();
@@ -143,7 +143,9 @@
                 Eventname: $("#EventName :selected").text(),
                 EventDate: $("#datedis").val(),
                 EventText: $("#content").val(),
-                EventImage: picName
+                EventImage: picName,
+                ParticipantQu: 0,
+                NotparticipantQu:0
             }
             ajaxCall("POST", "../api/Events/addevent", JSON.stringify(Event), inserteventsuccess, errorr);
 
@@ -154,6 +156,15 @@
         function inserteventsuccess(data) {
             console.log(data);
             swal({ title: "!האירוע נוסף בהצלחה", icon: "success" })
+            $("#EventType").val("");
+            $("#EventName").val("");
+            $("#datedis").val("");
+            $("#content").val("");
+            $("#files").val(null);
+            $("#ph").remove();
+            picName = "";
+            $("#addtypeeventtext").hide();
+            $("#addnameventtext").hide();
         }
 
         // This function is called in case of an error
@@ -183,7 +194,8 @@
 
 
         function getevname() {
-       
+            $("#addeventname").show();
+
             evtypename = $("#EventType :selected").text();
             let api = "../api/Events/getsametype?evtypename=" + evtypename;
             ajaxCall("GET", api, "", getSuccessevname, error);
@@ -204,10 +216,14 @@
         }
 
         function AddEventType() {
+            document.getElementById('addtypeeventtext').value = "";
+
             $("#addtypeeventtext").show();
             $('input').keyup(function () {
                 if ($.trim(this.value).length > 0) {
                     $('#buttoneventtype').show();
+                    $('#buttoneventname').hide();
+
                 }
                 else
                     $('#buttoneventtype').hide()
@@ -216,7 +232,7 @@
         }
 
         function Inserteventtypetolist() {
-
+           
             let addeventtypee = {
                 Eventtype: $("#addtypeeventtext").val()
             }
@@ -231,25 +247,36 @@
         function getSuccessAllneweventstypee(allevtype) {
             console.log(allevtype);
             $("#EventType").empty();
+            //let m = $("#addtypeeventtext").val();
+            //$("#EventType").val(m)
             getSuccessAlleventstype(allevtype);
             swal({ title: "!סוג האירוע נוסף בהצלחה", icon: "success" });
+            $("#addtypeeventtext").hide();
+            $("#buttoneventtype").hide();
 
         }
 
 
         function AddEventName() {
+            document.getElementById('addnameventtext').value = "";
+
             $("#addnameventtext").show();
             $('input').keyup(function () {
                 if ($.trim(this.value).length > 0) {
                     $('#buttoneventname').show();
+                    $('#buttoneventtype').hide();
                 }
                 else
                     $('#buttoneventname').hide()
             });
         }
         function Inserteventnametolist() {
-            Allevname.push($("#addnameventtext").val());
-
+            if (Allevname===undefined || Allevname.lengthֱ === 0) {
+                Allevnameֱ = [];
+                Allevname.push($("#addnameventtext").val());            }
+            else {
+                Allevname.push($("#addnameventtext").val());
+            }
             let addeventnamee = {
                 Eventtype: $("#EventType :selected").text(),
                 EventName: Allevname
@@ -263,6 +290,8 @@
             console.log(data);
             swal({ title: "!שם האירוע נוסף בהצלחה", icon: "success" });
             getevname();
+            $("#addnameventtext").hide();
+            $("#buttoneventname").hide();
           
         }
 
@@ -333,33 +362,8 @@
             <input type="button" value="הוסיפי שם אירוע" id="buttoneventname" onclick="Inserteventnametolist()" />
         </div>
     </div>
- 
+
     <div id="ph"></div>
-
-    <!--<h1>פרסומים</h1>
-    <select id="SubjName">
-        <option value="">בחרי נושא לפרסום</option>
-    </select>
-    <div id="subsubdiv"></div>
-
-
-
-    <div Id="datedis">
-        <p>בחרי תאריך להפצת הפרסום</p>]
-        <input type="date" id="publishDate" />
-    </div>
-
-
-    <div>
-
-        <input type="text" />
-    </div>
-    <div>
-        <label for="files">Image</label>
-        <input type="file" id="files" name="files" />
-    </div>
-    <br />
-    <button type="button" id="buttonUpload">Upload image</button>
-    <button id="addads">הפיצי פרסום</button>-->
+   
 </body>
 </html>
