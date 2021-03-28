@@ -245,6 +245,7 @@
     <Compile Include="Models\StudentsAnswers.cs" />
     <Compile Include="Models\Subject.cs" />
     <Compile Include="Models\SubSubject.cs" />
+    <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
