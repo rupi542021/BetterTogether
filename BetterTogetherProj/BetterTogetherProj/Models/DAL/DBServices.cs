@@ -359,7 +359,7 @@ namespace BetterTogetherProj.Models.DAL
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
                 {   // Read till the end of the data into a row
-                 
+
                     evnameList.Add((string)dr["eventname"]);
 
                 }
@@ -433,8 +433,8 @@ namespace BetterTogetherProj.Models.DAL
 
             StringBuilder sb = new StringBuilder();
             // use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}')", ev.EventDate.ToString("yyyy-MM-dd"), ev.EventText, ev.EventImage, ev.Eventname, ev.Eventtype);
-            String prefix = "INSERT INTO events_P3" + "(eventDate, eventText, eventImage, eventname, eventTypeName )";
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}')", ev.EventDate.ToString("yyyy-MM-dd"), ev.EventText, ev.EventImage, ev.Eventname, ev.Eventtype, ev.ParticipantQu, ev.NotparticipantQu);
+            String prefix = "INSERT INTO events_P3" + "(eventDate, eventText, eventImage, eventname, eventTypeName, participantQu, notparticipantQu )";
             command = prefix + sb.ToString();
 
             return command;
@@ -549,7 +549,7 @@ namespace BetterTogetherProj.Models.DAL
 
             StringBuilder sb = new StringBuilder();
             // use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}', '{1}')", evname.Eventtype, evname.EventName[evname.EventName.Count-1]);
+            sb.AppendFormat("Values('{0}', '{1}')", evname.Eventtype, evname.EventName[evname.EventName.Count - 1]);
             String prefix = "INSERT INTO eventName_P3" + "(eventTypeName,eventname )";
             command = prefix + sb.ToString();
             return command;
@@ -662,7 +662,7 @@ namespace BetterTogetherProj.Models.DAL
         private String BuildInsertCommandsubsub(Subject subsub)
         {
             String command;
-            
+
             StringBuilder sb = new StringBuilder();
             // use a string builder to create the dynamic string
             sb.AppendFormat("Values('{0}', '{1}')", subsub.SubName, subsub.SubSubject[subsub.SubSubject.Count - 1]);
@@ -681,14 +681,14 @@ namespace BetterTogetherProj.Models.DAL
                 con = connect1("DBConnectionString");
                 //String selectSTR = "select * from feedbackstudenttoads_P3 inner join ads_P3 on ads_P3.adCode=feedbackstudenttoads_P3.adCode inner join student_P on student_P.mail=feedbackstudenttoads_P3.studentmail where subName='" + subnameFB + "'";
                 String selectSTR = "select * from ads_P3 where subName='" + subnameFB + "'";
-                 SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
                 {   // Read till the end of the data into a row
                     Ads ad = new Ads();
                     ad.AdsCode = Convert.ToInt16(dr["adCode"]);
                     ad.Fbads = GetFBad(ad.AdsCode);
-                    ad.SubSubject= (string)dr["subSubName"];
+                    ad.SubSubject = (string)dr["subSubName"];
                     AdList.Add(ad);
                 }
 
@@ -720,11 +720,11 @@ namespace BetterTogetherProj.Models.DAL
                 String selectSTR = "select * from feedbackstudenttoads_P3 inner join student_P on student_P.mail=feedbackstudenttoads_P3.studentmail  where feedbackstudenttoads_P3.adCode=" + adCode;
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-               
+
                 while (dr.Read())
                 {   // Read till the end of the data into a row
                     AdsFeedback FB = new AdsFeedback();
-                    FB.FbAdsNum= Convert.ToInt16(dr["fbAdsNum"]);
+                    FB.FbAdsNum = Convert.ToInt16(dr["fbAdsNum"]);
                     FB.Student = (new Student { Fname = (string)dr["firstName"] });
                     FB.Student.Mail = (string)dr["mail"];
                     FB.CommentText = (string)dr["commenttext"];
@@ -806,7 +806,7 @@ namespace BetterTogetherProj.Models.DAL
                 while (dr.Read())
                 {   // Read till the end of the data into a row
                     EventsFeedback FB = new EventsFeedback();
-                    FB.FbEventNum= Convert.ToInt16(dr["fbEventNum"]);
+                    FB.FbEventNum = Convert.ToInt16(dr["fbEventNum"]);
                     FB.Student = (new Student { Fname = (string)dr["firstName"] });
                     FB.Student.Mail = (string)dr["mail"];
                     FB.CommentText = (string)dr["commenttext"];
@@ -998,7 +998,7 @@ namespace BetterTogetherProj.Models.DAL
         {
             String command;
 
-            command = "update feedbackstudenttoevents_P3 set managercomment ='" + mngcom.Managercomment + "' where feedbackstudenttoevents_P3.fbEventNum="+mngcom.FbEventNum;
+            command = "update feedbackstudenttoevents_P3 set managercomment ='" + mngcom.Managercomment + "' where feedbackstudenttoevents_P3.fbEventNum=" + mngcom.FbEventNum;
 
             return command;
         }

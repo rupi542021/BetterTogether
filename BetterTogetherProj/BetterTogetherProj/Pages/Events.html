@@ -68,12 +68,15 @@
             margin-left: 810px;
             margin-top: 70px;
         }
-        .fa-plus-circle:before{font-size:25px}
+
+        .fa-plus-circle:before {
+            font-size: 25px
+        }
+
         input#addtypeeventtext, input#addnameventtext {
             margin-left: 20px;
             margin-top: 5px;
         }
-       
     </style>
     <script>
         $(document).ready(function () {
@@ -137,14 +140,14 @@
         function AddEvent() {
             // createa a JSON object called customer
             Event = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
-                
+
                 Eventtype: $("#EventType :selected").text(),
                 Eventname: $("#EventName :selected").text(),
                 EventDate: $("#datedis").val(),
                 EventText: $("#content").val(),
                 EventImage: picName,
                 ParticipantQu: 0,
-                NotparticipantQu:0
+                NotparticipantQu: 0
             }
             ajaxCall("POST", "../api/Events/addevent", JSON.stringify(Event), inserteventsuccess, errorr);
 
@@ -231,7 +234,7 @@
         }
 
         function Inserteventtypetolist() {
-           
+
             let addeventtypee = {
                 Eventtype: $("#addtypeeventtext").val()
             }
@@ -270,16 +273,17 @@
             });
         }
         function Inserteventnametolist() {
-            if (Allevname===undefined || Allevname.lengthֱ === 0) {
+            if (Allevname === undefined || Allevname.lengthֱ === 0) {
                 Allevnameֱ = [];
-                Allevname.push($("#addnameventtext").val());            }
+                Allevname.push($("#addnameventtext").val());
+            }
             else {
                 Allevname.push($("#addnameventtext").val());
             }
             let addeventnamee = {
                 Eventtype: $("#EventType :selected").text(),
                 EventName: Allevname
-                
+
             }
             ajaxCall("POST", "../api/Events/addeventname", JSON.stringify(addeventnamee), inserteventnamesuccess, erroreventname);
         }
@@ -291,7 +295,7 @@
             getevname();
             $("#addnameventtext").hide();
             $("#buttoneventname").hide();
-          
+
         }
 
         function erroreventname(err) {
