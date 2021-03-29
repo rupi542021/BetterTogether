@@ -29,7 +29,7 @@ namespace BetterTogetherProj.Controllers
         //    try
         //    {
 
-        //       // qr.Insertqr();
+        //        qr.Insertqr();
 
         //        return Request.CreateResponse(HttpStatusCode.OK, "Success");
         //    }
