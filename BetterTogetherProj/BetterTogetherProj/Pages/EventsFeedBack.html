@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
-    <link href="EventsFeedBack.css" rel="stylesheet" />
+
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
 
     <script src="../Scripts/jquery-3.4.1.min.js"></script>
-
+    <link href="MyStyleSheet.css" rel="stylesheet" />
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
@@ -74,7 +74,11 @@
 
             console.log(onlyFB);
             onlyFB1 = onlyFB;
-
+            $('#FBtable').dataTable({
+                "oLanguage": {
+                    "sLengthMenu": "הצגת _MENU_ תגובות", "sSearch": "חיפוש: ", "sZeroRecords": "אין תגובות לאירוע זה"
+                }
+            });
             try {
 
                 tbl = $('#FBtable').DataTable({
@@ -100,9 +104,9 @@
                         },
                         {
                             render: function (data, type, row, meta) {
-                               
-                                plusBtn = "<i type='button'   class='fas fa-plus-circle' id='" +row.FbEventNum + "'></i>";
-                               
+
+                                plusBtn = "<i type='button'   class='fas fa-plus-circle' id='" + row.FbEventNum + "'></i>";
+
                                 return plusBtn;
                             }
                         },
@@ -122,12 +126,12 @@
                 alert(err);
             }
         }
-        
 
-     
+
+
         function addcomment() {
             idcom = $(this).attr("id");
-           
+
             swal({
                 content: {
                     element: "input",
@@ -144,9 +148,9 @@
         function insertcomment() {
             let managercomment = $(".swal-content__input").val();
             let Addcomment = {
-                FbEventNum :idcom,
+                FbEventNum: idcom,
                 Managercomment: managercomment,
-               
+
             }
 
             ajaxCall("PUT", "../api/Events/addcomment", JSON.stringify(Addcomment), insertmngcomsuccess, error);
@@ -173,12 +177,13 @@
                 <li><a href="Events.html">ארועים חברתיים</a></li>
                 <li><a href="AdsFeedBack.html">פידבק לפרסומים</a></li>
                 <li class="active"><a href="EventsFeedBack.html">פידבק לארועים חברתיים</a></li>
-                <li><a href="EventTB.html">משתתפים בארוע</a></li>
+                <li><a href="EventTB.html">משתתפים באירוע</a></li>
                 <li><a href="Questionnaire.html">שאלונים</a></li>
+                <li id="titleNav"><a id="navT">היחידת ליזמות חברתית</a></li>
             </ul>
         </div>
     </nav>
-    <h1> פידבק סטודנטים לארועים חברתיים</h1>
+    <h2> פידבק סטודנטים לארועים חברתיים</h2>
 
     <select id="EventType">
         <option>

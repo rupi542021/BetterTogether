@@ -5,7 +5,7 @@
 
     <meta charset="utf-8" />
     <title></title>
-    <link href="EventTB.css" rel="stylesheet" />
+
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
@@ -17,34 +17,38 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
 
     <script src="../Scripts/jquery-3.4.1.min.js"></script>
-
+    <link href="MyStyleSheet.css" rel="stylesheet" />
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
-   
+
 
 
 
     <script>
 
-       
+
         $(document).ready(function () {
 
             ajaxCall("GET", "../api/Events/geteventdetail", "", getSuccessAlleventdetail, error);
             google.charts.load('current', { 'packages': ['corechart'] });
             $(document).on("click", ".view", addpiechart);
-           
+
         });
 
         function getSuccessAlleventdetail(eventdetail) {
             console.log(eventdetail);
             data = eventdetail;
 
+
             try {
                 tbl = $('#detaileventtable').DataTable({
+                    "oLanguage": {
+                        "sLengthMenu": "הצגת _MENU_ אירועים", "sSearch": "חיפוש: "
+                    },
                     data: eventdetail,
                     pageLength: 5,
                     columns: [
@@ -55,7 +59,7 @@
 
                         {
                             render: function (data, type, row, meta) {
-                                ViewBtn = "<button class='view' par='" + row.ParticipantQu + "'nopar='" + row.NotparticipantQu +"' name='"+row.Eventname+"' >צפי באישורי הגעה </button>";
+                                ViewBtn = "<button class='view' par='" + row.ParticipantQu + "'nopar='" + row.NotparticipantQu + "' name='" + row.Eventname + "' >צפי באישורי הגעה </button>";
                                 return ViewBtn;
                             }
                         }
@@ -68,20 +72,21 @@
             catch (err) {
                 alert(err);
             }
+
         }
 
         function addpiechart() {
             participant = parseInt($(this).attr("par"));
-            Noparticipant =parseInt( $(this).attr("nopar"));
-            eventName=$(this).attr("name");
-            
+            Noparticipant = parseInt($(this).attr("nopar"));
+            eventName = $(this).attr("name");
+
             google.charts.setOnLoadCallback(drawChart);
-            
+
         }
 
 
         function drawChart() {
-          
+
             var data = google.visualization.arrayToDataTable([
                 ['מגיעים', 'Hours per Day'],
                 ['משתתפים', participant],
@@ -90,9 +95,9 @@
             ]);
 
             var options = {
-                title:'השתתפות באירוע: '+eventName,
+                title: 'השתתפות באירוע: ' + eventName,
                 is3D: true,
-                
+
 
             };
 
@@ -117,11 +122,13 @@
                 <li><a href="Events.html">ארועים חברתיים</a></li>
                 <li><a href="AdsFeedBack.html">פידבק לפרסומים</a></li>
                 <li><a href="EventsFeedBack.html">פידבק לארועים חברתיים</a></li>
-                <li class="active"><a href="EventTB.html">משתתפים בארוע</a></li>
+                <li class="active"><a href="EventTB.html">משתתפים באירוע</a></li>
                 <li><a href="Questionnaire.html">שאלונים</a></li>
+                <li id="titleNav"><a id="navT">היחידת ליזמות חברתית</a></li>
             </ul>
         </div>
     </nav>
+    <h2>משתתפים בארועים חברתיים</h2>
     <table id="detaileventtable" class="display nowrap" style="width:100%">
         <thead>
             <tr>

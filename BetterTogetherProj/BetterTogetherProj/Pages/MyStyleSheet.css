@@ -1,0 +1,183 @@
+﻿body {
+    background-image: url('imageedit1.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: 'Segoe UI';
+    color: #3D3D3D
+}
+h2{
+    text-align:center;
+    margin-top:0px;
+    
+}
+.btn-success {
+    color: #fff;
+    margin-right: 5px;
+    background-color: #96a2aa;
+    border-color: #fff;
+}
+.btn-info {
+    color: #fff;
+    background-color: #96a2aa;
+    border-color: #fff;
+}
+
+
+.form-group {
+    text-align: center;
+    
+}
+.form-control, #SubjName, #EventType {
+    margin: auto;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #FAE8BE;
+    opacity: 0.8;
+    height: 34px;
+}
+#SubjName, #EventType {
+    display: block;
+    margin: 0 auto;
+
+    margin-bottom: 30px
+}
+
+div#FBtable_wrapper, div#detaileventtable_wrapper {
+    width: 95%;
+    direction: rtl;
+    margin-left: 2.5%;
+}
+div#QTable_wrapper {
+    direction: rtl;
+    width: 95%;
+    margin-left: 2.5%;
+}
+div#detaileventtable_wrapper {
+    width: 80%;
+    direction: rtl;
+    margin-left: 10%;
+    margin-top:20px
+}
+form#ManagerForm {
+    text-align-last: center;
+}
+#titleNav {
+
+    font-size: 20px;
+    font-weight: bold
+}
+#navT{
+    color:white 
+}
+
+#content {
+    width: 600px;
+    height: 100px;
+    background-color: #FAE8BE;
+    opacity: 0.8;
+    margin: auto;
+    direction: rtl;
+}
+
+#uploadddiv {
+    display: block;
+    margin: 0 auto;
+}
+
+div#uploadddiv {
+    text-align-last: center;
+    margin-bottom: 10px;
+}
+input#files {
+    display: block;
+    margin: 0 auto;
+}
+
+
+img {
+    margin-left: 900px;
+    margin-top: -300px;
+}
+
+div#addS {
+    margin-left: 810px;
+    margin-top: -790px;
+}
+
+div#addSS {
+    margin-left: 810px;
+    margin-top: 70px;
+}
+
+.fa-plus-circle:before {
+    font-size: 25px
+}
+
+input#addsubjecttext, input#addsubsubtext {
+    margin-left: 20px;
+    margin-top: 5px;
+}
+
+.container-fluid {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    float: right;
+}
+
+nav.navbar.navbar-default {
+    background-color: #FAE8BE;
+}
+.myButton {
+    box-shadow: inset 0px 1px 0px 0px #d9fbbe;
+    background: linear-gradient(to bottom, #FAE8BE 5%, #f6d78f 100%);
+    background-color: #FAE8BE;
+    border-radius: 21px;
+    border: 1px solid #3D3D3D;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 18px;
+
+    padding: 5px 5px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #f6d78f;
+    display: block;
+    margin: 0 auto;
+}
+    .myButton:hover {
+        background: linear-gradient(to bottom, #f6d78f 5%, #f6d78f 100%);
+        background-color: #FAE8BE;
+    }
+
+#newBTN {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.myButton:active {
+    position: relative;
+    top: 1px;
+}
+.pagination > .active > a, .pagination > .active > a:focus, .pagination > .active > a:hover, .pagination > .active > span, .pagination > .active > span:focus, .pagination > .active > span:hover {
+    background-color: #FAE8BE;
+    color: #3D3D3D;
+    border-color: #3D3D3D
+}
+.form-group.row {
+    direction: rtl;
+
+}
+.Qtext{
+    width:400px
+}
+.Qtype {
+    width: 250px
+}
+.radioo.form-group.col-sm-2 {
+    text-align: right;
+    margin-top: 27px;
+}

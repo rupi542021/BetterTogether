@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
-    <link href="AdsFeedBack.css" rel="stylesheet" />
+ 
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
 
     <script src="../Scripts/jquery-3.4.1.min.js"></script>
-
+    <link href="MyStyleSheet.css" rel="stylesheet" />
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
@@ -60,7 +60,7 @@
         function getFBSuccess(FBData) {
 
             console.log(FBData);
-          
+
             FBarr = FBData.filter(r => r.Fbads.length > 0);// במקום לעשות לולאה, ניגש לפרסומים כך ונבדוק עבור על פרסום אם מערך פידבק גדול מאפס.
             var onlyFB = [];
             for (var i = 0; i < FBarr.length; i++) {
@@ -77,50 +77,56 @@
 
             console.log(onlyFB);
             onlyFB1 = onlyFB;
-
-            try {
-                
-                    tbl = $('#FBtable').DataTable({
-                        retrieve: true,
-
-                        data: onlyFB1,
-                        pageLength: 5,
-
-                        columns: [
-
-                            { data: "SubD" },
-
-                            {
-                                data: "Student.Fname",
-                            },
-                            {
-                                data: "CommentText",
-
-                            },
-                            {
-                                data: "CommentDate",
-
-                            },
-                            {
-                                render: function (data, type, row, meta) {
-                                   
-                                    plusBtn = "<i type='button'   class='fas fa-plus-circle' id='"+row.FbAdsNum + "'></i>";
-                                   
-                                    return plusBtn;
-                                }
-                            },
-                            {
-                                data: "Managercomment",
-                            }
-
-                        ]
-                        ,
-
-                    });
-
+            $('#FBtable').dataTable({
+                "oLanguage": {
+                    "sLengthMenu": "הצגת _MENU_ תגובות", "sSearch": "חיפוש: ", "sZeroRecords": "אין תגובות בנושא זה"
                 }
+            });
 
-            
+  
+            try {
+
+                tbl = $('#FBtable').DataTable({
+                    retrieve: true,
+
+                    data: onlyFB1,
+                    pageLength: 5,
+
+                    columns: [
+
+                        { data: "SubD" },
+
+                        {
+                            data: "Student.Fname",
+                        },
+                        {
+                            data: "CommentText",
+
+                        },
+                        {
+                            data: "CommentDate",
+
+                        },
+                        {
+                            render: function (data, type, row, meta) {
+
+                                plusBtn = "<i type='button'   class='fas fa-plus-circle' id='" + row.FbAdsNum + "'></i>";
+
+                                return plusBtn;
+                            }
+                        },
+                        {
+                            data: "Managercomment",
+                        }
+
+                    ]
+                    ,
+
+                });
+
+            }
+
+
             catch (err) {
                 alert(err);
             }
@@ -130,7 +136,7 @@
 
         function addcomment() {
             idcom = $(this).attr("id");
-            
+
 
             swal({
                 content: {
@@ -150,9 +156,9 @@
             let Addcomment = {
                 Managercomment: managercomment,
                 FbAdsNum: idcom,
-              
+
             }
-            
+
 
             ajaxCall("PUT", "../api/Ads/addcomment", JSON.stringify(Addcomment), insertmngcomsuccess, error);
         }
@@ -178,12 +184,13 @@
                 <li><a href="Events.html">ארועים חברתיים</a></li>
                 <li class="active"><a href="AdsFeedBack.html">פידבק לפרסומים</a></li>
                 <li><a href="EventsFeedBack.html">פידבק לארועים חברתיים</a></li>
-                <li><a href="EventTB.html">משתתפים בארוע</a></li>
+                <li><a href="EventTB.html">משתתפים באירוע</a></li>
                 <li><a href="Questionnaire.html">שאלונים</a></li>
+                <li id="titleNav"><a id="navT">היחידת ליזמות חברתית</a></li>
             </ul>
         </div>
     </nav>
-    <h1> פידבק סטודנטים לפרסומים</h1>
+    <h2> פידבק סטודנטים לפרסומים</h2>
     <select id="SubjName">
         <option>
             בחרי נושא לתצוגה

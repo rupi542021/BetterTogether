@@ -13,98 +13,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
-
+    <link href="MyStyleSheet.css" rel="stylesheet" />
     <style type="text/css">
-        body {
-            background-image: url('KERENMACABI_web_hands_white.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-image: url('../uploadedFiles/background.jpg');
-        }
-       
-        
-
-        #SubjName, #SubsubjName, #datedis {
-            width: 200px;
-            background-color: #FAE8BE;
-            opacity:0.8;
-
-        }
-
-        #datedisText, #SubjNameText, #SubsubjNameText, #SubjName, #datedis, #SubsubjName, h2 {
-            margin-left: 50%;
-            margin-bottom: 20px;
-            font-family:'Segoe UI';
-
-        }
-        
-
-        #content {
-            width: 600px;
-            height: 100px;
-            background-color:#FAE8BE;
-            opacity:0.8;
-            margin-left: 30%;
-            margin-top: 80px;
-        }
-
-        #content, #uploadddiv {
-            float: left
-        }
-
-        div#uploadddiv {
-            margin-left: 90%;
-            margin-top: -100px;
-        }
-
-        #submitt {
-            background-color: pink;
-            margin-left: 50%;
-            margin-top: 10%;
-            border-radius: 30px;
-            background-color: #FAE8BE;
-            font-size: 25px;
-            font-family: 'Segoe UI';
-        }
-
-        img {
-            margin-left: 900px;
-            margin-top: -300px;
-        }
-
-        div#addS {
-            margin-left: 810px;
-            margin-top: -790px;
-        }
-
-        div#addSS {
-            margin-left: 810px;
-            margin-top: 70px;
-        }
-
-        .fa-plus-circle:before {
-            font-size: 25px
-        }
-
-        input#addsubjecttext, input#addsubsubtext {
-            margin-left: 20px;
-            margin-top: 5px;
-        }
-        .container-fluid {
-            padding-right: 15px;
-            padding-left: 15px;
-            margin-right: auto;
-            margin-left: auto;
-            float: right;
-        }
-        text{
-            font-family:'Segoe UI';
-            
-        }
-        nav.navbar.navbar-default{
-             background-color:#FAE8BE;
-        }
+      
    
     </style>
     <script>
@@ -340,15 +251,16 @@
 
 
 <body>
-    <nav class="navbar navbar-default">
+   <nav class="navbar navbar-default">
         <div class="container-fluid">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="Ads.html">פרסומים</a></li>
                 <li><a href="Events.html">ארועים חברתיים</a></li>
                 <li><a href="AdsFeedBack.html">פידבק לפרסומים</a></li>
                 <li><a href="EventsFeedBack.html">פידבק לארועים חברתיים</a></li>
-                <li><a href="EventTB.html">משתתפים בארוע</a></li>
-                <li><a href="tableQ.html">שאלונים</a></li>
+                <li><a href="EventTB.html">משתתפים באירוע</a></li>
+                <li><a href="Questionnaire.html">שאלונים</a></li>
+                <li id="titleNav"><a id="navT">היחידת ליזמות חברתית</a></li>
             </ul>
         </div>
     </nav>
@@ -357,47 +269,47 @@
             <h2 id="h2">הוספת פרסום חדש</h2>
 
             <div class="form-group">
-                <label for="SubjName" id="SubjNameText">בחרי נושא</label>
+                <label for="SubjName" id="SubjNameText">בחירת נושא</label>
                 <select class="form-control" id="SubjName" required>
                     <option>    </option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="SubsubjName" id="SubsubjNameText">בחרי תת נושא</label>
+                <label for="SubsubjName" id="SubsubjNameText">בחירת תת נושא</label>
                 <select class="form-control" id="SubsubjName" required>
                 </select>
             </div>
             <div class="form-group">
-                <label for="datedis" id="datedisText">בחרי תאריך פרסום</label>
+                <label for="datedis" id="datedisText">בחירת תאריך פרסום</label>
                 <input type="date" class="form-control" id="datedis" required />
 
             </div>
             <div class="form-group">
                 <label for="content" id="contentText"></label>
-                <textarea class="form-control" id="content" placeholder="הכניסי את תוכן הפרסום כאן..." required></textarea>
+                <textarea class="form-control" id="content" placeholder="תוכן הפרסום..." required></textarea>
             </div>
 
             <div id="uploadddiv">
                 <div id="uploadd">
-                    <label for="files">(העלי תמונה (אופציונלי</label>
+                    <label for="files">(העלאת תמונה (אופציונלי</label>
                     <input type="file" id="files" name="files" />
                 </div>
                 <br />
                 <button type="button" id="buttonUpload">Upload image</button>
             </div>
-            <input type="submit" value="הפצת פרסום" id="submitt" />
+            <input type="submit" value="הפצת פרסום" class="myButton" id="submitt" />
         </form>
 
         <div id="addS">
 
             <i type="button" id="addsubject" class="fas fa-plus-circle"></i>
             <input type="text" id="addsubjecttext" />
-            <input type="button" value="הוסיפי נושא" id="buttonaddsubject" onclick="Insertsubtolist()" />
+            <input type="button" value="הוספת נושא" id="buttonaddsubject" onclick="Insertsubtolist()" />
         </div>
         <div id="addSS">
             <i type="button" id="AddSubsub" class="fas fa-plus-circle"></i>
             <input type="text" id="addsubsubtext" />
-            <input type="button" value="הוסיפי תת נושא" id="buttonaddsubsub" onclick="Insertsubsubtolist()" />
+            <input type="button" value="הוספת תת נושא" id="buttonaddsubsub" onclick="Insertsubsubtolist()" />
         </div>
 
     </div>

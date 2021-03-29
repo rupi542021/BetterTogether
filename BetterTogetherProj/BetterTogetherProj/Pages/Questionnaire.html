@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
-    <link href="Questionnaire.css" rel="stylesheet" />
+
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
 
     <script src="../Scripts/jquery-3.4.1.min.js"></script>
-
+    <link href="MyStyleSheet.css" rel="stylesheet" />
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
@@ -201,24 +201,27 @@
         function showquestion() { 
            let Questionstring = `
                     <div class="questionn">
-                            <div class="form-group col-sm-3">
-                            <label for="QuestionType`+q+`"><span class="red-star">★ </span></label>
-                            <select class="form-control" id="QuestionType`+ q + `" required>
+                             <div class="form-group row">
+
+                            <div class="radioo form-group col-sm-2"">
+                                <i type="button" class="addanswer fas fa-plus-circle"> </i>
+                            </div>
+
+ <div class="form-group col-sm-4">
+                            <label for="QuestionType`+q+`"><span class="red-star">★ </span>סוג שאלה</label>
+                            <select class="form-control Qtype" id="QuestionType`+ q + `" required>
                                 <option value="">בחרי סוג שאלה</option>
                                 <option value="1">שאלת עם תשובה אחת לבחירה</option>
                                 <option value="2">שאלה עם מספר תשובות לבחירה</option>
                                 <option value="3">שאלה פתוחה</option>
                             </select>
-                            <div class="radioo">
-                                <i type="button" class="addanswer fas fa-plus-circle"> </i>
-                            </div>
-
-                        </div>
+</div> 
+                        
                         <div class="form-group col-sm-4">
                             <label for="QuestionText"><span class="red-star">★ </span>תוכן שאלה</label>
-                            <input type="text" class="form-control" id="QuestionText`+ q + `" placeholder="" required>
+                            <input type="text" class="form-control Qtext" id="QuestionText`+ q + `" placeholder="" required>
                         </div>
-       
+       </div>
                       </div>`;
             $("#question1").append(Questionstring);
             q++;
@@ -402,6 +405,9 @@
 
             try {
                 tbl = $('#QTable').DataTable({
+                    "oLanguage": {
+                        "sLengthMenu": "הצגת _MENU_ שאלונים", "sSearch": "חיפוש: ", "sZeroRecords": "אין תגובות לאירוע זה"
+                    },
                     data: questionnaireData,
                     pageLength: 5,
                     columns: [
@@ -409,8 +415,8 @@
                             render: function (data, type, row, meta) {
                                 let dataQ = "data-carId='" + row.QuestionnaireNum + "'";
 
-                                editBtn = "<button type='button' class = 'editBtn btn btn-success' " + dataQ + "> Edit </button>";
-                                viewBtn = "<button type='button' class = 'viewBtn btn btn-info' " + dataQ + "> View </button>";
+                                editBtn = "<button type='button' class = 'editBtn btn btn-success' " + dataQ + "> עריכה </button>";
+                                viewBtn = "<button type='button' class = 'viewBtn btn btn-info' " + dataQ + "> צפייה </button>";
 
                                 return editBtn + viewBtn;
                             }
@@ -474,41 +480,43 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default">
         <div class="container-fluid">
             <ul class="nav navbar-nav">
                 <li><a href="Ads.html">פרסומים</a></li>
                 <li><a href="Events.html">ארועים חברתיים</a></li>
                 <li><a href="AdsFeedBack.html">פידבק לפרסומים</a></li>
                 <li><a href="EventsFeedBack.html">פידבק לארועים חברתיים</a></li>
-                <li><a href="EventTB.html">משתתפים בארוע</a></li>
+                <li><a href="EventTB.html">משתתפים באירוע</a></li>
                 <li class="active"><a href="Questionnaire.html">שאלונים</a></li>
+                <li id="titleNav"><a id="navT">היחידת ליזמות חברתית</a></li>
             </ul>
         </div>
     </nav>
-    <div class="container">
-        <input type="button" value="New" class="btn btn-primary btn-lg" id="newBTN" />
-        <form id="pForm">
-            <table id="QTable" class="display nowrap" style="width:100%">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>מספר שאלון</th>
-                        <th>תאריך הפצה</th>
-                        <th>תאריך סיום הפצה</th>
-                        <th>נושא השאלון</th>
-                        <th>מחלקות</th>
-                        <th>שנה</th>
-                        <th>מספר משיבים</th>
-                        <th>סטטוס</th>
+    <h2>שאלוני סטודנטים</h2>
 
-                    </tr>
-                </thead>
-            </table>
+    <button class="myButton" id="newBTN"> יצירת שאלון חדש <span class="glyphicon glyphicon-plus"></span></button>
+    <form id="pForm">
+        <table id="QTable" class="display nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>מספר שאלון</th>
+                    <th>תאריך הפצה</th>
+                    <th>תאריך סיום הפצה</th>
+                    <th>נושא השאלון</th>
+                    <th>מחלקות</th>
+                    <th>שנה</th>
+                    <th>מספר משיבים</th>
+                    <th>סטטוס</th>
 
-        </form>
+                </tr>
+            </thead>
+        </table>
 
-        <div id="editDiv">
+    </form>
+
+        <div id="editDiv" class="container">
             <form id="ManagerForm">
                 <div class="form-group row">
 
@@ -525,91 +533,98 @@
                     </div>
 
 
-                    <div class="form-group col-sm-3">
+                    <div class="form-group col-sm-4">
                         <label for="subQr"><span class="red-star">★ </span>נושא השאלון</label>
                         <input type="text" class="form-control" id="subQr" placeholder="" required>
                     </div>
 
-                    <div class="form-group col-sm-3">
+                    <div class="form-group col-sm-4">
                         <label for="publishList"><span class="red-star">★ </span>רשימת תפוצה</label>
                         <select class="form-control" id="publishList" required>
-                            <option value="">בחרי מחלקה</option>
+                            <option value="">בחירת מחלקה</option>
                         </select>
                     </div>
 
-                    <div class="form-group col-sm-3">
+                    <div class="form-group col-sm-4">
                         <label for="yearList" id="yearListText"><span class="red-star">★ </span>שנת תפוצה</label>
                         <select class="form-control" id="yearList" required>
                             <option value="">בחרי שנה</option>
                         </select>
                     </div>
 
-                    <div class="form-group col-sm-2">
-                        <label for="numResponders"><span class="red-star">★ </span>מספר משיבים</label>
-                        <input type="text" class="form-control" id="numResponders" />
+                    <!--<div class="form-group col-sm-2">
+        <label for="numResponders"><span class="red-star">★ </span>מספר משיבים</label>
+        <input type="text" class="form-control" id="numResponders" />
 
-                    </div>
+    </div>-->
 
-                    <div class="form-group col-sm-3">
+                    <div class="form-group col-sm-4">
                         <label for="Status"><span class="red-star">★ </span>סטטוס</label>
                         <input type="checkbox" class="form-control" id="Status" checked />
                     </div>
-
+                    <div class="form-group col-sm-12">
+                        <h3>הכנסת שאלות:</h3>
+                    </div>
+                    <div class="form-group col-sm-12">
                         <div id="question1"></div>
                     </div>
-                    
-                <input type="button" value="הוסיפי שאלה" onclick="showquestion()" />
+                    <div class="form-group col-sm-12">
+                        <input type="button" value="הוספת שאלה" onclick="showquestion()" />
+                    </div>
+                </div>
+
+           
 
                 <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">Save</button>
                 <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN" value="Cancel" />
             </form>
         </div>
-    </div>
-
-
-    <!--<div id="EditViewDiv">
-        <form id="ManagerForm1">
-            <div class="form-group row">
 
 
 
-                <div class="form-group col-sm-4">
-                    <label for="Restaurant_Id1"><span class="red-star">★ </span>Restaurant Id</label>
-                    <input type="text" class="form-control" id="Restaurant_Id1" placeholder="" required>
-                </div>
+            <!--<div id="EditViewDiv">
+                <form id="ManagerForm1">
+                    <div class="form-group row">
 
 
-                <div class="form-group col-sm-3">
-                    <label for="Campain_Budget1"><span class="red-star">★ </span>Campain Budget</label>
-                    <input type="text" class="form-control" id="Campain_Budget1" placeholder="" required>
-                </div>
 
-                <div class="form-group col-sm-3">
-                    <label for="Balance1"><span class="red-star">★ </span>Balance</label>
-                    <input type="text" class="form-control" id="Balance1" placeholder="" />
-                </div>
+                        <div class="form-group col-sm-4">
+                            <label for="Restaurant_Id1"><span class="red-star">★ </span>Restaurant Id</label>
+                            <input type="text" class="form-control" id="Restaurant_Id1" placeholder="" required>
+                        </div>
 
-                <div class="form-group col-sm-2">
-                    <label for="Viewing_number1"><span class="red-star">★ </span>Viewing number</label>
-                    <input type="text" class="form-control" id="Viewing_number1" placeholder="" required />
 
-                </div>
-                <div class="form-group col-sm-3">
-                    <label for="Clicks_number1"><span class="red-star">★ </span>Clicks number</label>
-                    <input type="text" class="form-control" id="Clicks_number1" placeholder="" required />
-                </div>
+                        <div class="form-group col-sm-3">
+                            <label for="Campain_Budget1"><span class="red-star">★ </span>Campain Budget</label>
+                            <input type="text" class="form-control" id="Campain_Budget1" placeholder="" required>
+                        </div>
 
-                <div class="form-group col-sm-3">
-                    <label for="Status1"><span class="red-star">★ </span>Status</label>
-                    <input type="checkbox" class="form-control" id="Status1" checked />
-                </div>
+                        <div class="form-group col-sm-3">
+                            <label for="Balance1"><span class="red-star">★ </span>Balance</label>
+                            <input type="text" class="form-control" id="Balance1" placeholder="" />
+                        </div>
 
-            </div>
+                        <div class="form-group col-sm-2">
+                            <label for="Viewing_number1"><span class="red-star">★ </span>Viewing number</label>
+                            <input type="text" class="form-control" id="Viewing_number1" placeholder="" required />
 
-            <button type="submit" class="btn btn-primary btn-lg" id="saveBTN1">Save</button>
-            <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN1" value="Cancel" />
-        </form>
-    </div>-->
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label for="Clicks_number1"><span class="red-star">★ </span>Clicks number</label>
+                            <input type="text" class="form-control" id="Clicks_number1" placeholder="" required />
+                        </div>
+
+                        <div class="form-group col-sm-3">
+                            <label for="Status1"><span class="red-star">★ </span>Status</label>
+                            <input type="checkbox" class="form-control" id="Status1" checked />
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg" id="saveBTN1">Save</button>
+                    <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN1" value="Cancel" />
+                </form>
+            </div>-->
 
 
 </body>
