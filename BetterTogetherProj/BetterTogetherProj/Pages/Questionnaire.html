@@ -3,6 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
+    <link href="Questionnaire.css" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -20,48 +23,52 @@
     <script src="../Scripts/ajaxCalls.js"></script>
     <script>
 
+        
+        var AnsNum = 0;
+        var q = 1;
 
         // will run when the document is ready
         $(document).ready(function () {
 
+            showquestion();
+  
 
             mode = "";
-
             $("#cancelSaveBTN").on("click", function () { //מבטל טופס NEW
                 console.log("nessy")
                 qrId = null;
                 $("#editDiv").hide();
-                $("#EditViewDiv").hide();
-                $("#Addquestion").hide();
+                //$("#EditViewDiv").hide();
 
                 $("#pForm").show();
                 mode = "";
             });
-            $("#cancelSaveBTN1").on("click", function () {//מבטל אופציית עריכה
-                console.log("gal")
-                qrId = null;
-                $("#editDiv").hide();
-                $("#EditViewDiv").hide();
-                $("#Addquestion").hide();
+            //$("#cancelSaveBTN1").on("click", function () {//מבטל אופציית עריכה
+            //    console.log("gal")
+            //    qrId = null;
+            //    $("#editDiv").hide();
+            //    $("#EditViewDiv").hide();
+            //    $("#Addquestion").hide();
 
 
-                mode = "";
-            });
+            //    mode = "";
+            //});
 
 
             $("#newBTN").on("click", function () {
-              //  ajaxCall("GET", "../api/businesses", "", GetsuccessAllRes, error);///מבצע עדכון ל Allres
-                qrId= null;
+                //$("#saveBTN").hide();
+                $(".addanswer").hide();
+
+                qrId = null;
                 mode = "new";
                 $("#pForm").hide();
                 $("#editDiv").show();
-                $("#EditViewDiv").hide();
-                $("#Addquestion").show();
+                //$("#EditViewDiv").hide();
 
 
                 clearFields();
-              //  $("#Viewing_number").val(0);
-              //  $("#Clicks_number").val(0);
+                //  $("#Viewing_number").val(0);
+                //  $("#Clicks_number").val(0);
                 $("#editDiv :input").prop("disabled", false); // new mode: enable all controls in the form
             });
 
@@ -70,24 +77,26 @@
             // once the document is ready we fetch a list of cars from the server
             ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
 
-            
+
             let api = "../api/Questionnaire/qr"
             ajaxCall("GET", api, "", getSuccess, error);
 
-            $("#ManagerForm2").submit(onSubmitFunc);
-            $("#ManagerForm1").submit(onSubmitFunc);
+            //$("#ManagerForm1").submit(onSubmitFunc);
             $("#ManagerForm").submit(onSubmitFunc);// wire the submit event to a function called f1
 
             $("#editDiv").hide();
 
-            $("#EditViewDiv").hide();
-            $("#Addquestion").hide();
+            //$("#EditViewDiv").hide();
+            //$("#Addquestion").hide();
 
 
             buttonEvents();
-           
-            $("#publishList").change(getyearbydep)
 
+            $("#publishList").change(getyearbydep)
+            //$(`#QuestionType` + q).change(getQuestionType)
+            $(document).on("change", "#QuestionType" + q, getQuestionType);
+
+            $(document).on("click", ".addanswer", getQuestionType);
         });
 
         function getSuccessalldep(alldep) {
@@ -99,25 +108,25 @@
 
             }
             document.getElementById("publishList").innerHTML += str;
-            
+
         }
         function getyearbydep() {
 
             let depp = $("#publishList").val()
             let stryear = "";
-            var years = ["",'א', 'ב', 'ג', 'ד',];           
-                for (var j = 1; j < years.length; j++) {
-                    if (depp == 1 || depp == 2 || depp == 3 || depp == 6 ||depp == 10)
-                        stryear += "<option value="+ j +">" + years[j] + "</option>";
-                    else
+            var years = ["", 'א', 'ב', 'ג', 'ד',];
+            for (var j = 1; j < years.length; j++) {
+                if (depp == 1 || depp == 2 || depp == 3 || depp == 6 || depp == 10)
+                    stryear += "<option value=" + j + ">" + years[j] + "</option>";
+                else
                     for (var j = 1; j < years.length - 1; j++) {
-                        stryear += "<option value="+ j +">" + years[j] + "</option>";
-                    }         
+                        stryear += "<option value=" + j + ">" + years[j] + "</option>";
+                    }
             }
             document.getElementById("yearList").innerHTML = stryear;
 
-            }
-        
+        }
+
 
         // wire all the buttons to their functions
         function buttonEvents() {
@@ -125,7 +134,7 @@
             $(document).on("click", ".editBtn", function () {
                 mode = "edit";
                 markSelected(this);
-                $("#EditViewDiv").show();
+                //$("#EditViewDiv").show();
                 $("#editDiv").hide();
                 $("#Addquestion").hide();
 
@@ -173,9 +182,61 @@
             row.className = 'selected'; // mark as selected
         }
 
+        function getQuestionType() {
+            alert("12s")
+            AnsNum++;
+            QuestionType = $("#QuestionType"+q).val();
+            str = "";
+            if (QuestionType == 1 || QuestionType==2) {
+                $(".addanswer").show();
+                str += "<input type='text' class='answerext' id="+q+"answer" + AnsNum + "/>"; 
+
+            }
+        
+            $(".radioo").append(str);
+            AnsNum = 0;
+        }
 
 
-        function onSubmitFunc() {
+        function showquestion() { 
+           let Questionstring = `
+                    <div class="questionn">
+                            <div class="form-group col-sm-3">
+                            <label for="QuestionType`+q+`"><span class="red-star">★ </span></label>
+                            <select class="form-control" id="QuestionType`+ q + `" required>
+                                <option value="">בחרי סוג שאלה</option>
+                                <option value="1">שאלת עם תשובה אחת לבחירה</option>
+                                <option value="2">שאלה עם מספר תשובות לבחירה</option>
+                                <option value="3">שאלה פתוחה</option>
+                            </select>
+                            <div class="radioo">
+                                <i type="button" class="addanswer fas fa-plus-circle"> </i>
+                            </div>
+
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="QuestionText"><span class="red-star">★ </span>תוכן שאלה</label>
+                            <input type="text" class="form-control" id="QuestionText`+ q + `" placeholder="" required>
+                        </div>
+       
+                      </div>`;
+            $("#question1").append(Questionstring);
+            q++;
+
+        }
+        function getanswersbyqu(Qnum) {
+            ansList = [];
+            let j = 0;
+            for (var i = 0; i < AnsNum ; i++) {
+                Answerobj[j] = {
+                    Anslist: $(`#` + Qnum+`answer` + i).val(),
+                }
+                ansList.push(Answerobj);
+                j++;
+            }
+            return ansList;
+        }
+            function onSubmitFunc() {
 
             //var Campid = -1;
             if (mode == "edit") {
@@ -198,16 +259,27 @@
             }
 
             else if (mode == "new") {
-               
+                questionList = [];
                 QuestionnairePublish = $("#publishDate").val();
                 EndPublishDate = $("#EndpublishDate").val();
                 SubQr = $("#subQr").val();
                 Depchosen = $("#publishList").val();
                 NumResponders = 0;
                 QuestionnaireYear = $("#yearList").val();
+                for (var i = 1; i < q; i++) {
+                   let Questionn = {
+                        Questionnum : i,
+                        QuestionText : $(`#QuestionText` + i).val(),
+                       QuestionType: $("#QuestionType" + i).val(),
+                       Anslist: getanswersbyqu(i),
+
+                    }
+                    questionList.push(Questionn);
+                }
+                console.log(questionList);
                 QrtoSave = {
-                    
-                    QuestionnairePublish:QuestionnairePublish,
+
+                    QuestionnairePublish: QuestionnairePublish,
                     EndPublishDate: EndPublishDate,
                     SubQr: SubQr,
                     Dep: {
@@ -215,27 +287,9 @@
                     },
                     NumResponders: NumResponders,
                     Status: $("#Status").is(":checked"),
-                    QuestionnaireYear: QuestionnaireYear
+                    QuestionnaireYear: QuestionnaireYear,
+                    Queslist: questionList,
                 }
-
-                //Questionnum= $("#Questionnum").val();
-                //QuestionText = $("#QuestionText").val();
-                //QuestionType = $("#QuestionType :selected").text();
-                ////if (QuestionType == "שאלת עם תשובה אחת לבחירה") {
-                ////    let str = "";
-                ////    str += "<input type='radio'/>"
-                ////    $("#radioo").append(str);
-                ////}
-                //question = {
-                //    Questionnum: Questionnum,
-                //    QuestionText: QuestionText,
-                //    QuestionType: QuestionType,
-                //    qr: {
-                //        QuestionnaireNum: QuestionnaireNum
-                //    }
-                //}
-              
-                
 
             }
 
@@ -244,17 +298,17 @@
             if (mode == "edit")
 
                 ajaxCall("PUT", "../api/campain", JSON.stringify(camptoSave), updateSuccess, error);
-            else if (mode == "new") 
+            else if (mode == "new")
                 ajaxCall("POST", "../api/Questionnaire/postqr", JSON.stringify(QrtoSave), insertSuccess, error);
-                //ajaxCall("POST", "../api/Questionnaire/postquestion", JSON.stringify(question), insertQuestionSuccess, error);
-            
+            //ajaxCall("POST", "../api/Questionnaire/postquestion", JSON.stringify(question), insertQuestionSuccess, error);
+
             return false;
         }
 
         // fill the form fields
         function populateFields(qrId) {
             qrId = getQ(qrId); //מחזיר את האובייקט שבשורה שלחצנו לפי ID
-           
+
             $("#publishDate").val(qrId.QuestionnairePublish);
             $("#EndpublishDate").val(qrId.EndPublishDate);
             $("#subQr").val(qrId.SubQr);
@@ -271,10 +325,10 @@
             $("#publishDate").val("");
             $("#EndpublishDate").val("");
             $("#subQr").val("");
-            $("#numResponders").val("");  
-            $("#publishList").val(""); 
+            $("#numResponders").val("");
+            $("#publishList").val("");
             $("#Status").prop('checked', false);
-            $("#yearList").val(""); 
+            $("#yearList").val("");
 
         }
 
@@ -301,7 +355,7 @@
             redrawTable(tbl, questionnaireData);
             buttonEvents();
             $("#editDiv").hide();
-            $("#EditViewDiv").hide();
+            //$("#EditViewDiv").hide();
 
             swal("Updated Successfuly!", "Great Job", "success");
             mode = "";
@@ -317,10 +371,10 @@
             console.log(questionnaireData);
             $("#pForm").show();
             tbl.clear();
-            redrawTable(tbl,questionnaireData);
+            redrawTable(tbl, questionnaireData);
             buttonEvents();
             $("#editDiv").hide();
-            $("#EditViewDiv").hide();
+            //$("#EditViewDiv").hide();
 
             swal("Inserted Successfuly!", "Great Job", "success");
             mode = "";
@@ -342,10 +396,10 @@
 
         // this function is activated in case of a success
         function getSuccess(questionnaireData) {
-                
+
             console.log(questionnaireData);
             questionnaires = questionnaireData; // keep the cars array in a global variable;
-           
+
             try {
                 tbl = $('#QTable').DataTable({
                     data: questionnaireData,
@@ -361,7 +415,7 @@
                                 return editBtn + viewBtn;
                             }
                         },
-                        { data: "QuestionnaireNum"},
+                        { data: "QuestionnaireNum" },
                         { data: "QuestionnairePublish" },
                         { data: "EndPublishDate" },
                         { data: "SubQr" },
@@ -389,7 +443,7 @@
                             }
                         },
                         { data: "NumResponders" },
-                       
+
                         {
                             data: "Status",
                             render: function (data, type, row, meta) {
@@ -428,7 +482,7 @@
                 <li><a href="AdsFeedBack.html">פידבק לפרסומים</a></li>
                 <li><a href="EventsFeedBack.html">פידבק לארועים חברתיים</a></li>
                 <li><a href="EventTB.html">משתתפים בארוע</a></li>
-                <li class="active"><a href="tableQ.html">שאלונים</a></li>
+                <li class="active"><a href="Questionnaire.html">שאלונים</a></li>
             </ul>
         </div>
     </nav>
@@ -501,7 +555,10 @@
                         <input type="checkbox" class="form-control" id="Status" checked />
                     </div>
 
-                </div>
+                        <div id="question1"></div>
+                    </div>
+                    
+                <input type="button" value="הוסיפי שאלה" onclick="showquestion()" />
 
                 <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">Save</button>
                 <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN" value="Cancel" />
@@ -509,39 +566,8 @@
         </div>
     </div>
 
-    <div id="Addquestion">
-        <form id="ManagerForm2">
-            <div class="form-group row">
 
-
-                <div class="form-group col-sm-4">
-                    <label for="Questionnum"><span class="red-star">★ </span>מספר שאלה</label>
-                    <input type="number" class="form-control" id="Questionnum" placeholder="" required>
-                </div>
-
-                <div class="form-group col-sm-4">
-                    <label for="QuestionText"><span class="red-star">★ </span>תוכן שאלה</label>
-                    <input type="text" class="form-control" id="QuestionText" placeholder="" required>
-                </div>
-
-
-                <div class="form-group col-sm-3">
-                    <label for="QuestionType"><span class="red-star">★ </span></label>
-                    <select class="form-control" id="QuestionType" required>
-                        <option value="">בחרי סוג שאלה</option>
-                        <option value="1">שאלת עם תשובה אחת לבחירה</option>
-                        <option value="2">שאלה עם מספר תשובות לבחירה</option>
-                        <option value="3">שאלה פתוחה</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">Save</button>
-                <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN" value="Cancel" />
-            </div>
-
-        </form>
-    </div>
-
-    <div id="EditViewDiv">
+    <!--<div id="EditViewDiv">
         <form id="ManagerForm1">
             <div class="form-group row">
 
@@ -583,7 +609,7 @@
             <button type="submit" class="btn btn-primary btn-lg" id="saveBTN1">Save</button>
             <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN1" value="Cancel" />
         </form>
-    </div>
+    </div>-->
 
 
 </body>
