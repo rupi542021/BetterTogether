@@ -118,6 +118,12 @@ namespace project_classes.Models
             List<Student> studentsList = db.GetStudentsWithRecommend(mail);
             return studentsList;
         }
+        public List<Student> GetAllFavorites(string mail)
+        {
+            DBServicesReact db = new DBServicesReact();
+            List<Student> studentsList = db.GetAllFavorites(mail);
+            return studentsList;
+        }
         public void UpdateStudentPtofile() {
             DBServicesReact dbs = new DBServicesReact();
             dbs.UpdateStudentPtofile(this);

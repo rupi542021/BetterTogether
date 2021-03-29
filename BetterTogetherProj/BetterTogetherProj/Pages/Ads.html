@@ -83,7 +83,6 @@
 
             ajaxCall("GET", "../api/Ads/getsub", "", getSuccessAllsubs, error);
             $("#SubjName").change(getsubsub);
-            $("#AddSubsub").hide();
 
             $("#addsubject").click(AddSubject);
             $("#addsubjecttext").hide();
@@ -145,7 +144,8 @@
             Ad = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
                 
                 Subject: $("#SubjName :selected").text(),   
-                SubSubject: $("#SubsubjName :selected").text(),              
+                SubSubject: $("#SubsubjName :selected").text(),
+                
                 AdsDate: $("#datedis").val(),
                 AdsText: $("#content").val(),
                 AdsImage: picName
@@ -159,16 +159,6 @@
         function success(data) {
             console.log(data);
             swal({ title: "!הפרסום נוסף בהצלחה", icon: "success" })
-            $("#SubjName").val("");
-            $("#SubsubjName").val("");
-            $("#datedis").val("");
-            $("#content").val("");
-            $("#files").val(null);
-            $("#ph").remove();
-            picName = "";
-            $("#addsubjecttext").hide();
-            $("#addsubsubtext").hide();
-            
         }
 
         // This function is called in case of an error
@@ -199,7 +189,6 @@
         }
 
         function getsubsub() {
-            $("#AddSubsub").show();
 
             subname = $("#SubjName :selected").text()
             let api = "../api/Ads/getsamename?subname=" + subname;
@@ -221,14 +210,10 @@
         }
 
         function AddSubject() {
-            document.getElementById('addsubjecttext').value = "";
-
             $("#addsubjecttext").show();
             $('input').keyup(function () {
                 if ($.trim(this.value).length > 0) {
                     $('#buttonaddsubject').show();
-                    $("#buttonaddsubsub").hide();
-
                 }
                 else
                     $('#buttonaddsubject').hide()
@@ -253,21 +238,16 @@
             console.log(allsub);
             $("#SubjName").empty();
             getSuccessAllsubs(allsub);
-            swal({ title: "!הנושא נוסף בהצלחה", icon: "success" });
-            $("#addsubjecttext").hide();
-            $("#buttonaddsubject").hide();
+            swal({ title: "!סוג האירוע נוסף בהצלחה", icon: "success" });
+
         }
 
 
         function AddSubsub() {
-            document.getElementById('addsubsubtext').value = "";
-
             $("#addsubsubtext").show();
             $('input').keyup(function () {
                 if ($.trim(this.value).length > 0) {
                     $('#buttonaddsubsub').show();
-                    $('#buttonaddsubject').hide();
-
                 }
                 else
                     $('#buttonaddsubsub').hide()
@@ -290,8 +270,7 @@
             console.log(data);
             swal({ title: "!שם התת נושא נוסף בהצלחה", icon: "success" });
             getsubsub();
-            $("#addsubsubtext").hide();
-            $("#buttonaddsubsub").hide();
+           
         }
 
         function erroreventname(err) {
@@ -356,23 +335,48 @@
                 <br />
                 <button type="button" id="buttonUpload">Upload image</button>
             </div>
-            <input type="submit" value="הפיצי פרסום" id="submitt" />
+            <input type="submit" value="הפיצי שאלון" id="submitt" />
         </form>
 
         <div id="addS">
 
             <i type="button" id="addsubject" class="fas fa-plus-circle"></i>
             <input type="text" id="addsubjecttext" />
-            <input type="button" value="הוסיפי נושא" id="buttonaddsubject" onclick="Insertsubtolist()" />
+            <input type="button" value="הוסיפי סוג אירוע" id="buttonaddsubject" onclick="Insertsubtolist()" />
         </div>
         <div id="addSS">
             <i type="button" id="AddSubsub" class="fas fa-plus-circle"></i>
             <input type="text" id="addsubsubtext" />
-            <input type="button" value="הוסיפי תת נושא" id="buttonaddsubsub" onclick="Insertsubsubtolist()" />
+            <input type="button" value="הוסיפי שם אירוע" id="buttonaddsubsub" onclick="Insertsubsubtolist()" />
         </div>
 
     </div>
     <div id="ph"></div>
 
+    <!--<h1>פרסומים</h1>
+    <select id="SubjName">
+        <option value="">בחרי נושא לפרסום</option>
+    </select>
+    <div id="subsubdiv"></div>
+
+
+
+    <div Id="datedis">
+        <p>בחרי תאריך להפצת הפרסום</p>]
+        <input type="date" id="publishDate" />
+    </div>
+
+
+    <div>
+
+        <input type="text" />
+    </div>
+    <div>
+        <label for="files">Image</label>
+        <input type="file" id="files" name="files" />
+    </div>
+    <br />
+    <button type="button" id="buttonUpload">Upload image</button>
+    <button id="addads">הפיצי פרסום</button>-->
 </body>
 </html>
