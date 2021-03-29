@@ -89,7 +89,7 @@
             ]);
 
             var options = {
-                title:'השתתפות באירוע:'+eventName,
+                title:'השתתפות באירוע: '+eventName,
                 is3D: true,
                 
 
@@ -109,18 +109,29 @@
     </script>
 </head>
 <body>
-    
-        <table id="detaileventtable" class="display nowrap" style="width:100%">
-            <thead>
-                <tr>
-                    <th> סוג אירוע</th>
-                    <th>שם אירוע</th>
-                    <th>תאריך אירוע</th>
-                    <th></th>
-                </tr>
-            </thead>
-        </table>
-   
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                <li><a href="Ads.html">פרסומים</a></li>
+                <li><a href="Events.html">ארועים חברתיים</a></li>
+                <li><a href="AdsFeedBack.html">פידבק לפרסומים</a></li>
+                <li><a href="EventsFeedBack.html">פידבק לארועים חברתיים</a></li>
+                <li class="active"><a href="EventTB.html">משתתפים בארוע</a></li>
+                <li><a href="tableQ.html">שאלונים</a></li>
+            </ul>
+        </div>
+    </nav>
+    <table id="detaileventtable" class="display nowrap" style="width:100%">
+        <thead>
+            <tr>
+                <th> סוג אירוע</th>
+                <th>שם אירוע</th>
+                <th>תאריך אירוע</th>
+                <th></th>
+            </tr>
+        </thead>
+    </table>
+
 
     <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
 </body>
