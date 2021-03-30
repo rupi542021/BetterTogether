@@ -132,15 +132,20 @@ namespace BetterTogetherProj.Models.DAL
         {
             String command;
             StringBuilder sb = new StringBuilder();
-
             if (qr.Status == true)
-                sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}','{5}', '{6}')", qr.QuestionnairePublish.ToString("yyyy-MM-dd"), qr.SubQr, 1, qr.NumResponders, qr.EndPublishDate.ToString("yyyy-MM-dd"), qr.Dep.DepartmentCode, qr.QuestionnaireYear);
-            else
-                sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}','{5}', '{6}')", qr.QuestionnairePublish.ToString("yyyy-MM-dd"), qr.SubQr, 0, qr.NumResponders, qr.EndPublishDate.ToString("yyyy-MM-dd"), qr.Dep.DepartmentCode, qr.QuestionnaireYear);
-            String prefix = "INSERT INTO questionnaire_P3 " + "(publishDate,subQ,status,numResponders,endPublishDate,departmentCode, qrYear )";
+                    sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}','{5}', '{6}')", qr.QuestionnairePublish.ToString("yyyy-MM-dd"), qr.SubQr, 1, qr.NumResponders, qr.EndPublishDate.ToString("yyyy-MM-dd"), qr.Dep.DepartmentCode, qr.QuestionnaireYear);
+                else
+                    sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}','{5}', '{6}')", qr.QuestionnairePublish.ToString("yyyy-MM-dd"), qr.SubQr, 0, qr.NumResponders, qr.EndPublishDate.ToString("yyyy-MM-dd"), qr.Dep.DepartmentCode, qr.QuestionnaireYear);
+           
+            String prefix = "INSERT INTO questionnaire_P3 " + "(publishDate,subQ,status,numResponders,endPublishDate,departmentCode, qrYear)";
             command = prefix + sb.ToString();
-
-            return command;
+            foreach (var question in qr.Queslist)
+            {
+              String prefix1 = "INSERT INTO question_P3" + "(qCode, qText, questionType, qrCode, ansText1, ansText2, ansText3, ansText4, ansText5, ansText6) Values('" + question.Questionnum + "','" + question.QuestionText + "','" + question.QuestionType + "','" + qr.QuestionnaireNum + "','" + question.Anslist[0] + "','" + question.Anslist[1] + "','" + question.Anslist[2] + "','" + question.Anslist[3] + "','" + question.Anslist[4] + "','" + question.Anslist[5] + "')";
+               command += prefix1;
+            }                        
+            
+            return command;    
         }
 
         public List<Subject> Getsub()

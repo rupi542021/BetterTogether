@@ -112,7 +112,8 @@ div#addSS {
 }
 
 .fa-plus-circle:before {
-    font-size: 25px
+    font-size: 25px;
+    margin-right:200px;
 }
 
 input#addsubjecttext, input#addsubsubtext {

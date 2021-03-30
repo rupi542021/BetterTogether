@@ -30,7 +30,7 @@
         // will run when the document is ready
         $(document).ready(function () {
 
-            showquestion();
+            addquestion();
   
 
             mode = "";
@@ -188,13 +188,23 @@
 
             QuestionType = $("#QuestionType"+q).val();
             str = "";
+
             if (QuestionType == 1 || QuestionType == 2) {
+                        
                 if (flag == 0) {
+
                     str += `<input type='text' class='answertext' id='` + q + `answer` + AnsNum + `'/>
                     <i type ='button' onclick='getQuestionType(1)' id ='add`+ q + `' class='fas fa-plus-circle'> </i>`;
                 }
-                else{
+                    
+                else {
                     str += `<input type='text' class='answertext' id='` + q + `answer` + AnsNum + `'/>`;
+                }
+
+                var options = document.getElementsByClassName("answertext", document.getElementById(q + 'answer' + AnsNum));
+                if (options.length > 5) {
+                    swal({ icon: 'error', title: 'Sorry', text: " ניתן להכניס עד 6 תשובות לשאלה!" })
+                    $(".fa-plus-circle").hide();
                 }
             }
         
@@ -202,14 +212,14 @@
         }
 
 
-        function showquestion() { 
+        function addquestion() { 
             AnsNum = 0;
             q++;
            let Questionstring = `
                     <div class="questionn">
                              <div class="form-group row">
-                            <div class="form-group col-sm-2" id="`+q+`Qans">
-                               
+                            <div class=" ansdiv form-group col-sm-2" id="`+q+`Qans">
+                               <label for="QuestionText"><span class="red-star">★ </span>תשובות</label>
                             </div>
 
                       <div class="form-group col-sm-4">
@@ -233,13 +243,14 @@
         }
         function getanswersbyqu(Qnum) {
             ansList = [];
-            
-            for (var J = 1; J <= AnsNum ; J++) {
-                
-                Anslist = $("#" + Qnum +"answer"+ J).val();
-                
+            for (var J = 1; J <= AnsNum ; J++) {             
+                Anslist = $("#" + Qnum +"answer"+ J).val();               
                 ansList.push(Anslist);
             }
+                for (var i = AnsNum; i < 6; i++) {
+                        ansList.push("");
+            }
+          
             return ansList;
             console.log(ansList)
         }
@@ -296,6 +307,7 @@
                     Status: $("#Status").is(":checked"),
                     QuestionnaireYear: QuestionnaireYear,
                     Queslist: questionList,
+                    QuestionnaireNum: questionnaires[questionnaires["length"] - 1].QuestionnaireNum + 1,
                 }
 
             }
@@ -382,7 +394,7 @@
             $("#editDiv").hide();
             //$("#EditViewDiv").hide();
 
-            swal("Inserted Successfuly!", "Great Job", "success");
+            swal("השאלון הוכנס בהצלחה!", "Great Job", "success");
             mode = "";
 
         }
@@ -475,7 +487,7 @@
 
         // this function is activated in case of a failure
         function error(err) {
-            console.log("sun");
+            console.log("err");
             swal("Error: " + err);
         }
 
@@ -570,7 +582,7 @@
                         <div id="question1"></div>
                     </div>
                     <div class="form-group col-sm-12">
-                        <input type="button" value="הוספת שאלה" onclick="showquestion()" />
+                        <input type="button" value="הוספת שאלה" onclick="addquestion()" />
                     </div>
                 </div>
 

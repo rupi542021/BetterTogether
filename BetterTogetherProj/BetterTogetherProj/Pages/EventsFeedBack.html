@@ -74,14 +74,17 @@
 
             console.log(onlyFB);
             onlyFB1 = onlyFB;
-            $('#FBtable').dataTable({
-                "oLanguage": {
-                    "sLengthMenu": "הצגת _MENU_ תגובות", "sSearch": "חיפוש: ", "sZeroRecords": "אין תגובות לאירוע זה"
-                }
-            });
+            //$('#FBtable').dataTable({
+            //    "oLanguage": {
+            //        "sLengthMenu": "הצגת _MENU_ תגובות", "sSearch": "חיפוש: ", "sZeroRecords": "אין תגובות לאירוע זה"
+            //    }
+            //});
             try {
 
                 tbl = $('#FBtable').DataTable({
+                    oLanguage: {
+                        sLengthMenu: "הצגת _MENU_ תגובות", "sSearch": "חיפוש: ", "sZeroRecords": "אין תגובות בנושא זה"
+                    },
                     retrieve: true,
 
                     data: onlyFB1,

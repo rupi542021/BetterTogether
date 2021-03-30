@@ -66,14 +66,14 @@ namespace BetterTogetherProj.Controllers
             {
                 qr.InsertQuestionnaire();
 
-                return Request.CreateResponse(HttpStatusCode.OK, "Added to favorite page successfully");
+                return Request.CreateResponse(HttpStatusCode.OK, "Added to questionnaire table successfully");
             }
             catch (Exception ex)
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
             }
 
-         
+
         }
 
         [HttpGet]
