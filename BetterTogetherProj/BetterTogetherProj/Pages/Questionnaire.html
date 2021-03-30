@@ -57,7 +57,7 @@
 
             $("#newBTN").on("click", function () {
                 //$("#saveBTN").hide();
-                $(".addanswer").hide();
+                //$("#add"+q).hide();
 
                 qrId = null;
                 mode = "new";
@@ -94,9 +94,9 @@
 
             $("#publishList").change(getyearbydep)
             //$(`#QuestionType` + q).change(getQuestionType)
-            $(document).on("change", "#QuestionType"+q, getQuestionType);
+            //$(document).on("change", "#QuestionType"+q, getQuestionType);
 
-            $(document).on("click", ".addanswer", getQuestionType);
+            //$(document).on("click", "#add" +q, getQuestionType(1));
         });
 
         function getSuccessalldep(alldep) {
@@ -182,56 +182,50 @@
             row.className = 'selected'; // mark as selected
         }
 
-        function getQuestionType() {
+        function getQuestionType(flag) {
             AnsNum++;
+            console.log(q)
+
             QuestionType = $("#QuestionType"+q).val();
             str = "";
             if (QuestionType == 1 || QuestionType == 2) {
-
-                $(".addanswer").show();
-                str += "<input type='text' class='answertext' id=" + q  + AnsNum + "/>"; 
+                if (flag == 0) {
+                    str += `<input type='text' class='answertext' id='` + q + `answer` + AnsNum + `'/>
+                    <i type ='button' onclick='getQuestionType(1)' id ='add`+ q + `' class='fas fa-plus-circle'> </i>`;
+                }
+                else{
+                    str += `<input type='text' class='answertext' id='` + q + `answer` + AnsNum + `'/>`;
+                }
             }
         
-            $(".radioo").append(str);
-            //AnsNum = 0;
+            $("#"+q+"Qans").append(str);
         }
 
 
         function showquestion() { 
+            AnsNum = 0;
             q++;
            let Questionstring = `
                     <div class="questionn">
-<<<<<<< Updated upstream
                              <div class="form-group row">
-
-                            <div class="radioo form-group col-sm-2"">
-                                <i type="button" class="addanswer fas fa-plus-circle"> </i>
+                            <div class="form-group col-sm-2" id="`+q+`Qans">
+                               
                             </div>
 
- <div class="form-group col-sm-4">
-                            <label for="QuestionType`+q+`"><span class="red-star">★ </span>סוג שאלה</label>
-                            <select class="form-control Qtype" id="QuestionType`+ q + `" required>
-=======
-                            <div class="form-group col-sm-3">
-                            <label for="QuestionType`+q+`"><span class="red-star">★ </span></label>
-                            <select class="form-control" id="QuestionType`+ q + `"required>
->>>>>>> Stashed changes
+                      <div class="form-group col-sm-4">
+                            <label for="QuestionType`+ q +`"><span class="red-star">★ </span>סוג שאלה</label>
+                            <select class="form-control Qtype" onchange='getQuestionType(0)' id="QuestionType`+ q + `"required>
                                 <option value="">בחרי סוג שאלה</option>
                                 <option value="1">שאלת עם תשובה אחת לבחירה</option>
                                 <option value="2">שאלה עם מספר תשובות לבחירה</option>
                                 <option value="3">שאלה פתוחה</option>
                             </select>
-</div> 
-                        
+                      </div> 
                         <div class="form-group col-sm-4">
                             <label for="QuestionText"><span class="red-star">★ </span>תוכן שאלה</label>
-<<<<<<< Updated upstream
                             <input type="text" class="form-control Qtext" id="QuestionText`+ q + `" placeholder="" required>
-=======
-                            <input type="text" class="form-control" id="QuestionText`+ q + `"placeholder="" required>
->>>>>>> Stashed changes
                         </div>
-       </div>
+                        </div>
                       </div>`;
             $("#question1").append(Questionstring);
            
@@ -242,7 +236,7 @@
             
             for (var J = 1; J <= AnsNum ; J++) {
                 
-                Anslist = $("#" + Qnum + J).val();
+                Anslist = $("#" + Qnum +"answer"+ J).val();
                 
                 ansList.push(Anslist);
             }
@@ -301,7 +295,7 @@
                     NumResponders: NumResponders,
                     Status: $("#Status").is(":checked"),
                     QuestionnaireYear: QuestionnaireYear,
-                    //Queslist: questionList,
+                    Queslist: questionList,
                 }
 
             }
@@ -529,8 +523,6 @@
             <form id="ManagerForm">
                 <div class="form-group row">
 
-
-
                     <div class="form-group col-sm-4">
                         <label for="publishDate"><span class="red-star">★ </span>תאריך הפצה</label>
                         <input type="date" class="form-control" id="publishDate" placeholder="" required>
@@ -567,10 +559,10 @@
 
     </div>-->
 
-                    <div class="form-group col-sm-4">
+                    <!--<div class="form-group col-sm-4">
                         <label for="Status"><span class="red-star">★ </span>סטטוס</label>
                         <input type="checkbox" class="form-control" id="Status" checked />
-                    </div>
+                    </div>-->
                     <div class="form-group col-sm-12">
                         <h3>הכנסת שאלות:</h3>
                     </div>
