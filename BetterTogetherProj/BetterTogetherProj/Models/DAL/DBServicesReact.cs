@@ -42,7 +42,6 @@ namespace BetterTogetherProj.Models.DAL
             return cmd;
         }
        
-
         public Student checkStudentRuppin(string email)
         {
             SqlConnection con = null;
@@ -431,7 +430,6 @@ namespace BetterTogetherProj.Models.DAL
                             stud.Plist = GetPlistByUser((string)dr["mail"]);
                             stud.Hlist = GetHlistByUser((string)dr["mail"]);
                             stud.Friendslist = GetFriendsListByUser(((string)dr["mail"]));
-
                     }
                 return stud;
             }
@@ -719,63 +717,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             return prefix;
         }
-        //public List<Student> GetAllStudents(string mail)
-        //{
-        //    SqlConnection con = null;
-        //    List<Student> studList = new List<Student>();
-
-        //    try
-        //    {
-        //        con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
-
-        //        String selectSTR = "SELECT * FROM student_P where mail<> '"+mail+"'";
-        //        SqlCommand cmd = new SqlCommand(selectSTR, con);
-
-        //        // get a reader
-        //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
-
-        //        while (dr.Read())
-        //        {
-        //            Student stud = new Student();
-        //            stud.Mail = (string)dr["mail"];
-        //            stud.Password = (string)dr["password"];
-        //            stud.Fname = (string)(dr["firstName"]);
-        //            stud.Lname = (string)(dr["lastName"]);
-        //            stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
-        //            stud.Dep = getStudDep(Convert.ToInt32(dr["departmentCode"]));
-        //            stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
-        //            stud.HomeTown = getResidenceH((string)(dr["homeTown"]));
-        //            stud.AddressStudying = getResidenceS((string)(dr["adrressStudying"]));
-        //            stud.PersonalStatus = (string)(dr["personalStatus"]);
-        //            stud.IsAvailableCar = Convert.ToBoolean(dr["isAvailableCar"]);
-        //            stud.IntrestedInCarPool = Convert.ToBoolean(dr["intrestedInCarPool"]);
-        //            stud.Photo = (string)(dr["photo"]);
-        //            stud.Gender = (string)(dr["gender"]);
-        //            stud.RegistrationDate = Convert.ToDateTime(dr["registrationDate"]);
-        //            stud.ActiveStatus = Convert.ToBoolean(dr["active"]);
-        //            stud.Plist = GetPlistByUser((string)dr["mail"]);
-        //            stud.Hlist = GetHlistByUser((string)dr["mail"]);
-        //            studList.Add(stud);
-        //        }
-        //        return studList;
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // write to log
-        //        throw (ex);
-        //    }
-        //    finally
-        //    {
-        //        if (con != null)
-        //        {
-        //            con.Close();
-        //        }
-
-        //    }
-
-        //}
-
+       
         public int UpdateStudentPtofile(Student student)
         {
 
@@ -1111,11 +1053,12 @@ namespace BetterTogetherProj.Models.DAL
                     }
                     if (stud.Friendslist.Count != 0 && countFriends != 0)
                     {
-                        if (countFriends > 2)
-                            countFriends = 2;
-                        match += 15 * (Convert.ToDouble(countFriends) / 2);
+                        if (countFriends >5)
+                            countFriends = 5;
+                        match += 15 * (Convert.ToDouble(countFriends) / 5);
                     }
                 }
+
                 if (match > 100)
                     return 100;
                 else
