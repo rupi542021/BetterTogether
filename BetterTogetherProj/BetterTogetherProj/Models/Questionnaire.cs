@@ -53,10 +53,10 @@ namespace project_classes.Models
             return qrList;
 
         }
-        public void Insert()
+        public void InsertQuestionnaire()
         {
             DBServices dbs = new DBServices();
-            dbs.Insert(this);
+            dbs.InsertQuestionnaire(this);
 
         }
     }

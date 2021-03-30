@@ -83,7 +83,7 @@ namespace BetterTogetherProj.Models.DAL
 
         }
 
-        public int Insert(Questionnaire qr)
+        public int InsertQuestionnaire(Questionnaire qr)
         {
 
             SqlConnection con;

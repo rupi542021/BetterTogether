@@ -64,7 +64,7 @@ namespace BetterTogetherProj.Controllers
         {
             try
             {
-                qr.Insert();
+                qr.InsertQuestionnaire();
 
                 return Request.CreateResponse(HttpStatusCode.OK, "Added to favorite page successfully");
             }

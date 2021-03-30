@@ -25,7 +25,7 @@
 
         
         var AnsNum = 0;
-        var q = 1;
+        var q = 0;
 
         // will run when the document is ready
         $(document).ready(function () {
@@ -94,7 +94,7 @@
 
             $("#publishList").change(getyearbydep)
             //$(`#QuestionType` + q).change(getQuestionType)
-            $(document).on("change", "#QuestionType" + q, getQuestionType);
+            $(document).on("change", "#QuestionType"+q, getQuestionType);
 
             $(document).on("click", ".addanswer", getQuestionType);
         });
@@ -183,24 +183,25 @@
         }
 
         function getQuestionType() {
-            alert("12s")
             AnsNum++;
             QuestionType = $("#QuestionType"+q).val();
             str = "";
-            if (QuestionType == 1 || QuestionType==2) {
-                $(".addanswer").show();
-                str += "<input type='text' class='answerext' id="+q+"answer" + AnsNum + "/>"; 
+            if (QuestionType == 1 || QuestionType == 2) {
 
+                $(".addanswer").show();
+                str += "<input type='text' class='answertext' id=" + q  + AnsNum + "/>"; 
             }
         
             $(".radioo").append(str);
-            AnsNum = 0;
+            //AnsNum = 0;
         }
 
 
         function showquestion() { 
+            q++;
            let Questionstring = `
                     <div class="questionn">
+<<<<<<< Updated upstream
                              <div class="form-group row">
 
                             <div class="radioo form-group col-sm-2"">
@@ -210,6 +211,11 @@
  <div class="form-group col-sm-4">
                             <label for="QuestionType`+q+`"><span class="red-star">★ </span>סוג שאלה</label>
                             <select class="form-control Qtype" id="QuestionType`+ q + `" required>
+=======
+                            <div class="form-group col-sm-3">
+                            <label for="QuestionType`+q+`"><span class="red-star">★ </span></label>
+                            <select class="form-control" id="QuestionType`+ q + `"required>
+>>>>>>> Stashed changes
                                 <option value="">בחרי סוג שאלה</option>
                                 <option value="1">שאלת עם תשובה אחת לבחירה</option>
                                 <option value="2">שאלה עם מספר תשובות לבחירה</option>
@@ -219,25 +225,29 @@
                         
                         <div class="form-group col-sm-4">
                             <label for="QuestionText"><span class="red-star">★ </span>תוכן שאלה</label>
+<<<<<<< Updated upstream
                             <input type="text" class="form-control Qtext" id="QuestionText`+ q + `" placeholder="" required>
+=======
+                            <input type="text" class="form-control" id="QuestionText`+ q + `"placeholder="" required>
+>>>>>>> Stashed changes
                         </div>
        </div>
                       </div>`;
             $("#question1").append(Questionstring);
-            q++;
+           
 
         }
         function getanswersbyqu(Qnum) {
             ansList = [];
-            let j = 0;
-            for (var i = 0; i < AnsNum ; i++) {
-                Answerobj[j] = {
-                    Anslist: $(`#` + Qnum+`answer` + i).val(),
-                }
-                ansList.push(Answerobj);
-                j++;
+            
+            for (var J = 1; J <= AnsNum ; J++) {
+                
+                Anslist = $("#" + Qnum + J).val();
+                
+                ansList.push(Anslist);
             }
             return ansList;
+            console.log(ansList)
         }
             function onSubmitFunc() {
 
@@ -269,7 +279,7 @@
                 Depchosen = $("#publishList").val();
                 NumResponders = 0;
                 QuestionnaireYear = $("#yearList").val();
-                for (var i = 1; i < q; i++) {
+                for (var i = 1; i <= q; i++) {
                    let Questionn = {
                         Questionnum : i,
                         QuestionText : $(`#QuestionText` + i).val(),
@@ -291,7 +301,7 @@
                     NumResponders: NumResponders,
                     Status: $("#Status").is(":checked"),
                     QuestionnaireYear: QuestionnaireYear,
-                    Queslist: questionList,
+                    //Queslist: questionList,
                 }
 
             }
@@ -303,7 +313,6 @@
                 ajaxCall("PUT", "../api/campain", JSON.stringify(camptoSave), updateSuccess, error);
             else if (mode == "new")
                 ajaxCall("POST", "../api/Questionnaire/postqr", JSON.stringify(QrtoSave), insertSuccess, error);
-            //ajaxCall("POST", "../api/Questionnaire/postquestion", JSON.stringify(question), insertQuestionSuccess, error);
 
             return false;
         }
