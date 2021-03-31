@@ -1053,7 +1053,7 @@ namespace BetterTogetherProj.Models.DAL
                 if (match > 100)
                     return 100;
                 else
-                    return Math.Round(match,1);
+                    return Math.Round(match);
 
             }
             catch (Exception ex)
