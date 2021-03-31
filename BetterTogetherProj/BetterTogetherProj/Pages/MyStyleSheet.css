@@ -67,8 +67,10 @@ th.sorting,th.sorting_asc{
 svg,path,rect,td{
    
     text-align:center;
-   
+    margin-left:750px;
+    
 }
+
 form#ManagerForm {
     text-align-last: center;
 }
@@ -166,6 +168,11 @@ nav.navbar.navbar-default {
     margin-top: 20px;
     margin-bottom: 20px;
     font-size: 14px;
+}
+rect {
+    display: block;
+    margin: 0 auto;
+    background-color:aqua;
 }
 
 .myButton:active {
