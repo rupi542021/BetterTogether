@@ -249,7 +249,7 @@ namespace BetterTogetherProj.Controllers
             }
             catch(Exception e)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "connecting error");
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e);
             }
         }
         //[HttpGet]
