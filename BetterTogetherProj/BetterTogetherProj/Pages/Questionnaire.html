@@ -280,6 +280,7 @@
                 questionList = [];
                 QuestionnairePublish = $("#publishDate").val();
                 EndPublishDate = $("#EndpublishDate").val();
+                
                 SubQr = $("#subQr").val();
                 Depchosen = $("#publishList").val();
                 NumResponders = 0;
@@ -311,7 +312,7 @@
                 }
 
             }
-
+               
 
             // add a new Car record to the server
             if (mode == "edit")
@@ -322,6 +323,14 @@
 
             return false;
         }
+        function f() {
+            
+            if ( $("#publishDate").val()>$("#EndpublishDate").val() )
+                //swal({ icon: 'warning', title: 'שים לב', text: "תאריך הסיום צריך להיות לאחר תאריך הפרסום!" })
+           swal("Attention","תאריך הסיום צריך להיות לאחר תאריך הפרסום","error");
+
+        }
+             
 
         // fill the form fields
         function populateFields(qrId) {
@@ -442,7 +451,7 @@
                             render: function (data, type, row, meta) {
                                  shortDateStart = new Date(data);
                                 var dd = String(shortDateStart.getDate()).padStart(2, '0');
-                                var mm = String(shortDateStart.getMonth() + 1).padStart(2, '0'); //January is 0!
+                                var mm = String(shortDateStart.getMonth() + 1).padStart(2, '0'); 
                                 var yyyy = shortDateStart.getFullYear();
 
                                shortDateEnd = dd+ '-' + mm + '-' + yyyy;
@@ -454,7 +463,7 @@
                             render: function (data, type, row, meta) {
                                 shortDateEnd = new Date(data);
                                 var dd = String(shortDateEnd.getDate()).padStart(2, '0');
-                                var mm = String(shortDateEnd.getMonth() + 1).padStart(2, '0'); //January is 0!
+                                var mm = String(shortDateEnd.getMonth() + 1).padStart(2, '0'); //ינואר זה חודש 0
                                 var yyyy = shortDateEnd.getFullYear();
 
                                shortDateEnd = dd+ '-' + mm + '-' + yyyy;
@@ -559,12 +568,12 @@
 
                     <div class="form-group col-sm-4">
                         <label for="publishDate"><span class="red-star">★ </span>תאריך הפצה</label>
-                        <input type="date" class="form-control" id="publishDate" placeholder="" required>
+                        <input type="date" class="form-control"  id="publishDate" placeholder="" required>
 
                     </div>
                     <div class="form-group col-sm-4">
                         <label for="EndpublishDate"><span class="red-star">★ </span>תאריך סיום הפצה </label>
-                        <input type="date" class="form-control" id="EndpublishDate" placeholder="" required>
+                        <input type="date" class="form-control"  onchange="f()" id="EndpublishDate" placeholder="" required>
                     </div>
 
 
