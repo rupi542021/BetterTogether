@@ -99,9 +99,28 @@
             var options = {
                 title: 'השתתפות באירוע: ' + eventName,
                 is3D: true,
+                height: 400,
+                width: 600,
+       
 
-
-            };
+                backgroundColor: 'transparent',
+                pieSliceTextStyle: {
+                    color: '#3D3D3D',
+                    bold: true,
+                    fontSize: 20,
+                },
+                
+                titleTextStyle:{
+                      color: '#3D3D3D',
+                      bold: true,
+                      fontSize: 20,
+                },
+               
+                slices: {
+                0: { color: '#FEFFAE' },
+            1: { color: '#96a2aa' }
+                }
+                };
 
             var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
             chart.draw(data, options);
@@ -145,6 +164,6 @@
     </table>
 
 
-    <div id="piechart_3d" style="width: 400px; height: 400px;"></div>
+    <div id="piechart_3d" ></div>
 </body>
 </html>
