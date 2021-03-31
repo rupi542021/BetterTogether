@@ -14,14 +14,12 @@ namespace BetterTogetherProj.Models.DAL
 {
     public class DBServicesReact
     {
-        public SqlDataAdapter da;
-        public DataTable dt;
+        //public SqlDataAdapter da;
+        //public DataTable dt;
 
         public DBServicesReact()
         {
-            //
-            // TODO: Add constructor logic here
-            //
+
         }
         public SqlConnection connect(String conString)
         {
@@ -84,7 +82,6 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
                 writeToLog(ex);
                 throw (ex);
             }
@@ -153,7 +150,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -185,7 +182,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -205,13 +202,12 @@ namespace BetterTogetherProj.Models.DAL
 
             try
             {
-                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+                con = connect("DBConnectionString"); 
 
                 String selectSTR = "SELECT * FROM department_P where departmentCode="+DepID;
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
-                // get a reader
-                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -225,7 +221,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -248,7 +244,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -271,7 +267,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -290,13 +286,12 @@ namespace BetterTogetherProj.Models.DAL
 
             try
             {
-                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+                con = connect("DBConnectionString");
 
                 String selectSTR = "SELECT * FROM student_pleasure_P INNER JOIN pleasure_P ON pleasurepCode = pCode where studentmail = '"+email+"'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
-                // get a reader
-                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -310,7 +305,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -346,7 +341,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -384,7 +379,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -436,7 +431,7 @@ namespace BetterTogetherProj.Models.DAL
 
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -457,14 +452,11 @@ namespace BetterTogetherProj.Models.DAL
 
             try
             {
-                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
-
+                con = connect("DBConnectionString");
                 String selectSTR = "SELECT * FROM student_hobby_P INNER JOIN hobby_P ON hobbyhCode = hCode where studentmail ='" + email + "'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
-                // get a reader
-                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
-
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
                 {
                     Hobby h = new Hobby();
@@ -477,7 +469,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -593,7 +585,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
 
@@ -629,7 +621,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
 
@@ -643,7 +635,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
 
@@ -679,7 +671,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
 
@@ -693,7 +685,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
 
@@ -730,7 +722,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
 
@@ -744,7 +736,6 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
                 writeToLog(ex);
                 throw (ex);
             }
@@ -783,7 +774,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
 
@@ -797,7 +788,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
 
@@ -833,7 +824,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
 
@@ -847,7 +838,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
 
@@ -884,7 +875,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
 
@@ -898,7 +889,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
 
@@ -958,7 +949,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -1067,7 +1058,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -1102,7 +1093,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
 
@@ -1116,7 +1107,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                // write to log
+                writeToLog(ex);
                 throw (ex);
             }
 
@@ -1144,7 +1135,7 @@ namespace BetterTogetherProj.Models.DAL
             string docPath =
               Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-            // Write the string array to a new file named "WriteLines.txt".
+            // Write the string array to a new file named "Exceptions.txt".
             using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "Exceptions.txt"),true))
             {
                     outputFile.WriteLine(line);
