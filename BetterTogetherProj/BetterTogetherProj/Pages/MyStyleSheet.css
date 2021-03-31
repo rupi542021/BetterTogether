@@ -48,6 +48,7 @@ div#FBtable_wrapper, div#detaileventtable_wrapper {
     width: 95%;
     direction: rtl;
     margin-left: 2.5%;
+    text-align:center;
 }
 div#QTable_wrapper {
     direction: rtl;
@@ -59,6 +60,14 @@ div#detaileventtable_wrapper {
     direction: rtl;
     margin-left: 10%;
     margin-top:20px
+}
+th.sorting,th.sorting_asc{
+    text-align:center;
+}
+svg,path,rect,td{
+   
+    text-align:center;
+   
 }
 form#ManagerForm {
     text-align-last: center;
