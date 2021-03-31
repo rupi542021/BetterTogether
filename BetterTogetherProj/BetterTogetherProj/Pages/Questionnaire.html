@@ -437,8 +437,30 @@
                             }
                         },
                         { data: "QuestionnaireNum" },
-                        { data: "QuestionnairePublish" },
-                        { data: "EndPublishDate" },
+                        {
+                            data: "QuestionnairePublish",
+                            render: function (data, type, row, meta) {
+                                 shortDateStart = new Date(data);
+                                var dd = String(shortDateStart.getDate()).padStart(2, '0');
+                                var mm = String(shortDateStart.getMonth() + 1).padStart(2, '0'); //January is 0!
+                                var yyyy = shortDateStart.getFullYear();
+
+                               shortDateEnd = dd+ '-' + mm + '-' + yyyy;
+                                return shortDateEnd;
+                            }
+                        },
+                        {
+                            data: "EndPublishDate",
+                            render: function (data, type, row, meta) {
+                                shortDateEnd = new Date(data);
+                                var dd = String(shortDateEnd.getDate()).padStart(2, '0');
+                                var mm = String(shortDateEnd.getMonth() + 1).padStart(2, '0'); //January is 0!
+                                var yyyy = shortDateEnd.getFullYear();
+
+                               shortDateEnd = dd+ '-' + mm + '-' + yyyy;
+                                return shortDateEnd;
+                                }
+                            },
                         { data: "SubQr" },
                         { data: "Dep.DepartmentName" },
                         {

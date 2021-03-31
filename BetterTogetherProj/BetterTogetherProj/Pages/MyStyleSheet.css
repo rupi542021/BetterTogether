@@ -5,6 +5,7 @@
     background-attachment: fixed;
     font-family: 'Segoe UI';
     color: #3D3D3D
+    
 }
 h2{
     text-align:center;
@@ -174,6 +175,8 @@ rect {
     margin: 0 auto;
     background-color:aqua;
 }
+
+
 
 .myButton:active {
     position: relative;
