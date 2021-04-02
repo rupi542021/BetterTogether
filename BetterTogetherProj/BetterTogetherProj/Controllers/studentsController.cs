@@ -17,7 +17,6 @@ namespace BetterTogetherProj.Controllers
 {
     public class studentsController : ApiController
     {
-        // GET api/<controller>
         public HttpResponseMessage GetStudentFromRuppin(string email)
         {
             Student student = new Student();
@@ -90,23 +89,6 @@ namespace BetterTogetherProj.Controllers
             catch (Exception e)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e);
-            }
-        }
-
-        [HttpGet]
-        [Route("API/students/{mail}/without")]
-        public IHttpActionResult GetAllUsers (string mail)
-        {
-            try
-            {
-                Student s = new Student();
-                List<Student> studentsList = s.ReadAllStudent(mail);
-                return Ok(studentsList);
-            }
-            catch (Exception e)
-            {
-                //return badrequest(e.message);
-                return Content(HttpStatusCode.BadRequest, e);
             }
         }
         [HttpGet]
