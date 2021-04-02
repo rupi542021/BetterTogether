@@ -14,10 +14,7 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
     <link href="MyStyleSheet.css" rel="stylesheet" />
-    <style type="text/css">
-      
    
-    </style>
     <script>
         $(document).ready(function () {
 
@@ -162,16 +159,25 @@
 
         function AddSubject() {
             document.getElementById('addsubjecttext').value = "";
-
+            let mm = $.trim(document.getElementById('addsubsubtext').value.value).length
             $("#addsubjecttext").show();
             $('input').keyup(function () {
-                if ($.trim(this.value).length > 0) {
+                if (mm == 0 && $.trim(this.value).length > 0) {
                     $('#buttonaddsubject').show();
-                    $("#buttonaddsubsub").hide();
-
+                    $('#buttonaddsubsub').hide();
                 }
-                else
-                    $('#buttonaddsubject').hide()
+                else if (mm > 0 && $.trim(this.value).length > 0) {
+                    $('#buttonaddsubject').show();
+                    $('#buttonaddsubsub').show();
+                }
+                else if (mm == 0 && $.trim(this.value).length == 0) {
+                    $('#buttonaddsubject').hide();
+                    $('#buttonaddsubsub').hide();
+                }
+                else if (mm > 0 && $.trim(this.value).length == 0) {
+                    $('#buttonaddsubject').hide();
+                    $('#buttonaddsubsub').show();
+                }
             });
 
         }
@@ -181,7 +187,7 @@
             let addsubject = {
                 SubName: $("#addsubjecttext").val()
             }
-            ajaxCall("POST", "../api/Ads/addsub", JSON.stringify(addsubject), insertsubsuccess, error);
+            ajaxCall("POST", "../api/Ads/addsub", JSON.stringify(addsubject), insertsubsuccess, errorsubject);
         }
 
         function insertsubsuccess(data) {
@@ -201,16 +207,26 @@
 
         function AddSubsub() {
             document.getElementById('addsubsubtext').value = "";
-
+            let yy = $.trim(document.getElementById('addsubjecttext').value).length
             $("#addsubsubtext").show();
             $('input').keyup(function () {
-                if ($.trim(this.value).length > 0) {
-                    $('#buttonaddsubsub').show();
+                if (yy == 0 && $.trim(this.value).length > 0) {
                     $('#buttonaddsubject').hide();
-
+                    $('#buttonaddsubsub').show();
                 }
-                else
-                    $('#buttonaddsubsub').hide()
+                else if (yy > 0 && $.trim(this.value).length > 0) {
+                    $('#buttonaddsubject').show();
+                    $('#buttonaddsubsub').show();
+                }
+                else if (yy == 0 && $.trim(this.value).length == 0) {
+                    $('#buttonaddsubject').hide();
+                    $('#buttonaddsubsub').hide();
+                }
+                else if (yy > 0 && $.trim(this.value).length == 0) {
+                    $('#buttonaddsubject').show();
+                    $('#buttonaddsubsub').hide();
+                }
+
             });
         }
         function Insertsubsubtolist() {
@@ -222,7 +238,7 @@
                 SubSubject: Allsubsub,
             }
 
-            ajaxCall("POST", "../api/Ads/addsubsub", JSON.stringify(addsubsub), insertsubsubsuccess, erroreventname);
+            ajaxCall("POST", "../api/Ads/addsubsub", JSON.stringify(addsubsub), insertsubsubsuccess, errorsubsubject);
         }
 
         function insertsubsubsuccess(data) {
@@ -234,9 +250,18 @@
             $("#buttonaddsubsub").hide();
         }
 
-        function erroreventname(err) {
+        function errorsubject(err) {
             console.log(err);
-            swal({ icon: 'error', title: 'Sorry', text: " תת הנושא כבר קיים!" })
+            swal({ icon: 'error', title: 'Sorry', text: "הנושא כבר קיים!" })
+            $("#addtypeeventtext").val("");
+
+
+        }
+        function errorsubsubject(err) {
+            console.log(err);
+            swal({ icon: 'error', title: 'Sorry', text: "תת הנושא כבר קיים!" })
+            $("#addnameventtext").val("");
+
         }
 
         function error(err) {
@@ -301,7 +326,6 @@
         </form>
 
         <div id="addS">
-
             <i type="button" id="addsubject" class="fas fa-plus-circle"></i>
             <input type="text" id="addsubjecttext" />
             <input type="button" value="הוספת נושא" id="buttonaddsubject" onclick="Insertsubtolist()" />

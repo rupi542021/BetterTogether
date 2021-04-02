@@ -13,8 +13,7 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
     <link href="MyStyleSheet.css" rel="stylesheet" />
-    <style type="text/css">
-    </style>
+   
     <script>
         $(document).ready(function () {
 
@@ -156,16 +155,26 @@
 
         function AddEventType() {
             document.getElementById('addtypeeventtext').value = "";
-
+            let mm = $.trim(document.getElementById('addnameventtext').value.value).length
             $("#addtypeeventtext").show();
             $('input').keyup(function () {
-                if ($.trim(this.value).length > 0) {
+                if (mm == 0 && $.trim(this.value).length > 0) {
                     $('#buttoneventtype').show();
                     $('#buttoneventname').hide();
-
                 }
-                else
-                    $('#buttoneventtype').hide()
+                else if (mm > 0 && $.trim(this.value).length > 0) {
+                    $('#buttoneventtype').show();
+                    $('#buttoneventname').show();
+                }
+                else if (mm == 0 && $.trim(this.value).length == 0) {
+                    $('#buttoneventtype').hide();
+                    $('#buttoneventname').hide();
+                }
+                else if (mm > 0 && $.trim(this.value).length == 0) {
+                    $('#buttoneventtype').hide();
+                    $('#buttoneventname').show();
+                }
+               
             });
 
         }
@@ -175,7 +184,7 @@
             let addeventtypee = {
                 Eventtype: $("#addtypeeventtext").val()
             }
-            ajaxCall("POST", "../api/Events/addeventtype", JSON.stringify(addeventtypee), inserteventtypesuccess, error);
+            ajaxCall("POST", "../api/Events/addeventtype", JSON.stringify(addeventtypee), inserteventtypesuccess, erroreventtype);
         }
 
         function inserteventtypesuccess(data) {
@@ -186,8 +195,6 @@
         function getSuccessAllneweventstypee(allevtype) {
             console.log(allevtype);
             $("#EventType").empty();
-            //let m = $("#addtypeeventtext").val();
-            //$("#EventType").val(m)
             getSuccessAlleventstype(allevtype);
             swal({ title: "!סוג האירוע נוסף בהצלחה", icon: "success" });
             $("#addtypeeventtext").hide();
@@ -198,25 +205,31 @@
 
         function AddEventName() {
             document.getElementById('addnameventtext').value = "";
-
+            let yy = $.trim(document.getElementById('addtypeeventtext').value).length
             $("#addnameventtext").show();
             $('input').keyup(function () {
-                if ($.trim(this.value).length > 0) {
-                    $('#buttoneventname').show();
+                if (yy == 0 && $.trim(this.value).length > 0) {
                     $('#buttoneventtype').hide();
+                    $('#buttoneventname').show();
                 }
-                else
-                    $('#buttoneventname').hide()
+                else if (yy > 0 && $.trim(this.value).length > 0) {
+                    $('#buttoneventtype').show();
+                    $('#buttoneventname').show();
+                }
+                else if (yy == 0 && $.trim(this.value).length == 0) {
+                    $('#buttoneventtype').hide();
+                    $('#buttoneventname').hide();
+                }
+                else if (yy > 0 && $.trim(this.value).length == 0) {
+                    $('#buttoneventtype').show();
+                    $('#buttoneventname').hide();
+                }
+           
             });
         }
         function Inserteventnametolist() {
-            if (Allevname === undefined || Allevname.lengthֱ === 0) {
-                Allevnameֱ = [];
-                Allevname.push($("#addnameventtext").val());
-            }
-            else {
-                Allevname.push($("#addnameventtext").val());
-            }
+      
+            Allevname.push($("#addnameventtext").val());
             let addeventnamee = {
                 Eventtype: $("#EventType :selected").text(),
                 EventName: Allevname
@@ -228,16 +241,25 @@
         function inserteventnamesuccess(data) {
 
             console.log(data);
-            swal({ title: "!שם האירוע נוסף בהצלחה", icon: "success" });
             getevname();
+            swal({ title: "!שם האירוע נוסף בהצלחה", icon: "success" });
             $("#addnameventtext").hide();
             $("#buttoneventname").hide();
 
         }
 
+        function erroreventtype(err) {
+            console.log(err);
+            swal({ icon: 'error', title: 'Sorry', text: "!סוג האירוע כבר קיים" })
+            $("#addtypeeventtext").val("");
+
+
+        }
         function erroreventname(err) {
             console.log(err);
-            swal({ icon: 'error', title: 'Sorry', text: "יש לבחור ראשית סוג אירוע!" })
+            swal({ icon: 'error', title: 'Sorry', text: "!שם האירוע כבר קיים" })
+            $("#addnameventtext").val("");
+
         }
 
 
@@ -301,7 +323,6 @@
         </form>
 
         <div id="addET">
-
             <i type="button" id="addeventtype" class="fas fa-plus-circle"></i>
             <input type="text" id="addtypeeventtext" />
             <input type="button" value="הוספת סוג אירוע" id="buttoneventtype" onclick="Inserteventtypetolist()" />

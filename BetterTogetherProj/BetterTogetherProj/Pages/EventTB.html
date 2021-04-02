@@ -43,7 +43,6 @@
             console.log(eventdetail);
             data = eventdetail;
 
-
             try {
                 tbl = $('#detaileventtable').DataTable({
                     "oLanguage": {
@@ -95,32 +94,39 @@
                 ['לא משתתפים', Noparticipant],
 
             ]);
+            if (participant != 0 && Noparticipant != 0) {
+                var options = {
+                    title: 'השתתפות באירוע: ' + eventName,
+                    is3D: true,
+                    height: 400,
+                    width: 600,
 
-            var options = {
-                title: 'השתתפות באירוע: ' + eventName,
-                is3D: true,
-                height: 400,
-                width: 600,
-       
 
-                backgroundColor: 'transparent',
-                pieSliceTextStyle: {
-                    color: '#3D3D3D',
-                    bold: true,
-                    fontSize: 20,
-                },
-                
-                titleTextStyle:{
-                      color: '#3D3D3D',
-                      bold: true,
-                      fontSize: 20,
-                },
-               
-                slices: {
-                0: { color: '#FEFFAE' },
-            1: { color: '#96a2aa' }
+                    backgroundColor: 'transparent',
+                    pieSliceTextStyle: {
+                        color: '#3D3D3D',
+                        bold: true,
+                        fontSize: 20,
+                    },
+
+                    titleTextStyle: {
+                        color: '#3D3D3D',
+                        bold: true,
+                        fontSize: 20,
+                    },
+
+                    slices: {
+                        0: { color: '#FEFFAE' },
+                        1: { color: '#96a2aa' }
+                    }
                 }
-                };
+            }
+            else if (participant == 0 && Noparticipant == 0) {
+                swal({icon:"warning", text: "! טרם אישרו הגעה לאירוע זה" })
+                var options = {
+                    backgroundColor: 'transparent',
+                }
+            }
 
             var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
             chart.draw(data, options);

@@ -109,29 +109,21 @@ input#files {
 
 
 img {
-    margin-left: 900px;
-    margin-top: -300px;
-}
-
-div#addS {
-    margin-left: 810px;
-    margin-top: -790px;
-}
-
-div#addSS {
-    margin-left: 810px;
-    margin-top: 70px;
+    width: 170px;
+    margin-top: 250px;
+    position: relative;
+    left: 660px;
 }
 
 .fa-plus-circle:before {
     font-size: 25px;
-    margin-right:200px;
+    /*margin-right:200px;*/
 }
 
-input#addsubjecttext, input#addsubsubtext {
+/*input#addsubjecttext, input#addsubsubtext {
     margin-left: 20px;
     margin-top: 5px;
-}
+}*/
 
 .container-fluid {
     padding-right: 15px;
@@ -200,4 +192,12 @@ rect {
 .radioo.form-group.col-sm-2 {
     text-align: right;
     margin-top: 27px;
+}
+div#addEN, #addSS {
+    margin-left: 750px;
+    margin-top: 63px;
+}
+#addET, div#addS {
+    margin-left: 750px;
+    margin-top: -484px;
 }
