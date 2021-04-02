@@ -22,11 +22,13 @@
             $("#SubjName").change(getsubsub);
             $("#AddSubsub").hide();
 
-            $("#addsubject").click(AddSubject);
+            //$("#addsubject").click(AddSubject);
             $("#addsubjecttext").hide();
             $('#buttonaddsubject').hide();
 
-            $("#AddSubsub").click(AddSubsub);
+            //$("#AddSubsub").click(AddSubsub);
+            //$("#AddSubsub").click(AddSubject);
+
             $("#addsubsubtext").hide();
             $('#buttonaddsubsub').hide();
 
@@ -157,24 +159,37 @@
 
         }
 
-        function AddSubject() {
+        function AddSubject(number) {
             document.getElementById('addsubjecttext').value = "";
-            let mm = $.trim(document.getElementById('addsubsubtext').value.value).length
-            $("#addsubjecttext").show();
+            let subsub = $.trim(document.getElementById('addsubsubtext').value).length
+            let sub = $.trim(document.getElementById('addsubjecttext').value).length
+            if (number == 1) {
+                $("#addsubjecttext").show();
+            }
+            else {
+                $("#addsubsubtext").show();
+            }
             $('input').keyup(function () {
-                if (mm == 0 && $.trim(this.value).length > 0) {
+                if (subsub == 0 && sub > 0) {
+                    alert(s)
                     $('#buttonaddsubject').show();
                     $('#buttonaddsubsub').hide();
                 }
-                else if (mm > 0 && $.trim(this.value).length > 0) {
+                else if (subsub > 0 && sub > 0) {
+                    alert(a)
+
                     $('#buttonaddsubject').show();
                     $('#buttonaddsubsub').show();
                 }
-                else if (mm == 0 && $.trim(this.value).length == 0) {
+                else if (subsub == 0 && sub == 0) {
+                    alert(w)
+
                     $('#buttonaddsubject').hide();
                     $('#buttonaddsubsub').hide();
                 }
-                else if (mm > 0 && $.trim(this.value).length == 0) {
+                else if (subsub > 0 && sub == 0) {
+                    alert(l)
+
                     $('#buttonaddsubject').hide();
                     $('#buttonaddsubsub').show();
                 }
@@ -205,30 +220,30 @@
         }
 
 
-        function AddSubsub() {
-            document.getElementById('addsubsubtext').value = "";
-            let yy = $.trim(document.getElementById('addsubjecttext').value).length
-            $("#addsubsubtext").show();
-            $('input').keyup(function () {
-                if (yy == 0 && $.trim(this.value).length > 0) {
-                    $('#buttonaddsubject').hide();
-                    $('#buttonaddsubsub').show();
-                }
-                else if (yy > 0 && $.trim(this.value).length > 0) {
-                    $('#buttonaddsubject').show();
-                    $('#buttonaddsubsub').show();
-                }
-                else if (yy == 0 && $.trim(this.value).length == 0) {
-                    $('#buttonaddsubject').hide();
-                    $('#buttonaddsubsub').hide();
-                }
-                else if (yy > 0 && $.trim(this.value).length == 0) {
-                    $('#buttonaddsubject').show();
-                    $('#buttonaddsubsub').hide();
-                }
+        //function AddSubsub() {
+        //    document.getElementById('addsubsubtext').value = "";
+        //    let yy = $.trim(document.getElementById('addsubjecttext').value).length
+        //    $("#addsubsubtext").show();
+        //    $('input').keyup(function () {
+        //        if ($.trim(this.value).length > 0) {
+        //            $('#buttonaddsubject').hide();
+        //            $('#buttonaddsubsub').show();
+        //        }
+        //        //else if (yy > 0 && $.trim(this.value).length > 0 ) {
+        //        //    $('#buttonaddsubject').show();
+        //        //    $('#buttonaddsubsub').show();
+        //        //}
+        //        //else if (yy == 0 && $.trim(this.value).length == 0) {
+        //        //    $('#buttonaddsubject').hide();
+        //        //    $('#buttonaddsubsub').hide();
+        //        //}
+        //        else if (yy > 0 && $.trim(this.value).length == 0) {
+        //            $('#buttonaddsubject').show();
+        //            $('#buttonaddsubsub').hide();
+        //        }
 
-            });
-        }
+        //    });
+        //}
         function Insertsubsubtolist() {
 
             Allsubsub.push($("#addsubsubtext").val());
@@ -252,14 +267,14 @@
 
         function errorsubject(err) {
             console.log(err);
-            swal({ icon: 'error', title: 'Sorry', text: "הנושא כבר קיים!" })
+            swal({ icon: 'error', title: 'Sorry', text: "!הנושא כבר קיים" })
             $("#addtypeeventtext").val("");
 
 
         }
         function errorsubsubject(err) {
             console.log(err);
-            swal({ icon: 'error', title: 'Sorry', text: "תת הנושא כבר קיים!" })
+            swal({ icon: 'error', title: 'Sorry', text: "!תת הנושא כבר קיים" })
             $("#addnameventtext").val("");
 
         }
@@ -326,12 +341,12 @@
         </form>
 
         <div id="addS">
-            <i type="button" id="addsubject" class="fas fa-plus-circle"></i>
+            <i type="button" id="addsubject" onclick="AddSubject(1)" class="fas fa-plus-circle"></i>
             <input type="text" id="addsubjecttext" />
             <input type="button" value="הוספת נושא" id="buttonaddsubject" onclick="Insertsubtolist()" />
         </div>
         <div id="addSS">
-            <i type="button" id="AddSubsub" class="fas fa-plus-circle"></i>
+            <i type="button" id="AddSubsub" onclick="AddSubject(0)" class="fas fa-plus-circle"></i>
             <input type="text" id="addsubsubtext" />
             <input type="button" value="הוספת תת נושא" id="buttonaddsubsub" onclick="Insertsubsubtolist()" />
         </div>

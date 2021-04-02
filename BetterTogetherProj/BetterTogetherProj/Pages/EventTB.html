@@ -54,7 +54,18 @@
 
                         { data: "Eventtype" },
                         { data: "Eventname" },
-                        { data: "EventDate" },
+                        {
+                            data: "EventDate",
+                            render: function (data, type, row, meta) {
+                                shortDateEnd = new Date(data);
+                                var dd = String(shortDateEnd.getDate()).padStart(2, '0');
+                                var mm = String(shortDateEnd.getMonth() + 1).padStart(2, '0'); //ינואר זה חודש 0
+                                var yyyy = shortDateEnd.getFullYear();
+
+                                shortDateEnd = dd + '-' + mm + '-' + yyyy;
+                                return shortDateEnd;
+                            }
+                        },
                         { data: "ParticipantQu" },
                         {data:"NotparticipantQu"},
 

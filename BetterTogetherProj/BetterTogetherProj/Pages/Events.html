@@ -155,7 +155,7 @@
 
         function AddEventType() {
             document.getElementById('addtypeeventtext').value = "";
-            let mm = $.trim(document.getElementById('addnameventtext').value.value).length
+            let mm = $.trim(document.getElementById('addnameventtext').value).length
             $("#addtypeeventtext").show();
             $('input').keyup(function () {
                 if (mm == 0 && $.trim(this.value).length > 0) {

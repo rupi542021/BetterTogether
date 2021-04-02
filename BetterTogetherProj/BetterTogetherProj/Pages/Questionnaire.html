@@ -194,18 +194,20 @@
                 if (flag == 0) {
 
                     str += `<input type='text' class='answertext' id='` + q + `answer` + AnsNum + `'/>
-                    <i type ='button' onclick='getQuestionType(1)' id ='add`+ q + `' class='fas fa-plus-circle'> </i>`;
+                    <i type ='button' onclick='getQuestionType(1)' id ='add`+ q + `' class='quesplus fas fa-plus-circle'> </i>`;
                 }
                     
                 else {
                     str += `<input type='text' class='answertext' id='` + q + `answer` + AnsNum + `'/>`;
                 }
 
-                var options = document.getElementsByClassName("answertext", document.getElementById(q + 'answer' + AnsNum));
-                if (options.length > 5) {
+                if (AnsNum > 5) {
                     swal({ icon: 'error', title: 'Sorry', text: " ניתן להכניס עד 6 תשובות לשאלה!" })
                     $(".fa-plus-circle").hide();
                 }
+            }
+            if (QuestionType == 3) {
+                $("#"+q+"Qans").hide();
             }
         
             $("#"+q+"Qans").append(str);
@@ -218,7 +220,7 @@
            let Questionstring = `
                     <div class="questionn">
                              <div class="form-group row">
-                            <div class=" ansdiv form-group col-sm-2" id="`+q+`Qans">
+                            <div class="ansdiv form-group col-sm-2" id="`+q+`Qans">
                                <label for="QuestionText"><span class="red-star">★ </span>תשובות</label>
                             </div>
 
@@ -323,12 +325,12 @@
 
             return false;
         }
-        function f() {
+        function checkdate() {
             
-            if ( $("#publishDate").val()>$("#EndpublishDate").val() )
-                //swal({ icon: 'warning', title: 'שים לב', text: "תאריך הסיום צריך להיות לאחר תאריך הפרסום!" })
-           swal("Attention","תאריך הסיום צריך להיות לאחר תאריך הפרסום!","error");
-
+            if ($("#publishDate").val() > $("#EndpublishDate").val()) {
+                swal("Attention", "תאריך הסיום צריך להיות לאחר תאריך הפצת הפרסום!", "error");
+                $("#EndpublishDate").val("");
+            }
         }
              
 
@@ -567,18 +569,19 @@
                 <div class="form-group row">
 
                     <div class="form-group col-sm-4">
-                        <label for="subQr"><span class="red-star">★ </span>נושא השאלון</label>
-                        <input type="text" class="form-control" id="subQr" placeholder="" required>
+                        <label for="EndpublishDate"><span class="red-star">★ </span>תאריך סיום הפצה </label>
+                        <input type="date" class="form-control" onchange="checkdate()" id="EndpublishDate" placeholder="" required>
                     </div>
 
                     <div class="form-group col-sm-4">
                         <label for="publishDate"><span class="red-star">★ </span>תאריך הפצה</label>
-                        <input type="date" class="form-control" id="publishDate" placeholder="" required>
+                        <input type="date" class="form-control"  id="publishDate" placeholder="" required>
 
                     </div>
+
                     <div class="form-group col-sm-4">
-                        <label for="EndpublishDate"><span class="red-star">★ </span>תאריך סיום הפצה </label>
-                        <input type="date" class="form-control" onchange="f()" id="EndpublishDate" placeholder="" required>
+                        <label for="subQr"><span class="red-star">★ </span>נושא השאלון</label>
+                        <input type="text" class="form-control" id="subQr" placeholder="" required>
                     </div>
 
                     <div class="form-group col-sm-4">

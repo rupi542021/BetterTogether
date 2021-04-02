@@ -117,7 +117,8 @@ img {
 
 .fa-plus-circle:before {
     font-size: 25px;
-    /*margin-right:200px;*/
+    display: block;
+    margin: 0 auto;
 }
 
 /*input#addsubjecttext, input#addsubsubtext {
@@ -201,3 +202,11 @@ div#addEN, #addSS {
     margin-left: 750px;
     margin-top: -484px;
 }
+.quesplus{
+    position: relative;
+    right: 120px;
+}
+/*.answertext{
+    position:relative;
+    top:30px;
+}*/

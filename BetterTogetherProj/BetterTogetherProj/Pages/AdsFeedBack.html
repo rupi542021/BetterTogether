@@ -77,11 +77,7 @@
 
             console.log(onlyFB);
             onlyFB1 = onlyFB;
-            //$('#FBtable').dataTable({
-            //    "oLanguage": {
-            //        "sLengthMenu": "הצגת _MENU_ תגובות", "sSearch": "חיפוש: ", "sZeroRecords": "אין תגובות בנושא זה"
-            //    }
-            //});
+         
             try {
 
                 tbl = $('#FBtable').DataTable({
@@ -106,6 +102,15 @@
                         },
                         {
                             data: "CommentDate",
+                            render: function (data, type, row, meta) {
+                                shortDateEnd = new Date(data);
+                                var dd = String(shortDateEnd.getDate()).padStart(2, '0');
+                                var mm = String(shortDateEnd.getMonth() + 1).padStart(2, '0'); //ינואר זה חודש 0
+                                var yyyy = shortDateEnd.getFullYear();
+
+                                shortDateEnd = dd + '-' + mm + '-' + yyyy;
+                                return shortDateEnd;
+                            }
 
                         },
                         {
