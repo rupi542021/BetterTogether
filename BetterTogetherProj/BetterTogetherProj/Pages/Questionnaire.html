@@ -29,8 +29,7 @@
 
         // will run when the document is ready
         $(document).ready(function () {
-
-            addquestion();
+             AnsNum = 0;
   
 
             mode = "";
@@ -56,8 +55,10 @@
 
 
             $("#newBTN").on("click", function () {
-                //$("#saveBTN").hide();
-                //$("#add"+q).hide();
+                AnsNum = 0;
+                q = 0;
+                $("#question1").html("");
+                addquestion();
 
                 qrId = null;
                 mode = "new";
@@ -361,9 +362,6 @@
             $(".answertext").val("");
             $(".quesplus").hide();
             $(".answertext").hide();
-            for (var i = 1; i < q; q--) {           
-                $("#" + q).hide();
-            }
          
         }
 
