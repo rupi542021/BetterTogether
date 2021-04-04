@@ -22,16 +22,11 @@
             $("#SubjName").change(getsubsub);
             $("#AddSubsub").hide();
 
-            //$("#addsubject").click(AddSubject);
             $("#addsubjecttext").hide();
             $('#buttonaddsubject').hide();
 
-            //$("#AddSubsub").click(AddSubsub);
-            //$("#AddSubsub").click(AddSubject);
-
             $("#addsubsubtext").hide();
             $('#buttonaddsubsub').hide();
-
 
 
             $("#pForm").submit(f1); // bind the submit event to a function called f1
@@ -107,6 +102,8 @@
             picName = "";
             $("#addsubjecttext").hide();
             $("#addsubsubtext").hide();
+            $("#buttonaddsubsub").hide();
+            $("#buttonaddsubject").hide();
 
         }
 
@@ -159,50 +156,34 @@
 
         }
 
-        function AddSubject(number) {
-            document.getElementById('addsubjecttext').value = "";
-            let subsub = $.trim(document.getElementById('addsubsubtext').value).length
-            let sub = $.trim(document.getElementById('addsubjecttext').value).length
+        function Addbutton(number) {
+            document.getElementById('addsubjecttext').value = '';
+            document.getElementById('addsubsubtext').value = '';
+
             if (number == 1) {
                 $("#addsubjecttext").show();
+                $("#buttonaddsubject").show();
+
             }
             else {
                 $("#addsubsubtext").show();
+                $("#buttonaddsubsub").show();
+
             }
-            $('input').keyup(function () {
-                if (subsub == 0 && sub > 0) {
-                    alert(s)
-                    $('#buttonaddsubject').show();
-                    $('#buttonaddsubsub').hide();
-                }
-                else if (subsub > 0 && sub > 0) {
-                    alert(a)
-
-                    $('#buttonaddsubject').show();
-                    $('#buttonaddsubsub').show();
-                }
-                else if (subsub == 0 && sub == 0) {
-                    alert(w)
-
-                    $('#buttonaddsubject').hide();
-                    $('#buttonaddsubsub').hide();
-                }
-                else if (subsub > 0 && sub == 0) {
-                    alert(l)
-
-                    $('#buttonaddsubject').hide();
-                    $('#buttonaddsubsub').show();
-                }
-            });
-
+        
         }
 
         function Insertsubtolist() {
+           
+            if ($("#addsubjecttext").val() == "")
+             swal({ icon: 'error', title: 'Sorry', text: "!יש להזין נושא" })
 
-            let addsubject = {
-                SubName: $("#addsubjecttext").val()
+            else {
+                let addsubject = {
+                    SubName: $("#addsubjecttext").val()
+                }
+                ajaxCall("POST", "../api/Ads/addsub", JSON.stringify(addsubject), insertsubsuccess, errorsubject);
             }
-            ajaxCall("POST", "../api/Ads/addsub", JSON.stringify(addsubject), insertsubsuccess, errorsubject);
         }
 
         function insertsubsuccess(data) {
@@ -220,40 +201,19 @@
         }
 
 
-        //function AddSubsub() {
-        //    document.getElementById('addsubsubtext').value = "";
-        //    let yy = $.trim(document.getElementById('addsubjecttext').value).length
-        //    $("#addsubsubtext").show();
-        //    $('input').keyup(function () {
-        //        if ($.trim(this.value).length > 0) {
-        //            $('#buttonaddsubject').hide();
-        //            $('#buttonaddsubsub').show();
-        //        }
-        //        //else if (yy > 0 && $.trim(this.value).length > 0 ) {
-        //        //    $('#buttonaddsubject').show();
-        //        //    $('#buttonaddsubsub').show();
-        //        //}
-        //        //else if (yy == 0 && $.trim(this.value).length == 0) {
-        //        //    $('#buttonaddsubject').hide();
-        //        //    $('#buttonaddsubsub').hide();
-        //        //}
-        //        else if (yy > 0 && $.trim(this.value).length == 0) {
-        //            $('#buttonaddsubject').show();
-        //            $('#buttonaddsubsub').hide();
-        //        }
-
-        //    });
-        //}
         function Insertsubsubtolist() {
+            if ($("#addsubsubtext").val() == "")
+                swal({ icon: 'error', title: 'Sorry', text: "!יש להזין תת נושא" })
+            else {
+                Allsubsub.push($("#addsubsubtext").val());
 
-            Allsubsub.push($("#addsubsubtext").val());
+                let addsubsub = {
+                    SubName: $("#SubjName :selected").text(),
+                    SubSubject: Allsubsub,
+                }
 
-            let addsubsub = {
-                SubName: $("#SubjName :selected").text(),
-                SubSubject: Allsubsub,
+                ajaxCall("POST", "../api/Ads/addsubsub", JSON.stringify(addsubsub), insertsubsubsuccess, errorsubsubject);
             }
-
-            ajaxCall("POST", "../api/Ads/addsubsub", JSON.stringify(addsubsub), insertsubsubsuccess, errorsubsubject);
         }
 
         function insertsubsubsuccess(data) {
@@ -341,12 +301,12 @@
         </form>
 
         <div id="addS">
-            <i type="button" id="addsubject" onclick="AddSubject(1)" class="fas fa-plus-circle"></i>
+            <i type="button" id="addsubject" onclick="Addbutton(1)" class="fas fa-plus-circle"></i>
             <input type="text" id="addsubjecttext" />
             <input type="button" value="הוספת נושא" id="buttonaddsubject" onclick="Insertsubtolist()" />
         </div>
         <div id="addSS">
-            <i type="button" id="AddSubsub" onclick="AddSubject(0)" class="fas fa-plus-circle"></i>
+            <i type="button" id="AddSubsub" onclick="Addbutton(0)" class="fas fa-plus-circle"></i>
             <input type="text" id="addsubsubtext" />
             <input type="button" value="הוספת תת נושא" id="buttonaddsubsub" onclick="Insertsubsubtolist()" />
         </div>

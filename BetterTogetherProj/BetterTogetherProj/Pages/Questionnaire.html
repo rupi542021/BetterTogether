@@ -217,7 +217,7 @@
         function addquestion() { 
             AnsNum = 0;
             q++;
-           let Questionstring = `
+           let Questionstring = `<div id="`+q+`">
                     <div class="questionn">
                              <div class="form-group row">
                             <div class="ansdiv form-group col-sm-2" id="`+q+`Qans">
@@ -238,7 +238,7 @@
                             <input type="text" class="form-control Qtext" id="QuestionText`+ q + `" placeholder="" required>
                         </div>
                         </div>
-                      </div>`;
+                      </div></div>`;
             $("#question1").append(Questionstring);
            
 
@@ -354,11 +354,17 @@
             $("#publishDate").val("");
             $("#EndpublishDate").val("");
             $("#subQr").val("");
-            $("#numResponders").val("");
             $("#publishList").val("");
-            $("#Status").prop('checked', false);
             $("#yearList").val("");
-
+            $(".Qtext").val("");
+            $(".Qtype").val("");
+            $(".answertext").val("");
+            $(".quesplus").hide();
+            $(".answertext").hide();
+            for (var i = 1; i < q; q--) {           
+                $("#" + q).hide();
+            }
+         
         }
 
         // get a car according to its Id

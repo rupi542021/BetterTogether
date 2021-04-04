@@ -21,11 +21,9 @@
             $("#EventType").change(getevname);
             $("#addeventname").hide();
 
-            $("#addeventtype").click(AddEventType);
             $("#addtypeeventtext").hide();
             $('#buttoneventtype').hide();
 
-            $("#addeventname").click(AddEventName);
             $("#addnameventtext").hide();
             $('#buttoneventname').hide();
 
@@ -103,6 +101,8 @@
             picName = "";
             $("#addtypeeventtext").hide();
             $("#addnameventtext").hide();
+            $("#buttoneventname").hide();
+            $("#buttoneventtype").hide();
         }
 
         // This function is called in case of an error
@@ -153,38 +153,33 @@
 
         }
 
-        function AddEventType() {
-            document.getElementById('addtypeeventtext').value = "";
-            let mm = $.trim(document.getElementById('addnameventtext').value).length
-            $("#addtypeeventtext").show();
-            $('input').keyup(function () {
-                if (mm == 0 && $.trim(this.value).length > 0) {
-                    $('#buttoneventtype').show();
-                    $('#buttoneventname').hide();
-                }
-                else if (mm > 0 && $.trim(this.value).length > 0) {
-                    $('#buttoneventtype').show();
-                    $('#buttoneventname').show();
-                }
-                else if (mm == 0 && $.trim(this.value).length == 0) {
-                    $('#buttoneventtype').hide();
-                    $('#buttoneventname').hide();
-                }
-                else if (mm > 0 && $.trim(this.value).length == 0) {
-                    $('#buttoneventtype').hide();
-                    $('#buttoneventname').show();
-                }
-               
-            });
+        function addbutton(number) {
+            document.getElementById('addtypeeventtext').value = '';
+            document.getElementById('addnameventtext').value = '';
+
+            if (number == 1) {
+
+                $("#addtypeeventtext").show();
+                $('#buttoneventtype').show();
+
+            }
+            else {
+                $("#addnameventtext").show();
+                $('#buttoneventname').show();
+
+            }           
 
         }
 
         function Inserteventtypetolist() {
-
-            let addeventtypee = {
-                Eventtype: $("#addtypeeventtext").val()
+            if ($("#addtypeeventtext").val() == "")
+                swal({ icon: 'error', title: 'Sorry', text: "!יש להזין סוג אירוע" })
+            else {
+                let addeventtypee = {
+                    Eventtype: $("#addtypeeventtext").val()
+                }
+                ajaxCall("POST", "../api/Events/addeventtype", JSON.stringify(addeventtypee), inserteventtypesuccess, erroreventtype);
             }
-            ajaxCall("POST", "../api/Events/addeventtype", JSON.stringify(addeventtypee), inserteventtypesuccess, erroreventtype);
         }
 
         function inserteventtypesuccess(data) {
@@ -203,39 +198,18 @@
         }
 
 
-        function AddEventName() {
-            document.getElementById('addnameventtext').value = "";
-            let yy = $.trim(document.getElementById('addtypeeventtext').value).length
-            $("#addnameventtext").show();
-            $('input').keyup(function () {
-                if (yy == 0 && $.trim(this.value).length > 0) {
-                    $('#buttoneventtype').hide();
-                    $('#buttoneventname').show();
-                }
-                else if (yy > 0 && $.trim(this.value).length > 0) {
-                    $('#buttoneventtype').show();
-                    $('#buttoneventname').show();
-                }
-                else if (yy == 0 && $.trim(this.value).length == 0) {
-                    $('#buttoneventtype').hide();
-                    $('#buttoneventname').hide();
-                }
-                else if (yy > 0 && $.trim(this.value).length == 0) {
-                    $('#buttoneventtype').show();
-                    $('#buttoneventname').hide();
-                }
-           
-            });
-        }
+  
         function Inserteventnametolist() {
-      
-            Allevname.push($("#addnameventtext").val());
-            let addeventnamee = {
-                Eventtype: $("#EventType :selected").text(),
-                EventName: Allevname
-
+            if ($("#addnameventtext").val() == "")
+                swal({ icon: 'error', title: 'Sorry', text: "!יש להזין שם אירוע" })
+            else {
+                Allevname.push($("#addnameventtext").val());
+                let addeventnamee = {
+                    Eventtype: $("#EventType :selected").text(),
+                    EventName: Allevname
+                }
+                ajaxCall("POST", "../api/Events/addeventname", JSON.stringify(addeventnamee), inserteventnamesuccess, erroreventname);
             }
-            ajaxCall("POST", "../api/Events/addeventname", JSON.stringify(addeventnamee), inserteventnamesuccess, erroreventname);
         }
 
         function inserteventnamesuccess(data) {
@@ -323,12 +297,12 @@
         </form>
 
         <div id="addET">
-            <i type="button" id="addeventtype" class="fas fa-plus-circle"></i>
+            <i type="button" id="addeventtype" onclick="addbutton(1)" class="fas fa-plus-circle"></i>
             <input type="text" id="addtypeeventtext" />
             <input type="button" value="הוספת סוג אירוע" id="buttoneventtype" onclick="Inserteventtypetolist()" />
         </div>
         <div id="addEN">
-            <i type="button" id="addeventname" class="fas fa-plus-circle"></i>
+            <i type="button" id="addeventname" onclick="addbutton(0)" class="fas fa-plus-circle"></i>
             <input type="text" id="addnameventtext" />
             <input type="button" value="הוספת שם אירוע" id="buttoneventname" onclick="Inserteventnametolist()" />
         </div>
