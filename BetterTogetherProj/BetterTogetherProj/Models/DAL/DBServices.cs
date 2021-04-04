@@ -842,63 +842,6 @@ namespace BetterTogetherProj.Models.DAL
         }
 
 
-        //public int Insertquestion(Question q)
-        //{
-
-        //    SqlConnection con;
-        //    SqlCommand cmd;
-
-        //    try
-        //    {
-        //        con = connect1("DBConnectionString"); // create the connection
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // write to log
-        //        throw (ex);
-        //    }
-
-        //    String cStr = BuildInsertCommand(q);      // helper method to build the insert string
-
-        //    cmd = CreateCommand1(cStr, con);             // create the command
-
-        //    try
-        //    {
-        //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
-        //        return numEffected;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // write to log
-        //        throw (ex);
-        //    }
-
-        //    finally
-        //    {
-        //        if (con != null)
-        //        {
-        //            // close the db connection
-        //            con.Close();
-        //        }
-        //    }
-
-        //}
-
-        ////--------------------------------------------------------------------
-        //// Build the Insert command String
-        ////--------------------------------------------------------------------
-        //private String BuildInsertCommand(Question q)
-        //{
-        //    String command;
-        //    StringBuilder sb = new StringBuilder();
-
-        //    sb.AppendFormat("Values('{0}','{1}','{2}')", q.Questionnum, q.QuestionText, q.QuestionType, q.Qr.QuestionnaireNum);
-        //    String prefix = "INSERT INTO question_P3 " + "(qCode, qText, questionType, qrCode )";
-        //    command = prefix + sb.ToString();
-
-        //    return command;
-        //}
-
 
         public int Insertcomment(AdsFeedback mngcom)
         {
