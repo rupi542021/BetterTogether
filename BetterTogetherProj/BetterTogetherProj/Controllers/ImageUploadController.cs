@@ -50,10 +50,10 @@ namespace BetterTogetherProj.Controllers
 
 
 
-                        var fileSavePath = Path.Combine(HostingEnvironment.MapPath("~/uploadedFiles"), fname);
+                        var fileSavePath = Path.Combine(HostingEnvironment.MapPath("~/uploadedImages"), fname);
                         // Save the uploaded file  
                         httpPostedFile.SaveAs(fileSavePath);
-                        imageLinks.Add("uploadedFiles/" + fname);
+                        imageLinks.Add("uploadedImages/" + fname);
                     }
                 }
             }

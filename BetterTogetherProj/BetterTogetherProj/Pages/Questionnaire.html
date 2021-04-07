@@ -21,16 +21,20 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
+
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script>tinymce.init({ selector: 'textarea' });</script>
+
     <script>
 
-        
+
         var AnsNum = 0;
         var q = 0;
 
         // will run when the document is ready
         $(document).ready(function () {
-             AnsNum = 0;
-  
+            AnsNum = 0;
+
 
             mode = "";
             $("#cancelSaveBTN").on("click", function () { //מבטל טופס NEW
@@ -73,11 +77,8 @@
                 $("#editDiv :input").prop("disabled", false); // new mode: enable all controls in the form
             });
 
-            /*ajaxCall("GET", "../api/businesses", "", GetsuccessAllRes, error);*/// לא מבצע עדכון ל Allres
-
-            // once the document is ready we fetch a list of cars from the server
+          
             ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
-
 
             let api = "../api/Questionnaire/qr"
             ajaxCall("GET", api, "", getSuccess, error);
@@ -113,17 +114,18 @@
         }
         function getyearbydep() {
 
-            let depp = $("#publishList").val()
+            let depp = $("#publishList").val();
             let stryear = "";
-            var years = ["", 'א', 'ב', 'ג', 'ד',];
+            var years = ["", 'א', 'ב', 'ג', 'ד'];
             for (var j = 1; j < years.length; j++) {
-                if (depp == 1 || depp == 2 || depp == 3 || depp == 6 || depp == 10)
+                if (depp == 1 || depp == 2 || depp == 3 || depp == 6 || depp == 10 || depp==14)
                     stryear += "<option value=" + j + ">" + years[j] + "</option>";
                 else
                     for (var j = 1; j < years.length - 1; j++) {
                         stryear += "<option value=" + j + ">" + years[j] + "</option>";
                     }
             }
+            stryear += "<option>כלל השנים</option>";
             document.getElementById("yearList").innerHTML = stryear;
 
         }
@@ -187,17 +189,17 @@
             AnsNum++;
             console.log(q)
 
-            QuestionType = $("#QuestionType"+q).val();
+            QuestionType = $("#QuestionType" + q).val();
             str = "";
 
             if (QuestionType == 1 || QuestionType == 2) {
-                        
+
                 if (flag == 0) {
 
                     str += `<input type='text' class='answertext' id='` + q + `answer` + AnsNum + `'/>
-                    <i type ='button' onclick='getQuestionType(1)' id ='add`+ q + `' class='quesplus fas fa-plus-circle'> </i>`;
+                                    <i type ='button' onclick='getQuestionType(1)' id ='add`+ q + `' class='quesplus fas fa-plus-circle'> </i>`;
                 }
-                    
+
                 else {
                     str += `<input type='text' class='answertext' id='` + q + `answer` + AnsNum + `'/>`;
                 }
@@ -208,56 +210,56 @@
                 }
             }
             if (QuestionType == 3) {
-                $("#"+q+"Qans").hide();
+                $("#" + q + "Qans").hide();
             }
-        
-            $("#"+q+"Qans").append(str);
+
+            $("#" + q + "Qans").append(str);
         }
 
 
-        function addquestion() { 
+        function addquestion() {
             AnsNum = 0;
             q++;
-           let Questionstring = `<div id="`+q+`">
-                    <div class="questionn">
-                             <div class="form-group row">
-                            <div class="ansdiv form-group col-sm-2" id="`+q+`Qans">
-                               <label for="QuestionText"><span class="red-star">★ </span>תשובות</label>
-                            </div>
+            let Questionstring = `<div id="` + q + `">
+                                    <div class="questionn">
+                                             <div class="form-group row">
+                                            <div class="ansdiv form-group col-sm-2" id="`+ q + `Qans">
+                                               <label for="QuestionText"><span class="red-star">★ </span>תשובות</label>
+                                            </div>
 
-                      <div class="form-group col-sm-4">
-                            <label for="QuestionType`+ q +`"><span class="red-star">★ </span>סוג שאלה</label>
-                            <select class="form-control Qtype" onchange='getQuestionType(0)' id="QuestionType`+ q + `"required>
-                                <option value="">בחרי סוג שאלה</option>
-                                <option value="1">שאלת עם תשובה אחת לבחירה</option>
-                                <option value="2">שאלה עם מספר תשובות לבחירה</option>
-                                <option value="3">שאלה פתוחה</option>
-                            </select>
-                      </div> 
-                        <div class="form-group col-sm-4">
-                            <label for="QuestionText`+q+`"><span class="red-star">★ </span>תוכן שאלה</label>
-                            <input type="text" class="form-control Qtext" id="QuestionText`+ q + `" placeholder="" required>
-                        </div>
-                        </div>
-                      </div></div>`;
+                                      <div class="form-group col-sm-4">
+                                            <label for="QuestionType`+ q + `"><span class="red-star">★ </span>סוג שאלה</label>
+                                            <select class="form-control Qtype" onchange='getQuestionType(0)' id="QuestionType`+ q + `"required>
+                                                <option value="">בחרי סוג שאלה</option>
+                                                <option value="1">שאלת עם תשובה אחת לבחירה</option>
+                                                <option value="2">שאלה עם מספר תשובות לבחירה</option>
+                                                <option value="3">שאלה פתוחה</option>
+                                            </select>
+                                      </div>
+                                        <div class="form-group col-sm-4" >
+                                            <label for="QuestionText`+ q + `"><span class="red-star">★ </span>תוכן שאלה</label>
+                                            <textarea class="form-control Qtext" id="QuestionText`+ q + `"  required></textarea>
+                                        </div>
+                                        </div>
+                                      </div></div>`;
             $("#question1").append(Questionstring);
-           
+
 
         }
         function getanswersbyqu(Qnum) {
             ansList = [];
-            for (var J = 1; J <= AnsNum ; J++) {             
-                Anslist = $("#" + Qnum +"answer"+ J).val();               
+            for (var J = 1; J <= AnsNum; J++) {
+                Anslist = $("#" + Qnum + "answer" + J).val();
                 ansList.push(Anslist);
             }
-                for (var i = AnsNum; i < 6; i++) {
-                        ansList.push("");
+            for (var i = AnsNum; i < 6; i++) {
+                ansList.push("");
             }
-          
+
             return ansList;
             console.log(ansList)
         }
-            function onSubmitFunc() {
+        function onSubmitFunc() {
 
             //var Campid = -1;
             if (mode == "edit") {
@@ -283,17 +285,17 @@
                 questionList = [];
                 QuestionnairePublish = $("#publishDate").val();
                 EndPublishDate = $("#EndpublishDate").val();
-                
+
                 SubQr = $("#subQr").val();
                 Depchosen = $("#publishList").val();
                 NumResponders = 0;
                 QuestionnaireYear = $("#yearList").val();
                 for (var i = 1; i <= q; i++) {
-                   let Questionn = {
-                        Questionnum : i,
-                        QuestionText : $(`#QuestionText` + i).val(),
-                       QuestionType: $("#QuestionType" + i).val(),
-                       Anslist: getanswersbyqu(i),
+                    let Questionn = {
+                        Questionnum: i,
+                        QuestionText: $(`#QuestionText` + i).val(),
+                        QuestionType: $("#QuestionType" + i).val(),
+                        Anslist: getanswersbyqu(i),
 
                     }
                     questionList.push(Questionn);
@@ -315,7 +317,7 @@
                 }
 
             }
-               
+
 
             // add a new Car record to the server
             if (mode == "edit")
@@ -327,13 +329,13 @@
             return false;
         }
         function checkdate() {
-            
+
             if ($("#publishDate").val() > $("#EndpublishDate").val()) {
                 swal("Attention", "תאריך הסיום צריך להיות לאחר תאריך הפצת הפרסום!", "error");
                 $("#EndpublishDate").val("");
             }
         }
-             
+
 
         // fill the form fields
         function populateFields(qrId) {
@@ -362,7 +364,7 @@
             $(".answertext").val("");
             $(".quesplus").hide();
             $(".answertext").hide();
-         
+
         }
 
         // get a car according to its Id
@@ -455,12 +457,12 @@
                         {
                             data: "QuestionnairePublish",
                             render: function (data, type, row, meta) {
-                                 shortDateStart = new Date(data);
+                                shortDateStart = new Date(data);
                                 var dd = String(shortDateStart.getDate()).padStart(2, '0');
-                                var mm = String(shortDateStart.getMonth() + 1).padStart(2, '0'); 
+                                var mm = String(shortDateStart.getMonth() + 1).padStart(2, '0');
                                 var yyyy = shortDateStart.getFullYear();
 
-                               shortDateEnd = dd+ '-' + mm + '-' + yyyy;
+                                shortDateEnd = dd + '-' + mm + '-' + yyyy;
                                 return shortDateEnd;
                             }
                         },
@@ -472,10 +474,10 @@
                                 var mm = String(shortDateEnd.getMonth() + 1).padStart(2, '0'); //ינואר זה חודש 0
                                 var yyyy = shortDateEnd.getFullYear();
 
-                               shortDateEnd = dd+ '-' + mm + '-' + yyyy;
+                                shortDateEnd = dd + '-' + mm + '-' + yyyy;
                                 return shortDateEnd;
-                                }
-                            },
+                            }
+                        },
                         { data: "SubQr" },
                         { data: "Dep.DepartmentName" },
                         {
@@ -591,7 +593,7 @@
                     <div class="form-group col-sm-4">
                         <label for="publishList"><span class="red-star">★ </span>רשימת תפוצה</label>
                         <select class="form-control" id="publishList" required>
-                            <option value="">בחירת מחלקה</option>
+                            <option value="">בחירת מחלקה</option>                        
                         </select>
                     </div>
 

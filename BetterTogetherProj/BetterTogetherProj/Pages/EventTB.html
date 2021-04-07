@@ -66,12 +66,17 @@
                                 return shortDateEnd;
                             }
                         },
-                        { data: "ParticipantQu" },
-                        {data:"NotparticipantQu"},
+                        {
+                            data: "Participant",
+                            render: function (data, type, row, meta) {
+                                return row.Studentsinevent.length;
+                            }
+                        },
+                        
 
                         {
                             render: function (data, type, row, meta) {
-                                ViewBtn = "<button class='view' par='" + row.ParticipantQu + "'nopar='" + row.NotparticipantQu + "' name='" + row.Eventname + "' >צפי באישורי הגעה </button>";
+                                ViewBtn = "<button class='view' evcode='" + row.EventCode + "' name='" + row.Eventname + "'par=" + row.Studentsinevent.length+" >צפי באישורי הגעה </button>";
                                 return ViewBtn;
                             }
                         }
@@ -88,10 +93,63 @@
         }
 
         function addpiechart() {
-            participant = parseInt($(this).attr("par"));
-            Noparticipant = parseInt($(this).attr("nopar"));
+            participant = $(this).attr("par");
             eventName = $(this).attr("name");
+            evcode = $(this).attr("evcode");
+            countdep1 =0
+            countdep2 =0
+            countdep3 =0
+            countdep4 =0
+            countdep5 =0
+            countdep6 =0
+            countdep7 =0
+            countdep8 =0
+            countdep9 =0
+            countdep10 =0 
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].EventCode == evcode) {
+                    for (var j = 0; j < data[i].Studentsinevent.length; j++) {
+                        {
+                            switch (data[i].Studentsinevent[j].Dep.DepartmentCode) {
+                                case 1:
+                                    countdep1++;
+                                    break;
+                                case 2:
+                                    countdep2++;
+                                    break;
+                                case 3:
+                                    countdep3++;
+                                    break;
+                                case 4:
+                                    countdep4++;
+                                    break;
+                                case 5:
+                                    countdep5++;
+                                    break;
+                                case 6:
+                                    countdep6++;
+                                    break;
+                                case 7:
+                                    countdep7++;
+                                    break;
+                                case 8:
+                                    countdep8++;
+                                    break;
+                                case 9:
+                                    countdep9++;
+                                    break;
+                                case 10:
+                                    countdep10++;
+                                    break;
 
+
+                            }
+                        }
+                    }
+                }
+            }
+                
+                
             google.charts.setOnLoadCallback(drawChart);
 
         }
@@ -100,12 +158,20 @@
         function drawChart() {
 
             var data = google.visualization.arrayToDataTable([
-                ['מגיעים', 'נוכחות באירוע'],
-                ['משתתפים', participant],
-                ['לא משתתפים', Noparticipant],
+                ['מחלקה', 'משתתפים באירוע'],
+                ['הנדסת חשמל', countdep1 ],
+                ['הנדסת מחשבים', countdep2],
+                ['הנדסת תעשייה וניהול', countdep3],
+                ['מדעי המחשב והמידע', countdep4],
+                ['כלכלה ומנהל', countdep5],
+                ['כלכלה וחשבונאות', countdep6],
+                ['מנהל עסקים', countdep7],
+                ['פסיכולוגיה', countdep8],
+                ['עבודה סוציאלית', countdep9],
+                ['סיעוד', countdep10],
 
             ]);
-            if (participant != 0 && Noparticipant != 0) {
+            if (participant != 0) {
                 var options = {
                     title: 'השתתפות באירוע: ' + eventName,
                     is3D: true,
@@ -132,7 +198,7 @@
                     }
                 }
             }
-            else if (participant == 0 && Noparticipant == 0) {
+            else if (participant == 0) {
                 swal({icon:"warning", text: "! טרם אישרו הגעה לאירוע זה" })
                 var options = {
                     backgroundColor: 'transparent',
@@ -174,7 +240,6 @@
                 <th>שם אירוע</th>
                 <th>תאריך אירוע</th>
                 <th>מאשרי הגעה</th>
-                <th>לא מגיעים</th>
                 <th></th>
             </tr>
         </thead>

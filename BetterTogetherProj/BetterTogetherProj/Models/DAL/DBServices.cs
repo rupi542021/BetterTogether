@@ -438,8 +438,8 @@ namespace BetterTogetherProj.Models.DAL
 
             StringBuilder sb = new StringBuilder();
             // use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}')", ev.EventDate.ToString("yyyy-MM-dd"), ev.EventText, ev.EventImage, ev.Eventname, ev.Eventtype, ev.ParticipantQu, ev.NotparticipantQu);
-            String prefix = "INSERT INTO events_P3" + "(eventDate, eventText, eventImage, eventname, eventTypeName, participantQu, notparticipantQu )";
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}')", ev.EventDate.ToString("yyyy-MM-dd"), ev.EventText, ev.EventImage, ev.Eventname, ev.Eventtype, ev.Participant);
+            String prefix = "INSERT INTO events_P3" + "(eventDate, eventText, eventImage, eventname, eventTypeName, participantQu )";
             command = prefix + sb.ToString();
 
             return command;
@@ -968,13 +968,48 @@ namespace BetterTogetherProj.Models.DAL
                     evdetail.Eventtype = (string)dr["eventTypeName"];
                     evdetail.Eventname = (string)dr["eventname"];
                     evdetail.EventDate = Convert.ToDateTime(dr["eventDate"]);
-                    evdetail.ParticipantQu = Convert.ToInt32(dr["participantQu"]);
-                    evdetail.NotparticipantQu = Convert.ToInt32(dr["notparticipantQu"]);
-
+                    evdetail.Studentsinevent = Getstudentinevent(evdetail.EventCode);
+                    //evdetail.Participant = Convert.ToInt32(dr["participantQu"]);
                     evdetailList.Add(evdetail);
                 }
 
                 return evdetailList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
+
+        public List<Student> Getstudentinevent(int eventcode)
+        {
+            SqlConnection con = null;
+            List<Student> studList = new List<Student>();
+            try
+            {
+                con = connect1("DBConnectionString");
+                String selectSTR = "select * from studentinevent_P3 where eventCode="+ eventcode;
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Student s = new Student();
+                    s = s.ReadStudentByMail((string)dr["studentmail"]);
+                    
+                    studList.Add(s);
+                }
+
+                return studList;
             }
             catch (Exception ex)
             {

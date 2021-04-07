@@ -1,4 +1,5 @@
 ﻿using BetterTogetherProj.Models.DAL;
+using project_classes.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,22 +15,9 @@ namespace BetterTogetherProj.Models
         string eventtype;
         string eventImage;
         string eventname;
-        int participantQu;
-        int notparticipantQu;
+        int participant;
         List<EventsFeedback> fbevents;
-
-        public Events(int eventCode, DateTime eventDate, string eventText, string eventtype, string eventImage, string eventname, int participantQu, int notparticipantQu, List<EventsFeedback> fbevents)
-        {
-            EventCode = eventCode;
-            EventDate = eventDate;
-            EventText = eventText;
-            Eventtype = eventtype;
-            EventImage = eventImage;
-            Eventname = eventname;
-            ParticipantQu = participantQu;
-            NotparticipantQu = notparticipantQu;
-            Fbevents = fbevents;
-        }
+        List<Student> studentsinevent;
 
         public int EventCode { get => eventCode; set => eventCode = value; }
         public DateTime EventDate { get => eventDate; set => eventDate = value; }
@@ -37,11 +25,24 @@ namespace BetterTogetherProj.Models
         public string Eventtype { get => eventtype; set => eventtype = value; }
         public string EventImage { get => eventImage; set => eventImage = value; }
         public string Eventname { get => eventname; set => eventname = value; }
-        public int ParticipantQu { get => participantQu; set => participantQu = value; }
-        public int NotparticipantQu { get => notparticipantQu; set => notparticipantQu = value; }
+        public int Participant { get => participant; set => participant = value; }
         public List<EventsFeedback> Fbevents { get => fbevents; set => fbevents = value; }
+        public List<Student> Studentsinevent { get => studentsinevent; set => studentsinevent = value; }
 
         public Events() { }
+
+        public Events(int eventCode, DateTime eventDate, string eventText, string eventtype, string eventImage, string eventname, int participant, List<EventsFeedback> fbevents, List<Student> studentsinevent)
+        {
+            EventCode = eventCode;
+            EventDate = eventDate;
+            EventText = eventText;
+            Eventtype = eventtype;
+            EventImage = eventImage;
+            Eventname = eventname;
+            Participant = participant;
+            Fbevents = fbevents;
+            Studentsinevent = studentsinevent;
+        }
 
         public void InsertEvent()
         {
