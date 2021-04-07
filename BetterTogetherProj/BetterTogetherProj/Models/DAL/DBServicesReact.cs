@@ -39,7 +39,7 @@ namespace BetterTogetherProj.Models.DAL
             cmd.CommandType = System.Data.CommandType.Text;
             return cmd;
         }
-       
+
         //public Student checkStudentRuppin(string email)
         //{
         //    SqlConnection con = null;
@@ -95,14 +95,14 @@ namespace BetterTogetherProj.Models.DAL
         //    }
         //}
 
-         public Student checkStudentRuppin(string email)
+        public Student checkStudentRuppin(string email)
         {
             SqlConnection con = null;
             Student stud = new Student();
 
             try
             {
-                con = connect("DBConnectionString"); 
+                con = connect("DBConnectionString");
 
                 String selectSTR = "SELECT * FROM Ruppin_StudentsData_P where [email] = '" + email + "'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
@@ -112,12 +112,16 @@ namespace BetterTogetherProj.Models.DAL
                     bool alreadyExist = checkIfExist(email);
                     if (alreadyExist == false)
                     {
-                        stud.Mail = (string)dr["email"];
-                        stud.Fname = (string)(dr["firstName"]);
-                        stud.Lname = (string)(dr["lastName"]);
-                        stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
-                        stud.Dep = getStudDep(Convert.ToInt32(dr["department"]));
-                        stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
+                        while (dr.Read())
+                        {
+                            stud.Mail = (string)dr["email"];
+                            stud.Fname = (string)(dr["firstName"]);
+                            stud.Lname = (string)(dr["lastName"]);
+                            stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
+                            stud.Dep = getStudDep(Convert.ToInt32(dr["department"]));
+                            stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
+
+                        }
                         return stud;
                     }
 
@@ -128,11 +132,12 @@ namespace BetterTogetherProj.Models.DAL
                     }
 
                 }
-                else {
+                else
+                {
                     Exception e = new Exception("email not found");
                     throw (e);
                 }
-                
+
             }
             catch (Exception ex)
             {
