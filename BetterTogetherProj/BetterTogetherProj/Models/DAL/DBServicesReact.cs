@@ -40,7 +40,62 @@ namespace BetterTogetherProj.Models.DAL
             return cmd;
         }
        
-        public Student checkStudentRuppin(string email)
+        //public Student checkStudentRuppin(string email)
+        //{
+        //    SqlConnection con = null;
+        //    Student stud = new Student();
+
+        //    try
+        //    {
+        //        con = connect("DBConnectionString"); 
+
+        //        String selectSTR = "SELECT * FROM Ruppin_StudentsData_P";
+        //        SqlCommand cmd = new SqlCommand(selectSTR, con);
+        //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+        //        while (dr.Read())
+        //        {
+        //            if (email == (string)dr["email"])
+        //            {
+        //                bool alreadyExist = checkIfExist(email);
+        //                if (alreadyExist == false)
+        //                {
+        //                    stud.Mail = (string)dr["email"];
+        //                    stud.Fname = (string)(dr["firstName"]);
+        //                    stud.Lname = (string)(dr["lastName"]);
+        //                    stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
+        //                    stud.Dep = getStudDep(Convert.ToInt32(dr["department"]));
+        //                    stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
+        //                    return stud;
+        //                }
+
+        //                else {
+        //                    Exception ex = new Exception("email already exists");  
+        //                    throw (ex);
+        //                }
+        //            }
+        //        }
+        //        //stud.Mail = null;
+        //        //return stud;
+        //        Exception e = new Exception("email not found");
+        //        throw (e);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        writeToLog(ex);
+        //        throw (ex);
+        //    }
+        //    finally
+        //    {
+        //        if (con != null)
+        //        {
+        //            con.Close();
+        //        }
+
+        //    }
+        //}
+
+         public Student checkStudentRuppin(string email)
         {
             SqlConnection con = null;
             Student stud = new Student();
@@ -49,36 +104,35 @@ namespace BetterTogetherProj.Models.DAL
             {
                 con = connect("DBConnectionString"); 
 
-                String selectSTR = "SELECT * FROM Ruppin_StudentsData_P";
+                String selectSTR = "SELECT * FROM Ruppin_StudentsData_P where [email] = '" + email + "'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-                while (dr.Read())
+                if (dr.HasRows == true)
                 {
-                    if (email == (string)dr["email"])
+                    bool alreadyExist = checkIfExist(email);
+                    if (alreadyExist == false)
                     {
-                        bool alreadyExist = checkIfExist(email);
-                        if (alreadyExist == false)
-                        {
-                            stud.Mail = (string)dr["email"];
-                            stud.Fname = (string)(dr["firstName"]);
-                            stud.Lname = (string)(dr["lastName"]);
-                            stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
-                            stud.Dep = getStudDep(Convert.ToInt32(dr["department"]));
-                            stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
-                            return stud;
-                        }
-
-                        else {
-                            Exception ex = new Exception("email already exists");  
-                            throw (ex);
-                        }
+                        stud.Mail = (string)dr["email"];
+                        stud.Fname = (string)(dr["firstName"]);
+                        stud.Lname = (string)(dr["lastName"]);
+                        stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
+                        stud.Dep = getStudDep(Convert.ToInt32(dr["department"]));
+                        stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
+                        return stud;
                     }
+
+                    else
+                    {
+                        Exception ex = new Exception("email already exists");
+                        throw (ex);
+                    }
+
                 }
-                //stud.Mail = null;
-                //return stud;
-                Exception e = new Exception("email not found");
-                throw (e);
+                else {
+                    Exception e = new Exception("email not found");
+                    throw (e);
+                }
+                
             }
             catch (Exception ex)
             {
