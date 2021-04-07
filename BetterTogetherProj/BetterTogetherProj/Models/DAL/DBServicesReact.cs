@@ -292,6 +292,7 @@ namespace BetterTogetherProj.Models.DAL
 
             }
         }
+        
         public Residence getResidenceH(string ResidenceName)
         {
             SqlConnection con = null;

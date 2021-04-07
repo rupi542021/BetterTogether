@@ -112,6 +112,12 @@ namespace project_classes.Models
             List<Student> studentsList = db.GetStudentsWithRecommend(mail);
             return studentsList;
         }
+        public Student ReadStudentByMail(string mail)
+        {
+            DBServicesReact db = new DBServicesReact();
+            Student s = db.GetStudentDetails(mail);
+            return s;
+        }
         public List<Student> GetStudentsWithRecommend(string mail)
         {
             DBServicesReact db = new DBServicesReact();
