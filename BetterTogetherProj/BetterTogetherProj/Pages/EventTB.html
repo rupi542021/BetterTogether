@@ -33,15 +33,86 @@
 
         $(document).ready(function () {
 
+            $("#cancelBTN").on("click", function () { //מבטל טופס חדש ומחזיר לטבלה 
+                
+                //events = null;
+                $("#editDiv").hide();
+            });
             ajaxCall("GET", "../api/Events/geteventdetail", "", getSuccessAlleventdetail, error);
             google.charts.load('current', { 'packages': ['corechart'] });
             $(document).on("click", ".view", addpiechart);
+            $("#editDiv").hide();
+            $(document).on("click", ".editbtn", EditEvent);
+            $("#ManagerForm").submit(onSubmitFunc);
+
 
         });
 
+        function EditEvent() {
+            $("#editDiv").show();
+            $("#datedis").prop("disabled", false);
+            $("#EventType").prop("disabled", true);
+            $("#EventName").prop("disabled", true);
+            $("#contentText").prop("disabled", false);
+            $("#Status").prop("disabled", false);
+            //$("#saveBTN1").prop("disabled", true);
+            populateFields(this.getAttribute('eventid'));
+
+        }
+        function markSelected(btn) {
+            $("#QTable").removeClass("selected"); // remove seleced class from rows that were selected before
+            row = (btn.parentNode).parentNode; // button is in TD which is in Row
+            row.className = 'selected'; // mark as selected
+        }
+
+        function populateFields(eventid) {
+            event = getEvent(eventid); //מחזיר את האובייקט שבשורה שלחצנו לפי ID
+       
+            var dateEventcur = new Date(event.EventDate);
+            var day = ("0" + dateEventcur.getDate()).slice(-2);
+            var month = ("0" + (dateEventcur.getMonth() + 1)).slice(-2);
+            var dateEvent = dateEventcur.getFullYear() + "-" + (month) + "-" + (day);
+            $("#datedis").val(dateEvent);
+            $("#EventType").val(event.Eventtype);
+            $("#EventName").val(event.Eventname);
+            $("#contentText").html(event.EventText);
+            $("#Status").prop('checked', event.Status);
+        }
+
+        function getEvent(id) {
+            for (i in events) {
+                if (events[i].EventCode == id)
+                    return events[i];
+            }
+            return null;
+        }
+
+        function onSubmitFunc() {
+
+            EventType = event.EventType;
+            EventName = event.EventName;
+
+            EvToUpdate = {
+                EventDate: $("#datedis").val(),
+                EventType: EventType,
+                EventName: EventName,
+                EventText: $("#contentText").val(),
+                Status: $("#Status1").is(":checked")
+            }
+            ajaxCall("PUT", "../api/Events", JSON.stringify(EvToUpdate), updateeventSuccess, errorupdateevent);
+
+        }
+
+        function updateeventSuccess() {
+
+        }
+
+        function errorupdateevent() {
+
+        }
         function getSuccessAlleventdetail(eventdetail) {
             console.log(eventdetail);
-            data = eventdetail;
+            events = eventdetail;
 
             try {
                 tbl = $('#detaileventtable').DataTable({
@@ -51,7 +122,12 @@
                     data: eventdetail,
                     pageLength: 5,
                     columns: [
-
+                        {
+                            render: function (data, type, row, meta) {
+                                EditBtn = "<button class='editbtn' eventid="+row.EventCode+"> עריכה</button>";
+                                return EditBtn;
+                            }
+                        },
                         { data: "Eventtype" },
                         { data: "Eventname" },
                         {
@@ -67,7 +143,7 @@
                             }
                         },
                         {
-                            data: "Participant",
+                            //data: "Participant",
                             render: function (data, type, row, meta) {
                                 return row.Studentsinevent.length;
                             }
@@ -79,7 +155,16 @@
                                 ViewBtn = "<button class='view' evcode='" + row.EventCode + "' name='" + row.Eventname + "'par=" + row.Studentsinevent.length+" >צפי באישורי הגעה </button>";
                                 return ViewBtn;
                             }
-                        }
+                        },
+                            {
+                            data: "Status",
+                            render: function (data, type, row, meta) {
+                                if (data == true)
+                                    return '<input type="checkbox" checked disabled="disabled" />';
+                                else
+                                    return '<input type="checkbox" disabled="disabled"/>';
+                            }
+                        },
                     ],
 
                 });
@@ -236,16 +321,59 @@
     <table id="detaileventtable" class="display nowrap" style="width:100%">
         <thead>
             <tr>
+                <th></th>
                 <th> סוג אירוע</th>
                 <th>שם אירוע</th>
                 <th>תאריך אירוע</th>
                 <th>מאשרי הגעה</th>
                 <th></th>
+                <th>סטטוס אירוע</th>
             </tr>
         </thead>
     </table>
 
 
-    <div id="piechart_3d" ></div>
+    <div id="editDiv" class="container">
+        <form id="ManagerForm">
+            <div class="form-group row">
+
+                <div class="form-group col-sm-4">
+                    <label for="datedis"><span class="red-star">★ </span>תאריך אירוע</label>
+                    <input type="date" class="form-control" id="datedis" placeholder="" required>
+                </div>
+
+                <div class="form-group col-sm-4">
+                    <label for="EventType"><span class="red-star">★ </span>סוג אירוע</label>
+                    <input type="text" class="form-control" id="EventType" placeholder="" required>
+                </div>
+
+                <div class="form-group col-sm-4">
+                    <label for="EventName"><span class="red-star">★ </span>שם אירוע</label>
+                    <input type="text" class="form-control" id="EventName" placeholder="" required>
+
+                </div>
+
+
+                <div class="form-group col-sm-6">
+                    <label for="contentText"><span class="red-star">★ </span>תוכן אירוע</label>
+                    <textarea class="form-control" id="contentText" placeholder="" required></textarea>
+
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <label for="Status"><span class="red-star">★ </span>סטטוס</label>
+                    <input type="checkbox" class="form-control" id="Status" checked />
+                </div>
+
+            </div>
+
+
+
+            <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">Save</button>
+            <input type="button" class="btn btn-warning btn-lg" id="cancelBTN" value="Cancel" />
+        </form>
+    </div>
+
+    <div id="piechart_3d"></div>
 </body>
 </html>

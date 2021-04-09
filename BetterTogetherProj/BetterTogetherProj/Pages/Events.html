@@ -80,8 +80,7 @@
                 EventDate: $("#datedis").val(),
                 EventText: $("#content").val(),
                 EventImage: picName,
-                ParticipantQu: 0,
-                NotparticipantQu: 0
+            //    ParticipantQu: 0,
             }
             ajaxCall("POST", "../api/Events/addevent", JSON.stringify(Event), inserteventsuccess, errorr);
 

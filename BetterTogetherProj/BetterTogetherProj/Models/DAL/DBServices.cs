@@ -438,8 +438,8 @@ namespace BetterTogetherProj.Models.DAL
 
             StringBuilder sb = new StringBuilder();
             // use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}')", ev.EventDate.ToString("yyyy-MM-dd"), ev.EventText, ev.EventImage, ev.Eventname, ev.Eventtype, ev.Participant);
-            String prefix = "INSERT INTO events_P3" + "(eventDate, eventText, eventImage, eventname, eventTypeName, participantQu )";
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}')", ev.EventDate.ToString("yyyy-MM-dd"), ev.EventText, ev.EventImage, ev.Eventname, ev.Eventtype);
+            String prefix = "INSERT INTO events_P3" + "(eventDate, eventText, eventImage, eventname, eventTypeName)";
             command = prefix + sb.ToString();
 
             return command;
@@ -969,7 +969,7 @@ namespace BetterTogetherProj.Models.DAL
                     evdetail.Eventname = (string)dr["eventname"];
                     evdetail.EventDate = Convert.ToDateTime(dr["eventDate"]);
                     evdetail.Studentsinevent = Getstudentinevent(evdetail.EventCode);
-                    //evdetail.Participant = Convert.ToInt32(dr["participantQu"]);
+                    evdetail.EventText= (string)dr["eventText"];
                     evdetailList.Add(evdetail);
                 }
 
@@ -1024,6 +1024,73 @@ namespace BetterTogetherProj.Models.DAL
                 }
 
             }
+
+        }
+
+
+        public int UpdateEvent(Events eventt)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect1("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            String cStr = BuildUpdateCommand(eventt);      // helper method to build the insert string
+
+            cmd = CreateCommand1(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        //--------------------------------------------------------------------
+        // Build the Update command String
+        //--------------------------------------------------------------------
+
+        private String BuildUpdateCommand(Events eventt)
+        {
+            String command;
+
+            if (eventt.Status == true)// השמת הסטטוס TRUE=1 והפוך  
+            {
+
+                command = "update events_P3 set eventDate=" + eventt.EventDate + " ,status=1 where eventCode=" + eventt.EventCode;
+            }
+            else
+            {
+
+                command = "update events_P3 set eventDate=" + eventt.EventDate + " ,status=0 where eventCode=" + eventt.EventCode;
+
+            }
+
+            return command;
 
         }
     }

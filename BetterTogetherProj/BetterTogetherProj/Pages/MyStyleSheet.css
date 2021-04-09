@@ -206,7 +206,7 @@ div#addEN, #addSS {
     position: relative;
     right: 120px;
 }
-/*.answertext{
-    position:relative;
-    top:30px;
-}*/
+textarea#contentText {
+    width: 400px;
+    height: 80px;
+}
