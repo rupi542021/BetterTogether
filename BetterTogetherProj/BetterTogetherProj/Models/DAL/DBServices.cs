@@ -970,6 +970,7 @@ namespace BetterTogetherProj.Models.DAL
                     evdetail.EventDate = Convert.ToDateTime(dr["eventDate"]);
                     evdetail.Studentsinevent = Getstudentinevent(evdetail.EventCode);
                     evdetail.EventText= (string)dr["eventText"];
+                    evdetail.Status= Convert.ToBoolean(dr["status"]);
                     evdetailList.Add(evdetail);
                 }
 
@@ -1081,12 +1082,12 @@ namespace BetterTogetherProj.Models.DAL
             if (eventt.Status == true)// השמת הסטטוס TRUE=1 והפוך  
             {
 
-                command = "update events_P3 set eventDate=" + eventt.EventDate + " ,status=1 where eventCode=" + eventt.EventCode;
+                command = "update events_P3 set eventDate='" + eventt.EventDate.ToString("yyyy-MM-dd") + "',eventText='"+eventt.EventText+"' ,status=1 where eventCode=" + eventt.EventCode;
             }
             else
             {
 
-                command = "update events_P3 set eventDate=" + eventt.EventDate + " ,status=0 where eventCode=" + eventt.EventCode;
+                command = "update events_P3 set eventDate='" + eventt.EventDate.ToString("yyyy-MM-dd") + "',eventText='" + eventt.EventText +"' ,status =0 where eventCode=" + eventt.EventCode;
 
             }
 

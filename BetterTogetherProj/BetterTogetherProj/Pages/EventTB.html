@@ -35,7 +35,7 @@
 
             $("#cancelBTN").on("click", function () { //מבטל טופס חדש ומחזיר לטבלה 
                 
-                //events = null;
+                events = null;
                 $("#editDiv").hide();
             });
             ajaxCall("GET", "../api/Events/geteventdetail", "", getSuccessAlleventdetail, error);
@@ -50,6 +50,8 @@
 
         function EditEvent() {
             $("#editDiv").show();
+            markSelected(this);
+
             $("#datedis").prop("disabled", false);
             $("#EventType").prop("disabled", true);
             $("#EventName").prop("disabled", true);
@@ -60,7 +62,7 @@
 
         }
         function markSelected(btn) {
-            $("#QTable").removeClass("selected"); // remove seleced class from rows that were selected before
+            $("#detaileventtable tr").removeClass("selected"); // remove seleced class from rows that were selected before
             row = (btn.parentNode).parentNode; // button is in TD which is in Row
             row.className = 'selected'; // mark as selected
         }
@@ -88,28 +90,44 @@
         }
 
         function onSubmitFunc() {
-
-            EventType = event.EventType;
-            EventName = event.EventName;
+            EventType = event.Eventtype;
+            EventName = event.Eventname;
 
             EvToUpdate = {
+                EventCode: event.EventCode,
                 EventDate: $("#datedis").val(),
                 EventType: EventType,
                 EventName: EventName,
                 EventText: $("#contentText").val(),
-                Status: $("#Status1").is(":checked")
+                Status: $("#Status").is(":checked")
             }
-            ajaxCall("PUT", "../api/Events", JSON.stringify(EvToUpdate), updateeventSuccess, errorupdateevent);
-
+            ajaxCall("PUT", "../api/Events", JSON.stringify(EvToUpdate), updateeventSuccess, error);
         }
 
         function updateeventSuccess() {
+            alert("succesful");
+            tbl.clear();
+            ajaxCall("GET", "../api/Events/geteventdetail", "", getSuccessupdate, error);
 
         }
+        function getSuccessupdate(eventdetail) {
 
-        function errorupdateevent() {
+            events = eventdetail;
+            redrawTable(tbl, events); 
+            swal({ title: " !האירוע עודכן בהצלחה", icon: "success" });
 
+            //EditEvent();
         }
+
+        function redrawTable(tbl, events) {
+            tbl.clear();
+            for (var i = 0; i < events.length; i++) {
+                tbl.row.add(events[i]);
+            }
+            tbl.draw();
+        }
+
+        
         function getSuccessAlleventdetail(eventdetail) {
             console.log(eventdetail);
             events = eventdetail;
