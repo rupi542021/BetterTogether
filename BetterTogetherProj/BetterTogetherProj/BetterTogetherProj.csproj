@@ -233,7 +233,6 @@
     <Compile Include="Models\DAL\DBServicesReact.cs" />
     <Compile Include="Models\DAL\XMLServices.cs" />
     <Compile Include="Models\Department.cs" />
-    <Compile Include="Models\EventName.cs" />
     <Compile Include="Models\Events.cs" />
     <Compile Include="Models\EventType.cs" />
     <Compile Include="Models\ExternalGroups.cs" />
@@ -249,7 +248,6 @@
     <Compile Include="Models\StudentInCourse.cs" />
     <Compile Include="Models\StudentsAnswers.cs" />
     <Compile Include="Models\Subject.cs" />
-    <Compile Include="Models\SubSubject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

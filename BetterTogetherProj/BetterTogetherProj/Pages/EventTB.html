@@ -30,12 +30,15 @@
 
     <script>
 
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        today = yyyy + '-' + mm + '-' + dd;
 
         $(document).ready(function () {
-
-            $("#cancelBTN").on("click", function () { //מבטל טופס חדש ומחזיר לטבלה 
-                
-                events = null;
+            $("#cancelBTN").on("click", function () { //מבטל טופס חדש ומחזיר לטבלה                
+                //events = null;
                 $("#editDiv").hide();
             });
             ajaxCall("GET", "../api/Events/geteventdetail", "", getSuccessAlleventdetail, error);
@@ -44,11 +47,13 @@
             $("#editDiv").hide();
             $(document).on("click", ".editbtn", EditEvent);
             $("#ManagerForm").submit(onSubmitFunc);
+            $(document).on("click", ".deletebtn", DeleteEvent);
 
 
         });
 
         function EditEvent() {
+            //clearFields();
             $("#editDiv").show();
             markSelected(this);
 
@@ -61,6 +66,28 @@
             populateFields(this.getAttribute('eventid'));
 
         }
+
+        function DeleteEvent() {
+            markSelected(this);
+            var EventId = this.getAttribute('eventid');
+            swal({ // this will open a dialouge 
+                title: "Are you sure ??",
+                text: "",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true
+            })
+                .then(function (willDelete) {
+                    if (willDelete) DeleteEventFinaly(EventId);
+                    else swal("Not Deleted!");
+                });     
+        }
+
+        function DeleteEventFinaly(EventId) {
+            ajaxCall("DELETE", "../api/Events/" + EventId, "", deleteeventSuccess, error);
+
+        }
+
         function markSelected(btn) {
             $("#detaileventtable tr").removeClass("selected"); // remove seleced class from rows that were selected before
             row = (btn.parentNode).parentNode; // button is in TD which is in Row
@@ -77,7 +104,7 @@
             $("#datedis").val(dateEvent);
             $("#EventType").val(event.Eventtype);
             $("#EventName").val(event.Eventname);
-            $("#contentText").html(event.EventText);
+            $("#contentText").val(event.EventText);
             $("#Status").prop('checked', event.Status);
         }
 
@@ -102,21 +129,28 @@
                 Status: $("#Status").is(":checked")
             }
             ajaxCall("PUT", "../api/Events", JSON.stringify(EvToUpdate), updateeventSuccess, error);
+
+            return false;
         }
 
+        function checkdate() {
+            if ($("#datedis").val() < today) {
+                swal("Attention", "תאריך האירוע צריך להיות עתידי!", "error");
+                $("#datedis").val("");
+
+            }
+        }
         function updateeventSuccess() {
-            alert("succesful");
             tbl.clear();
             ajaxCall("GET", "../api/Events/geteventdetail", "", getSuccessupdate, error);
 
         }
         function getSuccessupdate(eventdetail) {
-
             events = eventdetail;
             redrawTable(tbl, events); 
+            $("#editDiv").hide();
             swal({ title: " !האירוע עודכן בהצלחה", icon: "success" });
 
-            //EditEvent();
         }
 
         function redrawTable(tbl, events) {
@@ -127,7 +161,20 @@
             tbl.draw();
         }
 
-        
+        function deleteeventSuccess(message) {
+            console.log(message);
+            tbl.clear();
+            ajaxCall("GET", "../api/Events/geteventdetail", "", getSuccessdelete, error);
+        }
+
+        function getSuccessdelete(eventdetail) {
+            events = eventdetail;
+            redrawTable(tbl, events);
+            $("#editDiv").hide();
+            swal({ title: " !האירוע נמחק בהצלחה", icon: "success" });
+        }
+
+
         function getSuccessAlleventdetail(eventdetail) {
             console.log(eventdetail);
             events = eventdetail;
@@ -142,8 +189,10 @@
                     columns: [
                         {
                             render: function (data, type, row, meta) {
-                                EditBtn = "<button class='editbtn' eventid="+row.EventCode+"> עריכה</button>";
-                                return EditBtn;
+                                EditBtn = "<button class='editbtn' eventid=" + row.EventCode + "> עריכה</button>";
+                                DeleteBtn = "<button class='deletebtn' eventid=" + row.EventCode + "> מחיקה</button>";
+
+                                return EditBtn + DeleteBtn;
                             }
                         },
                         { data: "Eventtype" },
@@ -209,11 +258,11 @@
             countdep8 =0
             countdep9 =0
             countdep10 =0 
-            for (var i = 0; i < data.length; i++) {
-                if (data[i].EventCode == evcode) {
-                    for (var j = 0; j < data[i].Studentsinevent.length; j++) {
+            for (var i = 0; i < events.length; i++) {
+                if (events[i].EventCode == evcode) {
+                    for (var j = 0; j < events[i].Studentsinevent.length; j++) {
                         {
-                            switch (data[i].Studentsinevent[j].Dep.DepartmentCode) {
+                            switch (events[i].Studentsinevent[j].Dep.DepartmentCode) {
                                 case 1:
                                     countdep1++;
                                     break;
@@ -357,7 +406,7 @@
 
                 <div class="form-group col-sm-4">
                     <label for="datedis"><span class="red-star">★ </span>תאריך אירוע</label>
-                    <input type="date" class="form-control" id="datedis" placeholder="" required>
+                    <input type="date" class="form-control" id="datedis" placeholder="" onchange="checkdate()" required>
                 </div>
 
                 <div class="form-group col-sm-4">

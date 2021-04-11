@@ -15,6 +15,13 @@
     <link href="MyStyleSheet.css" rel="stylesheet" />
    
     <script>
+
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        today = yyyy + '-' + mm + '-' + dd;
+
         $(document).ready(function () {
 
             ajaxCall("GET", "../api/Events/getevent", "", getSuccessAlleventstype, error);
@@ -80,13 +87,21 @@
                 EventDate: $("#datedis").val(),
                 EventText: $("#content").val(),
                 EventImage: picName,
-            //    ParticipantQu: 0,
+                Status: true,
             }
             ajaxCall("POST", "../api/Events/addevent", JSON.stringify(Event), inserteventsuccess, errorr);
 
 
         }
 
+ 
+        function checkdate() {
+            if ($("#datedis").val() < today) {
+                swal("Attention", "תאריך האירוע צריך להיות עתידי!", "error");
+                $("#datedis").val("");
+            }
+        }
+     
         // This function is called in case of a success
         function inserteventsuccess(data) {
             console.log(data);
@@ -276,7 +291,7 @@
             </div>
             <div class="form-group">
                 <label for="datedis" id="datedisText">בחירת תאריך אירוע</label>
-                <input type="date" class="form-control" id="datedis" required />
+                <input type="date" class="form-control" id="datedis" onchange="checkdate()" required />
 
             </div>
             <div class="form-group">

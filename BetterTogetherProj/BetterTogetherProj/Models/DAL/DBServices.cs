@@ -438,8 +438,12 @@ namespace BetterTogetherProj.Models.DAL
 
             StringBuilder sb = new StringBuilder();
             // use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}')", ev.EventDate.ToString("yyyy-MM-dd"), ev.EventText, ev.EventImage, ev.Eventname, ev.Eventtype);
-            String prefix = "INSERT INTO events_P3" + "(eventDate, eventText, eventImage, eventname, eventTypeName)";
+            if(ev.Status==true)
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}','{5}')", ev.EventDate.ToString("yyyy-MM-dd"), ev.EventText, ev.EventImage, ev.Eventname, ev.Eventtype, 1);
+            else
+                sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}','{5}')", ev.EventDate.ToString("yyyy-MM-dd"), ev.EventText, ev.EventImage, ev.Eventname, ev.Eventtype, 0);
+
+            String prefix = "INSERT INTO events_P3" + "(eventDate, eventText, eventImage, eventname, eventTypeName, status)";
             command = prefix + sb.ToString();
 
             return command;
@@ -958,7 +962,7 @@ namespace BetterTogetherProj.Models.DAL
             try
             {
                 con = connect1("DBConnectionString");
-                String selectSTR = "select * from events_P3";
+                String selectSTR = "update events_P3 set status=0 where events_P3.eventDate<GETDATE() select * from events_P3";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
@@ -1083,6 +1087,7 @@ namespace BetterTogetherProj.Models.DAL
             {
 
                 command = "update events_P3 set eventDate='" + eventt.EventDate.ToString("yyyy-MM-dd") + "',eventText='"+eventt.EventText+"' ,status=1 where eventCode=" + eventt.EventCode;
+                //command += "update events_P3 set status=0 where events_P3.eventDate<GETDATE()";
             }
             else
             {
@@ -1090,9 +1095,62 @@ namespace BetterTogetherProj.Models.DAL
                 command = "update events_P3 set eventDate='" + eventt.EventDate.ToString("yyyy-MM-dd") + "',eventText='" + eventt.EventText +"' ,status =0 where eventCode=" + eventt.EventCode;
 
             }
-
             return command;
 
         }
+
+
+        public int DeleteEvent(int id)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect1("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            String cStr = BuildDeleteCommand(id);      // helper method to build the insert string
+
+            cmd = CreateCommand1(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        //--------------------------------------------------------------------
+        // Build the Insert command String
+        //--------------------------------------------------------------------
+        private String BuildDeleteCommand(int id)
+        {
+            String command;
+            command = "DELETE FROM events_P3 where eventCode=" + id;
+            return command;
+        }
+
     }
 }
