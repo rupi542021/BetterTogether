@@ -54,9 +54,11 @@
 
         function EditEvent() {
             //clearFields();
+             $("#piechart_3d").hide();
             $("#editDiv").show();
+            
             markSelected(this);
-
+           
             $("#datedis").prop("disabled", false);
             $("#EventType").prop("disabled", true);
             $("#EventName").prop("disabled", true);
@@ -192,6 +194,7 @@
                                 EditBtn = "<button class='editbtn' eventid=" + row.EventCode + "> עריכה</button>";
                                 DeleteBtn = "<button class='deletebtn' eventid=" + row.EventCode + "> מחיקה</button>";
 
+
                                 return EditBtn + DeleteBtn;
                             }
                         },
@@ -245,6 +248,9 @@
         }
 
         function addpiechart() {
+               markSelected(this);
+            $("#editDiv").hide();
+              $("#piechart_3d").show();
             participant = $(this).attr("par");
             eventName = $(this).attr("name");
             evcode = $(this).attr("evcode");
