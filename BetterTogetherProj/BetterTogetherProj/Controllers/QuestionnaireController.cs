@@ -40,8 +40,9 @@ namespace BetterTogetherProj.Controllers
         //}
 
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        public void Put( [FromBody] Questionnaire Qr)
         {
+            Qr.UpdateQr();
         }
 
         // DELETE api/<controller>/5

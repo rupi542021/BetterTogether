@@ -59,5 +59,12 @@ namespace project_classes.Models
             dbs.InsertQuestionnaire(this);
 
         }
+
+        public void UpdateQr()
+        {
+            DBServices dbs = new DBServices();
+            dbs.UpdateQr(this);
+
+        }
     }
 }

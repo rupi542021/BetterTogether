@@ -46,7 +46,7 @@ namespace BetterTogetherProj.Models.DAL
             try
             {
                 con = connect1("DBConnectionString");
-                String selectSTR = "select * from department_P  inner join questionnaire_P3 on questionnaire_P3.departmentCode=department_P.departmentCode";
+                String selectSTR = "update questionnaire_P3 set status = 0 where questionnaire_P3.endPublishDate < GETDATE() select * from department_P  inner join questionnaire_P3 on questionnaire_P3.departmentCode=department_P.departmentCode";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
@@ -61,7 +61,7 @@ namespace BetterTogetherProj.Models.DAL
                     qr.NumResponders = Convert.ToInt32(dr["numResponders"]);
                     qr.Dep = (new Department { DepartmentName = (string)dr["departmentName"] });
                     qr.QuestionnaireYear = Convert.ToInt16(dr["qrYear"]);
-
+                    //qr.Queslist = getQuestionsbyNumqr(qr.QuestionnaireNum);
                     qrList.Add(qr);
                 }
 
@@ -82,6 +82,54 @@ namespace BetterTogetherProj.Models.DAL
             }
 
         }
+
+        //public List<Question> getQuestionsbyNumqr(int questionnaireNum)
+        //{
+        //    SqlConnection con = null;
+        //    List<Question> qList = new List<Question>();
+
+        //    try
+        //    {
+        //        con = connect1("DBConnectionString");
+        //        String selectSTR = "select * from question_P3 where qrCode=" + questionnaireNum;
+        //        SqlCommand cmd = new SqlCommand(selectSTR, con);
+        //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+        //        while (dr.Read())
+        //        {   // Read till the end of the data into a row
+        //            Question q = new Question();
+        //            q.Questionnum= Convert.ToInt16(dr["qCode"]);
+        //            q.QuestionText= (string)dr["qText"];
+        //            q.QuestionType = (string)dr["questionType"];
+        //            q.Anslist = new List<string>();
+
+        //            q.Anslist[0] = Convert.ToString(dr["ansText1"]);
+        //            q.Anslist[1] = Convert.ToString(dr["ansText2"]);
+        //            q.Anslist[2] = Convert.ToString(dr["ansText3"]);
+        //            q.Anslist[3] = Convert.ToString(dr["ansText4"]);
+        //            q.Anslist[4] = Convert.ToString(dr["ansText5"]);
+        //            q.Anslist[5] = Convert.ToString(dr["ansText6"]);
+
+        //            qList.Add(q);
+        //        }
+
+        //        return qList;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // write to log
+        //        throw (ex);
+        //    }
+        //    finally
+        //    {
+        //        if (con != null)
+        //        {
+        //            con.Close();
+        //        }
+
+        //    }
+
+        //}
+
 
         public int InsertQuestionnaire(Questionnaire qr)
         {
@@ -1150,6 +1198,71 @@ namespace BetterTogetherProj.Models.DAL
             String command;
             command = "DELETE FROM events_P3 where eventCode=" + id;
             return command;
+        }
+
+        public int UpdateQr(Questionnaire Qr)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect1("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            String cStr = BuildUpdateCommand(Qr);      // helper method to build the insert string
+
+            cmd = CreateCommand1(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        //--------------------------------------------------------------------
+        // Build the Update command String
+        //--------------------------------------------------------------------
+
+        private String BuildUpdateCommand(Questionnaire Qr)
+        {
+            String command;
+
+            if (Qr.Status == true)// השמת הסטטוס TRUE=1 והפוך  
+            {
+
+                command = "update questionnaire_P3 set publishDate='" + Qr.QuestionnairePublish.ToString("yyyy-MM-dd") + "',endPublishDate='" + Qr.EndPublishDate.ToString("yyyy-MM-dd") + "',departmentCode='"+Qr.Dep.DepartmentCode+"',qrYear='"+Qr.QuestionnaireYear+"' ,status=1 where qrCode=" + Qr.QuestionnaireNum;
+            }
+            else
+            {
+
+                command = "update questionnaire_P3 set publishDate='" + Qr.QuestionnairePublish.ToString("yyyy-MM-dd") + "',endPublishDate='" + Qr.EndPublishDate.ToString("yyyy-MM-dd") + "',departmentCode='" + Qr.Dep.DepartmentCode + "',qrYear='" + Qr.QuestionnaireYear + "' ,status=0 where qrCode=" + Qr.QuestionnaireNum;
+
+            }
+            return command;
+
         }
 
     }

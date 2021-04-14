@@ -53,17 +53,22 @@
         });
 
         function EditEvent() {
-            //clearFields();
              $("#piechart_3d").hide();
             $("#editDiv").show();
-            
             markSelected(this);
+
+            //if ($("#datedis").val() < today) {
+            //    $('#Status').prop("disabled", true)
+            //}
+            //else {
+            //    $("#Status").prop("disabled", false);
+            //}
            
             $("#datedis").prop("disabled", false);
             $("#EventType").prop("disabled", true);
             $("#EventName").prop("disabled", true);
             $("#contentText").prop("disabled", false);
-            $("#Status").prop("disabled", false);
+            $('#Status').prop("disabled", false)
             //$("#saveBTN1").prop("disabled", true);
             populateFields(this.getAttribute('eventid'));
 

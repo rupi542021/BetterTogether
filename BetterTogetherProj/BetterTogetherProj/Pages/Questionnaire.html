@@ -30,15 +30,19 @@
 
         var AnsNum = 0;
         var q = 0;
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        today = yyyy + '-' + mm + '-' + dd;
 
         // will run when the document is ready
         $(document).ready(function () {
             AnsNum = 0;
-
+     
 
             mode = "";
             $("#cancelSaveBTN").on("click", function () { //מבטל טופס NEW
-                console.log("nessy")
                 qrId = null;
                 $("#editDiv").hide();
                 //$("#EditViewDiv").hide();
@@ -59,6 +63,8 @@
 
 
             $("#newBTN").on("click", function () {
+                $("#addinput").show();
+                $("#inserth3").show();
                 AnsNum = 0;
                 q = 0;
                 $("#question1").html("");
@@ -137,21 +143,28 @@
             $(document).on("click", ".editBtn", function () {
                 mode = "edit";
                 markSelected(this);
+                //if (document.getElementById("EndpublishDate").value() > today) {
+                //    document.getElementById("Status").checked = true;
+                ////    $('#Status').prop("disabled", false)
+                //}
                 //$("#EditViewDiv").show();
-                $("#editDiv").hide();
-                $("#Addquestion").hide();
-
-                $("#Restaurant_Id1").prop("disabled", true);
-                $("#Balance1").prop("disabled", true);
-                $("#Viewing_number1").prop("disabled", true);
-                $("#Clicks_number1").prop("disabled", true);
-                $("#Campain_Budget1").prop("disabled", false);
-                $("#Status1").prop("disabled", false);
-                $("#saveBTN1").prop("disabled", false);
+                $("#editDiv").show();
+                $("#addinput").hide();
+                $("#inserth3").hide();
+                //$(".addqubutton").hide();
+                //$(".questionn1.form-group.col-sm-12").show();
+                $("#question1").html("");
+                addquestion();
+                $("#subQr").prop("disabled", true);
+                $("#publishList").prop("disabled", false);
+                $("#yearList").prop("disabled", false);
+                $("#publishDate").prop("disabled", false);
+                $("#EndpublishDate").prop("disabled", false);
+                //$("#saveBTN1").prop("disabled", false);
 
 
                 // edit mode: disable all controls in the form
-                populateFields(this.getAttribute('data-carId')); // fill the form fields according to the selected row
+                populateFields(this.getAttribute('data-QuestionnaireId')); // fill the form fields according to the selected row
 
             });
 
@@ -163,7 +176,6 @@
                 $("#EditViewDiv").show();
                 $("#Addquestion").hide();
 
-
                 /* $("#EditViewDiv :input").attr("disabled", "disabled");*/ // view mode: disable all controls in the form
 
                 $("#Restaurant_Id1").prop("disabled", true);
@@ -173,14 +185,14 @@
                 $("#Campain_Budget1").prop("disabled", true);
                 $("#Status1").prop("disabled", true);
                 $("#saveBTN1").prop("disabled", true);
-                populateFields(this.getAttribute('data-carId'));
+                populateFields(this.getAttribute('data-QuestionnaireId'));
 
             });
         }
 
         // mark the selected row
         function markSelected(btn) {
-            $("#QTable").removeClass("selected"); // remove seleced class from rows that were selected before
+            $("#QTable tr").removeClass("selected"); // remove seleced class from rows that were selected before
             row = (btn.parentNode).parentNode; // button is in TD which is in Row
             row.className = 'selected'; // mark as selected
         }
@@ -222,7 +234,7 @@
             q++;
             let Questionstring = `<div id="` + q + `">
                                     <div class="questionn">
-                                             <div class="form-group row">
+                                             <div class=" divareaque form-group row">
                                             <div class="ansdiv form-group col-sm-2" id="`+ q + `Qans">
                                                <label for="QuestionText"><span class="red-star">★ </span>תשובות</label>
                                             </div>
@@ -263,20 +275,18 @@
 
             //var Campid = -1;
             if (mode == "edit") {
-                Campid = qrId.Campid;
-                Resid = qrId.Resid;
-                Viewing = qrId.Viewing;
-                Clicks = qrId.Clicks;
-                //Balance = camp.Budget - (0.5 * camp.Clicks + 0.1 * camp.Viewing);
-                //Status = camp.Status;
-                camptoSave = {
-                    Campid: Campid,
-                    Resid: Resid,
-                    Budget: $("#Campain_Budget1").val(),
-                    Viewing: Viewing,
-                    Clicks: Clicks,
-                    //Balance:Balance,
-                    Status: $("#Status1").is(":checked")
+           
+                QrtoUpdate = {
+                    QuestionnaireNum: Qr.QuestionnaireNum,
+                    SubQr: Qr.SubQr,
+                    QuestionnairePublish: $("#publishDate").val(),
+                    EndPublishDate: $("#EndpublishDate").val(),
+                    Dep: {
+                        DepartmentCode: $("#publishList").val(),
+                    },
+                    QuestionnaireYear: $("#yearList").val(),
+                    Status: $("#Status").is(":checked")
+
                 }
 
             }
@@ -310,7 +320,7 @@
                         DepartmentCode: Depchosen
                     },
                     NumResponders: NumResponders,
-                    Status: $("#Status").is(":checked"),
+                    Status: true,
                     QuestionnaireYear: QuestionnaireYear,
                     Queslist: questionList,
                     QuestionnaireNum: questionnaires[questionnaires["length"] - 1].QuestionnaireNum + 1,
@@ -322,32 +332,66 @@
             // add a new Car record to the server
             if (mode == "edit")
 
-                ajaxCall("PUT", "../api/campain", JSON.stringify(camptoSave), updateSuccess, error);
+                ajaxCall("PUT", "../api/Questionnaire", JSON.stringify(QrtoUpdate), updateSuccess, error);
             else if (mode == "new")
                 ajaxCall("POST", "../api/Questionnaire/postqr", JSON.stringify(QrtoSave), insertSuccess, error);
 
             return false;
         }
-        function checkdate() {
+        function checkdate(num) {
+            if (num == 0) {
+                if ($("#publishDate").val() > $("#EndpublishDate").val()) {
+                    swal("Attention", "תאריך הסיום צריך להיות לאחר תאריך הפצת הפרסום!", "error");
+                    $("#EndpublishDate").val("");
+                }
+            }
+            else {
+                if ($("#publishDate").val() < today) {
+                    swal("Attention", "תאריך הפצת השאלון צריך להיות עתידי!", "error");
+                    $("#publishDate").val("");
 
-            if ($("#publishDate").val() > $("#EndpublishDate").val()) {
-                swal("Attention", "תאריך הסיום צריך להיות לאחר תאריך הפצת הפרסום!", "error");
-                $("#EndpublishDate").val("");
+                }
             }
         }
 
 
         // fill the form fields
         function populateFields(qrId) {
-            qrId = getQ(qrId); //מחזיר את האובייקט שבשורה שלחצנו לפי ID
+            Qr = getQ(qrId); //מחזיר את האובייקט שבשורה שלחצנו לפי ID
+            var datepub = new Date(Qr.QuestionnairePublish);
+            var day = ("0" + datepub.getDate()).slice(-2);
+            var month = ("0" + (datepub.getMonth() + 1)).slice(-2);
+            var dateQr = datepub.getFullYear() + "-" + (month) + "-" + (day);
+            $("#publishDate").val(dateQr);
+            var dateEndPub = new Date(Qr.EndPublishDate);
+            var day = ("0" + dateEndPub.getDate()).slice(-2);
+            var month = ("0" + (dateEndPub.getMonth() + 1)).slice(-2);
+            var dateQrfinal = dateEndPub.getFullYear() + "-" + (month) + "-" + (day);
+            $("#EndpublishDate").val(dateQrfinal);
+            $("#subQr").val(Qr.SubQr);
+            $("#publishList :selected").text(Qr.Dep.DepartmentName);
+            $("#Status").prop('checked', Qr.Status);
 
-            $("#publishDate").val(qrId.QuestionnairePublish);
-            $("#EndpublishDate").val(qrId.EndPublishDate);
-            $("#subQr").val(qrId.SubQr);
-            $("#numResponders").val(qrId.NumResponders);
-            $("#publishList").val(qrId.Dep.DepartmentCode);
-            $("#Status").prop('checked', qrId.Status);
-            $("#yearList").val(qrId.QuestionnaireYear);
+            switch (Qr.QuestionnaireYear) {
+                case 1:
+                    return $("#yearList :selected").text('א');
+                    break;
+                case 2:
+                    return $("#yearList :selected").text('ב');
+                    break;
+                case 3:
+                    return $("#yearList :selected").text('ג');
+                    break;
+                case 4:
+                    return $("#yearList :selected").text('ד');
+                    break;
+
+                default:
+                    return $("#yearList :selected").text('כלל השנים');
+            }
+
+            //$("#QuestionType"+1+":selected").text(Qr.Queslist[0].QuestionType);
+
 
         }
 
@@ -380,19 +424,15 @@
         function updateSuccess(questionnaireData) {
             tbl.clear();
             console.log(questionnaireData);
-            ajaxCall("GET", "../api/campain/camp", "", getSuccessupdate, error);
+            ajaxCall("GET", "../api/Questionnaire/qr", "", getSuccessupdate, error);
 
         }
 
         function getSuccessupdate(questionnaireData) {
             questionnaires = questionnaireData;
-            console.log(questionnaireData);
             redrawTable(tbl, questionnaireData);
-            buttonEvents();
             $("#editDiv").hide();
-            //$("#EditViewDiv").hide();
-
-            swal("Updated Successfuly!", "Great Job", "success");
+            swal({ title: " !השאלון עודכן בהצלחה", icon: "success" });
             mode = "";
         }
         // success callback function after update
@@ -445,7 +485,7 @@
                     columns: [
                         {
                             render: function (data, type, row, meta) {
-                                let dataQ = "data-carId='" + row.QuestionnaireNum + "'";
+                                let dataQ = "data-QuestionnaireId='" + row.QuestionnaireNum + "'";
 
                                 editBtn = "<button type='button' class = 'editBtn btn btn-success' " + dataQ + "> עריכה </button>";
                                 viewBtn = "<button type='button' class = 'viewBtn btn btn-info' " + dataQ + "> צפייה </button>";
@@ -578,12 +618,12 @@
 
                     <div class="form-group col-sm-4">
                         <label for="EndpublishDate"><span class="red-star">★ </span>תאריך סיום הפצה </label>
-                        <input type="date" class="form-control" onchange="checkdate()" id="EndpublishDate" placeholder="" required>
+                        <input type="date" class="form-control" onchange="checkdate(0)" id="EndpublishDate" placeholder="" required>
                     </div>
 
                     <div class="form-group col-sm-4">
                         <label for="publishDate"><span class="red-star">★ </span>תאריך הפצה</label>
-                        <input type="date" class="form-control"  id="publishDate" placeholder="" required>
+                        <input type="date" class="form-control" onchange="checkdate(1)" id="publishDate" placeholder="" required>
 
                     </div>
 
@@ -611,18 +651,18 @@
         <input type="text" class="form-control" id="numResponders" />
 
     </div>-->
-                    <!--<div class="form-group col-sm-4">
+                    <div class="form-group col-sm-4">
         <label for="Status"><span class="red-star">★ </span>סטטוס</label>
         <input type="checkbox" class="form-control" id="Status" checked />
-    </div>-->
-                    <div class="form-group col-sm-12">
-                        <h3>הכנסת שאלות:</h3>
+    </div>
+                    <div class=" insertque form-group col-sm-12">
+                        <h3 id="inserth3">הכנסת שאלות:</h3>
                     </div>
-                    <div class="form-group col-sm-12">
+                    <div class="questionn1 form-group col-sm-12">
                         <div id="question1"></div>
                     </div>
-                    <div class="form-group col-sm-12">
-                        <input type="button" value="הוספת שאלה" onclick="addquestion()" />
+                    <div class="addqubutton form-group col-sm-12">
+                        <input type="button" value="הוספת שאלה" id="addinput" onclick="addquestion()" />
                     </div>
                 </div>
 
