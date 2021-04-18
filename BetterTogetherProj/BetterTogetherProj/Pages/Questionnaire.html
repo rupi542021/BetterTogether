@@ -303,30 +303,30 @@
                 markSelected(this);
                 $("#editDiv").hide();
 
-                ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
+               // ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
                 Qr = getQ(this.getAttribute('data-QuestionnaireId'));
-                depname = Qr.Dep.DepartmentName;
-                depcode = Qr.Dep.DepartmentCode;
-                depyear = Qr.QuestionnaireYear;
-                getyearbydep(1);
+               // depname = Qr.Dep.DepartmentName;
+               // depcode = Qr.Dep.DepartmentCode;
+               // depyear = Qr.QuestionnaireYear;
+               // getyearbydep(1);
 
                 questionList = [];
                 var datepub = new Date(Qr.QuestionnairePublish);
                 var day = ("0" + datepub.getDate()).slice(-2);
                 var month = ("0" + (datepub.getMonth() + 1)).slice(-2);
                 var dateQr = datepub.getFullYear() + "-" + (month) + "-" + (day);
-                QuestionnairePublish=$("#publishDate").val();
+               // QuestionnairePublish=$("#publishDate").val();
                 var dateEndPub = new Date(Qr.EndPublishDate);
                 var day = ("0" + dateEndPub.getDate()).slice(-2);
                 var month = ("0" + (dateEndPub.getMonth() + 1)).slice(-2);
                 var dateQrfinal = dateEndPub.getFullYear() + "-" + (month) + "-" + (day);
-                EndPublishDate= $("#EndpublishDate").val(dateQrfinal);
+               // EndPublishDate= $("#EndpublishDate").val(dateQrfinal);
 
-                SubQr = $("#subQr").val(Qr.SubQr);
-                Depchosen = $("#publishList").val(depcode);
-                NumResponders = 0;
-                QuestionnaireYear = $("#yearList").val(depyear);
-                Status = $("#Status").prop('checked', Qr.Status);
+               // SubQr = $("#subQr").val(Qr.SubQr);
+               // Depchosen = $("#publishList").val(depcode);
+               // NumResponders = 0;
+               // QuestionnaireYear = $("#yearList").val(depyear);
+               // Status = $("#Status").prop('checked', Qr.Status);
 
 
                 for (var i = 1; i <= q; i++) {
@@ -339,18 +339,18 @@
                     }
                     questionList.push(Questionn);
                 }
-                console.log(questionList);
+               // console.log(questionList);
                let Qrtoduplicate = {
 
-                    QuestionnairePublish: QuestionnairePublish,
-                    EndPublishDate: EndPublishDate,
-                    SubQr: SubQr,
+                   QuestionnairePublish: dateQr,
+                   EndPublishDate: dateQrfinal,
+                   SubQr: Qr.SubQr,
                     Dep: {
-                        DepartmentCode: Depchosen
+                        DepartmentCode: Qr.Dep.DepartmentCode
                     },
-                    NumResponders: NumResponders,
-                    Status: Status,
-                    QuestionnaireYear: QuestionnaireYear,
+                    //NumResponders: NumResponders,
+                   Status: Qr.Status,
+                    QuestionnaireYear: Qr.QuestionnaireYear,
                     Queslist: questionList,
                     QuestionnaireNum: questionnaires[questionnaires["length"] - 1].QuestionnaireNum + 1,
                 }
