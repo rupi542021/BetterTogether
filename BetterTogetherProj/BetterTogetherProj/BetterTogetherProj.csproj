@@ -222,6 +222,7 @@
     <Compile Include="Controllers\ImageUploadController.cs" />
     <Compile Include="Controllers\QuestionnaireController.cs" />
     <Compile Include="Controllers\studentsController.cs" />
+    <Compile Include="Controllers\theUnitController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -231,6 +232,7 @@
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\DAL\DBServices.cs" />
     <Compile Include="Models\DAL\DBServicesReact.cs" />
+    <Compile Include="Models\DAL\DBServicesUnit.cs" />
     <Compile Include="Models\DAL\XMLServices.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\Events.cs" />
@@ -246,6 +248,7 @@
     <Compile Include="Models\AdsFeedback.cs" />
     <Compile Include="Models\EventsFeedback.cs" />
     <Compile Include="Models\StudentInCourse.cs" />
+    <Compile Include="Models\StudentInEvent.cs" />
     <Compile Include="Models\StudentsAnswers.cs" />
     <Compile Include="Models\Subject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
