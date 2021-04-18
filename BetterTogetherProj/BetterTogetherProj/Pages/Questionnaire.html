@@ -303,47 +303,12 @@
                 markSelected(this);
                 $("#editDiv").hide();
 
-               // ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
                 Qr = getQ(this.getAttribute('data-QuestionnaireId'));
-               // depname = Qr.Dep.DepartmentName;
-               // depcode = Qr.Dep.DepartmentCode;
-               // depyear = Qr.QuestionnaireYear;
-               // getyearbydep(1);
-
-                questionList = [];
-                var datepub = new Date(Qr.QuestionnairePublish);
-                var day = ("0" + datepub.getDate()).slice(-2);
-                var month = ("0" + (datepub.getMonth() + 1)).slice(-2);
-                var dateQr = datepub.getFullYear() + "-" + (month) + "-" + (day);
-               // QuestionnairePublish=$("#publishDate").val();
-                var dateEndPub = new Date(Qr.EndPublishDate);
-                var day = ("0" + dateEndPub.getDate()).slice(-2);
-                var month = ("0" + (dateEndPub.getMonth() + 1)).slice(-2);
-                var dateQrfinal = dateEndPub.getFullYear() + "-" + (month) + "-" + (day);
-               // EndPublishDate= $("#EndpublishDate").val(dateQrfinal);
-
-               // SubQr = $("#subQr").val(Qr.SubQr);
-               // Depchosen = $("#publishList").val(depcode);
-               // NumResponders = 0;
-               // QuestionnaireYear = $("#yearList").val(depyear);
-               // Status = $("#Status").prop('checked', Qr.Status);
-
-
-                for (var i = 1; i <= q; i++) {
-                    let Questionn = {
-                        Questionnum: i,
-                        QuestionText: $(`#QuestionText` + i).val(),
-                        QuestionType: $("#QuestionType" + i).val(),
-                        Anslist: getanswersbyqu(i),
-
-                    }
-                    questionList.push(Questionn);
-                }
-               // console.log(questionList);
+         
                let Qrtoduplicate = {
 
-                   QuestionnairePublish: dateQr,
-                   EndPublishDate: dateQrfinal,
+                   QuestionnairePublish: Qr.QuestionnairePublish,
+                   EndPublishDate: Qr.EndPublishDate,
                    SubQr: Qr.SubQr,
                     Dep: {
                         DepartmentCode: Qr.Dep.DepartmentCode
@@ -351,7 +316,7 @@
                     //NumResponders: NumResponders,
                    Status: Qr.Status,
                     QuestionnaireYear: Qr.QuestionnaireYear,
-                    Queslist: questionList,
+                   Queslist: Qr.Queslist,
                     QuestionnaireNum: questionnaires[questionnaires["length"] - 1].QuestionnaireNum + 1,
                 }
                 ajaxCall("POST", "../api/Questionnaire/postqr", JSON.stringify(Qrtoduplicate), insertSuccess, error);
@@ -621,8 +586,11 @@
             buttonEvents();
             $("#editDiv").hide();
             //$("#EditViewDiv").hide();
+            if(mode=="new")
+                swal("השאלון הוכנס בהצלחה!", "Great Job", "success");
+            else if (mode == "duplicate")
+                swal("השאלון שוכפל בהצלחה!", "Great Job", "success");
 
-            swal("השאלון הוכנס בהצלחה!", "Great Job", "success");
             mode = "";
 
         }
