@@ -1024,6 +1024,7 @@ namespace BetterTogetherProj.Models.DAL
                     evdetail.Studentsinevent = Getstudentinevent(evdetail.EventCode);
                     evdetail.EventText= (string)dr["eventText"];
                     evdetail.Status= Convert.ToBoolean(dr["status"]);
+                    evdetail.EventImage = (string)dr["eventImage"];
                     evdetailList.Add(evdetail);
                 }
 
