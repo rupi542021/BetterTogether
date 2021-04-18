@@ -61,8 +61,8 @@ namespace BetterTogetherProj.Models.DAL
                     qr.NumResponders = Convert.ToInt32(dr["numResponders"]);
                     qr.Dep = (new Department { DepartmentName = (string)dr["departmentName"] });
                     qr.Dep.DepartmentCode = Convert.ToInt16(dr["departmentCode"]);
-                    qr.QuestionnaireYear = Convert.ToInt16(dr["qrYear"]);
-                    //qr.Queslist = getQuestionsbyNumqr(qr.QuestionnaireNum);
+                    qr.QuestionnaireYear = Convert.ToInt16(dr["qrYear"]);                   
+                    qr.Queslist = getQuestionsbyNumqr(qr.QuestionnaireNum);            
                     qrList.Add(qr);
                 }
 
@@ -84,52 +84,53 @@ namespace BetterTogetherProj.Models.DAL
 
         }
 
-        //public List<Question> getQuestionsbyNumqr(int questionnaireNum)
-        //{
-        //    SqlConnection con = null;
-        //    List<Question> qList = new List<Question>();
+        public List<Question> getQuestionsbyNumqr(int questionnaireNum)
+        {
+            SqlConnection con = null;
+            List<Question> qList = new List<Question>();
 
-        //    try
-        //    {
-        //        con = connect1("DBConnectionString");
-        //        String selectSTR = "select * from question_P3 where qrCode=" + questionnaireNum;
-        //        SqlCommand cmd = new SqlCommand(selectSTR, con);
-        //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-        //        while (dr.Read())
-        //        {   // Read till the end of the data into a row
-        //            Question q = new Question();
-        //            q.Questionnum= Convert.ToInt16(dr["qCode"]);
-        //            q.QuestionText= (string)dr["qText"];
-        //            q.QuestionType = (string)dr["questionType"];
-        //            q.Anslist = new List<string>();
+            try
+            {
+                con = connect1("DBConnectionString");
+                String selectSTR = "select * from question_P3 where qrCode=" + questionnaireNum;
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                //DataSet ds = new DataSet();
+                //using(SqlDataAdapter da=new SqlDataAdapter(cmd)) { da.Fill(ds); }
+                while (dr.Read())
 
-        //            q.Anslist[0] = Convert.ToString(dr["ansText1"]);
-        //            q.Anslist[1] = Convert.ToString(dr["ansText2"]);
-        //            q.Anslist[2] = Convert.ToString(dr["ansText3"]);
-        //            q.Anslist[3] = Convert.ToString(dr["ansText4"]);
-        //            q.Anslist[4] = Convert.ToString(dr["ansText5"]);
-        //            q.Anslist[5] = Convert.ToString(dr["ansText6"]);
+                {   // Read till the end of the data into a row
+                    Question q = new Question();
+                    q.Questionnum = Convert.ToInt16(dr["qCode"]);
+                    q.QuestionText = (string)dr["qText"];
+                    q.QuestionType = (string)dr["questionType"];
 
-        //            qList.Add(q);
-        //        }
+                    q.Anslist = new List<string>();
+                    for (int i = 1; i < 7; i++)
+                    {
+                        q.Anslist.Add(Convert.ToString(dr["ansText"+i]));
+                    }
+                
+                    qList.Add(q);
+                }
 
-        //        return qList;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // write to log
-        //        throw (ex);
-        //    }
-        //    finally
-        //    {
-        //        if (con != null)
-        //        {
-        //            con.Close();
-        //        }
+                return qList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
 
-        //    }
+            }
 
-        //}
+        }
 
 
         public int InsertQuestionnaire(Questionnaire qr)
