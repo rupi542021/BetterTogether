@@ -38,9 +38,9 @@
 
         // will run when the document is ready
         $(document).ready(function () {
+           
             AnsNum = 0;
      
-
             mode = "";
             $("#cancelSaveBTN").on("click", function () { //מבטל טופס NEW
                 qrId = null;
@@ -63,8 +63,9 @@
 
 
             $("#newBTN").on("click", function () {
-                $("#addinput").show();
-                $("#inserth3").show();
+              
+                ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
+
                 AnsNum = 0;
                 q = 0;
                 $("#question1").html("");
@@ -81,10 +82,8 @@
                 //  $("#Viewing_number").val(0);
                 //  $("#Clicks_number").val(0);
                 $("#editDiv :input").prop("disabled", false); // new mode: enable all controls in the form
+              
             });
-
-          
-            ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
 
             let api = "../api/Questionnaire/qr"
             ajaxCall("GET", api, "", getSuccess, error);
@@ -97,41 +96,155 @@
             //$("#EditViewDiv").hide();
             //$("#Addquestion").hide();
 
-
+           
             buttonEvents();
-
-            $("#publishList").change(getyearbydep)
+            $(document).on("change", '#publishList', { 'param': 0 }, function (event) {
+                getyearbydep(event.data.param);
+            });
             //$(`#QuestionType` + q).change(getQuestionType)
             //$(document).on("change", "#QuestionType"+q, getQuestionType);
 
-            //$(document).on("click", "#add" +q, getQuestionType(1));
+           
         });
 
         function getSuccessalldep(alldep) {
             console.log(alldep);
             Alldep = alldep;
             let str = "";
-            for (var i = 0; i < Alldep.length; i++) {
-                str += "<option value='" + Alldep[i].DepartmentCode + "'>" + Alldep[i].DepartmentName + "</option></br>"
+            if (mode == "edit") {
+                document.getElementById("publishList").innerHTML = "";
 
+                for (var i = 0; i < Alldep.length; i++) {
+                    if (Alldep[i].DepartmentName == depname)
+
+                        str += "<option value='" + Alldep[i].DepartmentCode + "'>" + Alldep[i].DepartmentName + "</option></br>"
+                }
+                for (var i = 0; i < Alldep.length; i++) {
+                    if (Alldep[i].DepartmentName != depname)
+
+                       str += "<option value='" + Alldep[i].DepartmentCode + "'>" + Alldep[i].DepartmentName + "</option></br>"
+
+                }
+            }
+            else if (mode == "new") {
+                document.getElementById("publishList").innerHTML = "<option value=''>בחירת מחלקה</option>";
+;
+                for (var i = 0; i < Alldep.length; i++) {
+                        str += "<option value='" + Alldep[i].DepartmentCode + "'>" + Alldep[i].DepartmentName + "</option></br>"
+                }
+              
             }
             document.getElementById("publishList").innerHTML += str;
 
         }
-        function getyearbydep() {
-
-            let depp = $("#publishList").val();
+        function getyearbydep(num) {
+            document.getElementById("yearList").innerHTML = "";
             let stryear = "";
-            var years = ["", 'א', 'ב', 'ג', 'ד'];
-            for (var j = 1; j < years.length; j++) {
-                if (depp == 1 || depp == 2 || depp == 3 || depp == 6 || depp == 10 || depp==15)
-                    stryear += "<option value=" + j + ">" + years[j] + "</option>";
-                else
-                    for (var j = 1; j < years.length - 1; j++) {
-                        stryear += "<option value=" + j + ">" + years[j] + "</option>";
+            //var years = ["",'א','ב','ג','ד'];
+            var years = [0, 1, 2, 3, 4]
+            var year = [];
+            var nofilter = [];
+            if (num == 1) {
+                {
+                    let depp = depcode;
+
+                    if (depp == 1 || depp == 2 || depp == 3 || depp == 6 || depp == 10 || depp == 15) {
+                        for (var j = 0; j < years.length; j++) {
+                            if (depyear == years[j]) {
+                                year.push(years[j]);
+                            }
+                        }
                     }
+                    else {
+                        for (var j = 0; j < years.length - 1; j++) {
+                            if (depyear == years[j]) {
+                                year.push(years[j]);
+
+                            }
+                        }
+                    }
+                    if (depp == 1 || depp == 2 || depp == 3 || depp == 6 || depp == 10 || depp == 15) {
+                        for (var j = 0; j < years.length; j++) {
+                            if (depyear != years[j]) {
+                                year.push(years[j]);
+
+                            }
+                        }
+                    }
+                    else {
+                        for (var j = 0; j < years.length - 1; j++) {
+                            if (depyear != years[j]) {
+                                year.push(years[j]);
+
+                            }
+                        }
+                    }
+                }
+                for (var i = 0; i < year.length; i++) {
+                    switch (year[i]) {
+                        case 0:
+                            stryear += "<option value=0> כלל השנים  </option>";
+                            break;
+                        case 1:
+                            stryear += "<option value=1> א  </option>";
+                            break;
+                        case 2:
+                            stryear += "<option value=2>  ב </option>";
+                            break;
+                        case 3:
+                            stryear += "<option value=3>ג</option>";
+                            break;
+                        case 4:
+                            stryear += "<option value=4>ד</option>";
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+
             }
-            stryear += "<option>כלל השנים</option>";
+            else {
+
+                let depp = $("#publishList").val();
+                if (depp == 1 || depp == 2 || depp == 3 || depp == 6 || depp == 10 || depp == 15) {
+                    for (var j = 0; j < years.length; j++) {
+
+                        nofilter.push(years[j])
+                    }
+                }
+                else {
+                    for (var j = 0; j < years.length - 1; j++) {
+                        nofilter.push(years[j])
+                    }
+
+                    }
+
+           
+                for (var i = 0; i < nofilter.length; i++) {
+                    switch (nofilter[i]) {
+                        case 0:
+                            stryear += "<option value=0> כלל השנים  </option>";
+                            break;
+                        case 1:
+                            stryear += "<option value=1> א  </option>";
+                            break;
+                        case 2:
+                            stryear += "<option value=2>  ב </option>";
+                            break;
+                        case 3:
+                            stryear += "<option value=3>ג</option>";
+                            break;
+                        case 4:
+                            stryear += "<option value=4>ד</option>";
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            }
+            
             document.getElementById("yearList").innerHTML = stryear;
 
         }
@@ -143,23 +256,19 @@
             $(document).on("click", ".editBtn", function () {
                 mode = "edit";
                 markSelected(this);
-                //if (document.getElementById("EndpublishDate").value() > today) {
-                //    document.getElementById("Status").checked = true;
-                ////    $('#Status').prop("disabled", false)
-                //}
-                //$("#EditViewDiv").show();
+
                 $("#editDiv").show();
                 $("#addinput").hide();
                 $("#inserth3").hide();
-                //$(".addqubutton").hide();
-                //$(".questionn1.form-group.col-sm-12").show();
-                $("#question1").html("");
-                addquestion();
+                $(".divareaque.form-group.row").hide();
+        
                 $("#subQr").prop("disabled", true);
                 $("#publishList").prop("disabled", false);
                 $("#yearList").prop("disabled", false);
                 $("#publishDate").prop("disabled", false);
                 $("#EndpublishDate").prop("disabled", false);
+                $("#Status").prop("disabled", true);
+             
                 //$("#saveBTN1").prop("disabled", false);
 
 
@@ -186,6 +295,67 @@
                 $("#Status1").prop("disabled", true);
                 $("#saveBTN1").prop("disabled", true);
                 populateFields(this.getAttribute('data-QuestionnaireId'));
+
+            });
+
+            $(document).on("click", ".duplicateBtn", function () {
+                mode = "duplicate";
+                markSelected(this);
+                $("#editDiv").hide();
+
+                ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
+                Qr = getQ(this.getAttribute('data-QuestionnaireId'));
+                depname = Qr.Dep.DepartmentName;
+                depcode = Qr.Dep.DepartmentCode;
+                depyear = Qr.QuestionnaireYear;
+                getyearbydep(1);
+
+                questionList = [];
+                var datepub = new Date(Qr.QuestionnairePublish);
+                var day = ("0" + datepub.getDate()).slice(-2);
+                var month = ("0" + (datepub.getMonth() + 1)).slice(-2);
+                var dateQr = datepub.getFullYear() + "-" + (month) + "-" + (day);
+                QuestionnairePublish=$("#publishDate").val();
+                var dateEndPub = new Date(Qr.EndPublishDate);
+                var day = ("0" + dateEndPub.getDate()).slice(-2);
+                var month = ("0" + (dateEndPub.getMonth() + 1)).slice(-2);
+                var dateQrfinal = dateEndPub.getFullYear() + "-" + (month) + "-" + (day);
+                EndPublishDate= $("#EndpublishDate").val(dateQrfinal);
+
+                SubQr = $("#subQr").val(Qr.SubQr);
+                Depchosen = $("#publishList").val(depcode);
+                NumResponders = 0;
+                QuestionnaireYear = $("#yearList").val(depyear);
+                Status = $("#Status").prop('checked', Qr.Status);
+
+
+                for (var i = 1; i <= q; i++) {
+                    let Questionn = {
+                        Questionnum: i,
+                        QuestionText: $(`#QuestionText` + i).val(),
+                        QuestionType: $("#QuestionType" + i).val(),
+                        Anslist: getanswersbyqu(i),
+
+                    }
+                    questionList.push(Questionn);
+                }
+                console.log(questionList);
+               let Qrtoduplicate = {
+
+                    QuestionnairePublish: QuestionnairePublish,
+                    EndPublishDate: EndPublishDate,
+                    SubQr: SubQr,
+                    Dep: {
+                        DepartmentCode: Depchosen
+                    },
+                    NumResponders: NumResponders,
+                    Status: Status,
+                    QuestionnaireYear: QuestionnaireYear,
+                    Queslist: questionList,
+                    QuestionnaireNum: questionnaires[questionnaires["length"] - 1].QuestionnaireNum + 1,
+                }
+                ajaxCall("POST", "../api/Questionnaire/postqr", JSON.stringify(Qrtoduplicate), insertSuccess, error);
+
 
             });
         }
@@ -300,6 +470,7 @@
                 Depchosen = $("#publishList").val();
                 NumResponders = 0;
                 QuestionnaireYear = $("#yearList").val();
+             
                 for (var i = 1; i <= q; i++) {
                     let Questionn = {
                         Questionnum: i,
@@ -339,13 +510,21 @@
             return false;
         }
         function checkdate(num) {
-            if (num == 0) {
-                if ($("#publishDate").val() > $("#EndpublishDate").val()) {
+            if (num == 0 ) {
+                if ($("#publishDate").val() == "") {
+                    swal("Attention", "יש למלא תאריך הפצה קודם!", "error");
+                    $("#EndpublishDate").val("");
+                }
+                   else if ($("#publishDate").val() > $("#EndpublishDate").val()) {
                     swal("Attention", "תאריך הסיום צריך להיות לאחר תאריך הפצת הפרסום!", "error");
                     $("#EndpublishDate").val("");
                 }
+                else if ($("#EndpublishDate").val() < today) {
+                    swal("Attention", "תאריך הסיום צריך להיות עתידי!", "error");
+                    $("#EndpublishDate").val("");
+                }
             }
-            else {
+            else if (num == 1) {
                 if ($("#publishDate").val() < today) {
                     swal("Attention", "תאריך הפצת השאלון צריך להיות עתידי!", "error");
                     $("#publishDate").val("");
@@ -354,10 +533,17 @@
             }
         }
 
-
         // fill the form fields
         function populateFields(qrId) {
+          
+            ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
             Qr = getQ(qrId); //מחזיר את האובייקט שבשורה שלחצנו לפי ID
+            depname = Qr.Dep.DepartmentName;
+            depcode = Qr.Dep.DepartmentCode;
+            depyear = Qr.QuestionnaireYear;
+
+            getyearbydep(1);
+
             var datepub = new Date(Qr.QuestionnairePublish);
             var day = ("0" + datepub.getDate()).slice(-2);
             var month = ("0" + (datepub.getMonth() + 1)).slice(-2);
@@ -368,28 +554,13 @@
             var month = ("0" + (dateEndPub.getMonth() + 1)).slice(-2);
             var dateQrfinal = dateEndPub.getFullYear() + "-" + (month) + "-" + (day);
             $("#EndpublishDate").val(dateQrfinal);
-            $("#subQr").val(Qr.SubQr);
-            $("#publishList :selected").text(Qr.Dep.DepartmentName);
-            $("#Status").prop('checked', Qr.Status);
-
-            switch (Qr.QuestionnaireYear) {
-                case 1:
-                    return $("#yearList :selected").text('א');
-                    break;
-                case 2:
-                    return $("#yearList :selected").text('ב');
-                    break;
-                case 3:
-                    return $("#yearList :selected").text('ג');
-                    break;
-                case 4:
-                    return $("#yearList :selected").text('ד');
-                    break;
-
-                default:
-                    return $("#yearList :selected").text('כלל השנים');
+            if ($("#EndpublishDate").val() < today) {
+                swal({ icon: 'error', title: 'Sorry', text: "!לא ניתן לערוך שאלון שכבר הסתיים" })
+                $("#editDiv").hide();
             }
-
+            $("#subQr").val(Qr.SubQr);
+            $("#Status").prop('checked', Qr.Status);
+            
             //$("#QuestionType"+1+":selected").text(Qr.Queslist[0].QuestionType);
 
 
@@ -401,8 +572,8 @@
             $("#publishDate").val("");
             $("#EndpublishDate").val("");
             $("#subQr").val("");
-            $("#publishList").val("");
-            $("#yearList").val("");
+            $("#publishList :selected").text("בחירת מחלקה");
+            $("#yearList :selected").text("בחירת שנה");
             $(".Qtext").val("");
             $(".Qtype").val("");
             $(".answertext").val("");
@@ -423,7 +594,6 @@
         // success callback function after update
         function updateSuccess(questionnaireData) {
             tbl.clear();
-            console.log(questionnaireData);
             ajaxCall("GET", "../api/Questionnaire/qr", "", getSuccessupdate, error);
 
         }
@@ -431,6 +601,7 @@
         function getSuccessupdate(questionnaireData) {
             questionnaires = questionnaireData;
             redrawTable(tbl, questionnaireData);
+            buttonEvents();
             $("#editDiv").hide();
             swal({ title: " !השאלון עודכן בהצלחה", icon: "success" });
             mode = "";
@@ -455,10 +626,7 @@
             mode = "";
 
         }
-        //function insertQuestionSuccess(data) {
-        //    console.log(data);
-        //}
-
+     
 
         // redraw a datatable with new data
         function redrawTable(tbl, data) {
@@ -489,8 +657,9 @@
 
                                 editBtn = "<button type='button' class = 'editBtn btn btn-success' " + dataQ + "> עריכה </button>";
                                 viewBtn = "<button type='button' class = 'viewBtn btn btn-info' " + dataQ + "> צפייה </button>";
+                                duplicateBtn = "<button type='button' class = 'duplicateBtn btn btn-success' " + dataQ + "> שכפול שאלון </button>";
 
-                                return editBtn + viewBtn;
+                                return editBtn + viewBtn + duplicateBtn;
                             }
                         },
                         { data: "QuestionnaireNum" },
@@ -635,14 +804,14 @@
                     <div class="form-group col-sm-4">
                         <label for="publishList"><span class="red-star">★ </span>רשימת תפוצה</label>
                         <select class="form-control" id="publishList" required>
-                            <option value="">בחירת מחלקה</option>
+                            <!--<option value="">בחירת מחלקה</option>-->
                         </select>
                     </div>
 
                     <div class="form-group col-sm-4">
                         <label for="yearList" id="yearListText"><span class="red-star">★ </span>שנת תפוצה</label>
                         <select class="form-control" id="yearList" required>
-                            <option value="">בחרי שנה</option>
+                            <option value="">בחירת שנה</option>
                         </select>
                     </div>
 

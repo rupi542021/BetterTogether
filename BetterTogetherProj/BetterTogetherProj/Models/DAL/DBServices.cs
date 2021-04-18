@@ -46,7 +46,7 @@ namespace BetterTogetherProj.Models.DAL
             try
             {
                 con = connect1("DBConnectionString");
-                String selectSTR = "update questionnaire_P3 set status = 0 where questionnaire_P3.endPublishDate < GETDATE() select * from department_P  inner join questionnaire_P3 on questionnaire_P3.departmentCode=department_P.departmentCode";
+                String selectSTR = "update questionnaire_P3 set status = 0 where questionnaire_P3.endPublishDate < GETDATE() or questionnaire_P3.publishDate>GETDATE()  select * from department_P  inner join questionnaire_P3 on questionnaire_P3.departmentCode=department_P.departmentCode";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
@@ -60,6 +60,7 @@ namespace BetterTogetherProj.Models.DAL
                     qr.Status = Convert.ToBoolean(dr["status"]);
                     qr.NumResponders = Convert.ToInt32(dr["numResponders"]);
                     qr.Dep = (new Department { DepartmentName = (string)dr["departmentName"] });
+                    qr.Dep.DepartmentCode = Convert.ToInt16(dr["departmentCode"]);
                     qr.QuestionnaireYear = Convert.ToInt16(dr["qrYear"]);
                     //qr.Queslist = getQuestionsbyNumqr(qr.QuestionnaireNum);
                     qrList.Add(qr);
