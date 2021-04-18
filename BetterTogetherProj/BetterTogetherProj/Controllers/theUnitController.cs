@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BetterTogetherProj.Models;
+using project_classes.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -9,6 +11,22 @@ namespace BetterTogetherProj.Controllers
 {
     public class theUnitController : ApiController
     {
+        [Route("api/theUnit/AddToArrivals")]
+        [HttpPost]
+        public HttpResponseMessage AddToArrivals([FromBody] StudentInEvent se)
+        {
+            try
+            {
+                se.InsertEventArrival();
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
+            }
+        }
+
+
         // GET api/<controller>
         public IEnumerable<string> Get()
         {

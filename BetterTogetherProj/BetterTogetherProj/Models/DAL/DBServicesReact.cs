@@ -1160,6 +1160,8 @@ namespace BetterTogetherProj.Models.DAL
             String cStr = BuildDeleteFavoriteCommand(sf);
             cmd = CreateCommand(cStr, con);
 
+
+
             try
             {
                 int numEffected = cmd.ExecuteNonQuery();

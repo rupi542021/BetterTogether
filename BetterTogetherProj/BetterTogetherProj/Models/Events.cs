@@ -78,5 +78,6 @@ namespace BetterTogetherProj.Models
             return dbs.DeleteEvent(id);
 
         }
+      
     }
 }
