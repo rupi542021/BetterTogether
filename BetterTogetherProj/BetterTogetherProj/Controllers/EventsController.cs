@@ -23,6 +23,11 @@ namespace BetterTogetherProj.Controllers
             return "value";
         }
 
+        // DELETE api/<controller>/5
+        public void Delete(int id)
+        {
+        }
+
         // POST api/<controller>
         public void Post([FromBody] string value)
         {
@@ -34,22 +39,7 @@ namespace BetterTogetherProj.Controllers
             eventt.UpdateEvent();
         }
 
-        // DELETE api/<controller>/5
-        public HttpResponseMessage Delete(int id)
-        {
 
-            Events e = new Events();
-            int num = e.DeleteEvent(id);
-            if (num == 0)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "id: " + id + " does not exist");
-            }
-            else
-            {
-                return Request.CreateResponse(HttpStatusCode.OK, "id is ok");
-            }
-
-        }
 
 
         [HttpGet]

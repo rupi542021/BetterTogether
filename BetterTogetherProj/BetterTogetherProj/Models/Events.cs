@@ -72,12 +72,6 @@ namespace BetterTogetherProj.Models
 
         }
 
-        public int DeleteEvent(int id)
-        {
-            DBServices dbs = new DBServices();
-            return dbs.DeleteEvent(id);
-
-        }
       
     }
 }

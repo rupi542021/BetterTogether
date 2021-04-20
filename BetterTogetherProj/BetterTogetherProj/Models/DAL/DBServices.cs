@@ -735,11 +735,19 @@ namespace BetterTogetherProj.Models.DAL
         {
             SqlConnection con = null;
             List<Ads> AdList = new List<Ads>();
+            String selectSTR = "";
             try
             {
                 con = connect1("DBConnectionString");
                 //String selectSTR = "select * from feedbackstudenttoads_P3 inner join ads_P3 on ads_P3.adCode=feedbackstudenttoads_P3.adCode inner join student_P on student_P.mail=feedbackstudenttoads_P3.studentmail where subName='" + subnameFB + "'";
-                String selectSTR = "select * from ads_P3 where subName='" + subnameFB + "'";
+                if (subnameFB == "בחרי נושא לתצוגה")
+                {
+                    selectSTR += "select * from ads_P3";
+                }
+                else
+                {
+                    selectSTR = "select * from ads_P3 where subName='" + subnameFB + "'";
+                }
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
@@ -816,11 +824,19 @@ namespace BetterTogetherProj.Models.DAL
         {
             SqlConnection con = null;
             List<Events> EventList = new List<Events>();
+            String selectSTR = "";
             try
             {
                 con = connect1("DBConnectionString");
                 //String selectSTR = "select * from feedbackstudenttoads_P3 inner join ads_P3 on ads_P3.adCode=feedbackstudenttoads_P3.adCode inner join student_P on student_P.mail=feedbackstudenttoads_P3.studentmail where subName='" + subnameFB + "'";
-                String selectSTR = "select * from events_P3 where eventTypeName='" + evtypeFB + "'";
+                if (evtypeFB == "בחרי סוג אירוע לתצוגה")
+                {
+                     selectSTR+= "select * from events_P3";
+                }
+                else
+                {
+                     selectSTR += "select * from events_P3 where eventTypeName='" + evtypeFB + "'";
+                }
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
@@ -1151,57 +1167,6 @@ namespace BetterTogetherProj.Models.DAL
         }
 
 
-        public int DeleteEvent(int id)
-        {
-
-            SqlConnection con;
-            SqlCommand cmd;
-
-            try
-            {
-                con = connect1("DBConnectionString"); // create the connection
-            }
-            catch (Exception ex)
-            {
-                // write to log
-                throw (ex);
-            }
-
-            String cStr = BuildDeleteCommand(id);      // helper method to build the insert string
-
-            cmd = CreateCommand1(cStr, con);             // create the command
-
-            try
-            {
-                int numEffected = cmd.ExecuteNonQuery(); // execute the command
-                return numEffected;
-            }
-            catch (Exception ex)
-            {
-                // write to log
-                throw (ex);
-            }
-
-            finally
-            {
-                if (con != null)
-                {
-                    // close the db connection
-                    con.Close();
-                }
-            }
-
-        }
-
-        //--------------------------------------------------------------------
-        // Build the Insert command String
-        //--------------------------------------------------------------------
-        private String BuildDeleteCommand(int id)
-        {
-            String command;
-            command = "DELETE FROM events_P3 where eventCode=" + id;
-            return command;
-        }
 
         public int UpdateQr(Questionnaire Qr)
         {

@@ -93,9 +93,6 @@
 
             $("#editDiv").hide();
 
-            //$("#EditViewDiv").hide();
-            //$("#Addquestion").hide();
-
            
             buttonEvents();
             $(document).on("change", '#publishList', { 'param': 0 }, function (event) {
@@ -267,7 +264,6 @@
                 $("#yearList").prop("disabled", false);
                 $("#publishDate").prop("disabled", false);
                 $("#EndpublishDate").prop("disabled", false);
-                $("#Status").prop("disabled", true);
              
                 //$("#saveBTN1").prop("disabled", false);
 
@@ -279,23 +275,8 @@
 
             $(document).on("click", ".viewBtn", function () {
                 mode = "view";
-
                 markSelected(this);
-                $("#editDiv").hide();
-                $("#EditViewDiv").show();
-                $("#Addquestion").hide();
-
-                /* $("#EditViewDiv :input").attr("disabled", "disabled");*/ // view mode: disable all controls in the form
-
-                $("#Restaurant_Id1").prop("disabled", true);
-                $("#Balance1").prop("disabled", true);
-                $("#Viewing_number1").prop("disabled", true);
-                $("#Clicks_number1").prop("disabled", true);
-                $("#Campain_Budget1").prop("disabled", true);
-                $("#Status1").prop("disabled", true);
-                $("#saveBTN1").prop("disabled", true);
                 populateFields(this.getAttribute('data-QuestionnaireId'));
-
             });
 
             $(document).on("click", ".duplicateBtn", function () {
@@ -320,7 +301,6 @@
                     QuestionnaireNum: questionnaires[questionnaires["length"] - 1].QuestionnaireNum + 1,
                 }
                 ajaxCall("POST", "../api/Questionnaire/postqr", JSON.stringify(Qrtoduplicate), insertSuccess, error);
-
 
             });
         }
@@ -369,7 +349,7 @@
             q++;
             let Questionstring = `<div id="` + q + `">
                                     <div class="questionn">
-                                             <div class=" divareaque form-group row">
+                                             <div class="divareaque form-group row">
                                             <div class="ansdiv form-group col-sm-2" id="`+ q + `Qans">
                                                <label for="QuestionText"><span class="red-star">★ </span>תשובות</label>
                                             </div>
@@ -500,33 +480,39 @@
 
         // fill the form fields
         function populateFields(qrId) {
-          
-            ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
-            Qr = getQ(qrId); //מחזיר את האובייקט שבשורה שלחצנו לפי ID
-            depname = Qr.Dep.DepartmentName;
-            depcode = Qr.Dep.DepartmentCode;
-            depyear = Qr.QuestionnaireYear;
+            Qr = getQ(qrId);
+            if (mode == "edit") {
+                ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
+                depname = Qr.Dep.DepartmentName;
+                depcode = Qr.Dep.DepartmentCode;
+                depyear = Qr.QuestionnaireYear;
 
-            getyearbydep(1);
+                getyearbydep(1);
 
-            var datepub = new Date(Qr.QuestionnairePublish);
-            var day = ("0" + datepub.getDate()).slice(-2);
-            var month = ("0" + (datepub.getMonth() + 1)).slice(-2);
-            var dateQr = datepub.getFullYear() + "-" + (month) + "-" + (day);
-            $("#publishDate").val(dateQr);
-            var dateEndPub = new Date(Qr.EndPublishDate);
-            var day = ("0" + dateEndPub.getDate()).slice(-2);
-            var month = ("0" + (dateEndPub.getMonth() + 1)).slice(-2);
-            var dateQrfinal = dateEndPub.getFullYear() + "-" + (month) + "-" + (day);
-            $("#EndpublishDate").val(dateQrfinal);
-            if ($("#EndpublishDate").val() < today) {
-                swal({ icon: 'error', title: 'Sorry', text: "!לא ניתן לערוך שאלון שכבר הסתיים" })
-                $("#editDiv").hide();
+                var datepub = new Date(Qr.QuestionnairePublish);
+                var day = ("0" + datepub.getDate()).slice(-2);
+                var month = ("0" + (datepub.getMonth() + 1)).slice(-2);
+                var dateQr = datepub.getFullYear() + "-" + (month) + "-" + (day);
+                $("#publishDate").val(dateQr);
+                var dateEndPub = new Date(Qr.EndPublishDate);
+                var day = ("0" + dateEndPub.getDate()).slice(-2);
+                var month = ("0" + (dateEndPub.getMonth() + 1)).slice(-2);
+                var dateQrfinal = dateEndPub.getFullYear() + "-" + (month) + "-" + (day);
+                $("#EndpublishDate").val(dateQrfinal);
+                if ($("#EndpublishDate").val() < today) {
+                    swal({ icon: 'error', title: 'Sorry', text: "!לא ניתן לערוך שאלון שכבר הסתיים" })
+                    $("#editDiv").hide();
+                }
+                $("#subQr").val(Qr.SubQr);
+                $("#Status").prop('checked', Qr.Status);
             }
-            $("#subQr").val(Qr.SubQr);
-            $("#Status").prop('checked', Qr.Status);
-            
-            //$("#QuestionType"+1+":selected").text(Qr.Queslist[0].QuestionType);
+            else if (mode == "view") {
+                $("#editDiv").hide();
+                $(".questionn1.form-group.col-sm-12").show() 
+          //      $(".divareaque.form-group.row").show();
+          //$("#QuestionType"+1+":selected").text(Qr.Queslist[0].QuestionType);
+
+            }
 
 
         }
@@ -792,7 +778,7 @@
         <label for="Status"><span class="red-star">★ </span>סטטוס</label>
         <input type="checkbox" class="form-control" id="Status" checked />
     </div>
-                    <div class=" insertque form-group col-sm-12">
+                    <div class="insertque form-group col-sm-12">
                         <h3 id="inserth3">הכנסת שאלות:</h3>
                     </div>
                     <div class="questionn1 form-group col-sm-12">

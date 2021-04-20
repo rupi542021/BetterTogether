@@ -28,9 +28,12 @@
     <script>
         $(document).ready(function () {
 
+            let evtypeFB = $("#EventType :selected").text();
+                let api = "../api/Events/getFB?evtypeFB=" + evtypeFB;
+                ajaxCall("GET", api, "", getFBSuccess, error);
+           
             ajaxCall("GET", "../api/Events/getevent", "", getSuccessAlleventstype, error);
             $("#EventType").change(getallfeed);
-            $("#FBtable").hide();
             $(document).on("click", ".fa-plus-circle", addcomment);
             $(document).on("click", ".swal-button.swal-button--confirm", insertcomment);
         })
@@ -47,7 +50,6 @@
         }
 
         function getallfeed() {
-            $("#FBtable").show();
 
             let evtypeFB = $("#EventType :selected").text()
             let api = "../api/Events/getFB?evtypeFB=" + evtypeFB;
@@ -194,9 +196,7 @@
     <h2> פידבק סטודנטים לארועים חברתיים</h2>
 
     <select id="EventType">
-        <option>
-            בחרי סוג אירוע לתצוגה
-        </option>
+        <option>בחרי סוג אירוע לתצוגה</option>
     </select>
 
     <form id="pForm">

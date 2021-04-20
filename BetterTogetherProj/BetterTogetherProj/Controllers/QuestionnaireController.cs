@@ -86,22 +86,6 @@ namespace BetterTogetherProj.Controllers
 
         }
 
-        //[HttpPost]
-        //[Route("api/Questionnaire/postquestion")]
-        //public HttpResponseMessage PostQuestion([FromBody] Question q)
-        //{
-        //    try
-        //    {
-        //        q.Insertquestion();
 
-        //        return Request.CreateResponse(HttpStatusCode.OK, "Added to favorite page successfully");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
-        //    }
-
-
-        //}
     }
 }

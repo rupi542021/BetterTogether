@@ -47,7 +47,6 @@
             $("#editDiv").hide();
             $(document).on("click", ".editbtn", EditEvent);
             $("#ManagerForm").submit(onSubmitFunc);
-            $(document).on("click", ".deletebtn", DeleteEvent);
 
 
         });
@@ -74,26 +73,7 @@
 
         }
 
-        function DeleteEvent() {
-            markSelected(this);
-            var EventId = this.getAttribute('eventid');
-            swal({ // this will open a dialouge 
-                title: "Are you sure ??",
-                text: "",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true
-            })
-                .then(function (willDelete) {
-                    if (willDelete) DeleteEventFinaly(EventId);
-                    else swal("Not Deleted!");
-                });     
-        }
-
-        function DeleteEventFinaly(EventId) {
-            ajaxCall("DELETE", "../api/Events/" + EventId, "", deleteeventSuccess, error);
-
-        }
+       
 
         function markSelected(btn) {
             $("#detaileventtable tr").removeClass("selected"); // remove seleced class from rows that were selected before
@@ -113,8 +93,13 @@
             $("#EventName").val(event.Eventname);
             $("#contentText").val(event.EventText);
             $("#Status").prop('checked', event.Status);
-        }
-
+       
+        if ($("#datedis").val() < today) {
+            swal({ icon: 'error', title: 'Sorry', text: "!לא ניתן לערוך אירוע שכבר התרחש" })
+            $("#editDiv").hide();
+            } 
+          }
+       
         function getEvent(id) {
             for (i in events) {
                 if (events[i].EventCode == id)
@@ -168,18 +153,6 @@
             tbl.draw();
         }
 
-        function deleteeventSuccess(message) {
-            console.log(message);
-            tbl.clear();
-            ajaxCall("GET", "../api/Events/geteventdetail", "", getSuccessdelete, error);
-        }
-
-        function getSuccessdelete(eventdetail) {
-            events = eventdetail;
-            redrawTable(tbl, events);
-            $("#editDiv").hide();
-            swal({ title: " !האירוע נמחק בהצלחה", icon: "success" });
-        }
 
 
         function getSuccessAlleventdetail(eventdetail) {
@@ -197,10 +170,9 @@
                         {
                             render: function (data, type, row, meta) {
                                 EditBtn = "<button class='editbtn' eventid=" + row.EventCode + "> עריכה</button>";
-                                DeleteBtn = "<button class='deletebtn' eventid=" + row.EventCode + "> מחיקה</button>";
+                                ViewBtn = "<button class='view' evcode='" + row.EventCode + "' name='" + row.Eventname + "'par=" + row.Studentsinevent.length + " >צפי באישורי הגעה </button>";
 
-
-                                return EditBtn + DeleteBtn;
+                                return EditBtn + ViewBtn ;
                             }
                         },
                         { data: "Eventtype" },
@@ -223,14 +195,7 @@
                                 return row.Studentsinevent.length;
                             }
                         },
-                        
-
-                        {
-                            render: function (data, type, row, meta) {
-                                ViewBtn = "<button class='view' evcode='" + row.EventCode + "' name='" + row.Eventname + "'par=" + row.Studentsinevent.length+" >צפי באישורי הגעה </button>";
-                                return ViewBtn;
-                            }
-                        },
+              
                             {
                             data: "Status",
                             render: function (data, type, row, meta) {
@@ -404,7 +369,6 @@
                 <th>שם אירוע</th>
                 <th>תאריך אירוע</th>
                 <th>מאשרי הגעה</th>
-                <th></th>
                 <th>סטטוס אירוע</th>
             </tr>
         </thead>
