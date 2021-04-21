@@ -108,7 +108,7 @@
             console.log(alldep);
             Alldep = alldep;
             let str = "";
-            if (mode == "edit") {
+            if (mode == "edit" || mode=="view") {
                 document.getElementById("publishList").innerHTML = "";
 
                 for (var i = 0; i < Alldep.length; i++) {
@@ -258,17 +258,14 @@
                 $("#addinput").hide();
                 $("#inserth3").hide();
                 $(".divareaque.form-group.row").hide();
-        
+
                 $("#subQr").prop("disabled", true);
                 $("#publishList").prop("disabled", false);
                 $("#yearList").prop("disabled", false);
                 $("#publishDate").prop("disabled", false);
                 $("#EndpublishDate").prop("disabled", false);
-             
-                //$("#saveBTN1").prop("disabled", false);
+                $('#Status').prop("disabled", false)
 
-
-                // edit mode: disable all controls in the form
                 populateFields(this.getAttribute('data-QuestionnaireId')); // fill the form fields according to the selected row
 
             });
@@ -276,12 +273,17 @@
             $(document).on("click", ".viewBtn", function () {
                 mode = "view";
                 markSelected(this);
+                $("#pForm").hide();
+
                 $("#editDiv").show();
-                $(".divareaque.form-group.row").show();
-
-                addquestion();
-                getQuestionType(1);
-
+                $("#addinput").hide();
+                $("#inserth3").hide();
+                $("#subQr").prop("disabled", true);
+                $("#publishList").prop("disabled", true);
+                $("#yearList").prop("disabled", true);
+                $("#publishDate").prop("disabled", true);
+                $("#EndpublishDate").prop("disabled", true);
+                $('#Status').prop("disabled", true)
                 populateFields(this.getAttribute('data-QuestionnaireId'));
 
             });
@@ -488,8 +490,8 @@
         // fill the form fields
         function populateFields(qrId) {
             Qr = getQ(qrId);
-            if (mode == "edit") {
-                ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
+            ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
+
                 depname = Qr.Dep.DepartmentName;
                 depcode = Qr.Dep.DepartmentCode;
                 depyear = Qr.QuestionnaireYear;
@@ -505,18 +507,39 @@
                 var day = ("0" + dateEndPub.getDate()).slice(-2);
                 var month = ("0" + (dateEndPub.getMonth() + 1)).slice(-2);
                 var dateQrfinal = dateEndPub.getFullYear() + "-" + (month) + "-" + (day);
-                $("#EndpublishDate").val(dateQrfinal);
+            $("#EndpublishDate").val(dateQrfinal);
+            if (mode == "edit") {
                 if ($("#EndpublishDate").val() < today) {
                     swal({ icon: 'error', title: 'Sorry', text: "!לא ניתן לערוך שאלון שכבר הסתיים" })
                     $("#editDiv").hide();
                 }
+            }
                 $("#subQr").val(Qr.SubQr);
                 $("#Status").prop('checked', Qr.Status);
-            }
-            else if (mode == "view") {
-                $("#QuestionText1").val(Qr.Queslist[0].QuestionText);
-                $("#QuestionType1").val(Qr.Queslist[0].QuestionType);
-                $("#1answer1").val(Qr.Queslist[0].Anslist[0]);
+            
+             if (mode == "view") {
+                $("#" + q + "Qans").html("");
+                $(".divareaque").html("");
+                for (var i = 0; i < Qr.Queslist.length; i++) {
+                    addquestion();
+
+                    $("#QuestionText"+q).val(Qr.Queslist[i].QuestionText);
+                    $("#QuestionType" + q).val(Qr.Queslist[i].QuestionType);
+                    $("#QuestionText" + q).prop("disabled", true);
+                    $("#QuestionType" + q).prop("disabled", true);
+                    if (Qr.Queslist[i].QuestionType == 3) {
+                        $("#" + q + "Qans").hide();
+                    }
+                    for (var j = 0; j < Qr.Queslist[i].Anslist.length; j++) {
+                        if (Qr.Queslist[i].Anslist[j] != "") {
+                            getQuestionType(1);
+                            $("#" + q + "answer" + AnsNum).val(Qr.Queslist[i].Anslist[j]);
+                            $("#" + q + "answer" + AnsNum).prop("disabled", true);
+                        }
+                    }
+                 }
+                
+
             }
 
 
