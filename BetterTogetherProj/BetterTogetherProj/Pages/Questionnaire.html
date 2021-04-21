@@ -75,12 +75,12 @@
                 mode = "new";
                 $("#pForm").hide();
                 $("#editDiv").show();
+                $("#addinput").show();
+                $("#inserth3").show();
                 //$("#EditViewDiv").hide();
 
-
                 clearFields();
-                //  $("#Viewing_number").val(0);
-                //  $("#Clicks_number").val(0);
+
                 $("#editDiv :input").prop("disabled", false); // new mode: enable all controls in the form
               
             });
@@ -276,7 +276,14 @@
             $(document).on("click", ".viewBtn", function () {
                 mode = "view";
                 markSelected(this);
+                $("#editDiv").show();
+                $(".divareaque.form-group.row").show();
+
+                addquestion();
+                getQuestionType(1);
+
                 populateFields(this.getAttribute('data-QuestionnaireId'));
+
             });
 
             $(document).on("click", ".duplicateBtn", function () {
@@ -507,11 +514,9 @@
                 $("#Status").prop('checked', Qr.Status);
             }
             else if (mode == "view") {
-                $("#editDiv").hide();
-                $(".questionn1.form-group.col-sm-12").show() 
-          //      $(".divareaque.form-group.row").show();
-          //$("#QuestionType"+1+":selected").text(Qr.Queslist[0].QuestionType);
-
+                $("#QuestionText1").val(Qr.Queslist[0].QuestionText);
+                $("#QuestionType1").val(Qr.Queslist[0].QuestionType);
+                $("#1answer1").val(Qr.Queslist[0].Anslist[0]);
             }
 
 
@@ -770,14 +775,14 @@
                     </div>
 
                     <!--<div class="form-group col-sm-2">
-        <label for="numResponders"><span class="red-star">★ </span>מספר משיבים</label>
-        <input type="text" class="form-control" id="numResponders" />
+            <label for="numResponders"><span class="red-star">★ </span>מספר משיבים</label>
+            <input type="text" class="form-control" id="numResponders" />
 
-    </div>-->
+        </div>-->
                     <div class="form-group col-sm-4">
-        <label for="Status"><span class="red-star">★ </span>סטטוס</label>
-        <input type="checkbox" class="form-control" id="Status" checked />
-    </div>
+                        <label for="Status"><span class="red-star">★ </span>סטטוס</label>
+                        <input type="checkbox" class="form-control" id="Status" checked />
+                    </div>
                     <div class="insertque form-group col-sm-12">
                         <h3 id="inserth3">הכנסת שאלות:</h3>
                     </div>
@@ -788,8 +793,8 @@
                         <input type="button" value="הוספת שאלה" id="addinput" onclick="addquestion()" />
                     </div>
                 </div>
+          
 
-           
 
                 <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">Save</button>
                 <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN" value="Cancel" />
