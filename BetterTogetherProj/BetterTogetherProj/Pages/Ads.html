@@ -16,6 +16,13 @@
     <link href="MyStyleSheet.css" rel="stylesheet" />
    
     <script>
+
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        today = yyyy + '-' + mm + '-' + dd;
+
         $(document).ready(function () {
 
             ajaxCall("GET", "../api/Ads/getsub", "", getSuccessAllsubs, error);
@@ -82,13 +89,20 @@
                 SubSubject: $("#SubsubjName :selected").text(),
                 AdsDate: $("#datedis").val(),
                 AdsText: $("#content").val(),
-                AdsImage: picName
+                AdsImage: picName,
+                Status: true,
             }
             ajaxCall("POST", "../api/Ads/addad", JSON.stringify(Ad), success, errorr);
 
 
         }
 
+        function checkdate() {
+            if ($("#datedis").val() < today) {
+                swal("Attention", "תאריך הפצת הפרסום צריך להיות עתידי!", "error");
+                $("#datedis").val("");
+            }
+        }
         // This function is called in case of a success
         function success(data) {
             console.log(data);
@@ -254,11 +268,12 @@
    <nav class="navbar navbar-default">
         <div class="container-fluid">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="Ads.html">פרסומים</a></li>
-                <li><a href="Events.html">ארועים חברתיים</a></li>
+                <li class="active"><a href="Ads.html">יצירת פרסום</a></li>
+                <li><a href="AdsTB.html">פרסומים</a></li>
                 <li><a href="AdsFeedBack.html">פידבק לפרסומים</a></li>
+                <li><a href="Events.html">יצירת אירוע</a></li>
+                <li><a href="EventTB.html">אירועים</a></li>
                 <li><a href="EventsFeedBack.html">פידבק לארועים חברתיים</a></li>
-                <li><a href="EventTB.html">משתתפים באירוע</a></li>
                 <li><a href="Questionnaire.html">שאלונים</a></li>
                 <li id="titleNav"><a id="navT">היחידת ליזמות חברתית</a></li>
             </ul>
@@ -281,7 +296,7 @@
             </div>
             <div class="form-group">
                 <label for="datedis" id="datedisText">בחירת תאריך פרסום</label>
-                <input type="date" class="form-control" id="datedis" required />
+                <input type="date" class="form-control" id="datedis" onchange="checkdate()" required />
 
             </div>
             <div class="form-group">

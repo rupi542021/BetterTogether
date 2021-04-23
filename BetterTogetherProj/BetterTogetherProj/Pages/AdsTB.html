@@ -1,0 +1,283 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+
+    <meta charset="utf-8" />
+    <title></title>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+
+    <script src="../Scripts/jquery-3.4.1.min.js"></script>
+    <link href="MyStyleSheet.css" rel="stylesheet" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+
+
+
+
+    <script>
+
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        today = yyyy + '-' + mm + '-' + dd;
+
+        $(document).ready(function () {
+            $("#cancelBTN").on("click", function () { //מבטל טופס חדש ומחזיר לטבלה
+                $("#editDiv").hide();
+            });
+            let api = "../api/Ads/getFB?subnameFB=''";
+            ajaxCall("GET", api, "", getSuccessAllAds, error);
+            $("#editDiv").hide();
+            $(document).on("click", ".editbtn", EditEvent);
+            $("#ManagerForm").submit(onSubmitFunc);
+
+
+        });
+
+        function EditEvent() {
+            $("#editDiv").show();
+            markSelected(this);
+
+            $("#datedis").prop("disabled", false);
+            $("#Subject").prop("disabled", true);
+            $("#SubSubject").prop("disabled", true);
+            $("#contentText").prop("disabled", false);
+            $('#Status').prop("disabled", false)
+            populateFields(this.getAttribute('Adsid'));
+
+        }
+
+
+
+        function markSelected(btn) {
+            $("#adstable tr").removeClass("selected"); // remove seleced class from rows that were selected before
+            row = (btn.parentNode).parentNode; // button is in TD which is in Row
+            row.className = 'selected'; // mark as selected
+        }
+
+        function populateFields(Adid) {
+            ad = getAd(Adid); //מחזיר את האובייקט שבשורה שלחצנו לפי ID
+
+            var dateEventcur = new Date(ad.AdsDate);
+            var day = ("0" + dateEventcur.getDate()).slice(-2);
+            var month = ("0" + (dateEventcur.getMonth() + 1)).slice(-2);
+            var dateAd = dateEventcur.getFullYear() + "-" + (month) + "-" + (day);
+            $("#datedis").val(dateAd);
+            $("#Subject").val(ad.Subject);
+            $("#SubSubject").val(ad.SubSubject);
+            $("#contentText").val(ad.AdsText);
+            $("#Status").prop('checked', ad.Status);
+
+            if ($("#datedis").val() < today) {
+                swal({ icon: 'error', title: 'Sorry', text: "!לא ניתן לערוך פרסום שכבר פורסם" })
+                $("#editDiv").hide();
+            }
+        }
+
+        function getAd(id) {
+            for (i in ads) {
+                if (ads[i].AdsCode == id)
+                    return ads[i];
+            }
+            return null;
+        }
+
+        function onSubmitFunc() {
+
+            Subject = ad.Subject
+            SubSubject = ad.SubSubject
+            AdToUpdate = {
+                AdsCode: ad.AdsCode,
+                AdsDate: $("#datedis").val(),
+                Subject: Subject,
+                SubSubject: SubSubject,
+                AdsText: $("#contentText").val(),
+                Status: $("#Status").is(":checked")
+            }
+            ajaxCall("PUT", "../api/Ads", JSON.stringify(AdToUpdate), updateAdSuccess, error);
+
+            return false;
+        }
+
+        function checkdate() {
+            if ($("#datedis").val() < today) {
+                swal("Attention", "תאריך הפצת הפרסום צריך להיות עתידי!", "error");
+                $("#datedis").val("");
+
+            }
+        }
+        function updateAdSuccess() {
+            tbl.clear();
+            let api = "../api/Ads/getFB?subnameFB=''";
+            ajaxCall("GET", api, "", getSuccessupdate, error);
+        }
+        function getSuccessupdate(adsdetail) {
+            ads = adsdetail;
+            redrawTable(tbl, ads);
+            $("#editDiv").hide();
+            swal({ title: " !הפרסום עודכן בהצלחה", icon: "success" });
+
+        }
+
+        function redrawTable(tbl, ads) {
+            tbl.clear();
+            for (var i = 0; i < ads.length; i++) {
+                tbl.row.add(ads[i]);
+            }
+            tbl.draw();
+        }
+
+
+
+        function getSuccessAllAds(adsdetail) {
+            console.log(adsdetail);
+            ads = adsdetail;
+
+            try {
+                tbl = $('#adstable').DataTable({
+                    "oLanguage": {
+                        "sLengthMenu": "הצגת _MENU_ אירועים", "sSearch": "חיפוש: "
+                    },
+                    data: adsdetail,
+                    pageLength: 5,
+                    columns: [
+                        {
+                            render: function (data, type, row, meta) {
+                                EditBtn = "<button class='editbtn' Adsid=" + row.AdsCode + "> עריכה</button>";
+                                ViewBtn = "<button class='viewbtn' Adsid=" + row.AdsCode + ">צפייה </button>";
+
+                                return EditBtn + ViewBtn;
+                            }
+                        },
+                        { data: "Subject" },
+                        { data: "SubSubject" },
+                        {
+                            data: "AdsDate",
+                            render: function (data, type, row, meta) {
+                                shortDateEnd = new Date(data);
+                                var dd = String(shortDateEnd.getDate()).padStart(2, '0');
+                                var mm = String(shortDateEnd.getMonth() + 1).padStart(2, '0'); //ינואר זה חודש 0
+                                var yyyy = shortDateEnd.getFullYear();
+
+                                shortDateEnd = dd + '-' + mm + '-' + yyyy;
+                                return shortDateEnd;
+                            }
+                        },
+               
+                        {
+                            data: "Status",
+                            render: function (data, type, row, meta) {
+                                if (data == true)
+                                    return '<input type="checkbox" checked disabled="disabled" />';
+                                else
+                                    return '<input type="checkbox" disabled="disabled"/>';
+                            }
+                        },
+                    ],
+
+                });
+
+            }
+
+            catch (err) {
+                alert(err);
+            }
+
+        }
+
+       
+
+        function error(err) {
+            console.log(err);
+        }
+
+
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                <li><a href="Ads.html">יצירת פרסום</a></li>
+                <li class="active"><a href="AdsTB.html">פרסומים</a></li>
+                <li><a href="AdsFeedBack.html">פידבק לפרסומים</a></li>
+                <li><a href="Events.html">יצירת אירוע</a></li>
+                <li><a href="EventTB.html">אירועים</a></li>
+                <li><a href="EventsFeedBack.html">פידבק לארועים חברתיים</a></li>
+                <li><a href="Questionnaire.html">שאלונים</a></li>
+                <li id="titleNav"><a id="navT">היחידת ליזמות חברתית</a></li>
+            </ul>
+        </div>
+    </nav>
+    <h2>פרסומים</h2>
+    <table id="adstable" class="display nowrap" style="width:100%">
+        <thead>
+            <tr>
+                <th></th>
+                <th> נושא</th>
+                <th>תת נושא</th>
+                <th>תאריך פרסום</th>
+                <th>סטטוס פרסום</th>
+            </tr>
+        </thead>
+    </table>
+
+
+    <div id="editDiv" class="container">
+        <form id="ManagerForm">
+            <div class="form-group row">
+
+                <div class="form-group col-sm-4">
+                    <label for="datedis"><span class="red-star">★ </span>תאריך פרסום</label>
+                    <input type="date" class="form-control" id="datedis" placeholder="" onchange="checkdate()" required>
+                </div>
+
+                <div class="form-group col-sm-4">
+                    <label for="Subject"><span class="red-star">★ </span>נושא</label>
+                    <input type="text" class="form-control" id="Subject" placeholder="" required>
+                </div>
+
+                <div class="form-group col-sm-4">
+                    <label for="SubSubject"><span class="red-star">★ </span>תת נושא</label>
+                    <input type="text" class="form-control" id="SubSubject" placeholder="" required>
+
+                </div>
+
+
+                <div class="form-group col-sm-6">
+                    <label for="contentText"><span class="red-star">★ </span>תוכן פרסום</label>
+                    <textarea class="form-control" id="contentText" placeholder="" required></textarea>
+
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <label for="Status"><span class="red-star">★ </span>סטטוס</label>
+                    <input type="checkbox" class="form-control" id="Status" checked />
+                </div>
+
+            </div>
+
+
+
+            <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">Save</button>
+            <input type="button" class="btn btn-warning btn-lg" id="cancelBTN" value="Cancel" />
+        </form>
+    </div>
+
+</body>
+</html>

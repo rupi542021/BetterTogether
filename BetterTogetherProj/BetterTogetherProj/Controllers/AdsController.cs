@@ -29,22 +29,16 @@ namespace BetterTogetherProj.Controllers
         }
 
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        public void Put( [FromBody] Ads adss)
         {
+            adss.UpdateAd();
         }
 
         // DELETE api/<controller>/5
         public void Delete(int id)
         {
         }
-        //[HttpGet]
-        //[Route("api/Ads/ad")]
-        //public List<Ads> Getads()
-        //{
-        //    Ads ad = new Ads();
-        //    return ad.Getads();
 
-        //}
         [HttpGet]
         [Route("api/Ads/getsub")]
         public List<Subject> Getsub()

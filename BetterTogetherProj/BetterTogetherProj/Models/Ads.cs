@@ -15,20 +15,7 @@ namespace BetterTogetherProj.Models
         string adsImage;
         string subSubject;
         List<AdsFeedback> fbads;
-
-
-        public Ads() { }
-
-        public Ads(int adsCode, DateTime adsDate, string adsText, string subject, string adsImage, string subSubject, List<AdsFeedback> fbads)
-        {
-            AdsCode = adsCode;
-            AdsDate = adsDate;
-            AdsText = adsText;
-            Subject = subject;
-            AdsImage = adsImage;
-            SubSubject = subSubject;
-            Fbads = fbads;
-        }
+        bool status;
 
         public int AdsCode { get => adsCode; set => adsCode = value; }
         public DateTime AdsDate { get => adsDate; set => adsDate = value; }
@@ -37,6 +24,21 @@ namespace BetterTogetherProj.Models
         public string AdsImage { get => adsImage; set => adsImage = value; }
         public string SubSubject { get => subSubject; set => subSubject = value; }
         public List<AdsFeedback> Fbads { get => fbads; set => fbads = value; }
+        public bool Status { get => status; set => status = value; }
+
+        public Ads() { }
+
+        public Ads(int adsCode, DateTime adsDate, string adsText, string subject, string adsImage, string subSubject, List<AdsFeedback> fbads, bool status)
+        {
+            AdsCode = adsCode;
+            AdsDate = adsDate;
+            AdsText = adsText;
+            Subject = subject;
+            AdsImage = adsImage;
+            SubSubject = subSubject;
+            Fbads = fbads;
+            Status = status;
+        }
 
         public void InsertToTable()
         {
@@ -49,6 +51,13 @@ namespace BetterTogetherProj.Models
             DBServices dbs = new DBServices();
             List<Ads> AdFBList = dbs.GetAdBySub(subnameFB);
             return AdFBList;
+
+        }
+
+        public void UpdateAd()
+        {
+            DBServices dbs = new DBServices();
+            dbs.UpdateAd(this);
 
         }
     }

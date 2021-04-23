@@ -56,11 +56,11 @@ div#QTable_wrapper {
     width: 95%;
     margin-left: 2.5%;
 }
-div#detaileventtable_wrapper {
+div#detaileventtable_wrapper, div#adstable_wrapper {
     width: 80%;
     direction: rtl;
     margin-left: 10%;
-    margin-top:20px
+    margin-top: 20px
 }
 th.sorting,th.sorting_asc{
     text-align:center;

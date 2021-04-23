@@ -322,8 +322,8 @@ namespace BetterTogetherProj.Models.DAL
 
             StringBuilder sb = new StringBuilder();
             // use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}')", ad.AdsDate.ToString("yyyy-MM-dd"), ad.AdsText, ad.AdsImage, ad.Subject, ad.SubSubject);
-            String prefix = "INSERT INTO ads_P3" + "(adsdate, adsText, adsimage, subName, subSubName )";
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}','{5}')", ad.AdsDate.ToString("yyyy-MM-dd"), ad.AdsText, ad.AdsImage, ad.Subject, ad.SubSubject, ad.Status);
+            String prefix = "INSERT INTO ads_P3" + "(adsdate, adsText, adsimage, subName, subSubName, status )";
             command = prefix + sb.ToString();
 
             return command;
@@ -744,9 +744,14 @@ namespace BetterTogetherProj.Models.DAL
                 {
                     selectSTR += "select * from ads_P3";
                 }
+                else if (subnameFB == "''")
+                {
+                    selectSTR += "update ads_P3 set status=0 where ads_P3.adsdate<GETDATE() select * from ads_P3";
+
+                }
                 else
                 {
-                    selectSTR = "select * from ads_P3 where subName='" + subnameFB + "'";
+                    selectSTR += "select * from ads_P3 where subName='" + subnameFB + "'";
                 }
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
@@ -756,6 +761,10 @@ namespace BetterTogetherProj.Models.DAL
                     ad.AdsCode = Convert.ToInt16(dr["adCode"]);
                     ad.Fbads = GetFBad(ad.AdsCode);
                     ad.SubSubject = (string)dr["subSubName"];
+                    ad.Subject= (string)dr["subName"];
+                    ad.AdsDate= Convert.ToDateTime(dr["adsdate"]);
+                    ad.AdsText= (string)dr["adsText"];
+                    ad.Status= Convert.ToBoolean(dr["status"]);
                     AdList.Add(ad);
                 }
 
@@ -1233,5 +1242,69 @@ namespace BetterTogetherProj.Models.DAL
 
         }
 
+
+        public int UpdateAd(Ads adss)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect1("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            String cStr = BuildUpdateCommand(adss);      // helper method to build the insert string
+
+            cmd = CreateCommand1(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        //--------------------------------------------------------------------
+        // Build the Update command String
+        //--------------------------------------------------------------------
+
+        private String BuildUpdateCommand(Ads adss)
+        {
+            String command;
+
+            if (adss.Status == true)// השמת הסטטוס TRUE=1 והפוך  
+            {
+
+                command = "update ads_P3 set adsdate='" + adss.AdsDate.ToString("yyyy-MM-dd") + "',adsText='" + adss.AdsText + "' ,status=1 where adCode=" + adss.AdsCode;
+            }
+            else
+            {
+
+                command = "update ads_P3 set adsdate='" + adss.AdsDate.ToString("yyyy-MM-dd") + "',adsText='" + adss.AdsText + "' ,status=0 where adCode=" + adss.AdsCode;
+            }
+            return command;
+
+        }
     }
 }
