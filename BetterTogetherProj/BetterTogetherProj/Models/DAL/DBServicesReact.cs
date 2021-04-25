@@ -1022,22 +1022,126 @@ namespace BetterTogetherProj.Models.DAL
             }
 
         }
-        private double calMatch(string mail, List<string> friendsList,DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, List<Hobby> hlist, List<Pleasure> plist)
+        //private double calMatch(string mail, List<string> friendsList,DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, List<Hobby> hlist, List<Pleasure> plist)
+        //{
+        //    SqlConnection con = null;
+        //    double match=0;
+        //    int countP = 0;
+        //    int countH = 0;
+        //    int countFriends = 0;
+        //    double xHome = 0;
+        //    double yHome = 0;
+        //    double xCurrent = 0;
+        //    double yCurrent = 0;
+        //    List<int> hlistCode = new List<int>();
+        //    List<int> plistCode = new List<int>();
+        //    try
+        //    {
+        //        con = connect("DBConnectionString"); 
+
+        //        String selectSTR = "SELECT * FROM student_P where mail='" + mail + "'";
+        //        SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+        //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+        //        while (dr.Read())
+        //        {
+        //            Student stud = new Student();
+        //            stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
+        //            stud.Dep = getStudDep(Convert.ToInt32(dr["departmentCode"]));
+        //            stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
+        //            stud.HomeTown = getResidenceH((string)(dr["homeTown"]));
+        //            stud.AddressStudying = getResidenceS((string)(dr["adrressStudying"]));
+        //            stud.PersonalStatus = (string)(dr["personalStatus"]);
+        //            stud.Plist = GetPlistByUser((string)dr["mail"]);
+        //            stud.Hlist = GetHlistByUser((string)dr["mail"]);
+        //            stud.Friendslist = GetFriendsListByUser(((string)dr["mail"]));
+
+        //            if (stud.Dep.DepartmentCode == dep.DepartmentCode)
+        //                match += 5;
+        //            if (stud.StudyingYear == studyingYear)
+        //                match += 10;
+        //            if (stud.PersonalStatus == personalStatus)
+        //                match += 5;
+
+        //            for (int i = 0; i < plist.Count; i++)
+        //            { plistCode.Add(plist[i].Pcode); }
+        //            for (int i = 0; i < stud.Plist.Count; i++)
+        //            {
+        //                if (plistCode.Contains(stud.Plist[i].Pcode))
+        //                    countP++;
+        //            }
+        //            if(stud.Plist.Count !=0 && countP != 0) 
+        //                match += 20 * (Convert.ToDouble(countP) / Convert.ToDouble(stud.Plist.Count));
+
+        //            for (int i = 0; i < hlist.Count; i++)
+        //            {hlistCode.Add(hlist[i].Hcode);}
+        //            for (int i = 0; i < stud.Hlist.Count; i++)
+        //            {
+        //                if (hlistCode.Contains(stud.Hlist[i].Hcode))
+        //                    countH++;
+        //            }
+        //            if (stud.Hlist.Count != 0&&countH!=0)
+        //                match += 20 * (Convert.ToDouble(countH) / Convert.ToDouble(stud.Hlist.Count));
+
+        //            if (Math.Abs(stud.DateOfBirth.Year - dateOfBirth.Year) <= 3 )
+        //                match += 5;
+
+        //            xHome = (stud.HomeTown.X / 1000) - (homeTown.X / 1000);
+        //            yHome = (stud.HomeTown.Y / 1000) - (homeTown.Y / 1000);
+        //            if (Math.Sqrt(Math.Pow(xHome, 2) + Math.Pow(yHome, 2)) < 15)
+        //                match += 20;
+
+        //            xCurrent = (stud.AddressStudying.X / 1000) - (addressStudying.X / 1000);
+        //            yCurrent = (stud.AddressStudying.Y / 1000) - (addressStudying.Y / 1000);
+        //            if (Math.Sqrt(Math.Pow(xCurrent, 2) + Math.Pow(yCurrent, 2)) < 15)
+        //                match += 20;
+
+        //            for (int i = 0; i < stud.Friendslist.Count; i++)
+        //            {
+        //                if (friendsList.Contains(stud.Friendslist[i]))
+        //                    countFriends++;
+        //            }
+        //            if (stud.Friendslist.Count != 0 && countFriends != 0)
+        //            {
+        //                if (countFriends >5)
+        //                    countFriends = 5;
+        //                match += 15 * (Convert.ToDouble(countFriends) / 5);
+        //            }
+        //        }
+
+        //        if (match > 100)
+        //            return 100;
+        //        else
+        //            return Math.Round(match);
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        writeToLog(ex);
+        //        throw (ex);
+        //    }
+        //    finally
+        //    {
+        //        if (con != null)
+        //        {
+        //            con.Close();
+        //        }
+
+        //    }
+        //}
+
+        private double calMatch(string mail, List<string> friendsList, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, List<Hobby> hlist, List<Pleasure> plist)
         {
             SqlConnection con = null;
-            double match=0;
-            int countP = 0;
-            int countH = 0;
-            int countFriends = 0;
-            double xHome = 0;
-            double yHome = 0;
-            double xCurrent = 0;
-            double yCurrent = 0;
-            List<int> hlistCode = new List<int>();
-            List<int> plistCode = new List<int>();
+            double match = 0;
+           
+            List<int> prefList = getPrefByUser(mail);
+            int[] percentageOfPref = { 20, 20, 20, 20, 15, 10, 5, 5 };
+
             try
             {
-                con = connect("DBConnectionString"); 
+                con = connect("DBConnectionString");
 
                 String selectSTR = "SELECT * FROM student_P where mail='" + mail + "'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
@@ -1057,57 +1161,13 @@ namespace BetterTogetherProj.Models.DAL
                     stud.Hlist = GetHlistByUser((string)dr["mail"]);
                     stud.Friendslist = GetFriendsListByUser(((string)dr["mail"]));
 
-                    if (stud.Dep.DepartmentCode == dep.DepartmentCode)
-                        match += 5;
-                    if (stud.StudyingYear == studyingYear)
-                        match += 10;
-                    if (stud.PersonalStatus == personalStatus)
-                        match += 5;
-                    
-                    for (int i = 0; i < plist.Count; i++)
-                    { plistCode.Add(plist[i].Pcode); }
-                    for (int i = 0; i < stud.Plist.Count; i++)
+                    for (int p = 0; p < percentageOfPref.Length; p++)
                     {
-                        if (plistCode.Contains(stud.Plist[i].Pcode))
-                            countP++;
+                        double res = getCalacResult(prefList[p] ,stud, friendsList, dateOfBirth, dep, studyingYear, homeTown, addressStudying, personalStatus, hlist, plist);
+                        res = res * percentageOfPref[p];
+                        match += res;
                     }
-                    if(stud.Plist.Count !=0 && countP != 0) 
-                        match += 20 * (Convert.ToDouble(countP) / Convert.ToDouble(stud.Plist.Count));
-                    
-                    for (int i = 0; i < hlist.Count; i++)
-                    {hlistCode.Add(hlist[i].Hcode);}
-                    for (int i = 0; i < stud.Hlist.Count; i++)
-                    {
-                        if (hlistCode.Contains(stud.Hlist[i].Hcode))
-                            countH++;
-                    }
-                    if (stud.Hlist.Count != 0&&countH!=0)
-                        match += 20 * (Convert.ToDouble(countH) / Convert.ToDouble(stud.Hlist.Count));
 
-                    if (Math.Abs(stud.DateOfBirth.Year - dateOfBirth.Year) <= 3 )
-                        match += 5;
-
-                    xHome = (stud.HomeTown.X / 1000) - (homeTown.X / 1000);
-                    yHome = (stud.HomeTown.Y / 1000) - (homeTown.Y / 1000);
-                    if (Math.Sqrt(Math.Pow(xHome, 2) + Math.Pow(yHome, 2)) < 15)
-                        match += 20;
-
-                    xCurrent = (stud.AddressStudying.X / 1000) - (addressStudying.X / 1000);
-                    yCurrent = (stud.AddressStudying.Y / 1000) - (addressStudying.Y / 1000);
-                    if (Math.Sqrt(Math.Pow(xCurrent, 2) + Math.Pow(yCurrent, 2)) < 15)
-                        match += 20;
-
-                    for (int i = 0; i < stud.Friendslist.Count; i++)
-                    {
-                        if (friendsList.Contains(stud.Friendslist[i]))
-                            countFriends++;
-                    }
-                    if (stud.Friendslist.Count != 0 && countFriends != 0)
-                    {
-                        if (countFriends >5)
-                            countFriends = 5;
-                        match += 15 * (Convert.ToDouble(countFriends) / 5);
-                    }
                 }
 
                 if (match > 100)
@@ -1131,7 +1191,156 @@ namespace BetterTogetherProj.Models.DAL
             }
         }
 
+        private double getCalacResult(int p , Student stud, List<string> friendsList, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, List<Hobby> hlist, List<Pleasure> plist)
+        {
+            int countP = 0;
+            int countH = 0;
+            int countFriends = 0;
+            double xHome = 0;
+            double yHome = 0;
+            double xCurrent = 0;
+            double yCurrent = 0;
+            List<int> hlistCode = new List<int>();
+            List<int> plistCode = new List<int>();
+            switch (p)
+            {
+                case 1: // מקומות בילוי
+                    for (int i = 0; i < plist.Count; i++)
+                    { plistCode.Add(plist[i].Pcode); }
+                    for (int i = 0; i < stud.Plist.Count; i++)
+                    {
+                        if (plistCode.Contains(stud.Plist[i].Pcode))
+                            countP++;
+                    }
+                    if (stud.Plist.Count != 0 && countP != 0)
+                        return (Convert.ToDouble(countP) / Convert.ToDouble(stud.Plist.Count));
+                    return 0;
+                case 2: // תחביבים 
+                    for (int i = 0; i < hlist.Count; i++)
+                    { hlistCode.Add(hlist[i].Hcode); }
+                    for (int i = 0; i < stud.Hlist.Count; i++)
+                    {
+                        if (hlistCode.Contains(stud.Hlist[i].Hcode))
+                            countH++;
+                    }
+                    if (stud.Hlist.Count != 0 && countH != 0)
+                       return (Convert.ToDouble(countH) / Convert.ToDouble(stud.Hlist.Count));
+                    return 0;
+                case 3: // חברים משותפים
+                    for (int i = 0; i < stud.Friendslist.Count; i++)
+                    {
+                        if (friendsList.Contains(stud.Friendslist[i]))
+                            countFriends++;
+                    }
+                    if (stud.Friendslist.Count != 0 && countFriends != 0)
+                    {
+                        if (countFriends > 5)
+                            countFriends = 5;
+                        return (Convert.ToDouble(countFriends) / 5);                        
+                    }
+                    return 0;
+                case 4: // מקום מגורים
+                    int res1 = 0;
+                    int res2 = 0;
+                    xHome = (stud.HomeTown.X / 1000) - (homeTown.X / 1000);
+                    yHome = (stud.HomeTown.Y / 1000) - (homeTown.Y / 1000);
+                    if (Math.Sqrt(Math.Pow(xHome, 2) + Math.Pow(yHome, 2)) < 15)
+                        res1 = 1;
 
+                    xCurrent = (stud.AddressStudying.X / 1000) - (addressStudying.X / 1000);
+                    yCurrent = (stud.AddressStudying.Y / 1000) - (addressStudying.Y / 1000);
+                    if (Math.Sqrt(Math.Pow(xCurrent, 2) + Math.Pow(yCurrent, 2)) < 15)
+                        res2 = 2;
+                    return res1 + res2;
+                case 5: // שנה
+                    if (stud.StudyingYear == studyingYear)
+                        return 1;
+                    return 0;
+                case 6: // מחלקה
+                    if (stud.Dep.DepartmentCode == dep.DepartmentCode)
+                        return 1;
+                    return 0;
+                case 7: // סטטוס
+                    if (stud.PersonalStatus == personalStatus)
+                        return 1;
+                    return 0;
+                default: // גיל
+                    if (Math.Abs(stud.DateOfBirth.Year - dateOfBirth.Year) <= 3)
+                        return 1;
+                    return 0;
+            }
+
+           
+            
+            
+
+           
+
+
+          
+
+           
+
+           
+        }
+        private List<int> getPrefByUser(string mail)
+        {
+            List<int> UserPrefList = new List<int>();
+            int pref1 = 0;
+            int pref2 = 0;
+            int pref3 = 0;
+            int pref4 = 0;
+            int pref5 = 0;
+            int pref6 = 0;
+            int pref7 = 0;
+            int pref8 = 0;
+            SqlConnection con = null;
+
+            try
+            {
+                con = connect("DBConnectionString");
+
+                String selectSTR = "SELECT * FROM student_P where mail='" + mail + "'";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                while (dr.Read())
+                    {
+                        pref1 = Convert.ToInt32(dr["pref1"]);
+                        pref2 = Convert.ToInt32(dr["pref2"]);
+                        pref3 = Convert.ToInt32(dr["pref3"]);
+                        pref4 = Convert.ToInt32(dr["pref4"]);
+                        pref5 = Convert.ToInt32(dr["pref5"]);
+                        pref6 = Convert.ToInt32(dr["pref6"]);
+                        pref7 = Convert.ToInt32(dr["pref7"]);
+                        pref8 = Convert.ToInt32(dr["pref8"]);
+
+                    }
+                UserPrefList.Add(pref1);
+                UserPrefList.Add(pref2);
+                UserPrefList.Add(pref3);
+                UserPrefList.Add(pref4);
+                UserPrefList.Add(pref5);
+                UserPrefList.Add(pref6);
+                UserPrefList.Add(pref7);
+                UserPrefList.Add(pref8);
+                return UserPrefList;
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+        }
         private String BuildInsertFavoriteCommand(StudentFavorites sf)
         {
             String command;
