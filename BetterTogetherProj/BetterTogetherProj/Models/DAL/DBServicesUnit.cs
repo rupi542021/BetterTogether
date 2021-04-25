@@ -364,5 +364,87 @@ namespace BetterTogetherProj.Models.DAL
             command = prefix + sb.ToString();
             return command;
         }
+        public List<Questionnaire> GetAllQuestionnaire(int DepCode, int Year)
+        {
+            SqlConnection con = null;
+            List<Questionnaire> qList = new List<Questionnaire>();
+            try
+            {
+                con = connect("DBConnectionString");
+                String selectSTR = "select * from questionnaire_P3 where (departmentCode="+DepCode+ " or departmentCode=0) and (qrYear=" + Year+ " or qrYear=0) and status=1";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Questionnaire qr = new Questionnaire();
+
+                    qr.QuestionnaireNum = Convert.ToInt16(dr["qrCode"]);
+                    qr.QuestionnairePublish = Convert.ToDateTime(dr["publishDate"]);
+                    qr.EndPublishDate = Convert.ToDateTime(dr["endPublishDate"]);
+                    qr.SubQr = (string)dr["subQ"];
+                    //qr.Status = Convert.ToBoolean(dr["status"]);
+                    //qr.NumResponders = Convert.ToInt32(dr["numResponders"]);
+                    qr.Dep = getStudDep(Convert.ToInt32(dr["departmentCode"]));
+                    //qr.Dep.DepartmentCode = Convert.ToInt16(dr["departmentCode"]);
+                    qr.QuestionnaireYear = Convert.ToInt16(dr["qrYear"]);
+                    //qr.Queslist = getQuestionsbyNumqr(qr.QuestionnaireNum);
+                    qList.Add(qr);
+                }
+
+                return qList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
+        public Department getStudDep(int DepID)
+        {
+            SqlConnection con = null;
+            Department Dep = new Department();
+
+            try
+            {
+                con = connect("DBConnectionString");
+
+                String selectSTR = "SELECT * FROM department_P where departmentCode=" + DepID;
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                while (dr.Read())
+                {
+                    //if (DepID == Convert.ToInt32(dr["departmentCode"]))
+                    {
+                        Dep.DepartmentCode = Convert.ToInt32(dr["departmentCode"]);
+                        Dep.DepartmentName = (string)(dr["departmentName"]);
+                    }
+                }
+                return Dep;
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+        }
     }
 }

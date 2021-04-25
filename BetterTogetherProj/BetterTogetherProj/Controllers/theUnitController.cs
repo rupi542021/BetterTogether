@@ -56,6 +56,14 @@ namespace BetterTogetherProj.Controllers
             return a.GetAllAds();
 
         }
+        [HttpGet]
+        [Route("api/theUnit/getAllQuestionnaires/{DepCode}/{Year}")]
+        public List<Questionnaire> GetAllQuestionnaire(int DepCode,int Year)
+        {
+            Questionnaire q = new Questionnaire();
+            return q.GetAllQuestionnaire(DepCode,Year);
+
+        }
         [HttpPost]
         [Route("api/theUnit/eventComment")]
         public HttpResponseMessage EventComment([FromBody] EventsFeedback ec)

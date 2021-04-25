@@ -53,6 +53,12 @@ namespace project_classes.Models
             return qrList;
 
         }
+        public List<Questionnaire> GetAllQuestionnaire(int DepCode, int Year)
+        {
+            DBServicesUnit dbs = new DBServicesUnit();
+            List<Questionnaire> qList = dbs.GetAllQuestionnaire(DepCode, Year);
+            return qList;
+        }
         public void InsertQuestionnaire()
         {
             DBServices dbs = new DBServices();
