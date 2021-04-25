@@ -53,5 +53,11 @@ namespace BetterTogetherProj.Models
             DBServices dbs = new DBServices();
             dbs.Insertcomment(this);
         }
+
+        public void InsertEventComment()
+        {
+            DBServicesUnit dbs = new DBServicesUnit();
+            dbs.InsertEventComment(this);
+        }
     }
 }

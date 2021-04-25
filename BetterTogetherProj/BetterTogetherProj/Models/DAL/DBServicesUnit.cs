@@ -1,5 +1,7 @@
-﻿using System;
+﻿using project_classes.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -48,7 +50,84 @@ namespace BetterTogetherProj.Models.DAL
                 outputFile.WriteLine(line);
             }
         }
+        public List<Events> GetAllEvents()
+        {
+            SqlConnection con = null;
+            List<Events> eventsList = new List<Events>();
 
+            try
+            {
+                con = connect("DBConnectionString");
+
+                String selectSTR = "update events_P3 set status=0 where events_P3.eventDate<GETDATE() select * from events_P3 where status=1";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                while (dr.Read())
+                {
+                    Events evdetail = new Events();
+                    evdetail.EventCode = Convert.ToInt16(dr["eventCode"]);
+                    evdetail.Eventtype = (string)dr["eventTypeName"];
+                    evdetail.Eventname = (string)dr["eventname"];
+                    evdetail.EventDate = Convert.ToDateTime(dr["eventDate"]);
+                    evdetail.Studentsinevent = Getstudentinevent(evdetail.EventCode);
+                    evdetail.EventText = (string)dr["eventText"];
+                    evdetail.Status = Convert.ToBoolean(dr["status"]);
+                    evdetail.EventImage = (string)dr["eventImage"];
+                    eventsList.Add(evdetail);
+                }
+                return eventsList;
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+        }
+        public List<Student> Getstudentinevent(int eventcode)
+        {
+            SqlConnection con = null;
+            List<Student> studList = new List<Student>();
+            try
+            {
+                con = connect("DBConnectionString");
+                String selectSTR = "select * from studentinevent_P3 where eventCode=" + eventcode;
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Student s = new Student();
+                    s = s.ReadStudentByMail((string)dr["studentmail"]);
+
+                    studList.Add(s);
+                }
+
+                return studList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
         public int InsertEventArrival(StudentInEvent se)
         {
 
@@ -94,6 +173,194 @@ namespace BetterTogetherProj.Models.DAL
             StringBuilder sb = new StringBuilder();
             String prefix = "INSERT INTO studentinevent_P3 (eventCode, studentmail) ";
             sb.AppendFormat("Values('{0}', '{1}')", se.EventCode, se.Mail);
+            command = prefix + sb.ToString();
+            return command;
+        }
+
+        public int DeleteArrival(StudentInEvent se)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString");
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+
+            String cStr = BuildDeleteArrivalCommand(se);
+            cmd = CreateCommand(cStr, con);
+
+
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery();
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+
+        }
+        private String BuildDeleteArrivalCommand(StudentInEvent se)
+        {
+            String command = "DELETE from [dbo].[studentinevent_P3] where [studentmail] = '" + se.Mail + "' and [eventCode] = '" + se.EventCode + "'";
+            return command;
+        }
+
+        public List<Ads> GetAllAds()
+        {
+            SqlConnection con = null;
+            List<Ads> AdList = new List<Ads>();
+
+            try
+            {
+                con = connect("DBConnectionString");
+
+                String selectSTR = "select * from ads_P3 where status=1";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                while (dr.Read())
+                {
+                    Ads ad = new Ads();
+                    ad.AdsCode = Convert.ToInt16(dr["adCode"]);
+                    //ad.Fbads = GetFBad(ad.AdsCode);
+                    ad.SubSubject = (string)dr["subSubName"];
+                    ad.Subject = (string)dr["subName"];
+                    ad.AdsImage= (string)dr["adsimage"];
+                    // ad.AdsDate = Convert.ToDateTime(dr["adsdate"]);
+                    ad.AdsText = (string)dr["adsText"];
+                   // ad.Status = Convert.ToBoolean(dr["status"]);
+                    AdList.Add(ad);
+                }
+                return AdList;
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+        }
+
+        public int InsertEventComment(EventsFeedback ec)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString");
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+
+            String cStr = BuildInsertECommentCommand(ec);
+            cmd = CreateCommand(cStr, con);
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery();
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+
+        }
+        private String BuildInsertECommentCommand(EventsFeedback ec)
+        {
+            String command;
+            StringBuilder sb = new StringBuilder();
+            String prefix = "INSERT INTO feedbackstudenttoevents_P3 (eventCode, studentmail,commenttext,commentdate) ";
+            sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}')", ec.FbEventNum, ec.Student.Mail,ec.CommentText,ec.CommentDate.ToString("yyyy-MM-dd H:mm:ss"));
+            command = prefix + sb.ToString();
+            return command;
+        }
+        public int InsertAdComment(AdsFeedback ac)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString");
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+
+            String cStr = BuildInsertACommentCommand(ac);
+            cmd = CreateCommand(cStr, con);
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery();
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+
+        }
+        private String BuildInsertACommentCommand(AdsFeedback ac)
+        {
+            String command;
+            StringBuilder sb = new StringBuilder();
+            String prefix = "INSERT INTO feedbackstudenttoads_P3 (adCode, studentmail,commenttext,commentdate) ";
+            sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}')", ac.FbAdsNum, ac.Student.Mail, ac.CommentText, ac.CommentDate.ToString("yyyy-MM-dd H:mm:ss"));
             command = prefix + sb.ToString();
             return command;
         }

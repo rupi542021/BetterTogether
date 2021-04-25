@@ -71,7 +71,12 @@ namespace BetterTogetherProj.Models
             dbs.UpdateEvent(this);
 
         }
+        public List<Events> GetAllEvents()
+        {
+            DBServicesUnit dbs = new DBServicesUnit();
+            List<Events> evdetailList = dbs.GetAllEvents();
+            return evdetailList;
+        }
 
-      
     }
 }
