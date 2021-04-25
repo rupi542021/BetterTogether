@@ -60,6 +60,13 @@ namespace BetterTogetherProj.Models
             dbs.UpdateAd(this);
 
         }
+        public List<Ads> GetAllAds()
+        {
+            DBServicesUnit dbs = new DBServicesUnit();
+            List<Ads> AdsList = dbs.GetAllAds();
+            return AdsList;
+
+        }
     }
 
 }

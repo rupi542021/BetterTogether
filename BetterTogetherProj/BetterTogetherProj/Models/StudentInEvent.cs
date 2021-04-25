@@ -26,5 +26,10 @@ namespace BetterTogetherProj.Models
             DBServicesUnit dbs = new DBServicesUnit();
             dbs.InsertEventArrival(this);
         }
+        public void Delete()
+        {
+            DBServicesUnit dbs = new DBServicesUnit();
+            dbs.DeleteArrival(this);
+        }
     }
 }

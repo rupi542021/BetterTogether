@@ -11,6 +11,15 @@ namespace BetterTogetherProj.Controllers
 {
     public class theUnitController : ApiController
     {
+        [HttpGet]
+        [Route("api/theUnit/getAllEvents")]
+        public List<Events> Geteventdetail()
+        {
+            Events e = new Events();
+            return e.GetAllEvents();
+
+        }
+
         [Route("api/theUnit/AddToArrivals")]
         [HttpPost]
         public HttpResponseMessage AddToArrivals([FromBody] StudentInEvent se)
@@ -25,8 +34,56 @@ namespace BetterTogetherProj.Controllers
                 return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
             }
         }
+        [HttpDelete]
+        [Route("api/theUnit/DeleteArrival")]
+        public IHttpActionResult DeleteArrival([FromBody] StudentInEvent se)
+        {
+            try
+            {
+                se.Delete();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("api/theUnit/getAllAds")]
+        public List<Ads> GetAllAds()
+        {
+            Ads a = new Ads();
+            return a.GetAllAds();
 
-
+        }
+        [HttpPost]
+        [Route("api/theUnit/eventComment")]
+        public HttpResponseMessage EventComment([FromBody] EventsFeedback ec)
+        {
+            try
+            {
+                ec.InsertEventComment();
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
+            }
+        }
+        [HttpPost]
+        [Route("api/theUnit/adComment")]
+        public HttpResponseMessage AdComment([FromBody] AdsFeedback ac)
+        {
+            try
+            {
+                ac.InsertAdComment();
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
+            }
+        }
         // GET api/<controller>
         public IEnumerable<string> Get()
         {
