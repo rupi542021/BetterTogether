@@ -322,8 +322,8 @@ namespace BetterTogetherProj.Models.DAL
 
             StringBuilder sb = new StringBuilder();
             // use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}','{5}')", ad.AdsDate.ToString("yyyy-MM-dd"), ad.AdsText, ad.AdsImage, ad.Subject, ad.SubSubject, ad.Status);
-            String prefix = "INSERT INTO ads_P3" + "(adsdate, adsText, adsimage, subName, subSubName, status )";
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}','{5}','{6}')", ad.AdsDate.ToString("yyyy-MM-dd"), ad.AdsText, ad.AdsImage, ad.Subject, ad.SubSubject, ad.Status,ad.AdsDuring);
+            String prefix = "INSERT INTO ads_P3" + "(adsdate, adsText, adsimage, subName, subSubName, status,duringAd )";
             command = prefix + sb.ToString();
 
             return command;
@@ -746,7 +746,7 @@ namespace BetterTogetherProj.Models.DAL
                 }
                 else if (subnameFB == "''")
                 {
-                    selectSTR += "update ads_P3 set status=0 where ads_P3.adsdate<GETDATE() select * from ads_P3";
+                    selectSTR += "update ads_P3 set status=0 where DATEDIFF(day,ads_P3.duringAd,ads_P3.adsdate) <getdate() select * from ads_P3";
 
                 }
                 else
@@ -764,6 +764,7 @@ namespace BetterTogetherProj.Models.DAL
                     ad.Subject= (string)dr["subName"];
                     ad.AdsDate= Convert.ToDateTime(dr["adsdate"]);
                     ad.AdsText= (string)dr["adsText"];
+                    ad.AdsDuring= Convert.ToInt16(dr["duringAd"]);
                     ad.Status= Convert.ToBoolean(dr["status"]);
                     AdList.Add(ad);
                 }

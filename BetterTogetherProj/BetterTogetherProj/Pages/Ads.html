@@ -24,6 +24,7 @@
         today = yyyy + '-' + mm + '-' + dd;
 
         $(document).ready(function () {
+        
 
             ajaxCall("GET", "../api/Ads/getsub", "", getSuccessAllsubs, error);
             $("#SubjName").change(getsubsub);
@@ -78,19 +79,26 @@
             picName = dataa[0];
 
         }
+       
 
 
 
         function AddAd() {
+            if ( $("#datedis").val()+ $("#adsDuring").val() <today )
+                status = true;
+            else
+                status = false;
+            
             // createa a JSON object called customer
             Ad = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
+
 
                 Subject: $("#SubjName :selected").text(),
                 SubSubject: $("#SubsubjName :selected").text(),
                 AdsDate: $("#datedis").val(),
                 AdsText: $("#content").val(),
                 AdsImage: picName,
-                Status: true,
+                Status:status,
             }
             ajaxCall("POST", "../api/Ads/addad", JSON.stringify(Ad), success, errorr);
 
@@ -130,6 +138,10 @@
 
         function f1() {
             AddAd();
+                  
+            duringPublish = $("#adsDuring").val();
+            alert(duringPublish);
+        
 
             return false; // the return false will prevent the form from being submitted
             // hence the page will not reload
@@ -297,6 +309,11 @@
             <div class="form-group">
                 <label for="datedis" id="datedisText">בחירת תאריך פרסום</label>
                 <input type="date" class="form-control" id="datedis" onchange="checkdate()" required />
+
+            </div>
+            <div class="form-group">
+                <label for="adsDuring" id="duringNum">(פרסם למשך(בימים</label>
+                <input type="number" class="form-control" id="adsDuring" min="0" required />
 
             </div>
             <div class="form-group">
