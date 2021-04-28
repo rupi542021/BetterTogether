@@ -84,10 +84,10 @@
 
 
         function AddAd() {
-            if ( $("#datedis").val()+ $("#adsDuring").val() <today )
-                status = true;
-            else
-                status = false;
+            //if ( $("#datedis").val()+ $("#adsDuring").val() >today )
+            //    status = true;
+            //else
+            //    status = false;
             
             // createa a JSON object called customer
             Ad = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
@@ -98,7 +98,8 @@
                 AdsDate: $("#datedis").val(),
                 AdsText: $("#content").val(),
                 AdsImage: picName,
-                Status:status,
+                AdsDuring: $("#adsDuring").val(),
+                Status:true,
             }
             ajaxCall("POST", "../api/Ads/addad", JSON.stringify(Ad), success, errorr);
 
@@ -106,10 +107,10 @@
         }
 
         function checkdate() {
-            if ($("#datedis").val() < today) {
-                swal("Attention", "תאריך הפצת הפרסום צריך להיות עתידי!", "error");
-                $("#datedis").val("");
-            }
+            ////if ($("#datedis").val() < today) {
+            ////    swal("Attention", "תאריך הפצת הפרסום צריך להיות עתידי!", "error");
+            ////    $("#datedis").val("");
+            //}
         }
         // This function is called in case of a success
         function success(data) {
@@ -119,6 +120,7 @@
             $("#SubsubjName").val("");
             $("#datedis").val("");
             $("#content").val("");
+             $("#adsDuring").val("");
             $("#files").val(null);
             $("#ph").remove();
             picName = "";
@@ -139,10 +141,6 @@
         function f1() {
             AddAd();
                   
-            duringPublish = $("#adsDuring").val();
-            alert(duringPublish);
-        
-
             return false; // the return false will prevent the form from being submitted
             // hence the page will not reload
         }

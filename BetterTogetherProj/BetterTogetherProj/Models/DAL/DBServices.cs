@@ -746,7 +746,7 @@ namespace BetterTogetherProj.Models.DAL
                 }
                 else if (subnameFB == "''")
                 {
-                    selectSTR += "update ads_P3 set status=0 where DATEDIFF(day,ads_P3.duringAd,ads_P3.adsdate) <getdate() select * from ads_P3";
+                    selectSTR += "update ads_P3 set status=0 where DATEDIFF(day,ads_P3.adsdate,getdate()) >ads_P3.duringAd select * from ads_P3";
 
                 }
                 else
@@ -1297,12 +1297,12 @@ namespace BetterTogetherProj.Models.DAL
             if (adss.Status == true)// השמת הסטטוס TRUE=1 והפוך  
             {
 
-                command = "update ads_P3 set adsdate='" + adss.AdsDate.ToString("yyyy-MM-dd") + "',adsText='" + adss.AdsText + "' ,status=1 where adCode=" + adss.AdsCode;
+                command = "update ads_P3 set adsdate='" + adss.AdsDate.ToString("yyyy-MM-dd") + "',adsText='" + adss.AdsText + "' ,status=1 ,duringAd='"+adss.AdsDuring+"' where adCode=" + adss.AdsCode ;
             }
             else
             {
 
-                command = "update ads_P3 set adsdate='" + adss.AdsDate.ToString("yyyy-MM-dd") + "',adsText='" + adss.AdsText + "' ,status=0 where adCode=" + adss.AdsCode;
+                command = "update ads_P3 set adsdate='" + adss.AdsDate.ToString("yyyy-MM-dd") + "',adsText='" + adss.AdsText + "' ,status=0 ,duringAd='" + adss.AdsDuring + "' where adCode=" + adss.AdsCode;
             }
             return command;
 

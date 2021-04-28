@@ -16,6 +16,7 @@ namespace BetterTogetherProj.Models
         string subSubject;
         List<AdsFeedback> fbads;
         bool status;
+        int adsDuring;
 
         public int AdsCode { get => adsCode; set => adsCode = value; }
         public DateTime AdsDate { get => adsDate; set => adsDate = value; }
@@ -25,10 +26,11 @@ namespace BetterTogetherProj.Models
         public string SubSubject { get => subSubject; set => subSubject = value; }
         public List<AdsFeedback> Fbads { get => fbads; set => fbads = value; }
         public bool Status { get => status; set => status = value; }
+        public int AdsDuring { get => adsDuring; set => adsDuring = value; }
 
         public Ads() { }
 
-        public Ads(int adsCode, DateTime adsDate, string adsText, string subject, string adsImage, string subSubject, List<AdsFeedback> fbads, bool status)
+        public Ads(int adsCode, DateTime adsDate, string adsText, string subject, string adsImage, string subSubject, List<AdsFeedback> fbads, bool status, int adsDuring)
         {
             AdsCode = adsCode;
             AdsDate = adsDate;
@@ -38,6 +40,8 @@ namespace BetterTogetherProj.Models
             SubSubject = subSubject;
             Fbads = fbads;
             Status = status;
+            AdsDuring = adsDuring;
+
         }
 
         public void InsertToTable()

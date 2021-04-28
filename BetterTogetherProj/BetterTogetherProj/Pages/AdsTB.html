@@ -58,6 +58,8 @@
             $("#SubSubject").prop("disabled", true);
             $("#contentText").prop("disabled", false);
             $('#Status').prop("disabled", false)
+            $('#adsDuring').prop("disabled", false)
+
             populateFields(this.getAttribute('Adsid'));
 
         }
@@ -81,7 +83,9 @@
             $("#Subject").val(ad.Subject);
             $("#SubSubject").val(ad.SubSubject);
             $("#contentText").val(ad.AdsText);
+            $("#adsDuring").val(ad. AdsDuring);
             $("#Status").prop('checked', ad.Status);
+            
 
             if ($("#datedis").val() < today) {
                 swal({ icon: 'error', title: 'Sorry', text: "!לא ניתן לערוך פרסום שכבר פורסם" })
@@ -107,7 +111,8 @@
                 Subject: Subject,
                 SubSubject: SubSubject,
                 AdsText: $("#contentText").val(),
-                Status: $("#Status").is(":checked")
+                Status: $("#Status").is(":checked"),
+                AdsDuring: $("#adsDuring").val()
             }
             ajaxCall("PUT", "../api/Ads", JSON.stringify(AdToUpdate), updateAdSuccess, error);
 
@@ -178,6 +183,10 @@
                                 return shortDateEnd;
                             }
                         },
+                        {
+                            data:"AdsDuring"
+                            
+                        },
                
                         {
                             data: "Status",
@@ -232,6 +241,7 @@
                 <th> נושא</th>
                 <th>תת נושא</th>
                 <th>תאריך פרסום</th>
+                <th>משך פרסום</th>
                 <th>סטטוס פרסום</th>
             </tr>
         </thead>
@@ -245,6 +255,11 @@
                 <div class="form-group col-sm-4">
                     <label for="datedis"><span class="red-star">★ </span>תאריך פרסום</label>
                     <input type="date" class="form-control" id="datedis" placeholder="" onchange="checkdate()" required>
+                </div>
+                <div class="form-group col-sm-4" >
+                    <label for="adsDuring" id="duringNum">(פרסם למשך(בימים</label>
+                    <input type="number" class="form-control" id="adsDuring" min="0" required />
+
                 </div>
 
                 <div class="form-group col-sm-4">
