@@ -95,8 +95,7 @@ namespace BetterTogetherProj.Models.DAL
                 String selectSTR = "select * from question_P3 where qrCode=" + questionnaireNum;
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-                //DataSet ds = new DataSet();
-                //using(SqlDataAdapter da=new SqlDataAdapter(cmd)) { da.Fill(ds); }
+                
                 while (dr.Read())
 
                 {   // Read till the end of the data into a row

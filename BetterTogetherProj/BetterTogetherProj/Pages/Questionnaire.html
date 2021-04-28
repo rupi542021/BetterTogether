@@ -50,16 +50,6 @@
                 $("#pForm").show();
                 mode = "";
             });
-            //$("#cancelSaveBTN1").on("click", function () {//מבטל אופציית עריכה
-            //    console.log("gal")
-            //    qrId = null;
-            //    $("#editDiv").hide();
-            //    $("#EditViewDiv").hide();
-            //    $("#Addquestion").hide();
-
-
-            //    mode = "";
-            //});
 
 
             $("#newBTN").on("click", function () {
@@ -312,7 +302,7 @@
                     QuestionnaireNum: questionnaires[questionnaires["length"] - 1].QuestionnaireNum + 1,
                 }
                 ajaxCall("POST", "../api/Questionnaire/postqr", JSON.stringify(Qrtoduplicate), insertSuccess, error);
-
+                return false;
             });
         }
 
@@ -540,6 +530,8 @@
                         }
                     }
                  }
+
+
                 
 
             }
@@ -599,7 +591,7 @@
             $("#pForm").show();
             tbl.clear();
             redrawTable(tbl, questionnaireData);
-            buttonEvents();
+            //buttonEvents();
             $("#editDiv").hide();
             //$("#EditViewDiv").hide();
             if(mode=="new")
@@ -787,24 +779,22 @@
                     </div>
 
                     <div class="form-group col-sm-4">
-                        <label for="publishList"><span class="red-star">★ </span>רשימת תפוצה</label>
-                        <select class="form-control" id="publishList" required>
-                            <!--<option value="">בחירת מחלקה</option>-->
-                        </select>
-                    </div>
-
-                    <div class="form-group col-sm-4">
                         <label for="yearList" id="yearListText"><span class="red-star">★ </span>שנת תפוצה</label>
                         <select class="form-control" id="yearList" required>
                             <option value="">בחירת שנה</option>
                         </select>
                     </div>
 
+                    <div class="form-group col-sm-4">
+                        <label for="publishList"><span class="red-star">★ </span>רשימת תפוצה</label>
+                        <select class="form-control" id="publishList" required>
+                        </select>
+                    </div>
                     <!--<div class="form-group col-sm-2">
-            <label for="numResponders"><span class="red-star">★ </span>מספר משיבים</label>
-            <input type="text" class="form-control" id="numResponders" />
+        <label for="numResponders"><span class="red-star">★ </span>מספר משיבים</label>
+        <input type="text" class="form-control" id="numResponders" />
 
-        </div>-->
+    </div>-->
                     <div class="statuss form-group col-sm-4">
                         <label for="Status"><span class="red-star">★ </span>סטטוס</label>
                         <input type="checkbox" class="form-control" id="Status" checked />

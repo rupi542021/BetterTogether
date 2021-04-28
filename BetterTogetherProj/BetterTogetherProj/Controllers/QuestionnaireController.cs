@@ -22,22 +22,6 @@ namespace BetterTogetherProj.Controllers
             return "value";
         }
 
-        // POST api/<controller>
-        //public HttpResponseMessage Post([FromBody] Questionnaire qr)
-        //{
-
-        //    try
-        //    {
-
-        //        qr.Insertqr();
-
-        //        return Request.CreateResponse(HttpStatusCode.OK, "Success");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
-        //    }
-        //}
 
         // PUT api/<controller>/5
         public void Put( [FromBody] Questionnaire Qr)
