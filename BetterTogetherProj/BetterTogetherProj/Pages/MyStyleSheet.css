@@ -210,3 +210,6 @@ textarea#contentText {
     width: 400px;
     height: 80px;
 }
+textarea{
+    resize:none;
+}

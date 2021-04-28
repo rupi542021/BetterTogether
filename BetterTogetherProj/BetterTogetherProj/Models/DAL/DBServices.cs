@@ -1306,5 +1306,48 @@ namespace BetterTogetherProj.Models.DAL
             return command;
 
         }
+        public List<StudentsAnswers> GetStudentAns()
+        {
+            SqlConnection con = null;
+            List<StudentsAnswers> SAnsList = new List<StudentsAnswers>();
+            try
+            {
+                con = connect1("DBConnectionString");
+                String selectSTR = " select * from studentanswers_P3";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    StudentsAnswers SAns = new StudentsAnswers();
+                    SAns.Mail = (string)dr["studentmail"];
+                    SAns.QuestionnaireNum = Convert.ToInt16(dr["qrCode"]);
+                    SAns.Questionnum = Convert.ToInt16(dr["qCode"]);
+                    SAns.StudAns = new List<bool>();
+                    for (int i = 1; i < 7; i++)
+                    {
+                        SAns.StudAns.Add(Convert.ToBoolean(dr["ansText" + i]));
+                    }
+
+                    SAnsList.Add(SAns);
+                }
+
+                return SAnsList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
+
     }
 }

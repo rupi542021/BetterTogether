@@ -263,6 +263,7 @@
 
             $(document).on("click", ".viewBtn", function () {
                 mode = "view";
+                 $("#saveBTN").hide();
                 markSelected(this);
                 $("#pForm").hide();
                 $(".statuss").show();
@@ -531,14 +532,35 @@
                     }
                  }
 
-
+                  ajaxCall("GET", "../api/Questionnaire/analyze", "", getSuccessallStudAns, error);
                 
 
             }
 
 
         }
-
+        function getSuccessallStudAns(studentAns) {
+            sAns = studentAns;
+            //ans1 = 0;
+            //ans2 = 0;
+            //ans3 = 0;
+            //ans4 = 0;
+            //ans5 = 0;
+            //ans6 = 0;
+            arrAns = [0, 0, 0, 0, 0, 0];
+            console.log(studentAns);
+            for (var i = 0; i < sAns.length; i++) {
+                for (var j = 0; j < sAns[i].StudAns.length; j++) {
+                    if (sAns[i].StudAns[j] == true)
+                        for (var m = 0; m < arrAns.length; m++) {
+                            arrAns[j]++;
+                            break;
+                        }
+                            
+                    
+                }
+            }
+        }
 
         // clear the form fields
         function clearFields() {

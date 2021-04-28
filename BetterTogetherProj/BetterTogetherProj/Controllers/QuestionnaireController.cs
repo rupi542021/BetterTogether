@@ -69,6 +69,14 @@ namespace BetterTogetherProj.Controllers
             return dep.GetDepartment();
 
         }
+        [HttpGet]
+        [Route("api/Questionnaire/analyze")]
+        public List<StudentsAnswers> GetStudentAns()
+        {
+            StudentsAnswers SAns = new StudentsAnswers();
+            return SAns.GetStudentAns();
+
+        }
 
 
     }
