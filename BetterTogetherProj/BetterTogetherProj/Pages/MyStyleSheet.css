@@ -108,7 +108,7 @@ input#files {
 }
 
 
-img {
+#ph img {
     width: 170px;
     margin-top: 250px;
     position: relative;
@@ -212,4 +212,7 @@ textarea#contentText {
 }
 textarea{
     resize:none;
+}
+input#files-upload-button{
+    color:red;
 }

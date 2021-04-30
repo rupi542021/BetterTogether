@@ -14,7 +14,7 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
     <link href="MyStyleSheet.css" rel="stylesheet" />
-   
+
     <script>
 
         var today = new Date();
@@ -24,7 +24,7 @@
         today = yyyy + '-' + mm + '-' + dd;
 
         $(document).ready(function () {
-        
+
 
             ajaxCall("GET", "../api/Ads/getsub", "", getSuccessAllsubs, error);
             $("#SubjName").change(getsubsub);
@@ -40,7 +40,7 @@
             $("#pForm").submit(f1); // bind the submit event to a function called f1
             picName = "";
 
-            $('#buttonUpload').on('click', function () {
+            $("#files").change(function () {
                 var data = new FormData();
                 var files = $("#files").get(0).files;
 
@@ -51,7 +51,7 @@
                     }
                     data.append("Imagename", new Date()); // append what ever data you want to send along with the files. See how you extract it in the controller.
                 }
-
+                
 
                 // Ajax upload
                 $.ajax({
@@ -64,8 +64,41 @@
                     error: error
                 });
 
-                return false;
+
+             
+               
             });
+
+
+
+            //$('#buttonUpload').on('click', function () {
+            //    var data = new FormData();
+            //    var files = $("#files").get(0).files;
+
+            //    // Add the uploaded file to the form data collection
+            //    if (files.length > 0) {
+            //        for (f = 0; f < files.length; f++) {
+            //            data.append("UploadedImage", files[f]);
+            //        }
+            //        data.append("Imagename", new Date()); // append what ever data you want to send along with the files. See how you extract it in the controller.
+            //    }
+            //    debugger;
+
+            //    // Ajax upload
+            //    $.ajax({
+            //        type: "POST",
+            //        url: "../Api/ImageUpload",
+            //        contentType: false,
+            //        processData: false,
+            //        data: data,
+            //        success: showImages,
+            //        error: error
+            //    });
+
+
+               
+            //    return false;
+            //});
 
         });
 
@@ -79,18 +112,12 @@
             picName = dataa[0];
 
         }
-       
-
-
 
         function AddAd() {
-            //if ( $("#datedis").val()+ $("#adsDuring").val() >today )
-            //    status = true;
-            //else
-            //    status = false;
-            
-            // createa a JSON object called customer
-            Ad = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
+         
+            alert(picName);
+           
+            Ad = { 
 
 
                 Subject: $("#SubjName :selected").text(),
@@ -99,7 +126,7 @@
                 AdsText: $("#content").val(),
                 AdsImage: picName,
                 AdsDuring: $("#adsDuring").val(),
-                Status:true,
+                Status: true,
             }
             ajaxCall("POST", "../api/Ads/addad", JSON.stringify(Ad), success, errorr);
 
@@ -120,7 +147,7 @@
             $("#SubsubjName").val("");
             $("#datedis").val("");
             $("#content").val("");
-             $("#adsDuring").val("");
+            $("#adsDuring").val("");
             $("#files").val(null);
             $("#ph").remove();
             picName = "";
@@ -140,7 +167,7 @@
 
         function f1() {
             AddAd();
-                  
+
             return false; // the return false will prevent the form from being submitted
             // hence the page will not reload
         }
@@ -194,13 +221,13 @@
                 $("#buttonaddsubsub").show();
 
             }
-        
+
         }
 
         function Insertsubtolist() {
-           
+
             if ($("#addsubjecttext").val() == "")
-             swal({ icon: 'error', title: 'Sorry', text: "!יש להזין נושא" })
+                swal({ icon: 'error', title: 'Sorry', text: "!יש להזין נושא" })
 
             else {
                 let addsubject = {
@@ -275,7 +302,7 @@
 
 
 <body>
-   <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default">
         <div class="container-fluid">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="Ads.html">יצירת פרסום</a></li>
@@ -322,10 +349,10 @@
             <div id="uploadddiv">
                 <div id="uploadd">
                     <label for="files">(העלאת תמונה (אופציונלי</label>
-                    <input type="file" id="files" name="files" />
+                  <input type="file" id="files" name="files" />
                 </div>
                 <br />
-                <button type="button" id="buttonUpload">Upload image</button>
+                <!--<button type="button" id="buttonUpload">Upload image</button>-->
             </div>
             <input type="submit" value="הפצת פרסום" class="myButton" id="submitt" />
         </form>
