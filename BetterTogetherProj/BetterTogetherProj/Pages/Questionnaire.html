@@ -25,6 +25,9 @@
     <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
     <script>tinymce.init({ selector: 'textarea' });</script>
 
+    <!--<script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-base.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.7.1/themes/dark_turquoise.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <script>
 
 
@@ -38,14 +41,14 @@
 
         // will run when the document is ready
         $(document).ready(function () {
-           
+
             AnsNum = 0;
-     
+
             mode = "";
             $("#cancelSaveBTN").on("click", function () { //מבטל טופס NEW
                 qrId = null;
                 $("#editDiv").hide();
-                //$("#EditViewDiv").hide();
+                $("#myChart").hide();
 
                 $("#pForm").show();
                 mode = "";
@@ -53,7 +56,7 @@
 
 
             $("#newBTN").on("click", function () {
-              
+
                 ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
                 AnsNum = 0;
                 $(".statuss").hide();
@@ -72,7 +75,7 @@
                 clearFields();
 
                 $("#editDiv :input").prop("disabled", false); // new mode: enable all controls in the form
-              
+
             });
 
             let api = "../api/Questionnaire/qr"
@@ -83,7 +86,7 @@
 
             $("#editDiv").hide();
 
-           
+
             buttonEvents();
             $(document).on("change", '#publishList', { 'param': 0 }, function (event) {
                 getyearbydep(event.data.param);
@@ -91,14 +94,14 @@
             //$(`#QuestionType` + q).change(getQuestionType)
             //$(document).on("change", "#QuestionType"+q, getQuestionType);
 
-           
+
         });
 
         function getSuccessalldep(alldep) {
             console.log(alldep);
             Alldep = alldep;
             let str = "";
-            if (mode == "edit" || mode=="view") {
+            if (mode == "edit" || mode == "view") {
                 document.getElementById("publishList").innerHTML = "";
 
                 for (var i = 0; i < Alldep.length; i++) {
@@ -109,17 +112,17 @@
                 for (var i = 0; i < Alldep.length; i++) {
                     if (Alldep[i].DepartmentName != depname)
 
-                       str += "<option value='" + Alldep[i].DepartmentCode + "'>" + Alldep[i].DepartmentName + "</option></br>"
+                        str += "<option value='" + Alldep[i].DepartmentCode + "'>" + Alldep[i].DepartmentName + "</option></br>"
 
                 }
             }
             else if (mode == "new") {
                 document.getElementById("publishList").innerHTML = "<option value=''>בחירת מחלקה</option>";
-;
+                ;
                 for (var i = 0; i < Alldep.length; i++) {
-                        str += "<option value='" + Alldep[i].DepartmentCode + "'>" + Alldep[i].DepartmentName + "</option></br>"
+                    str += "<option value='" + Alldep[i].DepartmentCode + "'>" + Alldep[i].DepartmentName + "</option></br>"
                 }
-              
+
             }
             document.getElementById("publishList").innerHTML += str;
 
@@ -205,9 +208,9 @@
                         nofilter.push(years[j])
                     }
 
-                    }
+                }
 
-           
+
                 for (var i = 0; i < nofilter.length; i++) {
                     switch (nofilter[i]) {
                         case 0:
@@ -231,7 +234,7 @@
                     }
                 }
             }
-            
+
             document.getElementById("yearList").innerHTML = stryear;
 
         }
@@ -263,7 +266,7 @@
 
             $(document).on("click", ".viewBtn", function () {
                 mode = "view";
-                 $("#saveBTN").hide();
+                $("#saveBTN").hide();
                 markSelected(this);
                 $("#pForm").hide();
                 $(".statuss").show();
@@ -287,23 +290,23 @@
                 $("#editDiv").hide();
 
                 Qr = getQ(this.getAttribute('data-QuestionnaireId'));
-         
-               let Qrtoduplicate = {
 
-                   QuestionnairePublish: Qr.QuestionnairePublish,
-                   EndPublishDate: Qr.EndPublishDate,
-                   SubQr: Qr.SubQr,
+                let Qrtoduplicate = {
+
+                    QuestionnairePublish: Qr.QuestionnairePublish,
+                    EndPublishDate: Qr.EndPublishDate,
+                    SubQr: Qr.SubQr,
                     Dep: {
                         DepartmentCode: Qr.Dep.DepartmentCode
                     },
                     //NumResponders: NumResponders,
-                   Status: Qr.Status,
+                    Status: Qr.Status,
                     QuestionnaireYear: Qr.QuestionnaireYear,
-                   Queslist: Qr.Queslist,
+                    Queslist: Qr.Queslist,
                     QuestionnaireNum: questionnaires[questionnaires["length"] - 1].QuestionnaireNum + 1,
                 }
                 ajaxCall("POST", "../api/Questionnaire/postqr", JSON.stringify(Qrtoduplicate), insertSuccess, error);
-                return false;
+                //    return false;
             });
         }
 
@@ -326,7 +329,7 @@
                 if (flag == 0) {
 
                     str += `<input type='text' class='answertext' id='` + q + `answer` + AnsNum + `'/>
-                                    <i type ='button' onclick='getQuestionType(1)' id ='add`+ q + `' class='quesplus fas fa-plus-circle'> </i>`;
+                                                <i type ='button' onclick='getQuestionType(1)' id ='add`+ q + `' class='quesplus fas fa-plus-circle'> </i>`;
                 }
 
                 else {
@@ -349,30 +352,37 @@
         function addquestion() {
             AnsNum = 0;
             q++;
-            let Questionstring = `<div id="` + q + `">
-                                    <div class="questionn">
-                                             <div class="divareaque form-group row">
-                                            <div class="ansdiv form-group col-sm-2" id="`+ q + `Qans">
-                                               <label for="QuestionText"><span class="red-star">★ </span>תשובות</label>
-                                            </div>
+            var Questionstring = `<div id="` + q + `">
+                                                <div class="questionn">
+                                                         <div class="divareaque form-group row">
+                                                        <div class="ansdiv form-group col-sm-2" id="`+ q + `Qans">
+                                                           <label for="QuestionText"><span class="red-star">★ </span>תשובות</label>
+                                                        </div>
 
-                                      <div class="form-group col-sm-4">
-                                            <label for="QuestionType`+ q + `"><span class="red-star">★ </span>סוג שאלה</label>
-                                            <select class="form-control Qtype" onchange='getQuestionType(0)' id="QuestionType`+ q + `"required>
-                                                <option value="">בחרי סוג שאלה</option>
-                                                <option value="1">שאלת עם תשובה אחת לבחירה</option>
-                                                <option value="2">שאלה עם מספר תשובות לבחירה</option>
-                                                <option value="3">שאלה פתוחה</option>
-                                            </select>
-                                      </div>
-                                        <div class="form-group col-sm-4" >
-                                            <label for="QuestionText`+ q + `"><span class="red-star">★ </span>תוכן שאלה</label>
-                                            <textarea class="form-control Qtext" id="QuestionText`+ q + `"  required></textarea>
-                                        </div>
-                                        </div>
-                                      </div></div>`;
+                                                  <div class="form-group col-sm-4">
+                                                        <label for="QuestionType`+ q + `"><span class="red-star">★ </span>סוג שאלה</label>
+                                                        <select class="form-control Qtype" onchange='getQuestionType(0)' id="QuestionType`+ q + `"required>
+                                                            <option value="">בחרי סוג שאלה</option>
+                                                            <option value="1">שאלת עם תשובה אחת לבחירה</option>
+                                                            <option value="2">שאלה עם מספר תשובות לבחירה</option>
+                                                            <option value="3">שאלה פתוחה</option>
+                                                        </select>
+                                                  </div>
+                                                    <div class="form-group col-sm-4" >
+                                                        <label for="QuestionText`+ q + `"><span class="red-star">★ </span>תוכן שאלה</label>
+                                                        <textarea class="form-control Qtext" id="QuestionText`+ q + `"  required></textarea>
+                                                    </div>
+                                                    </div>
+                                                  </div></div>`;
             $("#question1").append(Questionstring);
 
+            if (mode == "view") {
+               // $("#question1").html("");
+               //let div = document.getElementById("question1"); 
+                let canvass = "<canvas id='myChart' style='width:100%;max-width:600px'></canvas>";
+                //var res = Questionstring.concat(canvass);
+                $("#question1").append(canvass);
+            }
 
         }
         function getanswersbyqu(Qnum) {
@@ -392,7 +402,7 @@
 
             //var Campid = -1;
             if (mode == "edit") {
-           
+
                 QrtoUpdate = {
                     QuestionnaireNum: Qr.QuestionnaireNum,
                     SubQr: Qr.SubQr,
@@ -417,7 +427,7 @@
                 Depchosen = $("#publishList").val();
                 NumResponders = 0;
                 QuestionnaireYear = $("#yearList").val();
-             
+
                 for (var i = 1; i <= q; i++) {
                     let Questionn = {
                         Questionnum: i,
@@ -457,12 +467,12 @@
             return false;
         }
         function checkdate(num) {
-            if (num == 0 ) {
+            if (num == 0) {
                 if ($("#publishDate").val() == "") {
                     swal("Attention", "יש למלא תאריך הפצה קודם!", "error");
                     $("#EndpublishDate").val("");
                 }
-                   else if ($("#publishDate").val() > $("#EndpublishDate").val()) {
+                else if ($("#publishDate").val() > $("#EndpublishDate").val()) {
                     swal("Attention", "תאריך הסיום צריך להיות לאחר תאריך הפצת הפרסום!", "error");
                     $("#EndpublishDate").val("");
                 }
@@ -482,24 +492,26 @@
 
         // fill the form fields
         function populateFields(qrId) {
+            $("#myChart").html("");
+
             Qr = getQ(qrId);
             ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
 
-                depname = Qr.Dep.DepartmentName;
-                depcode = Qr.Dep.DepartmentCode;
-                depyear = Qr.QuestionnaireYear;
+            depname = Qr.Dep.DepartmentName;
+            depcode = Qr.Dep.DepartmentCode;
+            depyear = Qr.QuestionnaireYear;
 
-                getyearbydep(1);
+            getyearbydep(1);
 
-                var datepub = new Date(Qr.QuestionnairePublish);
-                var day = ("0" + datepub.getDate()).slice(-2);
-                var month = ("0" + (datepub.getMonth() + 1)).slice(-2);
-                var dateQr = datepub.getFullYear() + "-" + (month) + "-" + (day);
-                $("#publishDate").val(dateQr);
-                var dateEndPub = new Date(Qr.EndPublishDate);
-                var day = ("0" + dateEndPub.getDate()).slice(-2);
-                var month = ("0" + (dateEndPub.getMonth() + 1)).slice(-2);
-                var dateQrfinal = dateEndPub.getFullYear() + "-" + (month) + "-" + (day);
+            var datepub = new Date(Qr.QuestionnairePublish);
+            var day = ("0" + datepub.getDate()).slice(-2);
+            var month = ("0" + (datepub.getMonth() + 1)).slice(-2);
+            var dateQr = datepub.getFullYear() + "-" + (month) + "-" + (day);
+            $("#publishDate").val(dateQr);
+            var dateEndPub = new Date(Qr.EndPublishDate);
+            var day = ("0" + dateEndPub.getDate()).slice(-2);
+            var month = ("0" + (dateEndPub.getMonth() + 1)).slice(-2);
+            var dateQrfinal = dateEndPub.getFullYear() + "-" + (month) + "-" + (day);
             $("#EndpublishDate").val(dateQrfinal);
             if (mode == "edit") {
                 if ($("#EndpublishDate").val() < today) {
@@ -507,16 +519,16 @@
                     $("#editDiv").hide();
                 }
             }
-                $("#subQr").val(Qr.SubQr);
-                $("#Status").prop('checked', Qr.Status);
-            
-             if (mode == "view") {
+            $("#subQr").val(Qr.SubQr);
+            $("#Status").prop('checked', Qr.Status);
+
+            if (mode == "view") {
                 $("#" + q + "Qans").html("");
                 $(".divareaque").html("");
                 for (var i = 0; i < Qr.Queslist.length; i++) {
                     addquestion();
 
-                    $("#QuestionText"+q).val(Qr.Queslist[i].QuestionText);
+                    $("#QuestionText" + q).val(Qr.Queslist[i].QuestionText);
                     $("#QuestionType" + q).val(Qr.Queslist[i].QuestionType);
                     $("#QuestionText" + q).prop("disabled", true);
                     $("#QuestionType" + q).prop("disabled", true);
@@ -530,24 +542,23 @@
                             $("#" + q + "answer" + AnsNum).prop("disabled", true);
                         }
                     }
-                 }
+                }
 
-                  ajaxCall("GET", "../api/Questionnaire/analyze", "", getSuccessallStudAns, error);
-                
+                numQr = Qr.QuestionnaireNum;
+                for (var i = 0; i < Qr.Queslist.length; i++) {
+                    numQ = Qr.Queslist[i].Questionnum;
+                    let api = "../api/Questionnaire/analyze?numQr=" + numQr + "&numQ=" + numQ;
+                    ajaxCall("GET", api, "", getSuccessallStudAns, error);
+                }
 
             }
 
-
         }
         function getSuccessallStudAns(studentAns) {
+            $("#myChart").show();
+
             sAns = studentAns;
-            //ans1 = 0;
-            //ans2 = 0;
-            //ans3 = 0;
-            //ans4 = 0;
-            //ans5 = 0;
-            //ans6 = 0;
-            arrAns = [0, 0, 0, 0, 0, 0];
+            var arrAns = [0, 0, 0, 0, 0, 0];
             console.log(studentAns);
             for (var i = 0; i < sAns.length; i++) {
                 for (var j = 0; j < sAns[i].StudAns.length; j++) {
@@ -556,11 +567,77 @@
                             arrAns[j]++;
                             break;
                         }
-                            
-                    
+
                 }
             }
-        }
+            // create the data
+            for (var i = 0; i < Qr.Queslist.length; i++) {
+                var xValues = [Qr.Queslist[i].Anslist[0], Qr.Queslist[i].Anslist[1], Qr.Queslist[i].Anslist[2], Qr.Queslist[i].Anslist[3], Qr.Queslist[i].Anslist[4], Qr.Queslist[i].Anslist[5]];
+                var yValues = [arrAns[0], arrAns[1], arrAns[2], arrAns[3], arrAns[4], arrAns[5]];
+                var barColors = ["red", "green", "blue", "orange", "brown", "pink"];
+                //var ctx = $("#myChart");
+                new Chart("myChart", {
+                    type: "bar",
+                    data: {
+                        labels: xValues,
+                        datasets: [{
+                            backgroundColor: barColors,
+                            data: yValues
+                        }]
+                    },
+                    options: {
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            //    text: "World Wine Production 2018"
+                        }
+                    }
+                });
+            }
+                //    var data = {
+                //        header: ["answer", "Number of responsers"],
+                //        rows: [
+                //            [Qr.Queslist[i].Anslist[0], arrAns[0]],
+                //            [Qr.Queslist[i].Anslist[1], arrAns[1]],
+                //            [Qr.Queslist[i].Anslist[2], arrAns[2]],
+                //            [Qr.Queslist[i].Anslist[3], arrAns[3]],
+                //            [Qr.Queslist[i].Anslist[4], arrAns[4]],
+                //            [Qr.Queslist[i].Anslist[5], arrAns[5]],
+                //        ]
+                //    };
+                //    var chart = anychart.column();
+
+                //    // set the theme
+                //    anychart.theme(anychart.themes.darkPink);
+                //    chart.data(data);
+
+                //    // add tick intervals
+                //    chart.yScale().ticks().interval(1);
+                //    chart.yScale().minorTicks().interval(1);
+                //    // add grid lines
+                //    chart.yGrid().enabled(true);
+                //    chart.yMinorGrid().enabled(true);
+
+                //    // turn on the chart animation
+                //    chart.animation(true);
+
+                //    // set the container
+
+                //    chart.container(q);
+
+                //    // draw the chart
+                //    chart.draw();
+                //}
+
+
+            }
+        
+        /*}*/
+
+
+
+
+
 
         // clear the form fields
         function clearFields() {
@@ -616,7 +693,7 @@
             //buttonEvents();
             $("#editDiv").hide();
             //$("#EditViewDiv").hide();
-            if(mode=="new")
+            if (mode == "new")
                 swal("השאלון הוכנס בהצלחה!", "Great Job", "success");
             else if (mode == "duplicate")
                 swal("השאלון שוכפל בהצלחה!", "Great Job", "success");
@@ -624,7 +701,7 @@
             mode = "";
 
         }
-     
+
 
         // redraw a datatable with new data
         function redrawTable(tbl, data) {
@@ -703,7 +780,7 @@
                                     case 4:
                                         return 'ד';
                                         break;
-                                    
+
                                     default:
                                         return 'כלל השנים';
 
@@ -780,110 +857,110 @@
 
     </form>
 
-        <div id="editDiv" class="container">
-            <form id="ManagerForm">
-                <div class="form-group row">
+    <div id="editDiv" class="container">
+        <form id="ManagerForm">
+            <div class="form-group row">
 
-                    <div class="form-group col-sm-4">
-                        <label for="EndpublishDate"><span class="red-star">★ </span>תאריך סיום הפצה </label>
-                        <input type="date" class="form-control" onchange="checkdate(0)" id="EndpublishDate" placeholder="" required>
-                    </div>
-
-                    <div class="form-group col-sm-4">
-                        <label for="publishDate"><span class="red-star">★ </span>תאריך הפצה</label>
-                        <input type="date" class="form-control" onchange="checkdate(1)" id="publishDate" placeholder="" required>
-
-                    </div>
-
-                    <div class="form-group col-sm-4">
-                        <label for="subQr"><span class="red-star">★ </span>נושא השאלון</label>
-                        <input type="text" class="form-control" id="subQr" placeholder="" required>
-                    </div>
-
-                    <div class="form-group col-sm-4">
-                        <label for="yearList" id="yearListText"><span class="red-star">★ </span>שנת תפוצה</label>
-                        <select class="form-control" id="yearList" required>
-                            <option value="">בחירת שנה</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group col-sm-4">
-                        <label for="publishList"><span class="red-star">★ </span>רשימת תפוצה</label>
-                        <select class="form-control" id="publishList" required>
-                        </select>
-                    </div>
-                    <!--<div class="form-group col-sm-2">
-        <label for="numResponders"><span class="red-star">★ </span>מספר משיבים</label>
-        <input type="text" class="form-control" id="numResponders" />
-
-    </div>-->
-                    <div class="statuss form-group col-sm-4">
-                        <label for="Status"><span class="red-star">★ </span>סטטוס</label>
-                        <input type="checkbox" class="form-control" id="Status" checked />
-                    </div>
-                    <div class="insertque form-group col-sm-12">
-                        <h3 id="inserth3">הכנסת שאלות:</h3>
-                    </div>
-                    <div class="questionn1 form-group col-sm-12">
-                        <div id="question1"></div>
-                    </div>
-                    <div class="addqubutton form-group col-sm-12">
-                        <input type="button" value="הוספת שאלה" id="addinput" onclick="addquestion()" />
-                    </div>
+                <div class="form-group col-sm-4">
+                    <label for="EndpublishDate"><span class="red-star">★ </span>תאריך סיום הפצה </label>
+                    <input type="date" class="form-control" onchange="checkdate(0)" id="EndpublishDate" placeholder="" required>
                 </div>
-          
+
+                <div class="form-group col-sm-4">
+                    <label for="publishDate"><span class="red-star">★ </span>תאריך הפצה</label>
+                    <input type="date" class="form-control" onchange="checkdate(1)" id="publishDate" placeholder="" required>
+
+                </div>
+
+                <div class="form-group col-sm-4">
+                    <label for="subQr"><span class="red-star">★ </span>נושא השאלון</label>
+                    <input type="text" class="form-control" id="subQr" placeholder="" required>
+                </div>
+
+                <div class="form-group col-sm-4">
+                    <label for="yearList" id="yearListText"><span class="red-star">★ </span>שנת תפוצה</label>
+                    <select class="form-control" id="yearList" required>
+                        <option value="">בחירת שנה</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-sm-4">
+                    <label for="publishList"><span class="red-star">★ </span>רשימת תפוצה</label>
+                    <select class="form-control" id="publishList" required>
+                    </select>
+                </div>
+                <!--<div class="form-group col-sm-2">
+                    <label for="numResponders"><span class="red-star">★ </span>מספר משיבים</label>
+                    <input type="text" class="form-control" id="numResponders" />
+
+                </div>-->
+                <div class="statuss form-group col-sm-4">
+                    <label for="Status"><span class="red-star">★ </span>סטטוס</label>
+                    <input type="checkbox" class="form-control" id="Status" checked />
+                </div>
+                <div class="insertque form-group col-sm-12">
+                    <h3 id="inserth3">הכנסת שאלות:</h3>
+                </div>
+                <div class="questionn1 form-group col-sm-12">
+                    <div id="question1"></div>
+                </div>
+                <div class="addqubutton form-group col-sm-12">
+                    <input type="button" value="הוספת שאלה" id="addinput" onclick="addquestion()" />
+                </div>
+            </div>
 
 
-                <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">Save</button>
-                <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN" value="Cancel" />
-            </form>
-        </div>
+            <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">Save</button>
+            <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN" value="Cancel" />
+        </form>
+    </div>
+
+    <!--<canvas id="myChart" style="width:100%;max-width:600px"></canvas>-->
+
+
+    <!--<div id="EditViewDiv">
+        <form id="ManagerForm1">
+            <div class="form-group row">
 
 
 
-            <!--<div id="EditViewDiv">
-                <form id="ManagerForm1">
-                    <div class="form-group row">
+                <div class="form-group col-sm-4">
+                    <label for="Restaurant_Id1"><span class="red-star">★ </span>Restaurant Id</label>
+                    <input type="text" class="form-control" id="Restaurant_Id1" placeholder="" required>
+                </div>
 
 
+                <div class="form-group col-sm-3">
+                    <label for="Campain_Budget1"><span class="red-star">★ </span>Campain Budget</label>
+                    <input type="text" class="form-control" id="Campain_Budget1" placeholder="" required>
+                </div>
 
-                        <div class="form-group col-sm-4">
-                            <label for="Restaurant_Id1"><span class="red-star">★ </span>Restaurant Id</label>
-                            <input type="text" class="form-control" id="Restaurant_Id1" placeholder="" required>
-                        </div>
+                <div class="form-group col-sm-3">
+                    <label for="Balance1"><span class="red-star">★ </span>Balance</label>
+                    <input type="text" class="form-control" id="Balance1" placeholder="" />
+                </div>
 
+                <div class="form-group col-sm-2">
+                    <label for="Viewing_number1"><span class="red-star">★ </span>Viewing number</label>
+                    <input type="text" class="form-control" id="Viewing_number1" placeholder="" required />
 
-                        <div class="form-group col-sm-3">
-                            <label for="Campain_Budget1"><span class="red-star">★ </span>Campain Budget</label>
-                            <input type="text" class="form-control" id="Campain_Budget1" placeholder="" required>
-                        </div>
+                </div>
+                <div class="form-group col-sm-3">
+                    <label for="Clicks_number1"><span class="red-star">★ </span>Clicks number</label>
+                    <input type="text" class="form-control" id="Clicks_number1" placeholder="" required />
+                </div>
 
-                        <div class="form-group col-sm-3">
-                            <label for="Balance1"><span class="red-star">★ </span>Balance</label>
-                            <input type="text" class="form-control" id="Balance1" placeholder="" />
-                        </div>
+                <div class="form-group col-sm-3">
+                    <label for="Status1"><span class="red-star">★ </span>Status</label>
+                    <input type="checkbox" class="form-control" id="Status1" checked />
+                </div>
 
-                        <div class="form-group col-sm-2">
-                            <label for="Viewing_number1"><span class="red-star">★ </span>Viewing number</label>
-                            <input type="text" class="form-control" id="Viewing_number1" placeholder="" required />
+            </div>
 
-                        </div>
-                        <div class="form-group col-sm-3">
-                            <label for="Clicks_number1"><span class="red-star">★ </span>Clicks number</label>
-                            <input type="text" class="form-control" id="Clicks_number1" placeholder="" required />
-                        </div>
-
-                        <div class="form-group col-sm-3">
-                            <label for="Status1"><span class="red-star">★ </span>Status</label>
-                            <input type="checkbox" class="form-control" id="Status1" checked />
-                        </div>
-
-                    </div>
-
-                    <button type="submit" class="btn btn-primary btn-lg" id="saveBTN1">Save</button>
-                    <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN1" value="Cancel" />
-                </form>
-            </div>-->
+            <button type="submit" class="btn btn-primary btn-lg" id="saveBTN1">Save</button>
+            <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN1" value="Cancel" />
+        </form>
+    </div>-->
 
 
 </body>

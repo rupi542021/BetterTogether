@@ -62,43 +62,10 @@
                     data: data,
                     success: showImages,
                     error: error
-                });
-
-
-             
+                });      
                
             });
 
-
-
-            //$('#buttonUpload').on('click', function () {
-            //    var data = new FormData();
-            //    var files = $("#files").get(0).files;
-
-            //    // Add the uploaded file to the form data collection
-            //    if (files.length > 0) {
-            //        for (f = 0; f < files.length; f++) {
-            //            data.append("UploadedImage", files[f]);
-            //        }
-            //        data.append("Imagename", new Date()); // append what ever data you want to send along with the files. See how you extract it in the controller.
-            //    }
-            //    debugger;
-
-            //    // Ajax upload
-            //    $.ajax({
-            //        type: "POST",
-            //        url: "../Api/ImageUpload",
-            //        contentType: false,
-            //        processData: false,
-            //        data: data,
-            //        success: showImages,
-            //        error: error
-            //    });
-
-
-               
-            //    return false;
-            //});
 
         });
 
@@ -134,10 +101,10 @@
         }
 
         function checkdate() {
-            ////if ($("#datedis").val() < today) {
-            ////    swal("Attention", "תאריך הפצת הפרסום צריך להיות עתידי!", "error");
-            ////    $("#datedis").val("");
-            //}
+            if ($("#datedis").val() < today) {
+                swal("Attention", "תאריך הפצת הפרסום צריך להיות עתידי!", "error");
+                $("#datedis").val("");
+            }
         }
         // This function is called in case of a success
         function success(data) {
@@ -352,7 +319,6 @@
                   <input type="file" id="files" name="files" />
                 </div>
                 <br />
-                <!--<button type="button" id="buttonUpload">Upload image</button>-->
             </div>
             <input type="submit" value="הפצת פרסום" class="myButton" id="submitt" />
         </form>

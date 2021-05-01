@@ -71,10 +71,10 @@ namespace BetterTogetherProj.Controllers
         }
         [HttpGet]
         [Route("api/Questionnaire/analyze")]
-        public List<StudentsAnswers> GetStudentAns()
+        public List<StudentsAnswers> GetStudentAns(int numQr, int numQ)
         {
             StudentsAnswers SAns = new StudentsAnswers();
-            return SAns.GetStudentAns();
+            return SAns.GetStudentAns(numQr,numQ);
 
         }
 

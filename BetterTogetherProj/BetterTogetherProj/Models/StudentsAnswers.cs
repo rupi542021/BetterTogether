@@ -9,8 +9,7 @@ namespace project_classes.Models
     public class StudentsAnswers
     {
         string mail; 
-        List<bool> studAns;
-       
+        List<bool> studAns;  
         int questionnaireNum;
         int questionnum;
 
@@ -33,10 +32,10 @@ namespace project_classes.Models
         public int QuestionnaireNum { get => questionnaireNum; set => questionnaireNum = value; }
         public int Questionnum { get => questionnum; set => questionnum = value; }
 
-        public List<StudentsAnswers> GetStudentAns()
+        public List<StudentsAnswers> GetStudentAns(int numQr, int numQ)
         {
             DBServices db = new DBServices();
-            List<StudentsAnswers> SAns = db.GetStudentAns();
+            List<StudentsAnswers> SAns = db.GetStudentAns(numQr, numQ);
             return SAns;
         }
     }
