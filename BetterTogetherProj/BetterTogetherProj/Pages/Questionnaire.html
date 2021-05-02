@@ -379,9 +379,9 @@
             if (mode == "view") {
                // $("#question1").html("");
                //let div = document.getElementById("question1"); 
-                let canvass = "<canvas id='myChart' style='width:100%;max-width:600px'></canvas>";
+                let canvass = "<canvas id='myChart'"+q+" style='width:100%;max-width:600px'></canvas>";
                 //var res = Questionstring.concat(canvass);
-                $("#question1").append(canvass);
+                $("#"+q).append(canvass);
             }
 
         }
@@ -576,7 +576,7 @@
                 var yValues = [arrAns[0], arrAns[1], arrAns[2], arrAns[3], arrAns[4], arrAns[5]];
                 var barColors = ["red", "green", "blue", "orange", "brown", "pink"];
                 //var ctx = $("#myChart");
-                new Chart("myChart", {
+                new Chart("myChart"+q, {
                     type: "bar",
                     data: {
                         labels: xValues,
