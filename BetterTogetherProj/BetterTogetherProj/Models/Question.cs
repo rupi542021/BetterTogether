@@ -32,7 +32,12 @@ namespace project_classes.Models
         public List<string> Anslist { get => anslist; set => anslist = value; }
 
 
-
+        public List<Question> GetAllQuestions(int Qcode)
+        {
+            DBServices dbs = new DBServices();
+            List<Question> qList = dbs.getQuestionsbyNumqr(Qcode);
+            return qList;
+        }
         //public void Insertquestion()
         //{
         //    DBServices dbs = new DBServices();
