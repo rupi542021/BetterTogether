@@ -371,7 +371,7 @@ namespace BetterTogetherProj.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                String selectSTR = "select * from questionnaire_P3 where (departmentCode="+DepCode+ " or departmentCode=0) and (qrYear=" + Year+ " or qrYear=0) and status=1";
+                String selectSTR = "select * from questionnaire_P3 where (departmentCode="+DepCode+ " or departmentCode=15) and (qrYear=" + Year+ " or qrYear=0) and status=1";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
@@ -446,5 +446,7 @@ namespace BetterTogetherProj.Models.DAL
 
             }
         }
+       
+        
     }
 }
