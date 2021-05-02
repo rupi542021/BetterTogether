@@ -574,27 +574,35 @@
                 var xValues = [Qr.Queslist[i].Anslist[0], Qr.Queslist[i].Anslist[1], Qr.Queslist[i].Anslist[2], Qr.Queslist[i].Anslist[3], Qr.Queslist[i].Anslist[4], Qr.Queslist[i].Anslist[5]];
                 var yValues = [arrAns[0], arrAns[1], arrAns[2], arrAns[3], arrAns[4], arrAns[5]];
                 var barColors = ["red", "green", "blue", "orange", "brown", "pink"];
+              
                 k = i + 1;
                 const canvas = document.getElementById('myChart'+k);
                 const ctx = canvas.getContext('2d');
-                    new Chart(ctx, {
-                        type: "bar",
-                        data: {
-                            labels: xValues,
-                            datasets: [{
-                                backgroundColor: barColors,
-                                data: yValues
-                            }
-
-                            ]
-                        },
-                        options: {
-                            legend: { display: false },
-                            title: {
-                                display: true,
-                                text: "World Wine Production 2018"
-                            }
+                new Chart(ctx, {
+                    type: "bar",
+                    data: {
+                        labels: xValues,
+                      
+                        datasets: [{
+                            backgroundColor: barColors,
+                            data: yValues,
+                          
+                            
+                            
                         }
+
+                        ]
+                    },
+                    options: {
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: "ניתוח תוצאות שאלה" + " " + Qr.Queslist[i].Questionnum,
+                             
+                        },
+            
+                    },
+
                     });
             }
             Maxqsquantity = Qr.Queslist.length;
