@@ -578,22 +578,32 @@
                 //var ctx = $("#myChart");
                 new Chart("myChart"+q, {
                     type: "bar",
-                    data: {
+                    data:
+                    {   
                         labels: xValues,
                         datasets: [{
                             backgroundColor: barColors,
-                            data: yValues
+                            data: yValues,
+                  
                         }]
                     },
                     options: {
                         legend: { display: false },
                         title: {
                             display: true,
+                           //yAxes: [{
+                           //type: 'time',
+                           //ticks: {
+                           //autoSkip: true,
+                           //maxTicksLimit: 2
+                           //}
+                           //}],
                             //    text: "World Wine Production 2018"
                         }
                     }
                 });
             }
+
                 //    var data = {
                 //        header: ["answer", "Number of responsers"],
                 //        rows: [

@@ -92,6 +92,15 @@ namespace BetterTogetherProj.Controllers
                 return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("api/theUnit/getAllQuestions/{Qcode}")]
+        public List<Question> getAllQuestions(int Qcode)
+        {
+            Question q = new Question();
+            return q.GetAllQuestions(Qcode);
+
+        }
         // GET api/<controller>
         public IEnumerable<string> Get()
         {
