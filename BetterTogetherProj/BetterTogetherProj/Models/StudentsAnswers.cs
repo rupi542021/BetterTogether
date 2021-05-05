@@ -12,30 +12,30 @@ namespace project_classes.Models
         List<bool> studAns;  
         int questionnaireNum;
         int questionnum;
-
+        string openAnswer;
 
 
         public StudentsAnswers() { }
 
-        public StudentsAnswers(string mail, List<bool> studAns, int questionnaireNum, int questionnum)
+        public StudentsAnswers(string mail, List<bool> studAns, int questionnaireNum, int questionnum, string openAnswer)
         {
             Mail = mail;
             StudAns = studAns;
-           
             QuestionnaireNum = questionnaireNum;
             Questionnum = questionnum;
+            OpenAnswer = openAnswer;
         }
 
         public string Mail { get => mail; set => mail = value; }
         public List<bool> StudAns { get => studAns; set => studAns = value; }
-       
         public int QuestionnaireNum { get => questionnaireNum; set => questionnaireNum = value; }
         public int Questionnum { get => questionnum; set => questionnum = value; }
+        public string OpenAnswer { get => openAnswer; set => openAnswer = value; }
 
-        public List<StudentsAnswers> GetStudentAns(int numQr, int numQ)
+        public List<StudentsAnswers> GetStudentAns(int numQr)
         {
             DBServices db = new DBServices();
-            List<StudentsAnswers> SAns = db.GetStudentAns(numQr, numQ);
+            List<StudentsAnswers> SAns = db.GetStudentAns(numQr);
             return SAns;
         }
     }

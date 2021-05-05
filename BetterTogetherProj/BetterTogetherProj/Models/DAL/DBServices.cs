@@ -1306,14 +1306,14 @@ namespace BetterTogetherProj.Models.DAL
             return command;
 
         }
-        public List<StudentsAnswers> GetStudentAns(int numQr,  int numQ)
+        public List<StudentsAnswers> GetStudentAns(int numQr)
         {
             SqlConnection con = null;
             List<StudentsAnswers> SAnsList = new List<StudentsAnswers>();
             try
             {
                 con = connect1("DBConnectionString");
-                String selectSTR = " select * from studentanswers_P3 INNER JOIN question_P3 on studentanswers_P3.qCode=question_P3.qCode and studentanswers_P3.qrCode=question_P3.qrCode where studentanswers_P3.qrCode="+ numQr + " and studentanswers_P3.qCode="+ numQ;
+                String selectSTR = "select * from studentanswers_P3 INNER JOIN question_P3 on studentanswers_P3.qCode=question_P3.qCode and studentanswers_P3.qrCode=question_P3.qrCode where studentanswers_P3.qrCode=" + numQr; 
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
@@ -1322,6 +1322,7 @@ namespace BetterTogetherProj.Models.DAL
                     SAns.Mail = (string)dr["studentmail"];
                     SAns.QuestionnaireNum = Convert.ToInt16(dr["qrCode"]);
                     SAns.Questionnum = Convert.ToInt16(dr["qCode"]);
+                    SAns.OpenAnswer = Convert.ToString(dr["openAnswer"]);
                     SAns.StudAns = new List<bool>();
                     for (int i = 1; i < 7; i++)
                     {
