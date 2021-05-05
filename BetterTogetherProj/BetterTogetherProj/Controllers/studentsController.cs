@@ -23,7 +23,7 @@ namespace BetterTogetherProj.Controllers
             try
             {
                 student = student.checkStudentRuppin(email);
-                return Request.CreateResponse(HttpStatusCode.OK,student);
+                return Request.CreateResponse(HttpStatusCode.OK, student);
             }
             catch (Exception e)
             {
@@ -40,7 +40,7 @@ namespace BetterTogetherProj.Controllers
         }
         [HttpGet]
         [Route("api/students/{email}/{password}")]
-        public HttpResponseMessage GetStudentLogin(string email,string password)
+        public HttpResponseMessage GetStudentLogin(string email, string password)
         {
             Student student = new Student();
             try
@@ -69,7 +69,7 @@ namespace BetterTogetherProj.Controllers
             {
                 Pleasure p = new Pleasure();
                 List<Pleasure> PList = p.Read();
-                return Request.CreateResponse(HttpStatusCode.OK,PList);
+                return Request.CreateResponse(HttpStatusCode.OK, PList);
             }
             catch (Exception e)
             {
@@ -108,6 +108,7 @@ namespace BetterTogetherProj.Controllers
             }
         }
 
+
         [HttpGet]
         [Route("API/students/{mail}/GetAllFavorites")]
         public IHttpActionResult GetAllFavorites(string mail)
@@ -133,7 +134,7 @@ namespace BetterTogetherProj.Controllers
         // POST api/<controller>
         public HttpResponseMessage Post([FromBody] Student student)
         {
-           // Student s = new Student();
+            // Student s = new Student();
             try
             {
                 student.Insert();
@@ -169,7 +170,7 @@ namespace BetterTogetherProj.Controllers
             try
             {
                 student.UpdateStudentPtofile();
-                    return Ok(student);
+                return Ok(student);
             }
             catch (Exception ex)
             {
@@ -177,6 +178,23 @@ namespace BetterTogetherProj.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("API/students/{mail}/updateUserPreferences")]
+        public IHttpActionResult updateUserPreferences(string mail, [FromBody] List<Preferences> prefList)
+        {
+            //string mail = s.Mail;
+            //List < Preferences > prefList = s.Preflist;
+            try
+            {
+                Student s = new Student();
+                s.updateUserPreferences(mail, prefList);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
 
         [HttpGet]
         [Route("api/students/GetAllResidences")]
@@ -229,7 +247,7 @@ namespace BetterTogetherProj.Controllers
                 }
                 return Request.CreateResponse(HttpStatusCode.Created, imgpath);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e);
             }
@@ -242,7 +260,7 @@ namespace BetterTogetherProj.Controllers
             try
             {
                 sf.Delete();
-                    return Ok();
+                return Ok();
             }
             catch (Exception ex)
             {

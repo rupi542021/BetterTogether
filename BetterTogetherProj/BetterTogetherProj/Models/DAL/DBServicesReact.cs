@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Device.Location;
+//using System.Device.Location;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -189,6 +189,7 @@ namespace BetterTogetherProj.Models.DAL
                             stud.Plist = GetPlistByUser((string)dr["mail"]);
                             stud.Hlist = GetHlistByUser((string)dr["mail"]);
                             stud.Friendslist = GetFriendsListByUser(((string)dr["mail"]));
+                            stud.Preflist = GetPrefListByUser(((string)dr["mail"]));
                             return stud;
                         }
                             stud.Mail = (string)dr["mail"];
@@ -541,6 +542,101 @@ namespace BetterTogetherProj.Models.DAL
 
             }
         }
+        public List<Preferences> GetPrefListByUser(string email)
+        {
+            SqlConnection con = null;
+            List<Preferences> userPrefList = new List<Preferences>();
+            List<int> userCodePrefList = new List<int>();
+            int p1;
+            int p2;
+            int p3;
+            int p4;
+            int p5;
+            int p6;
+            int p7;
+            int p8;
+
+            try
+            {
+                con = connect("DBConnectionString");
+                String selectSTR = "SELECT [pref1],[pref2], [pref3],[pref4],[pref5],[pref6],[pref7],[pref8]FROM [dbo].[student_P] where [mail] = '" + email + "'";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr.Read())
+                {
+                    p1 = Convert.ToInt32(dr["pref1"]);
+                    p2 = Convert.ToInt32(dr["pref2"]);
+                    p3 = Convert.ToInt32(dr["pref3"]);
+                    p4 = Convert.ToInt32(dr["pref4"]);
+                    p5 = Convert.ToInt32(dr["pref5"]);
+                    p6 = Convert.ToInt32(dr["pref6"]);
+                    p7 = Convert.ToInt32(dr["pref7"]);
+                    p8 = Convert.ToInt32(dr["pref8"]);
+                    userCodePrefList.Add(p1);
+                    userCodePrefList.Add(p2);
+                    userCodePrefList.Add(p3);
+                    userCodePrefList.Add(p4);
+                    userCodePrefList.Add(p5);
+                    userCodePrefList.Add(p6);
+                    userCodePrefList.Add(p7);
+                    userCodePrefList.Add(p8);
+                }
+                foreach (var pref in userCodePrefList)
+                {
+                    Preferences pr = getPref(pref);
+                    userPrefList.Add(pr);
+                }
+                return userPrefList;
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+        }
+        public Preferences getPref(int pref)
+        {
+            SqlConnection con = null;
+            Preferences p = new Preferences();
+            try
+            {
+                con = connect("DBConnectionString");
+                String selectSTR = "select * from [dbo].[Preferences_P] where [PrefCode] =" + pref;
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr.Read())
+                {
+                    p.Prefcode = Convert.ToInt32(dr["PrefCode"]);
+                    p.Prefname = (string)(dr["PrefName"]); ;
+                    p.Preficon = (string)(dr["PrefIcon"]);
+                }
+                return p;
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+        }
+
         public List<Pleasure> GetAllPleasures()
         {
             SqlConnection con = null;
@@ -1270,16 +1366,6 @@ namespace BetterTogetherProj.Models.DAL
                     return 0;
             }
 
-           
-            
-            
-
-           
-
-
-          
-
-           
 
            
         }
@@ -1397,6 +1483,55 @@ namespace BetterTogetherProj.Models.DAL
             return command;
         }
 
+        public int updateUserPreferences(string mail, List<Preferences> prefList)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString");
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+
+            String cStr = BuildUpdateUserPreferencesCommand(mail,prefList);
+            cmd = CreateCommand(cStr, con);
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery();
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildUpdateUserPreferencesCommand(string mail, List<Preferences> prefList)
+        {
+            String prefix = "UPDATE[dbo].[student_P] SET ";
+            prefix += "[pref1] = '" + prefList[0] + "', [pref2] = '" + prefList[1] + "', ";
+            prefix += "[pref3] = '" + prefList[2] + "' , [pref4] = '" + prefList[3] + "'";
+            prefix += " , [pref5] = '" + prefList[4] + "' , [pref6] = " + prefList[5] + " , [pref7] = " + prefList[6] + " , [pref8] = " + prefList[7];
+            prefix += " WHERE [mail] = '" + mail + "'";
+            return prefix;
+        }
         public void writeToLog(Exception ex)
         {
             // Create a string array with the lines of text
