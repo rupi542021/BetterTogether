@@ -446,7 +446,55 @@ namespace BetterTogetherProj.Models.DAL
 
             }
         }
-       
-        
+        public int InsertQuestionnairAns(StudentsAnswers ans)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString");
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+
+            String cStr = BuildQuestionnairAnsCommand(ans);
+            cmd = CreateCommand(cStr, con);
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery();
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+
+        }
+        private String BuildQuestionnairAnsCommand(StudentsAnswers ans)
+        {
+            String command;
+            StringBuilder sb = new StringBuilder();
+            String prefix = "INSERT INTO studentanswers_P3 ([studentmail], [qrCode],[qCode],[ansText1],[ansText2],[ansText3],[ansText4],[ansText5],[ansText6],[openAnswer]) ";
+            sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}','{4}', '{5}','{6}', '{7}','{8}', '{9}')", ans.Mail,ans.QuestionnaireNum,ans.Questionnum, ans.StudAns[0], ans.StudAns[1], ans.StudAns[2], ans.StudAns[3], ans.StudAns[4], ans.StudAns[5],ans.OpenAnswer);
+            command = prefix + sb.ToString();
+            return command;
+        }
+
+
     }
 }

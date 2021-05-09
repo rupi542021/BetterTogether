@@ -101,6 +101,26 @@ namespace BetterTogetherProj.Controllers
             return q.GetAllQuestions(Qcode);
 
         }
+
+        [HttpPost]
+        [Route("api/theUnit/postQuestionnairAns")]
+        public HttpResponseMessage postQuestionnairAns([FromBody] List<StudentsAnswers> ans)
+        {
+            try
+            {
+                for (int i = 0; i < ans.Count; i++)
+                {
+                    ans[i].InsertQuestionnairAns();
+                }
+                
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
+            }
+        }
+
         // GET api/<controller>
         public IEnumerable<string> Get()
         {

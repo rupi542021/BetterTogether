@@ -38,6 +38,11 @@ namespace project_classes.Models
             List<StudentsAnswers> SAns = db.GetStudentAns(numQr);
             return SAns;
         }
+        public void InsertQuestionnairAns()
+        {
+            DBServicesUnit dbs = new DBServicesUnit();
+            dbs.InsertQuestionnairAns(this);
+        }
     }
 
 }
