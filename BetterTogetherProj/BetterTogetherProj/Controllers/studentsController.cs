@@ -138,7 +138,7 @@ namespace BetterTogetherProj.Controllers
             try
             {
                 student.Insert();
-                return Request.CreateResponse(HttpStatusCode.OK);
+                return Request.CreateResponse(HttpStatusCode.OK, student.getCurrentStudent(student.Mail));
             }
             catch (Exception ex)
             {

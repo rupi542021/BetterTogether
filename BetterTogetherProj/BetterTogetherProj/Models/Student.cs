@@ -55,7 +55,7 @@ namespace project_classes.Models
         public double Match { get => match; set => match = value; }
         public List<Preferences> Preflist { get => preflist; set => preflist = value; }
 
-        public Student(){}
+        public Student() { }
 
         public Student(string mail, string password, string fname, string lname, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, bool isAvailableCar, bool intrestedInCarPool, string photo, string gender, DateTime registrationDate, bool activeStatus, List<Hobby> hlist, List<Pleasure> plist, List<string> friendslist, List<StudentInCourse> studInCourse, double match, List<Preferences> preflist)
         {
@@ -130,13 +130,20 @@ namespace project_classes.Models
         //public List<StudentInCourse> StudInCourse { get => studInCourse; set => studInCourse = value; }
         //public double Match { get => match; set => match = value; }
 
+        public Student getCurrentStudent(string mail)
+        {
+            DBServicesReact dbs = new DBServicesReact();
+            Student stud = dbs.getCurrentStudent(mail);
+            return stud;
+        }
+
         public Student checkStudentRuppin(string email)
         {
             DBServicesReact dbs = new DBServicesReact();
             Student stud = dbs.checkStudentRuppin(email);
             return stud;
         }
-        public Student checkStudentLogin(string email,string password)
+        public Student checkStudentLogin(string email, string password)
         {
             DBServicesReact dbs = new DBServicesReact();
             Student stud = dbs.checkStudentLogin(email, password);
@@ -180,7 +187,8 @@ namespace project_classes.Models
             List<Student> studentsList = db.GetAllFavorites(mail);
             return studentsList;
         }
-        public void UpdateStudentPtofile() {
+        public void UpdateStudentPtofile()
+        {
             DBServicesReact dbs = new DBServicesReact();
             dbs.UpdateStudentPtofile(this);
             dbs.UpdateStudentPleasures(this);
