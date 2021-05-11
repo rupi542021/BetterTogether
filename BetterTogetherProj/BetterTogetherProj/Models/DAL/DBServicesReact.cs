@@ -153,7 +153,7 @@ namespace BetterTogetherProj.Models.DAL
 
             }
         }
-        public Student checkStudentLogin(string email,string password)
+        public Student getCurrentStudent(string mail)
         {
             SqlConnection con = null;
             Student stud = new Student();
@@ -161,10 +161,64 @@ namespace BetterTogetherProj.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                String selectSTR = "SELECT * FROM student_P where mail='"+ email + "'";
+                String selectSTR = "SELECT * FROM student_P where mail='" + mail + "'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-                    if (dr.HasRows == true)
+
+                while (dr.Read())
+                {
+                    stud.Mail = (string)dr["mail"];
+                    stud.Password = (string)dr["password"];
+                    stud.Fname = (string)(dr["firstName"]);
+                    stud.Lname = (string)(dr["lastName"]);
+                    stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
+                    stud.Dep = getStudDep(Convert.ToInt32(dr["departmentCode"]));
+                    stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
+                    stud.HomeTown = getResidenceH((string)(dr["homeTown"]));
+                    stud.AddressStudying = getResidenceS((string)(dr["adrressStudying"]));
+                    stud.PersonalStatus = (string)(dr["personalStatus"]);
+                    stud.IsAvailableCar = Convert.ToBoolean(dr["isAvailableCar"]);
+                    stud.IntrestedInCarPool = Convert.ToBoolean(dr["intrestedInCarPool"]);
+                    stud.Photo = (string)(dr["photo"]);
+                    stud.Gender = (string)(dr["gender"]);
+                    stud.RegistrationDate = Convert.ToDateTime(dr["registrationDate"]);
+                    stud.ActiveStatus = Convert.ToBoolean(dr["active"]);
+                    stud.Plist = GetPlistByUser((string)dr["mail"]);
+                    stud.Hlist = GetHlistByUser((string)dr["mail"]);
+                    stud.Friendslist = GetFriendsListByUser(((string)dr["mail"]));
+                    stud.Preflist = GetPrefListByUser(((string)dr["mail"]));
+
+                }
+                return stud;
+            }
+
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+        }
+
+        public Student checkStudentLogin(string email, string password)
+        {
+            SqlConnection con = null;
+            Student stud = new Student();
+
+            try
+            {
+                con = connect("DBConnectionString");
+                String selectSTR = "SELECT * FROM student_P where mail='" + email + "'";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                if (dr.HasRows == true)
                 {
                     while (dr.Read())
                     {
@@ -192,15 +246,15 @@ namespace BetterTogetherProj.Models.DAL
                             stud.Preflist = GetPrefListByUser(((string)dr["mail"]));
                             return stud;
                         }
-                            stud.Mail = (string)dr["mail"];
-                            stud.Fname = (string)(dr["firstName"]);
-                            stud.Lname = (string)(dr["lastName"]);
+                        stud.Mail = (string)dr["mail"];
+                        stud.Fname = (string)(dr["firstName"]);
+                        stud.Lname = (string)(dr["lastName"]);
                         //stud.Password = null;
                         //return stud;
                         Exception ex = new Exception("incorrect password");
-                        throw(ex);
+                        throw (ex);
                     }
-                 }
+                }
 
                 //stud.Mail = null;
                 //return stud;
@@ -262,9 +316,9 @@ namespace BetterTogetherProj.Models.DAL
 
             try
             {
-                con = connect("DBConnectionString"); 
+                con = connect("DBConnectionString");
 
-                String selectSTR = "SELECT * FROM department_P where departmentCode="+DepID;
+                String selectSTR = "SELECT * FROM department_P where departmentCode=" + DepID;
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
@@ -293,7 +347,7 @@ namespace BetterTogetherProj.Models.DAL
 
             }
         }
-        
+
         public Residence getResidenceH(string ResidenceName)
         {
             SqlConnection con = null;
@@ -349,7 +403,7 @@ namespace BetterTogetherProj.Models.DAL
             {
                 con = connect("DBConnectionString");
 
-                String selectSTR = "SELECT * FROM student_pleasure_P INNER JOIN pleasure_P ON pleasurepCode = pCode where studentmail = '"+email+"'";
+                String selectSTR = "SELECT * FROM student_pleasure_P INNER JOIN pleasure_P ON pleasurepCode = pCode where studentmail = '" + email + "'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
@@ -386,13 +440,13 @@ namespace BetterTogetherProj.Models.DAL
 
             try
             {
-                con = connect("DBConnectionString"); 
+                con = connect("DBConnectionString");
 
                 String selectSTR = "SELECT sf.student2Mail FROM student_favorites_P sf where sf.Student1Mail ='" + email + "'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
-               
-                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); 
+
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -432,8 +486,8 @@ namespace BetterTogetherProj.Models.DAL
 
                 while (dr.Read())
                 {
-                  stud = GetStudentDetails((string)dr["student2Mail"]);
-                  userFriendsList.Add(stud);
+                    stud = GetStudentDetails((string)dr["student2Mail"]);
+                    userFriendsList.Add(stud);
                 }
                 var OrdereduserFriendsList = userFriendsList.OrderBy(x => x.Fname).ToList();
                 return OrdereduserFriendsList;
@@ -464,29 +518,29 @@ namespace BetterTogetherProj.Models.DAL
                 String selectSTR = "SELECT * FROM student_P where mail='" + email + "'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-               
-                    while (dr.Read())
-                    {                    
-                            stud.Mail = (string)dr["mail"];
-                            stud.Password = (string)dr["password"];
-                            stud.Fname = (string)(dr["firstName"]);
-                            stud.Lname = (string)(dr["lastName"]);
-                            stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
-                            stud.Dep = getStudDep(Convert.ToInt32(dr["departmentCode"]));
-                            stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
-                            stud.HomeTown = getResidenceH((string)(dr["homeTown"]));
-                            stud.AddressStudying = getResidenceS((string)(dr["adrressStudying"]));
-                            stud.PersonalStatus = (string)(dr["personalStatus"]);
-                            stud.IsAvailableCar = Convert.ToBoolean(dr["isAvailableCar"]);
-                            stud.IntrestedInCarPool = Convert.ToBoolean(dr["intrestedInCarPool"]);
-                            stud.Photo = (string)(dr["photo"]);
-                            stud.Gender = (string)(dr["gender"]);
-                            stud.RegistrationDate = Convert.ToDateTime(dr["registrationDate"]);
-                            stud.ActiveStatus = Convert.ToBoolean(dr["active"]);
-                            stud.Plist = GetPlistByUser((string)dr["mail"]);
-                            stud.Hlist = GetHlistByUser((string)dr["mail"]);
-                            stud.Friendslist = GetFriendsListByUser(((string)dr["mail"]));
-                    }
+
+                while (dr.Read())
+                {
+                    stud.Mail = (string)dr["mail"];
+                    stud.Password = (string)dr["password"];
+                    stud.Fname = (string)(dr["firstName"]);
+                    stud.Lname = (string)(dr["lastName"]);
+                    stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
+                    stud.Dep = getStudDep(Convert.ToInt32(dr["departmentCode"]));
+                    stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
+                    stud.HomeTown = getResidenceH((string)(dr["homeTown"]));
+                    stud.AddressStudying = getResidenceS((string)(dr["adrressStudying"]));
+                    stud.PersonalStatus = (string)(dr["personalStatus"]);
+                    stud.IsAvailableCar = Convert.ToBoolean(dr["isAvailableCar"]);
+                    stud.IntrestedInCarPool = Convert.ToBoolean(dr["intrestedInCarPool"]);
+                    stud.Photo = (string)(dr["photo"]);
+                    stud.Gender = (string)(dr["gender"]);
+                    stud.RegistrationDate = Convert.ToDateTime(dr["registrationDate"]);
+                    stud.ActiveStatus = Convert.ToBoolean(dr["active"]);
+                    stud.Plist = GetPlistByUser((string)dr["mail"]);
+                    stud.Hlist = GetHlistByUser((string)dr["mail"]);
+                    stud.Friendslist = GetFriendsListByUser(((string)dr["mail"]));
+                }
                 return stud;
             }
 
@@ -693,7 +747,7 @@ namespace BetterTogetherProj.Models.DAL
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
-                { 
+                {
                     Hobby h = new Hobby();
                     h.Hcode = Convert.ToInt32(dr["hCode"]);
                     h.Hname = (string)(dr["hName"]);
@@ -759,8 +813,8 @@ namespace BetterTogetherProj.Models.DAL
         {
             String command;
             StringBuilder sb = new StringBuilder();
-            String prefix = "INSERT INTO Student_P" + "(mail, password, firstName, lastName, dateOfBirth, departmentCode, studyingYear, homeTown, adrressStudying, personalStatus, isAvailableCar, intrestedInCarpool, photo, gender, registrationDate, active) ";
-            sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}','{4}', '{5}','{6}', '{7}','{8}', '{9}','{10}', '{11}','{12}', '{13}','{14}', '{15}')", student.Mail, student.Password, student.Fname, student.Lname, student.DateOfBirth.ToString("yyyy-MM-dd H:mm:ss"), student.Dep.DepartmentCode, student.StudyingYear, student.HomeTown.Name, student.AddressStudying.Name, student.PersonalStatus, student.IsAvailableCar, student.IntrestedInCarPool, student.Photo, student.Gender, student.RegistrationDate.ToString("yyyy-MM-dd H:mm:ss"), true);
+            String prefix = "INSERT INTO Student_P" + "(mail, password, firstName, lastName, dateOfBirth, departmentCode, studyingYear, homeTown, adrressStudying, personalStatus, isAvailableCar, intrestedInCarpool, photo, gender, registrationDate, active,pref1,pref2,pref3,pref4,pref5,pref6,pref7,pref8) ";
+            sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}','{4}', '{5}','{6}', '{7}','{8}', '{9}','{10}', '{11}','{12}', '{13}','{14}', '{15}', '{16}', '{17}', '{18}', '{19}', '{20}', '{21}', '{22}', '{23}')", student.Mail, student.Password, student.Fname, student.Lname, student.DateOfBirth.ToString("yyyy-MM-dd H:mm:ss"), student.Dep.DepartmentCode, student.StudyingYear, student.HomeTown.Name, student.AddressStudying.Name, student.PersonalStatus, student.IsAvailableCar, student.IntrestedInCarPool, student.Photo, student.Gender, student.RegistrationDate.ToString("yyyy-MM-dd H:mm:ss"), true, 1, 2, 3, 4, 5, 6, 7, 8);
             command = prefix + sb.ToString();
             return command;
         }
@@ -865,7 +919,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             return prefix;
         }
-       
+
         public int UpdateStudentPtofile(Student student)
         {
 
@@ -911,10 +965,10 @@ namespace BetterTogetherProj.Models.DAL
             int carPool = student.IntrestedInCarPool == true ? 1 : 0;
             int withCar = student.IsAvailableCar == true ? 1 : 0;
             String prefix = "UPDATE[dbo].[student_P] SET ";
-            prefix += "[photo] = '" + student.Photo + "', [gender] = '" + student.Gender +"', ";
+            prefix += "[photo] = '" + student.Photo + "', [gender] = '" + student.Gender + "', ";
             prefix += "[homeTown] = '" + student.HomeTown.Name + "' , [adrressStudying] = '" + student.AddressStudying.Name + "'";
             prefix += " , [personalStatus] = '" + student.PersonalStatus + "' , [isAvailableCar] = " + withCar + " , [intrestedInCarPool] = " + carPool;
-            prefix += " WHERE [mail] = '"+ student.Mail +"'";
+            prefix += " WHERE [mail] = '" + student.Mail + "'";
             return prefix;
         }
 
@@ -1095,7 +1149,7 @@ namespace BetterTogetherProj.Models.DAL
                     stud.Plist = GetPlistByUser((string)dr["mail"]);
                     stud.Hlist = GetHlistByUser((string)dr["mail"]);
                     stud.Friendslist = GetFriendsListByUser(((string)dr["mail"]));
-                    stud.Match = calMatch(mail, stud.Friendslist,stud.DateOfBirth, stud.Dep, stud.StudyingYear, stud.HomeTown, stud.AddressStudying, stud.PersonalStatus, stud.Hlist,stud.Plist);
+                    stud.Match = calMatch(mail, stud.Friendslist, stud.DateOfBirth, stud.Dep, stud.StudyingYear, stud.HomeTown, stud.AddressStudying, stud.PersonalStatus, stud.Hlist, stud.Plist);
                     studList.Add(stud);
                 }
 
@@ -1231,7 +1285,7 @@ namespace BetterTogetherProj.Models.DAL
         {
             SqlConnection con = null;
             double match = 0;
-           
+
             List<int> prefList = getPrefByUser(mail);
             int[] percentageOfPref = { 20, 20, 20, 20, 15, 10, 5, 5 };
 
@@ -1259,7 +1313,7 @@ namespace BetterTogetherProj.Models.DAL
 
                     for (int p = 0; p < percentageOfPref.Length; p++)
                     {
-                        double res = getCalacResult(prefList[p] ,stud, friendsList, dateOfBirth, dep, studyingYear, homeTown, addressStudying, personalStatus, hlist, plist);
+                        double res = getCalacResult(prefList[p], stud, friendsList, dateOfBirth, dep, studyingYear, homeTown, addressStudying, personalStatus, hlist, plist);
                         res = res * percentageOfPref[p];
                         match += res;
                     }
@@ -1287,7 +1341,7 @@ namespace BetterTogetherProj.Models.DAL
             }
         }
 
-        private double getCalacResult(int p , Student stud, List<string> friendsList, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, List<Hobby> hlist, List<Pleasure> plist)
+        private double getCalacResult(int p, Student stud, List<string> friendsList, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, List<Hobby> hlist, List<Pleasure> plist)
         {
             int countP = 0;
             int countH = 0;
@@ -1320,7 +1374,7 @@ namespace BetterTogetherProj.Models.DAL
                             countH++;
                     }
                     if (stud.Hlist.Count != 0 && countH != 0)
-                       return (Convert.ToDouble(countH) / Convert.ToDouble(stud.Hlist.Count));
+                        return (Convert.ToDouble(countH) / Convert.ToDouble(stud.Hlist.Count));
                     return 0;
                 case 3: // חברים משותפים
                     for (int i = 0; i < stud.Friendslist.Count; i++)
@@ -1332,7 +1386,7 @@ namespace BetterTogetherProj.Models.DAL
                     {
                         if (countFriends > 5)
                             countFriends = 5;
-                        return (Convert.ToDouble(countFriends) / 5);                        
+                        return (Convert.ToDouble(countFriends) / 5);
                     }
                     return 0;
                 case 4: // מקום מגורים
@@ -1367,7 +1421,7 @@ namespace BetterTogetherProj.Models.DAL
             }
 
 
-           
+
         }
         private List<int> getPrefByUser(string mail)
         {
@@ -1392,17 +1446,17 @@ namespace BetterTogetherProj.Models.DAL
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
-                    {
-                        pref1 = Convert.ToInt32(dr["pref1"]);
-                        pref2 = Convert.ToInt32(dr["pref2"]);
-                        pref3 = Convert.ToInt32(dr["pref3"]);
-                        pref4 = Convert.ToInt32(dr["pref4"]);
-                        pref5 = Convert.ToInt32(dr["pref5"]);
-                        pref6 = Convert.ToInt32(dr["pref6"]);
-                        pref7 = Convert.ToInt32(dr["pref7"]);
-                        pref8 = Convert.ToInt32(dr["pref8"]);
+                {
+                    pref1 = Convert.ToInt32(dr["pref1"]);
+                    pref2 = Convert.ToInt32(dr["pref2"]);
+                    pref3 = Convert.ToInt32(dr["pref3"]);
+                    pref4 = Convert.ToInt32(dr["pref4"]);
+                    pref5 = Convert.ToInt32(dr["pref5"]);
+                    pref6 = Convert.ToInt32(dr["pref6"]);
+                    pref7 = Convert.ToInt32(dr["pref7"]);
+                    pref8 = Convert.ToInt32(dr["pref8"]);
 
-                    }
+                }
                 UserPrefList.Add(pref1);
                 UserPrefList.Add(pref2);
                 UserPrefList.Add(pref3);
@@ -1479,7 +1533,7 @@ namespace BetterTogetherProj.Models.DAL
         }
         private String BuildDeleteFavoriteCommand(StudentFavorites sf)
         {
-            String command = "DELETE from [dbo].[student_favorites_P] where [Student1Mail] = '" + sf.Student1mail +"' and [student2Mail] = '" +  sf.Student2mail +"'";
+            String command = "DELETE from [dbo].[student_favorites_P] where [Student1Mail] = '" + sf.Student1mail + "' and [student2Mail] = '" + sf.Student2mail + "'";
             return command;
         }
 
@@ -1499,7 +1553,7 @@ namespace BetterTogetherProj.Models.DAL
                 throw (ex);
             }
 
-            String cStr = BuildUpdateUserPreferencesCommand(mail,prefList);
+            String cStr = BuildUpdateUserPreferencesCommand(mail, prefList);
             cmd = CreateCommand(cStr, con);
 
             try
@@ -1526,9 +1580,9 @@ namespace BetterTogetherProj.Models.DAL
         private String BuildUpdateUserPreferencesCommand(string mail, List<Preferences> prefList)
         {
             String prefix = "UPDATE[dbo].[student_P] SET ";
-            prefix += "[pref1] = '" + prefList[0] + "', [pref2] = '" + prefList[1] + "', ";
-            prefix += "[pref3] = '" + prefList[2] + "' , [pref4] = '" + prefList[3] + "'";
-            prefix += " , [pref5] = '" + prefList[4] + "' , [pref6] = " + prefList[5] + " , [pref7] = " + prefList[6] + " , [pref8] = " + prefList[7];
+            prefix += "[pref1] = '" + prefList[0].Prefcode + "', [pref2] = '" + prefList[1].Prefcode + "', ";
+            prefix += "[pref3] = '" + prefList[2].Prefcode + "' , [pref4] = '" + prefList[3].Prefcode + "'";
+            prefix += " , [pref5] = '" + prefList[4].Prefcode + "' , [pref6] = " + prefList[5].Prefcode + " , [pref7] = " + prefList[6].Prefcode + " , [pref8] = " + prefList[7].Prefcode;
             prefix += " WHERE [mail] = '" + mail + "'";
             return prefix;
         }
@@ -1542,9 +1596,9 @@ namespace BetterTogetherProj.Models.DAL
               Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
             // Write the string array to a new file named "Exceptions.txt".
-            using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "Exceptions.txt"),true))
+            using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "Exceptions.txt"), true))
             {
-                    outputFile.WriteLine(line);
+                outputFile.WriteLine(line);
             }
         }
 
