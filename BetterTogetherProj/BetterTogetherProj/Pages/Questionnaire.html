@@ -61,6 +61,8 @@
             AnsNum = 0;
             Maxqsquantity = 0
             mode = "";
+          
+            //$("#filter").change(filterQr);
             $("#cancelSaveBTN").on("click", function () { //מבטל טופס NEW
                 qrId = null;
                 $("#editDiv").hide();
@@ -77,6 +79,7 @@
                 AnsNum = 0;
                 $(".statuss").hide();
                 q = 0;
+               
                 $("#question1").html("");
                 mode = "new";
                 addquestion();
@@ -720,6 +723,17 @@
             }
             tbl.draw();
         }
+        ////function filterQr() {
+        //let choseQR = "";
+        ////    choseQr = $("#filter").val();
+        ////    if (choseQr == 1)  
+        ////        alert("gal");
+        //choseQR = true;
+        //else
+        // choseQR = false;
+        //  let api = "../api/Questionnaire/qr?activeqr="+choseQR
+        //    ajaxCall("GET", api, "", getSuccess, error);
+        ////}
 
         // this function is activated in case of a success
         function getSuccess(questionnaireData) {
@@ -846,6 +860,14 @@
     <h2>שאלוני סטודנטים</h2>
 
     <button class="myButton" id="newBTN"> יצירת שאלון חדש <span class="glyphicon glyphicon-plus"></span></button>
+    <div class="form-group col-sm-12">
+      
+        <select class="form-control" id="filter">
+            <option value="1">שאלונים פעילים</option>
+            <option value="2">שאלונים לא פעילים</option>
+
+        </select>
+    </div>
     <form id="pForm">
         <table id="QTable" class="display nowrap" style="width:100%">
             <thead>
@@ -925,9 +947,7 @@
     </div>
 
     <!--<canvas id="myChart" style="width:100%;max-width:600px"></canvas>-->
- <!--<canvas id="myChart1" style="width:100%;max-width:600px"></canvas>-->
-
-
+    <!--<canvas id="myChart1" style="width:100%;max-width:600px"></canvas>-->
     <!--<div id="EditViewDiv">
         <form id="ManagerForm1">
             <div class="form-group row">
