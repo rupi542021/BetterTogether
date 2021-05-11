@@ -45,7 +45,7 @@
     </style>
     <script>
 
-
+        var QrNumm = 0;
         var AnsNum = 0;
         var q = 0;
         var today = new Date();
@@ -54,15 +54,13 @@
         var yyyy = today.getFullYear();
         today = yyyy + '-' + mm + '-' + dd;
 
-        // will run when the document is ready
-       /* var Maxqsquantity = 0;*/
+   
         $(document).ready(function () {
-          
             AnsNum = 0;
             Maxqsquantity = 0
             mode = "";
-          
-            //$("#filter").change(filterQr);
+
+           
             $("#cancelSaveBTN").on("click", function () { //מבטל טופס NEW
                 qrId = null;
                 $("#editDiv").hide();
@@ -75,6 +73,8 @@
 
             $("#newBTN").on("click", function () {
 
+                ajaxCall("GET", "../api/Questionnaire/GetQNum", "", getQrNum, error);
+      
                 ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
                 AnsNum = 0;
                 $(".statuss").hide();
@@ -99,8 +99,8 @@
 
             });
 
-            let api = "../api/Questionnaire/qr"
-            ajaxCall("GET", api, "", getSuccess, error);
+            //let api = "../api/Questionnaire/qr"
+            //ajaxCall("GET", api, "", getSuccess, error);
 
             //$("#ManagerForm1").submit(onSubmitFunc);
             $("#ManagerForm").submit(onSubmitFunc);// wire the submit event to a function called f1
@@ -112,11 +112,19 @@
             $(document).on("change", '#publishList', { 'param': 0 }, function (event) {
                 getyearbydep(event.data.param);
             });
-            //$(`#QuestionType` + q).change(getQuestionType)
-            //$(document).on("change", "#QuestionType"+q, getQuestionType);
+            let statusQR = $("#filter").val();
+            let api = "../api/Questionnaire/qr?statusQR=" + statusQR;
+            ajaxCall("GET", api, "", getSuccess, error);
+            $("#filter").change(filterQr);
 
 
         });
+
+        function getQrNum(QrNum) {
+            console.log(QrNum);
+            QrNumm = QrNum;
+
+        }
 
         function getSuccessalldep(alldep) {
             console.log(alldep);
@@ -323,7 +331,7 @@
                     Status: Qr.Status,
                     QuestionnaireYear: Qr.QuestionnaireYear,
                     Queslist: Qr.Queslist,
-                    QuestionnaireNum: questionnaires[questionnaires["length"] - 1].QuestionnaireNum + 1,
+                  /*  QuestionnaireNum: geQrNum() ,*/
                 }
                 ajaxCall("POST", "../api/Questionnaire/postqr", JSON.stringify(Qrtoduplicate), insertSuccess, error);
                 //    return false;
@@ -456,7 +464,8 @@
                     questionList.push(Questionn);
                 }
                 console.log(questionList);
-                QrtoSave = {
+                console.log(QrNumm);
+                 QrtoSave   = {
 
                     QuestionnairePublish: QuestionnairePublish,
                     EndPublishDate: EndPublishDate,
@@ -468,7 +477,8 @@
                     Status: true,
                     QuestionnaireYear: QuestionnaireYear,
                     Queslist: questionList,
-                    QuestionnaireNum: questionnaires[questionnaires["length"] - 1].QuestionnaireNum + 1,
+                    QuestionnaireNum: QrNumm,
+                    
                 }
 
             }
@@ -476,7 +486,6 @@
 
             // add a new Car record to the server
             if (mode == "edit")
-
                 ajaxCall("PUT", "../api/Questionnaire", JSON.stringify(QrtoUpdate), updateSuccess, error);
             else if (mode == "new")
                 ajaxCall("POST", "../api/Questionnaire/postqr", JSON.stringify(QrtoSave), insertSuccess, error);
@@ -678,7 +687,8 @@
         // success callback function after update
         function updateSuccess(questionnaireData) {
             tbl.clear();
-            ajaxCall("GET", "../api/Questionnaire/qr", "", getSuccessupdate, error);
+            let statusQR = $("#filter").val();
+            ajaxCall("GET", "../api/Questionnaire/qr?statusQR=" + statusQR, "", getSuccessupdate, error);
 
         }
 
@@ -693,7 +703,8 @@
         // success callback function after update
         function insertSuccess(questionnaireData) {
             console.log(questionnaireData);
-            ajaxCall("GET", "../api/Questionnaire/qr", "", getSuccessinsert, error);
+            let statusQR = $("#filter").val();
+            ajaxCall("GET", "../api/Questionnaire/qr?statusQR=" + statusQR, "", getSuccessinsert, error);
 
         }
         function getSuccessinsert(questionnaireData) {
@@ -723,30 +734,28 @@
             }
             tbl.draw();
         }
-        ////function filterQr() {
-        //let choseQR = "";
-        ////    choseQr = $("#filter").val();
-        ////    if (choseQr == 1)  
-        ////        alert("gal");
-        //choseQR = true;
-        //else
-        // choseQR = false;
-        //  let api = "../api/Questionnaire/qr?activeqr="+choseQR
-        //    ajaxCall("GET", api, "", getSuccess, error);
-        ////}
+        
 
+        function filterQr() {
+            let statusQR = $(this).val();
+            let api = "../api/Questionnaire/qr?statusQR=" + statusQR;
+            ajaxCall("GET", api, "", getSuccess, error);
+        }
         // this function is activated in case of a success
         function getSuccess(questionnaireData) {
 
             console.log(questionnaireData);
             questionnaires = questionnaireData; // keep the cars array in a global variable;
-
+            if ($.fn.dataTable.isDataTable('#QTable')) {//destroy the old table on existence and then create new instance of jQuery DataTable
+                $('#QTable').DataTable().clear().destroy();
+            }
             try {
                 tbl = $('#QTable').DataTable({
                     "oLanguage": {
                         "sLengthMenu": "הצגת _MENU_ שאלונים", "sSearch": "חיפוש: ", "sZeroRecords": "אין תגובות לאירוע זה"
                     },
-                    data: questionnaireData,
+                   data: questionnaireData,
+                    
                     pageLength: 5,
                     columns: [
                         {
@@ -864,7 +873,7 @@
       
         <select class="form-control" id="filter">
             <option value="1">שאלונים פעילים</option>
-            <option value="2">שאלונים לא פעילים</option>
+            <option value="0">שאלונים לא פעילים</option>
 
         </select>
     </div>
