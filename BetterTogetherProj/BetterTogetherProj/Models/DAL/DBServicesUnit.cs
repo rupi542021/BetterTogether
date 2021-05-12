@@ -388,6 +388,7 @@ namespace BetterTogetherProj.Models.DAL
                     //qr.Dep.DepartmentCode = Convert.ToInt16(dr["departmentCode"]);
                     qr.QuestionnaireYear = Convert.ToInt16(dr["qrYear"]);
                     //qr.Queslist = getQuestionsbyNumqr(qr.QuestionnaireNum);
+                    qr.StudentsAns = getStudMailList(qr.QuestionnaireNum);
                     qList.Add(qr);
                 }
 
@@ -445,6 +446,39 @@ namespace BetterTogetherProj.Models.DAL
                 }
 
             }
+        }
+        public List<string> getStudMailList(int Qcode)
+        {
+                SqlConnection con = null;
+                List<string> SAnsListMail = new List<string>();
+                try
+                {
+                    con = connect("DBConnectionString");
+                    String selectSTR = "select * from studentanswers_P3 where qrCode=" + Qcode;
+                    SqlCommand cmd = new SqlCommand(selectSTR, con);
+                    SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                    while (dr.Read())
+                    {  
+                    if(!SAnsListMail.Contains((string)dr["studentmail"]))
+                         SAnsListMail.Add((string)dr["studentmail"]);
+                    }
+
+                    return SAnsListMail;
+                }
+                catch (Exception ex)
+                {
+                    // write to log
+                    throw (ex);
+                }
+                finally
+                {
+                    if (con != null)
+                    {
+                        con.Close();
+                    }
+
+                }
+
         }
         public int InsertQuestionnairAns(StudentsAnswers ans)
         {

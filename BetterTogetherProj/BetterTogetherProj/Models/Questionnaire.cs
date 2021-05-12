@@ -18,12 +18,12 @@ namespace project_classes.Models
         bool status;
         int questionnaireYear;
         List<Question> queslist;
-
+        List<string> studentsAns;
 
 
         public Questionnaire() { }
 
-        public Questionnaire(int questionnaireNum, DateTime questionnairePublish, DateTime endPublishDate, string subQr, Department dep, int numResponders, bool status, int questionnaireYear, List<Question> queslist)
+        public Questionnaire(int questionnaireNum, DateTime questionnairePublish, DateTime endPublishDate, string subQr, Department dep, int numResponders, bool status, int questionnaireYear, List<Question> queslist, List<string> studentsAns)
         {
             QuestionnaireNum = questionnaireNum;
             QuestionnairePublish = questionnairePublish;
@@ -34,6 +34,7 @@ namespace project_classes.Models
             Status = status;
             QuestionnaireYear = questionnaireYear;
             Queslist = queslist;
+            StudentsAns = studentsAns;
         }
 
         public int QuestionnaireNum { get => questionnaireNum; set => questionnaireNum = value; }
@@ -45,6 +46,7 @@ namespace project_classes.Models
         public bool Status { get => status; set => status = value; }
         public int QuestionnaireYear { get => questionnaireYear; set => questionnaireYear = value; }
         public List<Question> Queslist { get => queslist; set => queslist = value; }
+        public List<string> StudentsAns { get => studentsAns; set => studentsAns = value; }
 
         public List<Questionnaire> GetQuestionnaire()
         {
