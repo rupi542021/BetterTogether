@@ -1586,6 +1586,99 @@ namespace BetterTogetherProj.Models.DAL
             prefix += " WHERE [mail] = '" + mail + "'";
             return prefix;
         }
+        public int updateUserPassword(string pass, Student stud)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString");
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+
+            String cStr = BuildupdateUserPasswordCommand(pass, stud);
+            cmd = CreateCommand(cStr, con);
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery();
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildupdateUserPasswordCommand(string pass, Student stud)
+        {
+            String prefix = "UPDATE[dbo].[student_P] SET [password] ='"+ pass +"'";
+            prefix += " WHERE [mail] = '" + stud.Mail + "'";
+            return prefix;
+        }
+
+        public int deleteUserProfile(string mail)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString");
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+
+            String cStr = BuildDeleteUserProfileCommand(mail);
+            cmd = CreateCommand(cStr, con);
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery();
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildDeleteUserProfileCommand(string mail)
+        {
+            String prefix = "UPDATE[dbo].[student_P] SET [active] ='" + true;
+            prefix += "' WHERE [mail] = '" + mail + "'";
+            return prefix;
+        }
         public void writeToLog(Exception ex)
         {
             // Create a string array with the lines of text

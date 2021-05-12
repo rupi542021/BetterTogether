@@ -196,6 +196,22 @@ namespace BetterTogetherProj.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("API/students/{pass}/updateUserPassword")]
+        public IHttpActionResult updateUserPassword(string pass, [FromBody] Student stud)
+        {
+            try
+            {
+                Student s = new Student();
+                s.updateUserPassword(pass, stud);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e.Message);
+            }
+        }
+
         [HttpGet]
         [Route("api/students/GetAllResidences")]
         public IHttpActionResult GetAllResidences()
@@ -260,6 +276,21 @@ namespace BetterTogetherProj.Controllers
             try
             {
                 sf.Delete();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpDelete]
+        [Route("api/students/{mail}/deleteUserProfile")]
+        public IHttpActionResult deleteUserProfile(string mail)
+        {
+            try
+            {
+                Student stud = new Student();
+                stud.deleteUserProfile(mail);
                 return Ok();
             }
             catch (Exception ex)

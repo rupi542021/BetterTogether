@@ -39,14 +39,15 @@ namespace BetterTogetherProj.Models.DAL
             cmd.CommandType = System.Data.CommandType.Text; // the type of the command, can also be stored procedure
             return cmd;
         }
-        public List<Questionnaire> GetQuestionnaire()
+        public List<Questionnaire> GetQuestionnaire(int statusQR)
         {
             SqlConnection con = null;
             List<Questionnaire> qrList = new List<Questionnaire>();
+            String selectSTR = "";
             try
             {
                 con = connect1("DBConnectionString");
-                String selectSTR = "update questionnaire_P3 set status = 0 where questionnaire_P3.endPublishDate < GETDATE() or questionnaire_P3.publishDate>GETDATE()  select * from department_P  inner join questionnaire_P3 on questionnaire_P3.departmentCode=department_P.departmentCode";
+                selectSTR += "update questionnaire_P3 set status = 0 where questionnaire_P3.endPublishDate < GETDATE() or questionnaire_P3.publishDate>GETDATE()  select * from department_P  inner join questionnaire_P3 on questionnaire_P3.departmentCode=department_P.departmentCode where questionnaire_P3.status=" + statusQR;
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
@@ -1333,6 +1334,40 @@ namespace BetterTogetherProj.Models.DAL
                 }
 
                 return SAnsList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
+
+        public int GetQuestionnaireNum()
+        {
+            int Qnum=0;
+            SqlConnection con = null;
+            try
+            {
+                con = connect1("DBConnectionString");
+                String selectSTR = "SELECT max(qrCode+1) as 'qrCode' from questionnaire_P3";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+
+                    Qnum = Convert.ToInt16(dr["qrCode"]);
+
+                }
+                return Qnum;
             }
             catch (Exception ex)
             {
