@@ -200,5 +200,15 @@ namespace project_classes.Models
             DBServicesReact dbs = new DBServicesReact();
             dbs.updateUserPreferences(mail, prefList);
         }
+        public void updateUserPassword(string pass, Student stud)
+        {
+            DBServicesReact dbs = new DBServicesReact();
+            dbs.updateUserPassword(pass, stud);
+        }
+        public void deleteUserProfile(string mail)
+        {
+            DBServicesReact dbs = new DBServicesReact();
+            dbs.deleteUserProfile(mail);
+        }
     }
 }
