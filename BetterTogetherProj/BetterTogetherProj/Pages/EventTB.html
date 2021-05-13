@@ -162,8 +162,8 @@
                     columns: [
                         {
                             render: function (data, type, row, meta) {
-                                EditBtn = "<button class='editbtn' eventid=" + row.EventCode + "> עריכה</button>";
-                                ViewBtn = "<button class='view' evcode='" + row.EventCode + "' name='" + row.Eventname + "'par=" + row.Studentsinevent.length + " >צפי באישורי הגעה </button>";
+                                EditBtn = "<button class='editbtn' eventid=" + row.EventCode + "> <i class='fa fa-edit'></i></button>";
+                                ViewBtn = "<button class='view' evcode='" + row.EventCode + "' name='" + row.Eventname + "'par=" + row.Studentsinevent.length + " ><i class='fa fa-eye'></i></button>";
 
                                 return EditBtn + ViewBtn ;
                             }

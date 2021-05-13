@@ -762,8 +762,8 @@
                             render: function (data, type, row, meta) {
                                 let dataQ = "data-QuestionnaireId='" + row.QuestionnaireNum + "'";
 
-                                editBtn = "<button type='button' class = 'editBtn btn btn-success' " + dataQ + "> עריכה </button>";
-                                viewBtn = "<button type='button' class = 'viewBtn btn btn-info' " + dataQ + "> צפייה </button>";
+                                editBtn = "<button type='button' class = 'editBtn btn btn-success' " + dataQ + "> <i class='fa fa-edit'></i> </button>";
+                                viewBtn = "<button type='button' class = 'viewBtn btn btn-info' " + dataQ + "><i class='fa fa-eye'></i></button>";
                                 duplicateBtn = "<button type='button' class = 'duplicateBtn btn btn-success' " + dataQ + "> שכפול שאלון </button>";
 
                                 return editBtn + viewBtn + duplicateBtn;
