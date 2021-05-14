@@ -53,31 +53,34 @@
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
         today = yyyy + '-' + mm + '-' + dd;
+        var statusQR = 1;
 
-   
         $(document).ready(function () {
+
             AnsNum = 0;
             Maxqsquantity = 0
             mode = "";
 
-           
-            $("#cancelSaveBTN").on("click", function () { //מבטל טופס NEW
+            $("#cancelSaveBTN").on("click", function () { 
                 qrId = null;
                 $("#editDiv").hide();
-                //$("#myChart").hide();
 
                 $("#pForm").show();
+                $("#filter").show();
+
                 mode = "";
             });
 
 
+            
             $("#newBTN").on("click", function () {
-
+                $("#openanswer").hide();
+                $("#filter").hide();
                 ajaxCall("GET", "../api/Questionnaire/GetQNum", "", getQrNum, error);
-      
+
                 ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
                 AnsNum = 0;
-                $(".statuss").hide();
+                //$(".statuss").hide();
                 q = 0;
                
                 $("#question1").html("");
@@ -94,11 +97,11 @@
                 $("#saveBTN").show();
 
                 clearFields();
-                //clearcanvas();
                 $("#editDiv :input").prop("disabled", false); // new mode: enable all controls in the form
 
             });
 
+       
             //let api = "../api/Questionnaire/qr"
             //ajaxCall("GET", api, "", getSuccess, error);
 
@@ -112,18 +115,16 @@
             $(document).on("change", '#publishList', { 'param': 0 }, function (event) {
                 getyearbydep(event.data.param);
             });
-            let statusQR = $("#filter").val();
+         
             let api = "../api/Questionnaire/qr?statusQR=" + statusQR;
             ajaxCall("GET", api, "", getSuccess, error);
             $("#filter").change(filterQr);
 
-
+       
         });
 
         function getQrNum(QrNum) {
-            console.log(QrNum);
             QrNumm = QrNum;
-
         }
 
         function getSuccessalldep(alldep) {
@@ -276,7 +277,7 @@
                 mode = "edit";
                 markSelected(this);
                 $("#saveBTN").show();
-                $(".statuss").show();
+                //$(".statuss").show();
                 $("#editDiv").show();
                 $("#addinput").hide();
                 $("#inserth3").hide();
@@ -286,7 +287,8 @@
                 $("#yearList").prop("disabled", false);
                 $("#publishDate").prop("disabled", false);
                 $("#EndpublishDate").prop("disabled", false);
-                $('#Status').prop("disabled", false)
+                //$('#Status').prop("disabled", false)
+                $("#openanswer").hide();
 
                 populateFields(this.getAttribute('data-QuestionnaireId')); // fill the form fields according to the selected row
 
@@ -297,7 +299,7 @@
                 $("#saveBTN").hide();
                 markSelected(this);
                 $("#pForm").hide();
-                $(".statuss").show();
+                //$(".statuss").show();
 
                 $("#editDiv").show();
                 $("#addinput").hide();
@@ -307,13 +309,17 @@
                 $("#yearList").prop("disabled", true);
                 $("#publishDate").prop("disabled", true);
                 $("#EndpublishDate").prop("disabled", true);
-                $('#Status').prop("disabled", true)
+                //$('#Status').prop("disabled", true)
+                $("#openanswer").show();
+                $("#filter").hide();
+
                 populateFields(this.getAttribute('data-QuestionnaireId'));
 
             });
 
             $(document).on("click", ".duplicateBtn", function () {
                 mode = "duplicate";
+
                 markSelected(this);
                 $("#editDiv").hide();
 
@@ -331,11 +337,49 @@
                     Status: Qr.Status,
                     QuestionnaireYear: Qr.QuestionnaireYear,
                     Queslist: Qr.Queslist,
-                  /*  QuestionnaireNum: geQrNum() ,*/
+                    QuestionnaireNum: QrNumm,
                 }
                 ajaxCall("POST", "../api/Questionnaire/postqr", JSON.stringify(Qrtoduplicate), insertSuccess, error);
-                //    return false;
+                    return false;
             });
+
+            $(document).on("click", ".deleteBtn", function () {
+                mode = "delete";          
+                markSelected(this);
+                var QrId = this.getAttribute('data-QuestionnaireId');
+                swal({ 
+                    title: "האם אתה בטוח ?",
+                    text: "",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+                })
+                    .then(function (willDelete) {
+                        if (willDelete) DeleteQr(QrId);
+                        else swal("Not Deleted!");
+                    });
+            });
+            
+        }
+
+        function DeleteQr(QrId) {
+          
+            ajaxCall("PUT", "../api/Questionnaire/updatestatus?QrId=" + QrId  ,"", updateStatusSuccess, error);
+
+        }
+
+        function updateStatusSuccess() {
+            ajaxCall("GET", "../api/Questionnaire/qr?statusQR=" + statusQR, "", updatestatus, error);
+         
+        }
+        function updatestatus(questionnaireData) {
+            tbl.clear();
+            //questionnaires = questionnaireData;
+            redrawTable(tbl, questionnaireData);
+            buttonEvents();
+            $("#editDiv").hide();
+            swal({ title: " !השאלון נמחק בהצלחה", icon: "success" });
+            mode = "";
         }
 
         // mark the selected row
@@ -405,8 +449,7 @@
                 Questionstring += `<canvas id="myChart` + q + `" class="canvas"></canvas></div>`;
                 else
                 Questionstring +=`</div >`
-           
-                                                 
+                                                         
             $("#question1").append(Questionstring);
 
         }
@@ -425,7 +468,6 @@
         }
         function onSubmitFunc() {
 
-            //var Campid = -1;
             if (mode == "edit") {
 
                 QrtoUpdate = {
@@ -437,7 +479,7 @@
                         DepartmentCode: $("#publishList").val(),
                     },
                     QuestionnaireYear: $("#yearList").val(),
-                    Status: $("#Status").is(":checked")
+                    Status: true
 
                 }
 
@@ -464,7 +506,6 @@
                     questionList.push(Questionn);
                 }
                 console.log(questionList);
-                console.log(QrNumm);
                  QrtoSave   = {
 
                     QuestionnairePublish: QuestionnairePublish,
@@ -546,7 +587,7 @@
                 }
             }
             $("#subQr").val(Qr.SubQr);
-            $("#Status").prop('checked', Qr.Status);
+            //$("#Status").prop('checked', Qr.Status);
 
             if (mode == "view") {
                 $("#" + q + "Qans").html("");
@@ -561,7 +602,7 @@
                     $("#QuestionType" + q).prop("disabled", true);
                     if (Qr.Queslist[i].QuestionType == 3) {
                         $("#" + q + "Qans").hide();
-                        $(".canvas").hide();
+                        //$("#myChart" + q).hide();
 
                     }
                     for (var j = 0; j < Qr.Queslist[i].Anslist.length; j++) {
@@ -581,14 +622,18 @@
 
         }
         function getSuccessallStudAns(studentAns) {
+            $("#openanswer").html("");
+
             sAns = studentAns;    
+            R = 1;
             console.log(studentAns);
             let str = "<h3>תשובות הסטודנטים</h3>";
             for (var i = 0; i < Qr.Queslist.length; i++) {
                 var arrAns = [0, 0, 0, 0, 0, 0];
                 for (var T = 0; T < sAns.length; T++) {
-                    if (Qr.Queslist[i].QuestionType == 3) {
-                        str += "<h4>" +parseInt(T + 1)+") "+ sAns[T].OpenAnswer + "</h4>"; 
+                    if (Qr.Queslist[i].QuestionType == 3 && sAns[T].OpenAnswer != "") {
+                        str += "<h4>" + R + ")" + sAns[T].OpenAnswer + "</h4>";
+                        R++;
                     }
                     if (Qr.Queslist[i].Questionnum == sAns[T].Questionnum) {
                         for (var j = 0; j < sAns[T].StudAns.length; j++) {
@@ -599,64 +644,54 @@
                                 }
                         }
                     }
-                }
-           
-                var xValues = [Qr.Queslist[i].Anslist[0], Qr.Queslist[i].Anslist[1], Qr.Queslist[i].Anslist[2], Qr.Queslist[i].Anslist[3], Qr.Queslist[i].Anslist[4], Qr.Queslist[i].Anslist[5]];
-                var yValues = [arrAns[0], arrAns[1], arrAns[2], arrAns[3], arrAns[4], arrAns[5]];
-                var barColors = ["red", "green", "blue", "orange", "brown", "pink"];
+                    if (Qr.Queslist[i].QuestionType == 3)
+                        $("#openanswer").html(str);
 
+                }
+                const isAllZero = arrAns.every(item => item === 0)
                 k = i + 1;
-                const canvas = document.getElementById('myChart' + k);
-                const ctx = canvas.getContext('2d');
-                if (sAns.length == 0) {
-                    $(".canvas").hide();
 
+                if (isAllZero == true) {
+                    $("#myChart"+k).hide();
                 }
-                if (sAns.length != 0) {
-                    new Chart(ctx, {
-                        type: "bar",
-                        data: {
-                            labels: xValues,
+               else if (Qr.Queslist[i].QuestionType != 3 && isAllZero==false ) {
+                    var xValues = [Qr.Queslist[i].Anslist[0], Qr.Queslist[i].Anslist[1], Qr.Queslist[i].Anslist[2], Qr.Queslist[i].Anslist[3], Qr.Queslist[i].Anslist[4], Qr.Queslist[i].Anslist[5]];
+                    var yValues = [arrAns[0], arrAns[1], arrAns[2], arrAns[3], arrAns[4], arrAns[5]];
+                    var barColors = ["red", "green", "blue", "orange", "brown", "pink"];
 
-                            datasets: [{
-                                backgroundColor: barColors,
-                                data: yValues,
+                    const canvas = document.getElementById('myChart' + k);
+                    const ctx = canvas.getContext('2d');
+               
+                        new Chart(ctx, {
+                            type: "bar",
+                            data: {
+                                labels: xValues,
 
-                            }
+                                datasets: [{
+                                    backgroundColor: barColors,
+                                    data: yValues,
 
-                            ]
-                        },
-                        options: {
-                            legend: { display: false },
-                            title: {
-                                display: true,
-                                text: "ניתוח תוצאות שאלה" + " " + Qr.Queslist[i].Questionnum,
+                                }
+
+                                ]
+                            },
+                            options: {
+                                legend: { display: false },
+                                title: {
+                                    display: true,
+                                    text: "ניתוח תוצאות שאלה" + " " + Qr.Queslist[i].Questionnum,
+
+                                },
 
                             },
 
-                        },
+                        });
+                    }
 
-                    });
-                }
-           
-                           
             }
-            $("#openanswer").html(str);
             
         }
-
-        //function clearcanvas() {
-        //    //$("#question1").html("");
-        //    //    for (var i = 0; i < Maxqsquantity; i++) {
-        //    //        k = i + 1;
-        //    //        const canvas = document.getElementById('myChart' + k);
-        //    //        const ctx = canvas.getContext('2d');
-        //    //        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        //    //        $("#question1").html("");
-        //    ////        $("#canvas" + 1).empty();
-        //    //}
-        //}
-                    
+       
             
 
         
@@ -687,7 +722,6 @@
         // success callback function after update
         function updateSuccess(questionnaireData) {
             tbl.clear();
-            let statusQR = $("#filter").val();
             ajaxCall("GET", "../api/Questionnaire/qr?statusQR=" + statusQR, "", getSuccessupdate, error);
 
         }
@@ -703,7 +737,6 @@
         // success callback function after update
         function insertSuccess(questionnaireData) {
             console.log(questionnaireData);
-            let statusQR = $("#filter").val();
             ajaxCall("GET", "../api/Questionnaire/qr?statusQR=" + statusQR, "", getSuccessinsert, error);
 
         }
@@ -713,9 +746,7 @@
             $("#pForm").show();
             tbl.clear();
             redrawTable(tbl, questionnaireData);
-            //buttonEvents();
             $("#editDiv").hide();
-            //$("#EditViewDiv").hide();
             if (mode == "new")
                 swal("השאלון הוכנס בהצלחה!", "Great Job", "success");
             else if (mode == "duplicate")
@@ -754,19 +785,21 @@
                     "oLanguage": {
                         "sLengthMenu": "הצגת _MENU_ שאלונים", "sSearch": "חיפוש: ", "sZeroRecords": "אין תגובות לאירוע זה"
                     },
-                   data: questionnaireData,
-                    
+                    data: questionnaireData,
+
                     pageLength: 5,
                     columns: [
                         {
                             render: function (data, type, row, meta) {
-                                let dataQ = "data-QuestionnaireId='" + row.QuestionnaireNum + "'";
+                                var dataQ = "data-QuestionnaireId='" + row.QuestionnaireNum + "'";
 
                                 editBtn = "<button type='button' class = 'editBtn btn btn-success' " + dataQ + "> <i class='fa fa-edit'></i> </button>";
                                 viewBtn = "<button type='button' class = 'viewBtn btn btn-info' " + dataQ + "><i class='fa fa-eye'></i></button>";
                                 duplicateBtn = "<button type='button' class = 'duplicateBtn btn btn-success' " + dataQ + "> שכפול שאלון </button>";
-
-                                return editBtn + viewBtn + duplicateBtn;
+                                if ($("#filter").val() == 1)
+                                    return editBtn + viewBtn + duplicateBtn;
+                                else
+                                    return viewBtn;
                             }
                         },
                         { data: "QuestionnaireNum" },
@@ -823,14 +856,17 @@
                         { data: "NumResponders" },
 
                         {
-                            data: "Status",
+
                             render: function (data, type, row, meta) {
-                                if (data == true)
-                                    return '<input type="checkbox" checked disabled="disabled" />';
+                                if ($("#filter").val() == 1) {
+                                    deleteBTN = "<button type='button' class = 'deleteBtn btn btn-delete' data-QuestionnaireId='" + row.QuestionnaireNum + "'> <i class='fa fa-trash'></i> </button>";
+                                    return deleteBTN;
+                                }
                                 else
-                                    return '<input type="checkbox" disabled="disabled"/>';
-                            }
-                        },
+                                    return null;
+                    }
+                }
+
 
                     ],
                 });
@@ -869,12 +905,11 @@
     <h2>שאלוני סטודנטים</h2>
 
     <button class="myButton" id="newBTN"> יצירת שאלון חדש <span class="glyphicon glyphicon-plus"></span></button>
-    <div class="form-group col-sm-12">
-      
+    
+    <div class="form-group col-sm-12">      
         <select class="form-control" id="filter">
             <option value="1">שאלונים פעילים</option>
             <option value="0">שאלונים לא פעילים</option>
-
         </select>
     </div>
     <form id="pForm">
@@ -889,7 +924,7 @@
                     <th>מחלקות</th>
                     <th>שנה</th>
                     <th>מספר משיבים</th>
-                    <th>סטטוס</th>
+                    <th></th>
 
                 </tr>
             </thead>
@@ -934,10 +969,10 @@
                     <input type="text" class="form-control" id="numResponders" />
 
                 </div>-->
-                <div class="statuss form-group col-sm-4">
+                <!--<div class="statuss form-group col-sm-4">
                     <label for="Status"><span class="red-star">★ </span>סטטוס</label>
                     <input type="checkbox" class="form-control" id="Status" checked />
-                </div>
+                </div>-->
                 <div class="insertque form-group col-sm-12">
                     <h3 id="inserth3">הכנסת שאלות:</h3>
                 </div>
@@ -954,53 +989,6 @@
             <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN" value="Cancel" />
         </form>
     </div>
-
-    <!--<canvas id="myChart" style="width:100%;max-width:600px"></canvas>-->
-    <!--<canvas id="myChart1" style="width:100%;max-width:600px"></canvas>-->
-    <!--<div id="EditViewDiv">
-        <form id="ManagerForm1">
-            <div class="form-group row">
-
-
-
-                <div class="form-group col-sm-4">
-                    <label for="Restaurant_Id1"><span class="red-star">★ </span>Restaurant Id</label>
-                    <input type="text" class="form-control" id="Restaurant_Id1" placeholder="" required>
-                </div>
-
-
-                <div class="form-group col-sm-3">
-                    <label for="Campain_Budget1"><span class="red-star">★ </span>Campain Budget</label>
-                    <input type="text" class="form-control" id="Campain_Budget1" placeholder="" required>
-                </div>
-
-                <div class="form-group col-sm-3">
-                    <label for="Balance1"><span class="red-star">★ </span>Balance</label>
-                    <input type="text" class="form-control" id="Balance1" placeholder="" />
-                </div>
-
-                <div class="form-group col-sm-2">
-                    <label for="Viewing_number1"><span class="red-star">★ </span>Viewing number</label>
-                    <input type="text" class="form-control" id="Viewing_number1" placeholder="" required />
-
-                </div>
-                <div class="form-group col-sm-3">
-                    <label for="Clicks_number1"><span class="red-star">★ </span>Clicks number</label>
-                    <input type="text" class="form-control" id="Clicks_number1" placeholder="" required />
-                </div>
-
-                <div class="form-group col-sm-3">
-                    <label for="Status1"><span class="red-star">★ </span>Status</label>
-                    <input type="checkbox" class="form-control" id="Status1" checked />
-                </div>
-
-            </div>
-
-            <button type="submit" class="btn btn-primary btn-lg" id="saveBTN1">Save</button>
-            <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN1" value="Cancel" />
-        </form>
-    </div>-->
-
 
 </body>
 </html>

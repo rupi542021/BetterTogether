@@ -1385,5 +1385,62 @@ namespace BetterTogetherProj.Models.DAL
 
         }
 
+        public int UpdateStatus(int QrId)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect1("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            String cStr = BuildUpdatestCommand(QrId);      // helper method to build the insert string
+
+            cmd = CreateCommand1(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        //--------------------------------------------------------------------
+        // Build the Update command String
+        //--------------------------------------------------------------------
+
+        private String BuildUpdatestCommand(int QrId)
+        {
+            String command;
+
+            command = "update questionnaire_P3 set status=0 where qrCode=" + QrId;
+         
+            return command;
+
+        }
+
+
     }
 }

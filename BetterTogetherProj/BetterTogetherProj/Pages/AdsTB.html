@@ -184,7 +184,16 @@
                             }
                         },
                         {
-                            data:"AdsDuring"
+                            data: "AdsDate",
+                            render: function (data, type, row, meta) {
+                                shortDateEnd = new Date(data);
+                                shortDateEnd.setDate(shortDateEnd.getDate() + row.AdsDuring)
+                                var dd = String(shortDateEnd.getDate()).padStart(2, '0');
+                                var mm = String(shortDateEnd.getMonth() + 1).padStart(2, '0'); 
+                                var yyyy = shortDateEnd.getFullYear();
+                                shortDateEnd = dd + '-' + mm + '-' + yyyy;
+                                return shortDateEnd ;
+                            }
                             
                         },
                
@@ -241,7 +250,7 @@
                 <th> נושא</th>
                 <th>תת נושא</th>
                 <th>תאריך פרסום</th>
-                <th>משך פרסום</th>
+                <th>תאריך סיום פרסום</th>
                 <th>סטטוס פרסום</th>
             </tr>
         </thead>

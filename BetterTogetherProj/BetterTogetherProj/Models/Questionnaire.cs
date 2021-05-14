@@ -82,5 +82,12 @@ namespace project_classes.Models
             return qrLNum;
 
         }
+
+        public void UpdateStatus(int QrId)
+        {
+            DBServices dbs = new DBServices();
+            dbs.UpdateStatus(QrId);
+
+        }
     }
 }

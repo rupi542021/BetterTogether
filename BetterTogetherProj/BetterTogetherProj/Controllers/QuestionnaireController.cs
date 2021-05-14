@@ -87,5 +87,13 @@ namespace BetterTogetherProj.Controllers
             return qr.GetQuestionnaireNum();
 
         }
+
+        [HttpPut]
+        [Route("api/Questionnaire/updatestatus")]
+        public void Put( int QrId)
+        {
+            Questionnaire qr = new Questionnaire();
+            qr.UpdateStatus(QrId);
+        }
     }
 }
