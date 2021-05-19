@@ -31,6 +31,9 @@ namespace project_classes.Models
         List<StudentInCourse> studInCourse;
         double match;
         List<Preferences> preflist;
+        int homeDist;
+        int studyingDist;
+        int agesRange;
 
         public string Mail { get => mail; set => mail = value; }
         public string Password { get => password; set => password = value; }
@@ -54,10 +57,13 @@ namespace project_classes.Models
         public List<StudentInCourse> StudInCourse { get => studInCourse; set => studInCourse = value; }
         public double Match { get => match; set => match = value; }
         public List<Preferences> Preflist { get => preflist; set => preflist = value; }
+        public int HomeDist { get => homeDist; set => homeDist = value; }
+        public int StudyingDist { get => studyingDist; set => studyingDist = value; }
+        public int AgesRange { get => agesRange; set => agesRange = value; }
 
         public Student() { }
 
-        public Student(string mail, string password, string fname, string lname, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, bool isAvailableCar, bool intrestedInCarPool, string photo, string gender, DateTime registrationDate, bool activeStatus, List<Hobby> hlist, List<Pleasure> plist, List<string> friendslist, List<StudentInCourse> studInCourse, double match, List<Preferences> preflist)
+        public Student(string mail, string password, string fname, string lname, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, bool isAvailableCar, bool intrestedInCarPool, string photo, string gender, DateTime registrationDate, bool activeStatus, List<Hobby> hlist, List<Pleasure> plist, List<string> friendslist, List<StudentInCourse> studInCourse, double match, List<Preferences> preflist, int homeDist, int studyingDist, int agesRange)
         {
             Mail = mail;
             Password = password;
@@ -81,9 +87,12 @@ namespace project_classes.Models
             StudInCourse = studInCourse;
             Match = match;
             Preflist = preflist;
+            HomeDist = homeDist;
+            StudyingDist = studyingDist;
+            AgesRange = agesRange;
         }
 
-        //public Student(string mail, string password, string fname, string lname, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, bool isAvailableCar, bool intrestedInCarPool, string photo, string gender, DateTime registrationDate, bool activeStatus, List<Hobby> hlist, List<Pleasure> plist, List<string> friendslist, List<StudentInCourse> studInCourse, double match)
+        //public Student(string mail, string password, string fname, string lname, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, bool isAvailableCar, bool intrestedInCarPool, string photo, string gender, DateTime registrationDate, bool activeStatus, List<Hobby> hlist, List<Pleasure> plist, List<string> friendslist, List<StudentInCourse> studInCourse, double match, List<Preferences> preflist)
         //{
         //    Mail = mail;
         //    Password = password;
@@ -106,29 +115,8 @@ namespace project_classes.Models
         //    Friendslist = friendslist;
         //    StudInCourse = studInCourse;
         //    Match = match;
+        //    Preflist = preflist;
         //}
-
-        //public string Mail { get => mail; set => mail = value; }
-        //public string Password { get => password; set => password = value; }
-        //public string Fname { get => fname; set => fname = value; }
-        //public string Lname { get => lname; set => lname = value; }
-        //public DateTime DateOfBirth { get => dateOfBirth; set => dateOfBirth = value; }
-        //public Department Dep { get => dep; set => dep = value; }
-        //public int StudyingYear { get => studyingYear; set => studyingYear = value; }
-        //public Residence HomeTown { get => homeTown; set => homeTown = value; }
-        //public Residence AddressStudying { get => addressStudying; set => addressStudying = value; }
-        //public string PersonalStatus { get => personalStatus; set => personalStatus = value; }
-        //public bool IsAvailableCar { get => isAvailableCar; set => isAvailableCar = value; }
-        //public bool IntrestedInCarPool { get => intrestedInCarPool; set => intrestedInCarPool = value; }
-        //public string Photo { get => photo; set => photo = value; }
-        //public string Gender { get => gender; set => gender = value; }
-        //public DateTime RegistrationDate { get => registrationDate; set => registrationDate = value; }
-        //public bool ActiveStatus { get => activeStatus; set => activeStatus = value; }
-        //public List<Hobby> Hlist { get => hlist; set => hlist = value; }
-        //public List<Pleasure> Plist { get => plist; set => plist = value; }
-        //public List<string> Friendslist { get => friendslist; set => friendslist = value; }
-        //public List<StudentInCourse> StudInCourse { get => studInCourse; set => studInCourse = value; }
-        //public double Match { get => match; set => match = value; }
 
         public Student getCurrentStudent(string mail)
         {
