@@ -187,6 +187,9 @@ namespace BetterTogetherProj.Models.DAL
                     stud.Hlist = GetHlistByUser((string)dr["mail"]);
                     stud.Friendslist = GetFriendsListByUser(((string)dr["mail"]));
                     stud.Preflist = GetPrefListByUser(((string)dr["mail"]));
+                    stud.HomeDist = Convert.ToInt32(dr["homeDist"]);
+                    stud.StudyingDist = Convert.ToInt32(dr["studyingDist"]);
+                    stud.AgesRange = Convert.ToInt32(dr["agesRange"]);
 
                 }
                 return stud;
@@ -244,6 +247,9 @@ namespace BetterTogetherProj.Models.DAL
                             stud.Hlist = GetHlistByUser((string)dr["mail"]);
                             stud.Friendslist = GetFriendsListByUser(((string)dr["mail"]));
                             stud.Preflist = GetPrefListByUser(((string)dr["mail"]));
+                            stud.HomeDist = Convert.ToInt32(dr["homeDist"]);
+                            stud.StudyingDist = Convert.ToInt32(dr["studyingDist"]);
+                            stud.AgesRange = Convert.ToInt32(dr["agesRange"]);
                             return stud;
                         }
                         stud.Mail = (string)dr["mail"];
@@ -813,8 +819,8 @@ namespace BetterTogetherProj.Models.DAL
         {
             String command;
             StringBuilder sb = new StringBuilder();
-            String prefix = "INSERT INTO Student_P" + "(mail, password, firstName, lastName, dateOfBirth, departmentCode, studyingYear, homeTown, adrressStudying, personalStatus, isAvailableCar, intrestedInCarpool, photo, gender, registrationDate, active,pref1,pref2,pref3,pref4,pref5,pref6,pref7,pref8) ";
-            sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}','{4}', '{5}','{6}', '{7}','{8}', '{9}','{10}', '{11}','{12}', '{13}','{14}', '{15}', '{16}', '{17}', '{18}', '{19}', '{20}', '{21}', '{22}', '{23}')", student.Mail, student.Password, student.Fname, student.Lname, student.DateOfBirth.ToString("yyyy-MM-dd H:mm:ss"), student.Dep.DepartmentCode, student.StudyingYear, student.HomeTown.Name, student.AddressStudying.Name, student.PersonalStatus, student.IsAvailableCar, student.IntrestedInCarPool, student.Photo, student.Gender, student.RegistrationDate.ToString("yyyy-MM-dd H:mm:ss"), true, 1, 2, 3, 4, 5, 6, 7, 8);
+            String prefix = "INSERT INTO Student_P" + "(mail, password, firstName, lastName, dateOfBirth, departmentCode, studyingYear, homeTown, adrressStudying, personalStatus, isAvailableCar, intrestedInCarpool, photo, gender, registrationDate, active,pref1,pref2,pref3,pref4,pref5,pref6,pref7,pref8,homeDist,studyingDist,agesRange) ";
+            sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}','{4}', '{5}','{6}', '{7}','{8}', '{9}','{10}', '{11}','{12}', '{13}','{14}', '{15}', '{16}', '{17}', '{18}', '{19}', '{20}', '{21}', '{22}', '{23}', '{24}', '{25}', '{26}')", student.Mail, student.Password, student.Fname, student.Lname, student.DateOfBirth.ToString("yyyy-MM-dd H:mm:ss"), student.Dep.DepartmentCode, student.StudyingYear, student.HomeTown.Name, student.AddressStudying.Name, student.PersonalStatus, student.IsAvailableCar, student.IntrestedInCarPool, student.Photo, student.Gender, student.RegistrationDate.ToString("yyyy-MM-dd H:mm:ss"), true, 1, 2, 3, 4, 5, 6, 7, 8,15,15,3);
             command = prefix + sb.ToString();
             return command;
         }
@@ -1310,6 +1316,9 @@ namespace BetterTogetherProj.Models.DAL
                     stud.Plist = GetPlistByUser((string)dr["mail"]);
                     stud.Hlist = GetHlistByUser((string)dr["mail"]);
                     stud.Friendslist = GetFriendsListByUser(((string)dr["mail"]));
+                    stud.HomeDist = Convert.ToInt32(dr["homeDist"]);
+                    stud.StudyingDist = Convert.ToInt32(dr["studyingDist"]);
+                    stud.AgesRange = Convert.ToInt32(dr["agesRange"]);
 
                     for (int p = 0; p < percentageOfPref.Length; p++)
                     {
@@ -1394,12 +1403,12 @@ namespace BetterTogetherProj.Models.DAL
                     int res2 = 0;
                     xHome = (stud.HomeTown.X / 1000) - (homeTown.X / 1000);
                     yHome = (stud.HomeTown.Y / 1000) - (homeTown.Y / 1000);
-                    if (Math.Sqrt(Math.Pow(xHome, 2) + Math.Pow(yHome, 2)) < 15)
+                    if (Math.Sqrt(Math.Pow(xHome, 2) + Math.Pow(yHome, 2)) < stud.HomeDist)
                         res1 = 1;
 
                     xCurrent = (stud.AddressStudying.X / 1000) - (addressStudying.X / 1000);
                     yCurrent = (stud.AddressStudying.Y / 1000) - (addressStudying.Y / 1000);
-                    if (Math.Sqrt(Math.Pow(xCurrent, 2) + Math.Pow(yCurrent, 2)) < 15)
+                    if (Math.Sqrt(Math.Pow(xCurrent, 2) + Math.Pow(yCurrent, 2)) < stud.StudyingDist)
                         res2 = 2;
                     return res1 + res2;
                 case 5: // שנה
@@ -1415,7 +1424,7 @@ namespace BetterTogetherProj.Models.DAL
                         return 1;
                     return 0;
                 default: // גיל
-                    if (Math.Abs(stud.DateOfBirth.Year - dateOfBirth.Year) <= 3)
+                    if (Math.Abs(stud.DateOfBirth.Year - dateOfBirth.Year) <= stud.AgesRange)
                         return 1;
                     return 0;
             }
