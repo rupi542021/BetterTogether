@@ -1385,7 +1385,7 @@ namespace BetterTogetherProj.Models.DAL
 
         }
 
-        public int UpdateStatus(int QrId)
+        public int UpdateStatusQr(int QrId)
         {
 
             SqlConnection con;

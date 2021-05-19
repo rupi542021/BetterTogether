@@ -90,10 +90,10 @@ namespace BetterTogetherProj.Controllers
 
         [HttpPut]
         [Route("api/Questionnaire/updatestatus")]
-        public void Put( int QrId)
+        public void UpdateStatusQr( int QrId)
         {
             Questionnaire qr = new Questionnaire();
-            qr.UpdateStatus(QrId);
+            qr.UpdateStatusQr(QrId);
         }
     }
 }

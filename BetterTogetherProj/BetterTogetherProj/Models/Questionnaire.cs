@@ -83,10 +83,10 @@ namespace project_classes.Models
 
         }
 
-        public void UpdateStatus(int QrId)
+        public void UpdateStatusQr(int QrId)
         {
             DBServices dbs = new DBServices();
-            dbs.UpdateStatus(QrId);
+            dbs.UpdateStatusQr(QrId);
 
         }
     }

@@ -40,19 +40,9 @@
         $(document).ready(function () {
             $("#cancelBTN").on("click", function () { //מבטל טופס חדש ומחזיר לטבלה                
                 $("#editDiv").hide();
-                $("#filter").show();
 
             });
-               $("#newBTN").on("click", function () {
-           
-               window.location = "Events.html"
-               });
-              $("#FBTN").on("click", function () {
-           
-               window.location = "EventsFeedBack.html"
-
-               });
-           
+        
             ajaxCall("GET", "../api/Events/geteventdetail?statusEvent=" + statusEvent, "", getSuccessAlleventdetail, error);
             google.charts.load('current', { 'packages': ['corechart'] });
             $(document).on("click", ".view", addpiechart);
@@ -60,8 +50,18 @@
             $(document).on("click", ".editbtn", EditEvent);
             $("#ManagerForm").submit(onSubmitFunc);
 
-            $("#filter").change(filterAd);
-          
+            $("#filter").change(filterEvent);
+            $(document).on("click", ".deleteBtn", DeleteEvent);
+
+            $("#newBTN").on("click", function () {
+
+                window.location = "Events.html"
+            });
+            $("#FBTN").on("click", function () {
+
+                window.location = "EventsFeedBack.html"
+
+            });
 
         });
 
@@ -74,7 +74,7 @@
             $("#EventType").prop("disabled", true);
             $("#EventName").prop("disabled", true);
             $("#contentText").prop("disabled", false);
-            $('#Status').prop("disabled", false)
+            //$('#Status').prop("disabled", false)
             //$("#saveBTN1").prop("disabled", true);
             populateFields(this.getAttribute('eventid'));
 
@@ -99,7 +99,7 @@
             $("#EventType").val(event.Eventtype);
             $("#EventName").val(event.Eventname);
             $("#contentText").val(event.EventText);
-            $("#Status").prop('checked', event.Status);
+            //$("#Status").prop('checked', event.Status);
        
         if ($("#datedis").val() < today) {
             swal({ icon: 'error', title: 'Sorry', text: "!לא ניתן לערוך אירוע שכבר התרחש" })
@@ -125,7 +125,7 @@
                 EventType: EventType,
                 EventName: EventName,
                 EventText: $("#contentText").val(),
-                Status: $("#Status").is(":checked")
+                Status: true
             }
             ajaxCall("PUT", "../api/Events", JSON.stringify(EvToUpdate), updateeventSuccess, error);
 
@@ -141,7 +141,8 @@
         }
         function updateeventSuccess() {
             tbl.clear();
-            ajaxCall("GET", "../api/Events/geteventdetail", "", getSuccessupdate, error);
+            let api = "../api/Events/geteventdetail?statusEvent=" + statusEvent;
+            ajaxCall("GET", api, "", getSuccessupdate, error);
 
         }
         function getSuccessupdate(eventdetail) {
@@ -150,6 +151,42 @@
             $("#editDiv").hide();
             swal({ title: " !האירוע עודכן בהצלחה", icon: "success" });
 
+        }
+
+
+        function DeleteEvent() {
+            markSelected(this);
+            var EventId = this.getAttribute('eventid');
+            swal({
+                title: "האם אתה בטוח ?",
+                text: "",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true
+            })
+                .then(function (willDelete) {
+                    if (willDelete) DeleteEventt(EventId);
+                    else swal("Not Deleted!");
+                });
+        }
+
+
+
+        function DeleteEventt(EventId) {
+
+            ajaxCall("PUT", "../api/Events/updatestatus?EventId=" + EventId, "", updateStatusSuccess, error);
+
+        }
+
+        function updateStatusSuccess() {
+            ajaxCall("GET", "../api/Events/geteventdetail?statusEvent=" + statusEvent, "", updatestatus, error);
+
+        }
+        function updatestatus(EventsData) {
+            tbl.clear();
+            redrawTable(tbl, EventsData);
+            $("#editDiv").hide();
+            swal({ title: " !האירוע נמחק בהצלחה", icon: "success" });
         }
 
         function redrawTable(tbl, events) {
@@ -161,11 +198,18 @@
         }
 
 
+        function filterEvent() {
+            let statusEvent = $(this).val();
+            let api = "../api/Events/geteventdetail?statusEvent=" + statusEvent;
+            ajaxCall("GET", api, "", getSuccessAlleventdetail, error);
+        }
 
         function getSuccessAlleventdetail(eventdetail) {
             console.log(eventdetail);
             events = eventdetail;
-
+            if ($.fn.dataTable.isDataTable('#detaileventtable')) {//destroy the old table on existence and then create new instance of jQuery DataTable
+                $('#detaileventtable').DataTable().clear().destroy();
+            }
             try {
                 tbl = $('#detaileventtable').DataTable({
                     "oLanguage": {
@@ -178,8 +222,10 @@
                             render: function (data, type, row, meta) {
                                 EditBtn = "<button class='editbtn' eventid=" + row.EventCode + "> <i class='fa fa-edit'></i></button>";
                                 ViewBtn = "<button class='view' evcode='" + row.EventCode + "' name='" + row.Eventname + "'par=" + row.Studentsinevent.length + " ><i class='fa fa-eye'></i></button>";
-
-                                return EditBtn + ViewBtn ;
+                                if ($("#filter").val() == 1)
+                                    return EditBtn + ViewBtn;
+                                else
+                                    return ViewBtn;
                             }
                         },
                         { data: "Eventtype" },
@@ -197,19 +243,20 @@
                             }
                         },
                         {
-                            //data: "Participant",
                             render: function (data, type, row, meta) {
                                 return row.Studentsinevent.length;
                             }
                         },
               
-                            {
-                            data: "Status",
+                        {
                             render: function (data, type, row, meta) {
-                                if (data == true)
-                                    return '<input type="checkbox" checked disabled="disabled" />';
+                                if ($("#filter").val() == 1) {
+                                    DeleteBtn = "<button class='deleteBtn' eventid=" + row.EventCode + "> <i class='fa fa-trash'></i></button>";
+                                    return DeleteBtn;
+                                }
                                 else
-                                    return '<input type="checkbox" disabled="disabled"/>';
+                                    return null;
+
                             }
                         },
                     ],
@@ -382,7 +429,7 @@
                 <th>שם אירוע</th>
                 <th>תאריך אירוע</th>
                 <th>מאשרי הגעה</th>
-                <th>סטטוס אירוע</th>
+                <th></th>
             </tr>
         </thead>
     </table>
@@ -415,10 +462,10 @@
 
                 </div>
 
-                <div class="form-group col-sm-6">
+                <!--<div class="form-group col-sm-6">
                     <label for="Status"><span class="red-star">★ </span>סטטוס</label>
                     <input type="checkbox" class="form-control" id="Status" checked />
-                </div>
+                </div>-->
 
             </div>
 

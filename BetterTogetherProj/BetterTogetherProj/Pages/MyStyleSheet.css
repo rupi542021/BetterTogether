@@ -7,6 +7,7 @@
     color: #3D3D3D
     
 }
+
 h2{
     text-align:center;
     margin-top:0px;
@@ -298,3 +299,8 @@ h4 {
     direction: rtl;
 }
 
+canvas#myChart1.canvas {
+    margin: 0px auto;
+    height: 400px;
+    width: 600px
+}

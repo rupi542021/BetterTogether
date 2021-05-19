@@ -425,7 +425,9 @@
         function addquestion() {
 
             AnsNum = 0;
-           q++
+            q++;
+            QuestionType = $("#QuestionType" + q).val();
+
             var Questionstring = `<div id="` + q + `">
                                                 <div class="questionn">
                                                          <div class="divareaque form-group row">
@@ -446,7 +448,7 @@
                                                         <label for="QuestionText`+ q + `"><span class="red-star">★ </span>תוכן שאלה</label>
                                                         <textarea class="form-control Qtext" id="QuestionText`+ q + `"  required></textarea>
                                                     </div></div></div>`
-            if (mode == "view") 
+            if (mode == "view" && QuestionType!=3) 
                 Questionstring += `<canvas id="myChart` + q + `" class="canvas"></canvas></div>`;
                 else
                 Questionstring +=`</div >`
