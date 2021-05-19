@@ -112,10 +112,10 @@ namespace BetterTogetherProj.Controllers
 
         [HttpGet]
         [Route("api/Ads/getFB")]
-        public List<Ads> GetAdBySub(string subnameFB)
+        public List<Ads> GetAdBySub(int statusAd, string subnameFB)
         {
             Ads ad = new Ads();
-            return ad.GetAdBySub(subnameFB);
+            return ad.GetAdBySub(statusAd,subnameFB);
 
         }
 
@@ -135,6 +135,14 @@ namespace BetterTogetherProj.Controllers
             }
 
 
+        }
+
+        [HttpPut]
+        [Route("api/Ads/updatestatus")]
+        public void Put(int AdId)
+        {
+            Ads ad = new Ads();
+            ad.UpdateStatusAd(AdId);
         }
     }
 }

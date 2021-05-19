@@ -35,21 +35,27 @@
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
         today = yyyy + '-' + mm + '-' + dd;
+        var statusAd = 1;
 
         $(document).ready(function () {
             $("#cancelBTN").on("click", function () { //מבטל טופס חדש ומחזיר לטבלה
                 $("#editDiv").hide();
+                $("#filter").show();
+
             });
-            let api = "../api/Ads/getFB?subnameFB=''";
+            let api = "../api/Ads/getFB?statusAd=" +statusAd+"&subnameFB=''";
             ajaxCall("GET", api, "", getSuccessAllAds, error);
             $("#editDiv").hide();
-            $(document).on("click", ".editbtn", EditEvent);
+            $(document).on("click", ".editbtn", EditAd);
             $("#ManagerForm").submit(onSubmitFunc);
 
+            $("#filter").change(filterAd);
+
+            $(document).on("click", ".deleteBtn", DeleteAd);
 
         });
 
-        function EditEvent() {
+        function EditAd() {
             $("#editDiv").show();
             markSelected(this);
 
@@ -57,7 +63,7 @@
             $("#Subject").prop("disabled", true);
             $("#SubSubject").prop("disabled", true);
             $("#contentText").prop("disabled", false);
-            $('#Status').prop("disabled", false)
+            //$('#Status').prop("disabled", false)
             $('#adsDuring').prop("disabled", false)
 
             populateFields(this.getAttribute('Adsid'));
@@ -84,7 +90,7 @@
             $("#SubSubject").val(ad.SubSubject);
             $("#contentText").val(ad.AdsText);
             $("#adsDuring").val(ad. AdsDuring);
-            $("#Status").prop('checked', ad.Status);
+            //$("#Status").prop('checked', ad.Status);
             
 
             if ($("#datedis").val() < today) {
@@ -111,7 +117,7 @@
                 Subject: Subject,
                 SubSubject: SubSubject,
                 AdsText: $("#contentText").val(),
-                Status: $("#Status").is(":checked"),
+                Status: true,
                 AdsDuring: $("#adsDuring").val()
             }
             ajaxCall("PUT", "../api/Ads", JSON.stringify(AdToUpdate), updateAdSuccess, error);
@@ -128,7 +134,7 @@
         }
         function updateAdSuccess() {
             tbl.clear();
-            let api = "../api/Ads/getFB?subnameFB=''";
+            let api = "../api/Ads/getFB?statusAd=" + statusAd + "&subnameFB=''";
             ajaxCall("GET", api, "", getSuccessupdate, error);
         }
         function getSuccessupdate(adsdetail) {
@@ -139,6 +145,41 @@
 
         }
 
+        function DeleteAd() {
+            markSelected(this);
+            var AdId = this.getAttribute('Adsid');
+            swal({
+                title: "האם אתה בטוח ?",
+                text: "",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true
+            })
+                .then(function (willDelete) {
+                    if (willDelete) DeleteAdd(AdId);
+                    else swal("Not Deleted!");
+                });
+            }
+            
+       
+
+        function DeleteAdd(AdId) {
+
+            ajaxCall("PUT", "../api/Ads/updatestatus?AdId=" + AdId, "", updateStatusSuccess, error);
+
+        }
+
+        function updateStatusSuccess() {
+            ajaxCall("GET", "../api/Ads/getFB?statusAd=" + statusAd + "&subnameFB=''" , "", updatestatus, error);
+
+        }
+        function updatestatus(adsData) {
+            tbl.clear();
+            redrawTable(tbl, adsData);
+            $("#editDiv").hide();
+            swal({ title: " !הפרסום נמחק בהצלחה", icon: "success" });
+        }
+
         function redrawTable(tbl, ads) {
             tbl.clear();
             for (var i = 0; i < ads.length; i++) {
@@ -147,12 +188,19 @@
             tbl.draw();
         }
 
+        function filterAd() {
+            let statusAd = $(this).val();
+            let api = "../api/Ads/getFB?statusAd=" + statusAd + "&subnameFB=''";
+            ajaxCall("GET", api, "", getSuccessAllAds, error);
+        }
 
 
         function getSuccessAllAds(adsdetail) {
             console.log(adsdetail);
             ads = adsdetail;
-
+            if ($.fn.dataTable.isDataTable('#adstable')) {//destroy the old table on existence and then create new instance of jQuery DataTable
+                $('#adstable').DataTable().clear().destroy();
+            }
             try {
                 tbl = $('#adstable').DataTable({
                     "oLanguage": {
@@ -163,11 +211,12 @@
                     columns: [
                         {
                             render: function (data, type, row, meta) {
-                                EditBtn = "<button class='editbtn' Adsid=" + row.AdsCode + "> עריכה</button>";
-                                ViewBtn = "<button class='viewbtn' Adsid=" + row.AdsCode + ">צפייה </button>";
+                                EditBtn = "<button class='editbtn' Adsid=" + row.AdsCode + "> <i class='fa fa-edit'></i> </button>";
 
-                                return EditBtn + ViewBtn;
-                            }
+                                if ($("#filter").val() == 1)
+                                    return EditBtn;
+                                else
+                                    return null;                            }
                         },
                         { data: "Subject" },
                         { data: "SubSubject" },
@@ -198,12 +247,14 @@
                         },
                
                         {
-                            data: "Status",
                             render: function (data, type, row, meta) {
-                                if (data == true)
-                                    return '<input type="checkbox" checked disabled="disabled" />';
+                                if ($("#filter").val() == 1) {
+                                    DeleteBtn = "<button class='deleteBtn' Adsid=" + row.AdsCode + "> <i class='fa fa-trash'></i></button>";
+                                    return DeleteBtn;
+                                }
                                 else
-                                    return '<input type="checkbox" disabled="disabled"/>';
+                                    return null;
+
                             }
                         },
                     ],
@@ -243,6 +294,13 @@
         </div>
     </nav>
     <h2>פרסומים</h2>
+
+    <div class="form-group col-sm-12">
+        <select class="form-control" id="filter">
+            <option value="1">פרסומים פעילים</option>
+            <option value="0">פרסומים לא פעילים</option>
+        </select>
+    </div>
     <table id="adstable" class="display nowrap" style="width:100%">
         <thead>
             <tr>
@@ -251,7 +309,7 @@
                 <th>תת נושא</th>
                 <th>תאריך פרסום</th>
                 <th>תאריך סיום פרסום</th>
-                <th>סטטוס פרסום</th>
+                <th></th>
             </tr>
         </thead>
     </table>
@@ -276,7 +334,7 @@
                     <input type="text" class="form-control" id="Subject" placeholder="" required>
                 </div>
                 <div class="form-group col-sm-4">
-                    <label for="adsDuring" id="duringNum">(פרסם למשך (בימים</label>
+                    <label for="adsDuring" id="duringNum">פרסם למשך (בימים)</label>
                     <input type="number" class="form-control" id="adsDuring" min="0" required />
 
                 </div>
@@ -287,10 +345,10 @@
 
                 </div>
 
-                <div class="form-group col-sm-4">
+                <!--<div class="form-group col-sm-4">
                     <label for="Status"><span class="red-star">★ </span>סטטוס</label>
                     <input type="checkbox" class="form-control" id="Status" checked />
-                </div>
+                </div>-->
 
             </div>
 

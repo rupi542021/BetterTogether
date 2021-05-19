@@ -50,10 +50,10 @@ namespace BetterTogetherProj.Models
             dbs.InsertToTable(this);
         }
 
-        public List<Ads> GetAdBySub(string subnameFB)
+        public List<Ads> GetAdBySub(int statusAd,string subnameFB)
         {
             DBServices dbs = new DBServices();
-            List<Ads> AdFBList = dbs.GetAdBySub(subnameFB);
+            List<Ads> AdFBList = dbs.GetAdBySub(statusAd,subnameFB);
             return AdFBList;
 
         }
@@ -69,6 +69,13 @@ namespace BetterTogetherProj.Models
             DBServicesUnit dbs = new DBServicesUnit();
             List<Ads> AdsList = dbs.GetAllAds();
             return AdsList;
+
+        }
+
+        public void UpdateStatusAd(int AdId)
+        {
+            DBServices dbs = new DBServices();
+            dbs.UpdateStatusAd(AdId);
 
         }
     }

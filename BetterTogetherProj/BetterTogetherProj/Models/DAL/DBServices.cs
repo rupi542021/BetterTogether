@@ -731,7 +731,7 @@ namespace BetterTogetherProj.Models.DAL
             return command;
         }
 
-        public List<Ads> GetAdBySub(string subnameFB)
+        public List<Ads> GetAdBySub(int statusAd,string subnameFB)
         {
             SqlConnection con = null;
             List<Ads> AdList = new List<Ads>();
@@ -746,7 +746,7 @@ namespace BetterTogetherProj.Models.DAL
                 }
                 else if (subnameFB == "''")
                 {
-                    selectSTR += "update ads_P3 set status=0 where DATEDIFF(day,ads_P3.adsdate,getdate()) >ads_P3.duringAd select * from ads_P3";
+                    selectSTR += "update ads_P3 set status=0 where DATEDIFF(day,ads_P3.adsdate,getdate()) >ads_P3.duringAd select * from ads_P3 where status="+ statusAd;
 
                 }
                 else
@@ -1437,6 +1437,63 @@ namespace BetterTogetherProj.Models.DAL
 
             command = "update questionnaire_P3 set status=0 where qrCode=" + QrId;
          
+            return command;
+
+        }
+
+
+        public int UpdateStatusAd(int AdId)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect1("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            String cStr = BuildUpdatestadCommand(AdId);      // helper method to build the insert string
+
+            cmd = CreateCommand1(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        //--------------------------------------------------------------------
+        // Build the Update command String
+        //--------------------------------------------------------------------
+
+        private String BuildUpdatestadCommand(int AdId)
+        {
+            String command;
+
+            command = "update ads_P3 set status=0 where adCode=" + AdId;
+
             return command;
 
         }
