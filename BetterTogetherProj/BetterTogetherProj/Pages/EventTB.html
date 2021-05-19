@@ -43,6 +43,16 @@
                 $("#filter").show();
 
             });
+               $("#newBTN").on("click", function () {
+           
+               window.location = "Events.html"
+               });
+              $("#FBTN").on("click", function () {
+           
+               window.location = "EventsFeedBack.html"
+
+               });
+           
             ajaxCall("GET", "../api/Events/geteventdetail?statusEvent=" + statusEvent, "", getSuccessAlleventdetail, error);
             google.charts.load('current', { 'packages': ['corechart'] });
             $(document).on("click", ".view", addpiechart);
@@ -51,6 +61,7 @@
             $("#ManagerForm").submit(onSubmitFunc);
 
             $("#filter").change(filterAd);
+          
 
         });
 
@@ -346,20 +357,17 @@
 <body>
     <nav class="navbar navbar-default">
         <div class="container-fluid">
-            <ul class="nav navbar-nav">
-                <!--<li><a href="Ads.html">יצירת פרסום</a></li>-->
+            <ul class="nav navbar-nav">           
                 <li><a href="AdsTB.html">פרסומים</a></li>
-                <li><a href="AdsFeedBack.html">פידבק לפרסומים</a></li>
-                <li><a href="Events.html">יצירת אירוע</a></li>
-                <li class="active"><a href="EventTB.html">אירועים</a></li>
-                <li><a href="EventsFeedBack.html">פידבק לארועים חברתיים</a></li>
+                <li class="active"><a href="EventTB.html">אירועים</a></li>          
                 <li><a href="Questionnaire.html">שאלונים</a></li>
                 <li id="titleNav"><a id="navT">היחידת ליזמות חברתית</a></li>
             </ul>
         </div>
     </nav>
     <h2>משתתפים בארועים חברתיים</h2>
-
+    <button class="myButton" id="newBTN"> יצירת אירוע חדש <span class="glyphicon glyphicon-plus"></span></button>
+    <button class="myButton" id="FBTN"> צפיה בפידבק סטודנטים </button>
     <div class="form-group col-sm-12">
         <select class="form-control" id="filter">
             <option value="1">אירועים פעילים</option>
