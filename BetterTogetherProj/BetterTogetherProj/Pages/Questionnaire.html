@@ -73,7 +73,7 @@
 
 
             
-            $("#newBTN").on("click", function () {
+            $("#newBTNQr").on("click", function () {
                
                 $("#openanswer").hide();
                 $("#filter").hide();
@@ -448,8 +448,10 @@
                                                         <label for="QuestionText`+ q + `"><span class="red-star">★ </span>תוכן שאלה</label>
                                                         <textarea class="form-control Qtext" id="QuestionText`+ q + `"  required></textarea>
                                                     </div></div></div>`
-            if (mode == "view" && QuestionType!=3) 
+            if (mode == "view" && QuestionType != 3) {
                 Questionstring += `<canvas id="myChart` + q + `" class="canvas"></canvas></div>`;
+           
+            }
                 else
                 Questionstring +=`</div >`
                                                          
@@ -671,7 +673,7 @@
                                 labels: xValues,
 
                                 datasets: [{
-                                    backgroundColor: barColors,
+                                    backgroundColor: barColors,                                   
                                     data: yValues,
 
                                 }
@@ -689,6 +691,10 @@
                             },
 
                         });
+                    var element = document.getElementById('myChart' + k);
+
+                    element.style.width = "400px";
+                    element.style.height = "200px";
                     }
 
             }
@@ -904,7 +910,7 @@
     </nav>
     <h2>שאלוני סטודנטים</h2>
 
-    <button class="myButton" id="newBTN"> יצירת שאלון חדש <span class="glyphicon glyphicon-plus"></span></button>
+    <button class="newBTN myButton" id="newBTNQr"> יצירת שאלון חדש <span class="glyphicon glyphicon-plus"></span></button>
     
     <div class="form-group col-sm-12">      
         <select class="form-control" id="filter">

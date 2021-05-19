@@ -53,7 +53,7 @@
             $("#filter").change(filterEvent);
             $(document).on("click", ".deleteBtn", DeleteEvent);
 
-            $("#newBTN").on("click", function () {
+            $("#newBTNEv").on("click", function () {
 
                 window.location = "Events.html"
             });
@@ -413,7 +413,7 @@
         </div>
     </nav>
     <h2>משתתפים בארועים חברתיים</h2>
-    <button class="myButton" id="newBTN"> יצירת אירוע חדש <span class="glyphicon glyphicon-plus"></span></button>
+    <button class="newBTN myButton" id="newBTNEv"> יצירת אירוע חדש <span class="glyphicon glyphicon-plus"></span></button>
     <button class="myButton" id="FBTN"> צפיה בפידבק סטודנטים </button>
     <div class="form-group col-sm-12">
         <select class="form-control" id="filter">

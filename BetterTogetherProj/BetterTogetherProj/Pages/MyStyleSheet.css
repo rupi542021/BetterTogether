@@ -156,7 +156,7 @@ nav.navbar.navbar-default {
         background-color: #FAE8BE;
     }
 
-#newBTN {
+.newBTN {
     
     margin-bottom: 0px;
     font-size: 14px;
@@ -308,8 +308,7 @@ h4 {
     direction: rtl;
 }
 
-canvas#myChart1.canvas {
-    margin: 0px auto;
-    height: 400px;
-    width: 600px
+
+#newBTNQr{
+margin-left:46.5%
 }

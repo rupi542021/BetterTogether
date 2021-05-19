@@ -52,12 +52,11 @@
 
             $(document).on("click", ".deleteBtn", DeleteAd);
             
-              $("#newBTN").on("click", function () {
+              $("#newBTNAd").on("click", function () {
            
                window.location = "Ads.html"
               });
 
-            //$(document).on("click", "#feedbackTBBTN", feedback);
             $("#feedbackTBBTN").on("click", function () {
            
                window.location = "AdsFeedBack.html"
@@ -307,7 +306,7 @@
         </div>
     </nav>
     <h2>פרסומים</h2>
-    <button class="myButton" id="newBTN"> יצירת פרסום חדש <span class="glyphicon glyphicon-plus"></span></button>
+    <button class="newBTN myButton" id="newBTNAd"> יצירת פרסום חדש <span class="glyphicon glyphicon-plus"></span></button>
     <button class="myButton" id="feedbackTBBTN"> צפיה בפידבק סטודנטים</button>
     <div class="form-group col-sm-12">
         <select class="form-control" id="filter">
