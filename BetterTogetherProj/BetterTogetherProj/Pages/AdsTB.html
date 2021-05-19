@@ -52,8 +52,24 @@
             $("#filter").change(filterAd);
 
             $(document).on("click", ".deleteBtn", DeleteAd);
+            
+              $("#newBTN").on("click", function () {
+           
+               window.location = "Ads.html"
+              });
+
+            $(document).on("click", "#feedbackTBBTN", feedback);
+
+             
 
         });
+
+
+        //function feedback() {
+
+        //     window.location = "AdsFeedBack.html"
+        //}
+      
 
         function EditAd() {
             $("#editDiv").show();
@@ -282,7 +298,7 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <ul class="nav navbar-nav">
-                <li><a href="Ads.html">יצירת פרסום</a></li>
+                <!--<li><a href="Ads.html">יצירת פרסום</a></li>-->
                 <li class="active"><a href="AdsTB.html">פרסומים</a></li>
                 <li><a href="AdsFeedBack.html">פידבק לפרסומים</a></li>
                 <li><a href="Events.html">יצירת אירוע</a></li>
@@ -294,7 +310,8 @@
         </div>
     </nav>
     <h2>פרסומים</h2>
-
+    <button class="myButton" id="newBTN"> יצירת פרסום חדש <span class="glyphicon glyphicon-plus"></span></button>
+    <button class="myButton" id="feedbackTBBTN"> לצפיה בפידבק סטודנטים</button>
     <div class="form-group col-sm-12">
         <select class="form-control" id="filter">
             <option value="1">פרסומים פעילים</option>
