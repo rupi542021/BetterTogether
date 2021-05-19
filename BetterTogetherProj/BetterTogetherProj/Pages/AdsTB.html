@@ -40,7 +40,6 @@
         $(document).ready(function () {
             $("#cancelBTN").on("click", function () { //מבטל טופס חדש ומחזיר לטבלה
                 $("#editDiv").hide();
-                $("#filter").show();
 
             });
             let api = "../api/Ads/getFB?statusAd=" +statusAd+"&subnameFB=''";
@@ -65,10 +64,10 @@
         });
 
 
-        //function feedback() {
+        function feedback() {
 
-        //     window.location = "AdsFeedBack.html"
-        //}
+             window.location = "AdsFeedBack.html"
+        }
       
 
         function EditAd() {

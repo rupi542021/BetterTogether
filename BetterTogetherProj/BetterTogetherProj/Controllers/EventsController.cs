@@ -141,11 +141,19 @@ namespace BetterTogetherProj.Controllers
 
         [HttpGet]
         [Route("api/Events/geteventdetail")]
-        public List<Events> Geteventdetail()
+        public List<Events> Geteventdetail(int statusEvent)
         {
             Events evdetail = new Events();
-            return evdetail.Geteventdetail();
+            return evdetail.Geteventdetail(statusEvent);
 
+        }
+
+        [HttpPut]
+        [Route("api/Events/updatestatus")]
+        public void Put(int EventId)
+        {
+            Events ev = new Events();
+            ev.UpdateStatusEvent(EventId);
         }
     }
 }
