@@ -57,10 +57,10 @@ namespace BetterTogetherProj.Models
             return EvFBList;
 
         }
-        public List<Events> Geteventdetail()
+        public List<Events> Geteventdetail(int statusEvent)
         {
             DBServices dbs = new DBServices();
-            List<Events> evdetailList = dbs.Geteventdetail();
+            List<Events> evdetailList = dbs.Geteventdetail(statusEvent);
             return evdetailList;
 
         }
@@ -76,6 +76,13 @@ namespace BetterTogetherProj.Models
             DBServicesUnit dbs = new DBServicesUnit();
             List<Events> evdetailList = dbs.GetAllEvents();
             return evdetailList;
+        }
+
+        public void UpdateStatusEvent(int EventId)
+        {
+            DBServices dbs = new DBServices();
+            dbs.UpdateStatusEvent(EventId);
+
         }
 
     }

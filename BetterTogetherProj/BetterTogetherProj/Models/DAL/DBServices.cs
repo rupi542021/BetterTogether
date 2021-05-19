@@ -1031,14 +1031,14 @@ namespace BetterTogetherProj.Models.DAL
             return command;
         }
 
-        public List<Events> Geteventdetail()
+        public List<Events> Geteventdetail(int statusEvent)
         {
             SqlConnection con = null;
             List<Events> evdetailList = new List<Events>();
             try
             {
                 con = connect1("DBConnectionString");
-                String selectSTR = "update events_P3 set status=0 where events_P3.eventDate<GETDATE() select * from events_P3";
+                String selectSTR = "update events_P3 set status=0 where events_P3.eventDate<GETDATE() select * from events_P3 where status="+ statusEvent;
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
@@ -1493,6 +1493,62 @@ namespace BetterTogetherProj.Models.DAL
             String command;
 
             command = "update ads_P3 set status=0 where adCode=" + AdId;
+
+            return command;
+
+        }
+
+        public int UpdateStatusEvent(int EventId)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect1("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            String cStr = BuildUpdatestevCommand(EventId);      // helper method to build the insert string
+
+            cmd = CreateCommand1(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        //--------------------------------------------------------------------
+        // Build the Update command String
+        //--------------------------------------------------------------------
+
+        private String BuildUpdatestevCommand(int EventId)
+        {
+            String command;
+
+            command = "update events_P3 set status=0 where eventCode=" + EventId;
 
             return command;
 
