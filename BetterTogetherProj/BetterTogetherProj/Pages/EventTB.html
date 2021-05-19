@@ -35,19 +35,22 @@
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
         today = yyyy + '-' + mm + '-' + dd;
+        var statusEvent = 1;
 
         $(document).ready(function () {
             $("#cancelBTN").on("click", function () { //מבטל טופס חדש ומחזיר לטבלה                
-                //events = null;
                 $("#editDiv").hide();
+                $("#filter").show();
+
             });
-            ajaxCall("GET", "../api/Events/geteventdetail", "", getSuccessAlleventdetail, error);
+            ajaxCall("GET", "../api/Events/geteventdetail?statusEvent=" + statusEvent, "", getSuccessAlleventdetail, error);
             google.charts.load('current', { 'packages': ['corechart'] });
             $(document).on("click", ".view", addpiechart);
             $("#editDiv").hide();
             $(document).on("click", ".editbtn", EditEvent);
             $("#ManagerForm").submit(onSubmitFunc);
 
+            $("#filter").change(filterAd);
 
         });
 
@@ -356,6 +359,13 @@
         </div>
     </nav>
     <h2>משתתפים בארועים חברתיים</h2>
+
+    <div class="form-group col-sm-12">
+        <select class="form-control" id="filter">
+            <option value="1">אירועים פעילים</option>
+            <option value="0">אירועים לא פעילים</option>
+        </select>
+    </div>
     <table id="detaileventtable" class="display nowrap" style="width:100%">
         <thead>
             <tr>

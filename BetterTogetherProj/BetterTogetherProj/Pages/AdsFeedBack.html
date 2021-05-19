@@ -26,9 +26,12 @@
     </style>
 
     <script>
+
+        var statusAd = 1;
+
         $(document).ready(function () {
-            let subnameFB = $("#SubjName :selected").text()
-            let api = "../api/Ads/getFB?subnameFB=" + subnameFB;
+            var subnameFB = $("#SubjName :selected").text()
+            let api = "../api/Ads/getFB?statusAd=" + statusAd + "&subnameFB="+subnameFB;
             ajaxCall("GET", api, "", getFBSuccess, error);
             ajaxCall("GET", "../api/Ads/getsub", "", getSuccessAllsubs, error);
             $("#SubjName").change(getallfeed);
@@ -52,7 +55,7 @@
         function getallfeed() {
 
             let subnameFB = $("#SubjName :selected").text()
-            let api = "../api/Ads/getFB?subnameFB=" + subnameFB;
+            let api = "../api/Ads/getFB?statusAd=" + statusAd + "&subnameFB=" + subnameFB;
             ajaxCall("GET", api, "", getFBSuccess, error);
 
         }
