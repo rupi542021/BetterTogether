@@ -195,7 +195,7 @@ rect {
     width:400px
 }
 .Qtype {
-    width: 250px
+    width: 255px
 }
 .radioo.form-group.col-sm-2 {
     text-align: right;
@@ -311,4 +311,8 @@ h4 {
 
 #newBTNQr{
 margin-left:46.5%
+}
+
+.Qtext {
+    margin-left:400PX
 }

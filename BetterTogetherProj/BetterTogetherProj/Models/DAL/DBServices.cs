@@ -1307,14 +1307,26 @@ namespace BetterTogetherProj.Models.DAL
             return command;
 
         }
-        public List<StudentsAnswers> GetStudentAns(int numQr)
+        public List<StudentsAnswers> GetStudentAns(int numQr, int depcode)
         {
             SqlConnection con = null;
             List<StudentsAnswers> SAnsList = new List<StudentsAnswers>();
+            String selectSTR = "";
             try
             {
                 con = connect1("DBConnectionString");
-                String selectSTR = "select * from studentanswers_P3 INNER JOIN question_P3 on studentanswers_P3.qCode=question_P3.qCode and studentanswers_P3.qrCode=question_P3.qrCode where studentanswers_P3.qrCode=" + numQr; 
+                if (depcode == 15)
+                {
+                    selectSTR += "select * from studentanswers_P3 INNER JOIN question_P3 on studentanswers_P3.qCode = question_P3.qCode and studentanswers_P3.qrCode = question_P3.qrCode where studentanswers_P3.qrCode =" + numQr;
+
+                }
+                else
+                {
+                    selectSTR += "select * from studentanswers_P3 INNER JOIN question_P3 on studentanswers_P3.qCode = question_P3.qCode and studentanswers_P3.qrCode = question_P3.qrCode where studentanswers_P3.qrCode =" + numQr +
+                       " and studentanswers_P3.studentmail in(select student_P.mail from student_P inner join department_P on student_P.departmentCode = department_P.departmentCode where department_P.departmentCode="+ depcode+")";
+                }
+                //"SELECT COUNT(distinct studentmail) from studentanswers_P3 INNER JOIN question_P3 on studentanswers_P3.qCode = question_P3.qCode and studentanswers_P3.qrCode = question_P3.qrCode where studentanswers_P3.qrCode ="+ numQr
+                //     and studentanswers_P3.studentmail in(select student_P.mail from student_P inner join department_P on student_P.departmentCode = department_P.departmentCode where department_P.departmentCode ="+ depcode+")";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())

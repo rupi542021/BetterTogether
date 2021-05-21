@@ -70,8 +70,7 @@
 
                 mode = "";
             });
-
-
+       
             
             $("#newBTNQr").on("click", function () {
                
@@ -101,16 +100,10 @@
                 $("#editDiv :input").prop("disabled", false); // new mode: enable all controls in the form
 
             });
-
-       
-            //let api = "../api/Questionnaire/qr"
-            //ajaxCall("GET", api, "", getSuccess, error);
-
-            //$("#ManagerForm1").submit(onSubmitFunc);
+;
             $("#ManagerForm").submit(onSubmitFunc);// wire the submit event to a function called f1
 
             $("#editDiv").hide();
-
 
             buttonEvents();
             $(document).on("change", '#publishList', { 'param': 0 }, function (event) {
@@ -325,7 +318,7 @@
                 $("#editDiv").hide();
 
                 Qr = getQ(this.getAttribute('data-QuestionnaireId'));
-
+               
                 let Qrtoduplicate = {
 
                     QuestionnairePublish: Qr.QuestionnairePublish,
@@ -338,7 +331,7 @@
                     Status: Qr.Status,
                     QuestionnaireYear: Qr.QuestionnaireYear,
                     Queslist: Qr.Queslist,
-                    QuestionnaireNum: QrNumm,
+                    QuestionnaireNum: questionnaires[questionnaires["length"] - 1].QuestionnaireNum+1,
                 }
                 ajaxCall("POST", "../api/Questionnaire/postqr", JSON.stringify(Qrtoduplicate), insertSuccess, error);
                     return false;
@@ -401,12 +394,12 @@
 
                 if (flag == 0) {
 
-                    str += `<input type='text' class='answertext' id='` + q + `answer` + AnsNum + `'/>
+                    str += `<input type='text' class='answertext' id='` + q + `answer` + AnsNum + `'required/>
                                                 <i type ='button' onclick='getQuestionType(1)' id ='add`+ q + `' class='quesplus fas fa-plus-circle'> </i>`;
                 }
 
                 else {
-                    str += `<input type='text' class='answertext' id='` + q + `answer` + AnsNum + `'/>`;
+                    str += `<input type='text' class='answertext' id='` + q + `answer` + AnsNum + `'required/>`;
                 }
 
                 if (AnsNum > 5) {
@@ -426,16 +419,19 @@
 
             AnsNum = 0;
             q++;
-            QuestionType = $("#QuestionType" + q).val();
 
             var Questionstring = `<div id="` + q + `">
                                                 <div class="questionn">
-                                                         <div class="divareaque form-group row">
-                                                        <div class="ansdiv form-group col-sm-2" id="`+ q + `Qans">
+                                                         <div class="divareaque form-group row">`
+            if (mode == "view") {
+                Questionstring += `<div class="form-group col-sm-4"><canvas id="myChart` + q + `" class="canvas"></canvas></div>`;
+
+            }
+            Questionstring+=`<div class="ansdiv form-group col-sm-2" id="`+ q + `Qans">
                                                            <label for="QuestionText"><span class="red-star">★ </span>תשובות</label>
                                                         </div>
 
-                                                  <div class="form-group col-sm-4">
+                                                  <div class="form-group col-sm-3">
                                                         <label for="QuestionType`+ q + `"><span class="red-star">★ </span>סוג שאלה</label>
                                                         <select class="form-control Qtype" onchange='getQuestionType(0)' id="QuestionType`+ q + `"required>
                                                             <option value="">בחרי סוג שאלה</option>
@@ -444,16 +440,16 @@
                                                             <option value="3">שאלה פתוחה</option>
                                                         </select>
                                                   </div>
-                                                    <div class="form-group col-sm-4" >
+                                                    <div class="form-group col-sm-3" >
                                                         <label for="QuestionText`+ q + `"><span class="red-star">★ </span>תוכן שאלה</label>
                                                         <textarea class="form-control Qtext" id="QuestionText`+ q + `"  required></textarea>
-                                                    </div></div></div>`
-            if (mode == "view" && QuestionType != 3) {
-                Questionstring += `<canvas id="myChart` + q + `" class="canvas"></canvas></div>`;
+                                                    </div></div></div></div>`
+            //if (mode == "view"/* && QuestionType != 3*/) {
+            //    Questionstring += `<div class="form-group col-sm-4"><canvas id="myChart` + q + `" class="canvas"></canvas></div></div></div></div>`;
            
-            }
-                else
-                Questionstring +=`</div >`
+            //}
+            //    else
+            //    Questionstring +=`</div></div></div>`
                                                          
             $("#question1").append(Questionstring);
 
@@ -620,7 +616,7 @@
                 }
 
                 numQr = Qr.QuestionnaireNum;               
-                let api = "../api/Questionnaire/analyze?numQr=" + numQr;
+                let api = "../api/Questionnaire/analyze?numQr=" + numQr + "&depcode=" + depcode;
                 ajaxCall("GET", api, "", getSuccessallStudAns, error);                
 
             }
@@ -691,10 +687,7 @@
                             },
 
                         });
-                    var element = document.getElementById('myChart' + k);
-
-                    element.style.width = "400px";
-                    element.style.height = "200px";
+                  
                     }
 
             }
@@ -758,9 +751,14 @@
             $("#editDiv").hide();
             if (mode == "new")
                 swal("השאלון הוכנס בהצלחה!", "Great Job", "success");
-            else if (mode == "duplicate")
+            else if (mode == "duplicate") {
                 swal("השאלון שוכפל בהצלחה!", "Great Job", "success");
-
+                if (mode == "edit") {
+                    $("#publishDate").prop("disabled", true);
+                    $("#EndpublishDate").prop("disabled", true);
+                }
+            }
+            $("#filter").show();
             mode = "";
 
         }
