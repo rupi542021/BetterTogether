@@ -212,6 +212,21 @@ namespace BetterTogetherProj.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("API/students/updateUserPrefRanges")]
+        public IHttpActionResult updateUserPrefRanges([FromBody] Student stud)
+        {
+            try
+            {
+                stud.updateUserPrefRanges();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
+
         [HttpGet]
         [Route("api/students/GetAllResidences")]
         public IHttpActionResult GetAllResidences()

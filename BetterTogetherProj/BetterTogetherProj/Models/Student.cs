@@ -193,6 +193,11 @@ namespace project_classes.Models
             DBServicesReact dbs = new DBServicesReact();
             dbs.updateUserPassword(pass, stud);
         }
+        public void updateUserPrefRanges()
+        {
+            DBServicesReact dbs = new DBServicesReact();
+            dbs.updateUserPrefRanges(this);
+        }
         public void deleteUserProfile(string mail)
         {
             DBServicesReact dbs = new DBServicesReact();
