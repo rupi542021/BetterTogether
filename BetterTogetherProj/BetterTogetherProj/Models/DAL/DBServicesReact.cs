@@ -1642,6 +1642,53 @@ namespace BetterTogetherProj.Models.DAL
             return prefix;
         }
 
+        public int updateUserPrefRanges(Student stud)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString");
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+
+            String cStr = BuildupdateupdateUserPrefRangesCommand(stud);
+            cmd = CreateCommand(cStr, con);
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery();
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildupdateupdateUserPrefRangesCommand(Student stud)
+        {
+            String prefix = "UPDATE[dbo].[student_P] SET [homeDist] =" + stud.HomeDist + " ,[studyingDist] =" + stud.StudyingDist;
+            prefix += " ,[agesRange]="+stud.AgesRange+" WHERE [mail] = '" + stud.Mail + "'";
+            return prefix;
+        }
+
         public int deleteUserProfile(string mail)
         {
 
