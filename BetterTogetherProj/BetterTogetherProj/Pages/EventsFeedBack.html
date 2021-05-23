@@ -5,6 +5,8 @@
     <meta charset="utf-8" />
     <title></title>
 
+
+
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
@@ -22,6 +24,21 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
 
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
+
+    <!--**** Remember to add the database script ***-->
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+
+    <!--Your web app's Firebase configuration-->
+    <script src="../Scripts/config.js"></script>
+
     <style type="text/css">
     </style>
 
@@ -29,15 +46,108 @@
         $(document).ready(function () {
 
             let evtypeFB = $("#EventType :selected").text();
-                let api = "../api/Events/getFB?evtypeFB=" + evtypeFB;
-                ajaxCall("GET", api, "", getFBSuccess, error);
-           
+            let api = "../api/Events/getFB?evtypeFB=" + evtypeFB;
+            ajaxCall("GET", api, "", getFBSuccess, error);
+
             ajaxCall("GET", "../api/Events/getevent", "", getSuccessAlleventstype, error);
             $("#EventType").change(getallfeed);
             $(document).on("click", ".fa-plus-circle", addcomment);
             $(document).on("click", ".swal-button.swal-button--confirm", insertcomment);
+            $(document).on("click", ".swal-button.swal-button--confirm", insertcommentFireB);
+
+            
+            msgArr = [];
+            ref = firebase.database().ref("UnitMessagesEvents");
+            // listen to incoming messages
+            listenToNewMessages();
+            // listen to removing messages
+            //listenToRemove();
+            ph = document.getElementById("ph");
         })
 
+
+        function listenToNewMessages() {
+            // child_added will be evoked for every child that was added
+            // on the first entry, it will bring all the childs
+            ref.on("child_added", snapshot => {
+                Feedbackev = {
+                    EventDate: new Date(),
+                    EventTitle: Ev.Eventn,
+                    ToMail: Ev.Student.Mail,
+                    createdAt: new Date(),
+                    myComment: Ev.CommentText,
+                    text: snapshot.val().text,
+                }
+                msgArr.push(Feedbackev)
+                printMessage(Feedbackev);
+            })
+        }
+        //function listenToRemove() {
+        //    ref.on("child_removed", snapshot => {
+        //        msgArr = msgArr.filter(m => m.content != snapshot.val().msg);
+        //        // re-render the messages
+        //        printMessages(msgArr);
+        //    })
+        //}
+        /*
+                function getMSGfromDB() {
+                    msgArr = [];
+                    // once listens to an event and then deletes the listner
+                    // it is usually used to initially bring data
+                    ref.once("value", snapshot => {
+                        snapshot.forEach(element => {
+                            msg = {
+                            name:element.val().name,
+                            content:element.val().msg,
+                        }
+                         msgArr.push(msg)
+                        });
+                        printMessages(msgArr);
+                    })
+        
+                }
+        */
+        //function deleteMsgsBySubString() {
+        //    let subString = document.getElementById("delTB").value;
+        //    if (subString == "") {
+        //        alert("substing can not be empty");
+        //        return;
+        //    }
+        //    ref.once("value", snapshot => {
+        //        snapshot.forEach(element => {
+        //            // check if contains the substring
+        //            if (element.val().msg.indexOf(subString) > -1) {
+        //                ref.child(element.key).remove();
+        //            }
+        //        });
+        //    })
+        //}
+
+        function printMessage(msg) {
+            let str = "text" + Feedbackev.text;
+            ph.innerHTML += str;
+        }
+
+        //function printMessages(msgArr) {
+        //    var str = "";
+        //    for (let index = 0; index < msgArr.length; index++) {
+        //        const msg = msgArr[index];
+        //        str += "name: " + msg.name + ", content: " + msg.content + "<br/>";
+        //    }
+        //    ph.innerHTML = str;
+        //}
+
+        function insertcommentFireB() {
+
+            let managercomment = $(".swal-content__input").val();
+
+            if (managercomment == "") {
+                alert("יש להכניס תגובה!");
+                return;
+            }
+            ref.push().set({
+                "text": managercomment, "EventDate": new Date(), "ToMail": Ev.Student.Mail, "createdAt": new Date(), "myComment": Ev.CommentText});
+        }
         function getSuccessAlleventstype(allevtype) {
             console.log(allevtype);
             Allevtype = allevtype;
@@ -76,7 +186,7 @@
 
             console.log(onlyFB);
             onlyFB1 = onlyFB;
-       
+
             try {
 
                 tbl = $('#FBtable').DataTable({
@@ -141,6 +251,7 @@
 
         function addcomment() {
             idcom = $(this).attr("id");
+            Ev = getev(idcom);
 
             swal({
                 content: {
@@ -170,6 +281,14 @@
             console.log(data);
             getallfeed();
 
+        }
+
+        function getev(id) {
+            for (i in onlyFB1) {
+                if (onlyFB1[i].FbEventNum == id)
+                    return onlyFB1[i];
+            }
+            return null;
         }
 
         function error(err) {
@@ -211,7 +330,7 @@
         </table>
     </form>
 
-
+    <div id="ph"></div>
 
 </body>
 </html>

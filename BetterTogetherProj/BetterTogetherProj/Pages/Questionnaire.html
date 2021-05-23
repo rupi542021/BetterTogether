@@ -114,7 +114,7 @@
             ajaxCall("GET", api, "", getSuccess, error);
             $("#filter").change(filterQr);
 
-       
+        
         });
 
         function getQrNum(QrNum) {
@@ -276,9 +276,9 @@
                 $("#addinput").hide();
                 $("#inserth3").hide();
                 $(".divareaque.form-group.row").hide();
-                $("#subQr").prop("disabled", true);
-                $("#publishList").prop("disabled", false);
-                $("#yearList").prop("disabled", false);
+                $("#subQr").prop("disabled", false);
+                $("#publishList").prop("disabled", true);
+                $("#yearList").prop("disabled", true);
                 $("#publishDate").prop("disabled", false);
                 $("#EndpublishDate").prop("disabled", false);
                 //$('#Status').prop("disabled", false)
@@ -327,7 +327,7 @@
                     Dep: {
                         DepartmentCode: Qr.Dep.DepartmentCode
                     },
-                    //NumResponders: NumResponders,
+                    NumResponders: 0,
                     Status: Qr.Status,
                     QuestionnaireYear: Qr.QuestionnaireYear,
                     Queslist: Qr.Queslist,
@@ -473,13 +473,13 @@
 
                 QrtoUpdate = {
                     QuestionnaireNum: Qr.QuestionnaireNum,
-                    SubQr: Qr.SubQr,
+                    SubQr: $("#subQr").val(),
                     QuestionnairePublish: $("#publishDate").val(),
                     EndPublishDate: $("#EndpublishDate").val(),
                     Dep: {
-                        DepartmentCode: $("#publishList").val(),
+                        DepartmentCode: Qr.Dep.DepartmentCode,
                     },
-                    QuestionnaireYear: $("#yearList").val(),
+                    QuestionnaireYear: Qr.QuestionnaireYear,
                     Status: true
 
                 }
@@ -555,6 +555,9 @@
                     $("#publishDate").val("");
 
                 }
+                else {
+
+                }
             }
         }
 
@@ -581,15 +584,14 @@
             var month = ("0" + (dateEndPub.getMonth() + 1)).slice(-2);
             var dateQrfinal = dateEndPub.getFullYear() + "-" + (month) + "-" + (day);
             $("#EndpublishDate").val(dateQrfinal);
-            if (mode == "edit") {
-                if ($("#EndpublishDate").val() < today) {
-                    swal({ icon: 'error', title: 'Sorry', text: "!לא ניתן לערוך שאלון שכבר הסתיים" })
-                    $("#editDiv").hide();
-                }
-            }
+            //if (mode == "edit") {
+            //    if ($("#EndpublishDate").val() < today) {
+            //        swal({ icon: 'error', title: 'Sorry', text: "!לא ניתן לערוך שאלון שכבר הסתיים" })
+            //        $("#editDiv").hide();
+            //    }
+            //}
             $("#subQr").val(Qr.SubQr);
-            //$("#Status").prop('checked', Qr.Status);
-
+       
             if (mode == "view") {
                 $("#" + q + "Qans").html("");
                 $(".divareaque").html("");
@@ -753,10 +755,7 @@
                 swal("השאלון הוכנס בהצלחה!", "Great Job", "success");
             else if (mode == "duplicate") {
                 swal("השאלון שוכפל בהצלחה!", "Great Job", "success");
-                if (mode == "edit") {
-                    $("#publishDate").prop("disabled", true);
-                    $("#EndpublishDate").prop("disabled", true);
-                }
+                    
             }
             $("#filter").show();
             mode = "";

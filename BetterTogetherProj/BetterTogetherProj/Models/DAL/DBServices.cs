@@ -59,9 +59,9 @@ namespace BetterTogetherProj.Models.DAL
                     qr.EndPublishDate = Convert.ToDateTime(dr["endPublishDate"]);
                     qr.SubQr = (string)dr["subQ"];
                     qr.Status = Convert.ToBoolean(dr["status"]);
-                    qr.NumResponders = Convert.ToInt32(dr["numResponders"]);
                     qr.Dep = (new Department { DepartmentName = (string)dr["departmentName"] });
                     qr.Dep.DepartmentCode = Convert.ToInt16(dr["departmentCode"]);
+                    qr.NumResponders = GetNumResponders(qr.QuestionnaireNum, qr.Dep.DepartmentCode);
                     qr.QuestionnaireYear = Convert.ToInt16(dr["qrYear"]);                   
                     qr.Queslist = getQuestionsbyNumqr(qr.QuestionnaireNum);            
                     qrList.Add(qr);
@@ -84,6 +84,50 @@ namespace BetterTogetherProj.Models.DAL
             }
 
         }
+
+        public int GetNumResponders(int QrId, int depcode)
+        {
+            SqlConnection con = null;
+            int Numres = 0;
+            String selectSTR = "";
+            try
+            {
+                con = connect1("DBConnectionString");
+                if (depcode == 15)
+                {
+                    selectSTR += "SELECT COUNT(distinct studentmail) as 'numResponders' from studentanswers_P3 INNER JOIN questionnaire_P3 on studentanswers_P3.qrCode = questionnaire_P3.qrCode where studentanswers_P3.qrCode =" + QrId;
+                      
+                }
+                else
+                {
+                    selectSTR += "SELECT COUNT(distinct studentmail) as 'numResponders' from studentanswers_P3 INNER JOIN questionnaire_P3 on studentanswers_P3.qrCode = questionnaire_P3.qrCode where studentanswers_P3.qrCode =" + QrId +
+                       "and studentanswers_P3.studentmail in(select student_P.mail from student_P inner join department_P on student_P.departmentCode = department_P.departmentCode where department_P.departmentCode =" + depcode + ")";
+                }
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Numres = Convert.ToInt16(dr["numResponders"]);
+
+                }
+                return Numres;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
+
 
         public List<Question> getQuestionsbyNumqr(int questionnaireNum)
         {
@@ -1231,12 +1275,12 @@ namespace BetterTogetherProj.Models.DAL
             if (Qr.Status == true)// השמת הסטטוס TRUE=1 והפוך  
             {
 
-                command = "update questionnaire_P3 set publishDate='" + Qr.QuestionnairePublish.ToString("yyyy-MM-dd") + "',endPublishDate='" + Qr.EndPublishDate.ToString("yyyy-MM-dd") + "',departmentCode='"+Qr.Dep.DepartmentCode+"',qrYear='"+Qr.QuestionnaireYear+"' ,status=1 where qrCode=" + Qr.QuestionnaireNum;
+                command = "update questionnaire_P3 set publishDate='" + Qr.QuestionnairePublish.ToString("yyyy-MM-dd") + "',endPublishDate='" + Qr.EndPublishDate.ToString("yyyy-MM-dd") + "',subQ='"+Qr.SubQr+"' ,status=1 where qrCode=" + Qr.QuestionnaireNum;
             }
             else
             {
 
-                command = "update questionnaire_P3 set publishDate='" + Qr.QuestionnairePublish.ToString("yyyy-MM-dd") + "',endPublishDate='" + Qr.EndPublishDate.ToString("yyyy-MM-dd") + "',departmentCode='" + Qr.Dep.DepartmentCode + "',qrYear='" + Qr.QuestionnaireYear + "' ,status=0 where qrCode=" + Qr.QuestionnaireNum;
+                command = "update questionnaire_P3 set publishDate='" + Qr.QuestionnairePublish.ToString("yyyy-MM-dd") + "',endPublishDate='" + Qr.EndPublishDate.ToString("yyyy-MM-dd") + "',subQ='" + Qr.SubQr + "',status=0 where qrCode=" + Qr.QuestionnaireNum;
 
             }
             return command;
@@ -1325,8 +1369,7 @@ namespace BetterTogetherProj.Models.DAL
                     selectSTR += "select * from studentanswers_P3 INNER JOIN question_P3 on studentanswers_P3.qCode = question_P3.qCode and studentanswers_P3.qrCode = question_P3.qrCode where studentanswers_P3.qrCode =" + numQr +
                        " and studentanswers_P3.studentmail in(select student_P.mail from student_P inner join department_P on student_P.departmentCode = department_P.departmentCode where department_P.departmentCode="+ depcode+")";
                 }
-                //"SELECT COUNT(distinct studentmail) from studentanswers_P3 INNER JOIN question_P3 on studentanswers_P3.qCode = question_P3.qCode and studentanswers_P3.qrCode = question_P3.qrCode where studentanswers_P3.qrCode ="+ numQr
-                //     and studentanswers_P3.studentmail in(select student_P.mail from student_P inner join department_P on student_P.departmentCode = department_P.departmentCode where department_P.departmentCode ="+ depcode+")";
+                
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
