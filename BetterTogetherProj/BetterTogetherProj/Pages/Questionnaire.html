@@ -54,7 +54,7 @@
         var yyyy = today.getFullYear();
         today = yyyy + '-' + mm + '-' + dd;
         var statusQR = 1;
-
+        var modedelete = 1;
         $(document).ready(function () {
 
             AnsNum = 0;
@@ -109,8 +109,7 @@
             $(document).on("change", '#publishList', { 'param': 0 }, function (event) {
                 getyearbydep(event.data.param);
             });
-         
-            let api = "../api/Questionnaire/qr?statusQR=" + statusQR;
+            let api = "../api/Questionnaire/qr?statusQR=" + statusQR + "&modedelete=" + modedelete ;
             ajaxCall("GET", api, "", getSuccess, error);
             $("#filter").change(filterQr);
 
@@ -338,7 +337,8 @@
             });
 
             $(document).on("click", ".deleteBtn", function () {
-                mode = "delete";          
+                mode = "delete";     
+                modedelete = 0;
                 markSelected(this);
                 var QrId = this.getAttribute('data-QuestionnaireId');
                 swal({ 
@@ -363,12 +363,12 @@
         }
 
         function updateStatusSuccess() {
-            ajaxCall("GET", "../api/Questionnaire/qr?statusQR=" + statusQR, "", updatestatus, error);
+            ajaxCall("GET", "../api/Questionnaire/qr?statusQR=" + statusQR + "&modedelete=" + modedelete, "", updatestatus, error);
          
         }
         function updatestatus(questionnaireData) {
             tbl.clear();
-            //questionnaires = questionnaireData;
+            questionnaires = questionnaireData;
             redrawTable(tbl, questionnaireData);
             buttonEvents();
             $("#editDiv").hide();
@@ -480,7 +480,7 @@
                         DepartmentCode: Qr.Dep.DepartmentCode,
                     },
                     QuestionnaireYear: Qr.QuestionnaireYear,
-                    Status: true
+                    Status: Qr.Status
 
                 }
 
@@ -726,7 +726,7 @@
         // success callback function after update
         function updateSuccess(questionnaireData) {
             tbl.clear();
-            ajaxCall("GET", "../api/Questionnaire/qr?statusQR=" + statusQR, "", getSuccessupdate, error);
+            ajaxCall("GET", "../api/Questionnaire/qr?statusQR=" + statusQR+"&modedelete=" + modedelete, "", getSuccessupdate, error);
 
         }
 
@@ -741,7 +741,7 @@
         // success callback function after update
         function insertSuccess(questionnaireData) {
             console.log(questionnaireData);
-            ajaxCall("GET", "../api/Questionnaire/qr?statusQR=" + statusQR, "", getSuccessinsert, error);
+            ajaxCall("GET", "../api/Questionnaire/qr?statusQR=" + statusQR + "&modedelete=" + modedelete, "", getSuccessinsert, error);
 
         }
         function getSuccessinsert(questionnaireData) {
@@ -775,7 +775,7 @@
 
         function filterQr() {
             let statusQR = $(this).val();
-            let api = "../api/Questionnaire/qr?statusQR=" + statusQR;
+            let api = "../api/Questionnaire/qr?statusQR=" + statusQR + "&modedelete=" + modedelete;
             ajaxCall("GET", api, "", getSuccess, error);
         }
         // this function is activated in case of a success

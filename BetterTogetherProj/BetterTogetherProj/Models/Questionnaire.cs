@@ -48,10 +48,10 @@ namespace project_classes.Models
         public List<Question> Queslist { get => queslist; set => queslist = value; }
         public List<string> StudentsAns { get => studentsAns; set => studentsAns = value; }
 
-        public List<Questionnaire> GetQuestionnaire(int statusQR)
+        public List<Questionnaire> GetQuestionnaire(int statusQR, int modedelete)
         {
             DBServices dbs = new DBServices();
-            List<Questionnaire> qrList = dbs.GetQuestionnaire(statusQR);
+            List<Questionnaire> qrList = dbs.GetQuestionnaire(statusQR, modedelete);
             return qrList;
 
         }
@@ -87,7 +87,7 @@ namespace project_classes.Models
         {
             DBServices dbs = new DBServices();
             dbs.UpdateStatusQr(QrId);
-
+            
         }
     }
 }

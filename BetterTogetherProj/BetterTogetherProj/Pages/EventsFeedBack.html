@@ -60,8 +60,6 @@
             ref = firebase.database().ref("UnitMessagesEvents");
             // listen to incoming messages
             listenToNewMessages();
-            // listen to removing messages
-            //listenToRemove();
             ph = document.getElementById("ph");
         })
 
@@ -82,60 +80,13 @@
                 printMessage(Feedbackev);
             })
         }
-        //function listenToRemove() {
-        //    ref.on("child_removed", snapshot => {
-        //        msgArr = msgArr.filter(m => m.content != snapshot.val().msg);
-        //        // re-render the messages
-        //        printMessages(msgArr);
-        //    })
-        //}
-        /*
-                function getMSGfromDB() {
-                    msgArr = [];
-                    // once listens to an event and then deletes the listner
-                    // it is usually used to initially bring data
-                    ref.once("value", snapshot => {
-                        snapshot.forEach(element => {
-                            msg = {
-                            name:element.val().name,
-                            content:element.val().msg,
-                        }
-                         msgArr.push(msg)
-                        });
-                        printMessages(msgArr);
-                    })
         
-                }
-        */
-        //function deleteMsgsBySubString() {
-        //    let subString = document.getElementById("delTB").value;
-        //    if (subString == "") {
-        //        alert("substing can not be empty");
-        //        return;
-        //    }
-        //    ref.once("value", snapshot => {
-        //        snapshot.forEach(element => {
-        //            // check if contains the substring
-        //            if (element.val().msg.indexOf(subString) > -1) {
-        //                ref.child(element.key).remove();
-        //            }
-        //        });
-        //    })
-        //}
 
-        function printMessage(msg) {
+        function printMessage(Feedbackev) {
             let str = "text" + Feedbackev.text;
             ph.innerHTML += str;
         }
 
-        //function printMessages(msgArr) {
-        //    var str = "";
-        //    for (let index = 0; index < msgArr.length; index++) {
-        //        const msg = msgArr[index];
-        //        str += "name: " + msg.name + ", content: " + msg.content + "<br/>";
-        //    }
-        //    ph.innerHTML = str;
-        //}
 
         function insertcommentFireB() {
 
@@ -148,6 +99,8 @@
             ref.push().set({
                 "text": managercomment, "EventDate": new Date(), "ToMail": Ev.Student.Mail, "createdAt": new Date(), "myComment": Ev.CommentText});
         }
+
+
         function getSuccessAlleventstype(allevtype) {
             console.log(allevtype);
             Allevtype = allevtype;

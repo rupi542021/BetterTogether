@@ -36,10 +36,10 @@ namespace BetterTogetherProj.Controllers
 
         [HttpGet]
         [Route("api/Questionnaire/qr")]
-        public List<Questionnaire> GetQuestionnaire(int statusQR)
+        public List<Questionnaire> GetQuestionnaire(int statusQR, int modedelete)
         {
             Questionnaire qr = new Questionnaire();
-            return qr.GetQuestionnaire(statusQR);
+            return qr.GetQuestionnaire(statusQR, modedelete);
 
         }
 

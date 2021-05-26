@@ -39,7 +39,7 @@ namespace BetterTogetherProj.Models.DAL
             cmd.CommandType = System.Data.CommandType.Text; // the type of the command, can also be stored procedure
             return cmd;
         }
-        public List<Questionnaire> GetQuestionnaire(int statusQR)
+        public List<Questionnaire> GetQuestionnaire(int statusQR, int modedelete)
         {
             SqlConnection con = null;
             List<Questionnaire> qrList = new List<Questionnaire>();
@@ -47,7 +47,12 @@ namespace BetterTogetherProj.Models.DAL
             try
             {
                 con = connect1("DBConnectionString");
-                selectSTR += "update questionnaire_P3 set status = 0 where questionnaire_P3.endPublishDate < GETDATE() or questionnaire_P3.publishDate>GETDATE()  select * from department_P  inner join questionnaire_P3 on questionnaire_P3.departmentCode=department_P.departmentCode where questionnaire_P3.status=" + statusQR;
+                if (modedelete == 1)
+                {
+                    selectSTR += "update questionnaire_P3 set status = 0 where questionnaire_P3.endPublishDate < GETDATE() or questionnaire_P3.publishDate>GETDATE()";
+                    selectSTR += "update questionnaire_P3 set status = 1 where questionnaire_P3.endPublishDate >= GETDATE() and questionnaire_P3.publishDate <= GETDATE()";
+                }
+                    selectSTR+= "select * from department_P  inner join questionnaire_P3 on questionnaire_P3.departmentCode=department_P.departmentCode where questionnaire_P3.status=" + statusQR+ " order by questionnaire_P3.qrCode";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
@@ -1456,7 +1461,7 @@ namespace BetterTogetherProj.Models.DAL
                 throw (ex);
             }
 
-            String cStr = BuildUpdatestCommand(QrId);      // helper method to build the insert string
+            String cStr = BuildUpdatestqrCommand(QrId);      // helper method to build the insert string
 
             cmd = CreateCommand1(cStr, con);             // create the command
 
@@ -1486,15 +1491,16 @@ namespace BetterTogetherProj.Models.DAL
         // Build the Update command String
         //--------------------------------------------------------------------
 
-        private String BuildUpdatestCommand(int QrId)
+        private String BuildUpdatestqrCommand(int QrId)
         {
             String command;
 
             command = "update questionnaire_P3 set status=0 where qrCode=" + QrId;
-         
+
             return command;
 
         }
+
 
 
         public int UpdateStatusAd(int AdId)
