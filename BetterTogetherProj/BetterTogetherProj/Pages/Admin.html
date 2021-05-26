@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+
+    <script src="../Scripts/jquery-3.4.1.min.js"></script>
+    <link href="MyStyleSheet.css" rel="stylesheet" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script>tinymce.init({ selector: 'textarea' });</script>
+
+    <!--<script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-base.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.7.1/themes/dark_turquoise.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script>
+          $(document).ready(function () {
+           
+            ajaxCall("GET", "../api/students/GetAllPleasures", "", getPleasure, error);
+            ajaxCall("GET", "../api/students/GetAllHoddies", "", getHobbies, error);
+
+          });
+        function getPleasure(Allpleasure) {
+            console.log(Allpleasure);
+            allpleasure = Allpleasure;
+            let str = "<table id='pleasure'>";
+            for (var i = 0; i < allpleasure.length; i++) {
+                str+="<tr>"
+                
+                //str += "<td class='g'><input type='checkbox' id = '" + i + "' >" + allpleasure[i].Pname + "</input></td>";
+              str +=  "<td class='g'> <button type='button' class = 'deleteBtn btn btn-delete' data-QuestionnaireId='" + i + "'><i class='fa fa-trash'></i> </button>"  + allpleasure[i].Pname +"</td>"
+                       
+                str+="</tr>"
+            }
+             str+="<section></table>"
+             document.getElementById("phP").innerHTML += str;
+        }
+
+           
+        function getHobbies(AllHobbies) {
+            console.log(AllHobbies);
+            allHobbies = AllHobbies;
+               let str = "<section class='p'><table id='hobbies'>";
+            for (var i = 0; i < allHobbies.length; i++) {
+                str+="<tr>"
+                
+               str +=  "<td class='g'> <button type='button' class = 'deleteBtn btn btn-delete' data-QuestionnaireId='" + i + "'><i class='fa fa-trash'></i> </button>"  + allHobbies[i].Hname +"</td>"
+                       
+                str+="</tr>"
+            }
+             str+="<section></table>"
+             document.getElementById("phH").innerHTML += str;
+        }
+
+
+        
+        function error(err) {
+            console.log("err");
+            swal("Error: " + err);
+        }
+
+
+
+    </script>
+</head>
+<body>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="Admin.html">אדמיניסטרטור</a></li>
+
+                <li><a href="AdsTB.html">פרסומים</a></li>
+                <li><a href="EventTB.html">אירועים</a></li>
+                <li><a href="Questionnaire.html">שאלונים</a></li>
+                <li id="titleNav"><a id="navT">היחידת ליזמות חברתית</a></li>
+            </ul>
+        </div>
+    </nav>
+   
+    <!--<div id="ph"></div>-->
+   
+    
+    <div class="grid-container">
+        <div class="item1"> <h2 id="h2">admin</h2></div>
+        <div class="item2" id="phH"></div>
+        <div class="item3">Main</div>
+        <div class="item4" id="phP"></div>
+        <div class="item5">Footer</div>
+    </div>
+
+</body>
+</html>
