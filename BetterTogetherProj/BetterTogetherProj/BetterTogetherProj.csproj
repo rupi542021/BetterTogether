@@ -239,6 +239,7 @@
     <Compile Include="Models\EventType.cs" />
     <Compile Include="Models\ExternalGroups.cs" />
     <Compile Include="Models\Hobby.cs" />
+    <Compile Include="Models\StudLocation.cs" />
     <Compile Include="Models\Pleasure.cs" />
     <Compile Include="Models\Preferences.cs" />
     <Compile Include="Models\Question.cs" />
@@ -345,6 +346,7 @@
     <Content Include="Pages\Events.html" />
     <Content Include="Pages\EventsFeedBack.html" />
     <Content Include="Pages\EventTB.html" />
+    <Content Include="Pages\Admin.html" />
     <Content Include="Pages\imageedit1.png" />
     <Content Include="Pages\KERENMACABI_web_hands_white.jpg" />
     <Content Include="Pages\MyStyleSheet.css" />
@@ -376,6 +378,7 @@
     <Content Include="obj\Debug\BetterTogetherProj.csprojAssemblyReference.cache" />
     <Content Include="obj\Debug\build.force" />
     <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <Content Include="Pages\StudentForm.html" />
     <Content Include="Scripts\ajaxCalls.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
