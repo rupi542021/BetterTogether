@@ -30,18 +30,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <style type="text/css">
 
-        /*element.style {
-            /* display: block; */
-            /* overflow: hidden; */
-            border: 0px;
-            margin: 0px;
-            inset: 0px;
-            height: 100%;
-            width: 100%;
-            position: absolute;
-            /* pointer-events: none; */
-            /* z-index: -1; */
-        }*/
+ 
     </style>
     <script>
 
@@ -54,7 +43,6 @@
         var yyyy = today.getFullYear();
         today = yyyy + '-' + mm + '-' + dd;
         var statusQR = 1;
-        var modedelete = 1;
         $(document).ready(function () {
 
             AnsNum = 0;
@@ -109,7 +97,7 @@
             $(document).on("change", '#publishList', { 'param': 0 }, function (event) {
                 getyearbydep(event.data.param);
             });
-            let api = "../api/Questionnaire/qr?statusQR=" + statusQR + "&modedelete=" + modedelete ;
+            let api = "../api/Questionnaire/qr?statusQR=" + statusQR+"&deleteMode=0";
             ajaxCall("GET", api, "", getSuccess, error);
             $("#filter").change(filterQr);
 
@@ -338,8 +326,8 @@
 
             $(document).on("click", ".deleteBtn", function () {
                 mode = "delete";     
-                modedelete = 0;
                 markSelected(this);
+                Qr = getQ(this.getAttribute('data-QuestionnaireId'));
                 var QrId = this.getAttribute('data-QuestionnaireId');
                 swal({ 
                     title: "האם אתה בטוח ?",
@@ -363,7 +351,7 @@
         }
 
         function updateStatusSuccess() {
-            ajaxCall("GET", "../api/Questionnaire/qr?statusQR=" + statusQR + "&modedelete=" + modedelete, "", updatestatus, error);
+            ajaxCall("GET", "../api/Questionnaire/qr?statusQR=" + statusQR + "&deleteMode=1" , "", updatestatus, error);
          
         }
         function updatestatus(questionnaireData) {
@@ -444,12 +432,7 @@
                                                         <label for="QuestionText`+ q + `"><span class="red-star">★ </span>תוכן שאלה</label>
                                                         <textarea class="form-control Qtext" id="QuestionText`+ q + `"  required></textarea>
                                                     </div></div></div></div>`
-            //if (mode == "view"/* && QuestionType != 3*/) {
-            //    Questionstring += `<div class="form-group col-sm-4"><canvas id="myChart` + q + `" class="canvas"></canvas></div></div></div></div>`;
-           
-            //}
-            //    else
-            //    Questionstring +=`</div></div></div>`
+      
                                                          
             $("#question1").append(Questionstring);
 
@@ -726,7 +709,7 @@
         // success callback function after update
         function updateSuccess(questionnaireData) {
             tbl.clear();
-            ajaxCall("GET", "../api/Questionnaire/qr?statusQR=" + statusQR+"&modedelete=" + modedelete, "", getSuccessupdate, error);
+            ajaxCall("GET", "../api/Questionnaire/qr?statusQR=" + statusQR + "&deleteMode=0", "", getSuccessupdate, error);
 
         }
 
@@ -741,7 +724,7 @@
         // success callback function after update
         function insertSuccess(questionnaireData) {
             console.log(questionnaireData);
-            ajaxCall("GET", "../api/Questionnaire/qr?statusQR=" + statusQR + "&modedelete=" + modedelete, "", getSuccessinsert, error);
+            ajaxCall("GET", "../api/Questionnaire/qr?statusQR=" + statusQR + "&deleteMode=0", "", getSuccessinsert, error);
 
         }
         function getSuccessinsert(questionnaireData) {
@@ -775,7 +758,7 @@
 
         function filterQr() {
             let statusQR = $(this).val();
-            let api = "../api/Questionnaire/qr?statusQR=" + statusQR + "&modedelete=" + modedelete;
+            let api = "../api/Questionnaire/qr?statusQR=" + statusQR + "&deleteMode=1" ;
             ajaxCall("GET", api, "", getSuccess, error);
         }
         // this function is activated in case of a success

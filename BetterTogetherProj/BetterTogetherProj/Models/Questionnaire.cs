@@ -19,23 +19,7 @@ namespace project_classes.Models
         int questionnaireYear;
         List<Question> queslist;
         List<string> studentsAns;
-
-
-        public Questionnaire() { }
-
-        public Questionnaire(int questionnaireNum, DateTime questionnairePublish, DateTime endPublishDate, string subQr, Department dep, int numResponders, bool status, int questionnaireYear, List<Question> queslist, List<string> studentsAns)
-        {
-            QuestionnaireNum = questionnaireNum;
-            QuestionnairePublish = questionnairePublish;
-            EndPublishDate = endPublishDate;
-            SubQr = subQr;
-            Dep = dep;
-            NumResponders = numResponders;
-            Status = status;
-            QuestionnaireYear = questionnaireYear;
-            Queslist = queslist;
-            StudentsAns = studentsAns;
-        }
+        bool deleteMode;
 
         public int QuestionnaireNum { get => questionnaireNum; set => questionnaireNum = value; }
         public DateTime QuestionnairePublish { get => questionnairePublish; set => questionnairePublish = value; }
@@ -47,11 +31,29 @@ namespace project_classes.Models
         public int QuestionnaireYear { get => questionnaireYear; set => questionnaireYear = value; }
         public List<Question> Queslist { get => queslist; set => queslist = value; }
         public List<string> StudentsAns { get => studentsAns; set => studentsAns = value; }
+        public bool DeleteMode { get => deleteMode; set => deleteMode = value; }
 
-        public List<Questionnaire> GetQuestionnaire(int statusQR, int modedelete)
+        public Questionnaire() { }
+
+        public Questionnaire(int questionnaireNum, DateTime questionnairePublish, DateTime endPublishDate, string subQr, Department dep, int numResponders, bool status, int questionnaireYear, List<Question> queslist, List<string> studentsAns, bool deleteMode)
+        {
+            QuestionnaireNum = questionnaireNum;
+            QuestionnairePublish = questionnairePublish;
+            EndPublishDate = endPublishDate;
+            SubQr = subQr;
+            Dep = dep;
+            NumResponders = numResponders;
+            Status = status;
+            QuestionnaireYear = questionnaireYear;
+            Queslist = queslist;
+            StudentsAns = studentsAns;
+            DeleteMode = deleteMode;
+        }
+
+        public List<Questionnaire> GetQuestionnaire(int statusQR, int deleteMode)
         {
             DBServices dbs = new DBServices();
-            List<Questionnaire> qrList = dbs.GetQuestionnaire(statusQR, modedelete);
+            List<Questionnaire> qrList = dbs.GetQuestionnaire(statusQR, deleteMode);
             return qrList;
 
         }

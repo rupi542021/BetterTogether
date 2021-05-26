@@ -25,24 +25,24 @@
     <script src="../Scripts/ajaxCalls.js"></script>
 
 
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
-
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-         https://firebase.google.com/docs/web/setup#available-libraries -->
-
-    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
-
-    <!--**** Remember to add the database script ***-->
-    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
-
-    <!--Your web app's Firebase configuration-->
-    <script src="../Scripts/config.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
 
     <style type="text/css">
     </style>
 
     <script>
+  
+        if (!firebase.apps.length) {
+            firebase.initializeApp({
+                apiKey: "AIzaSyCSHnFe2MHnBKhRHQrwACoNLo5cerY5W74",
+                authDomain: "chat-firebase-6a710.firebaseapp.com",
+                projectId: "chat-firebase-6a710",
+            });
+        }
+        var db = firebase.firestore();
+
+    
         $(document).ready(function () {
 
             let evtypeFB = $("#EventType :selected").text();
@@ -55,49 +55,38 @@
             $(document).on("click", ".swal-button.swal-button--confirm", insertcomment);
             $(document).on("click", ".swal-button.swal-button--confirm", insertcommentFireB);
 
-            
-            msgArr = [];
-            ref = firebase.database().ref("UnitMessagesEvents");
-            // listen to incoming messages
-            listenToNewMessages();
-            ph = document.getElementById("ph");
         })
 
 
-        function listenToNewMessages() {
-            // child_added will be evoked for every child that was added
-            // on the first entry, it will bring all the childs
-            ref.on("child_added", snapshot => {
-                Feedbackev = {
-                    EventDate: new Date(),
-                    EventTitle: Ev.Eventn,
-                    ToMail: Ev.Student.Mail,
-                    createdAt: new Date(),
-                    myComment: Ev.CommentText,
-                    text: snapshot.val().text,
-                }
-                msgArr.push(Feedbackev)
-                printMessage(Feedbackev);
-            })
-        }
-        
-
-        function printMessage(Feedbackev) {
-            let str = "text" + Feedbackev.text;
-            ph.innerHTML += str;
-        }
-
 
         function insertcommentFireB() {
-
+            var today = new Date(Ev.Eventd);
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            today = dd + '/' + mm + '/' + yyyy;
             let managercomment = $(".swal-content__input").val();
 
             if (managercomment == "") {
                 alert("יש להכניס תגובה!");
                 return;
             }
-            ref.push().set({
-                "text": managercomment, "EventDate": new Date(), "ToMail": Ev.Student.Mail, "createdAt": new Date(), "myComment": Ev.CommentText});
+
+
+            db.collection("UnitMessagesEvents").add({
+                "text": managercomment,
+                "EventDate": today,
+                "EventTitle": Ev.Eventn,
+                "ToMail": Ev.Student.Mail,
+                "createdAt":new Date(),
+                "myComent": Ev.CommentText
+            })
+                .then((docRef) => {
+                    console.log("Document written with ID: ", docRef.id);
+                })
+                .catch((error) => {
+                    console.error("Error adding document: ", error);
+                });
         }
 
 
@@ -128,6 +117,7 @@
             for (var i = 0; i < FBarr.length; i++) {
                 for (var j = 0; j < FBarr[i].Fbevents.length; j++) {
                     FBarr[i].Fbevents[j].Eventn = FBarr[i].Eventname;
+                    FBarr[i].Fbevents[j].Eventd = FBarr[i].EventDate;
                     onlyFB.push(FBarr[i].Fbevents[j]);
                 }
 
@@ -243,6 +233,7 @@
             }
             return null;
         }
+
 
         function error(err) {
             console.log(err);

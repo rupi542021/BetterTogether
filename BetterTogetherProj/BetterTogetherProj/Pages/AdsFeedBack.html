@@ -23,24 +23,23 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
 
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-         https://firebase.google.com/docs/web/setup#available-libraries -->
-
-    <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-analytics.js"></script>
-
-    <!--**** Remember to add the database script ***-->
-    <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-database.js"></script>
-
-    <!--Your web app's Firebase configuration-->
-    <script src="../Scripts/config.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
 
     <style type="text/css">
     </style>
 
     <script>
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp({
+                apiKey: "AIzaSyCSHnFe2MHnBKhRHQrwACoNLo5cerY5W74",
+                authDomain: "chat-firebase-6a710.firebaseapp.com",
+                projectId: "chat-firebase-6a710",
+            });
+        }
+        var db = firebase.firestore();
 
         var statusAd = 1;
 
@@ -52,9 +51,38 @@
             $("#SubjName").change(getallfeed);
             $(document).on("click", ".fa-plus-circle", addcomment);
             $(document).on("click", ".swal-button.swal-button--confirm", insertcomment);
+            $(document).on("click", ".swal-button.swal-button--confirm", insertcommentFireB);
 
 
         })
+
+
+        function insertcommentFireB() {
+         
+            let managercomment = $(".swal-content__input").val();
+
+            if (managercomment == "") {
+                alert("יש להכניס תגובה!");
+                return;
+            }
+
+
+            db.collection("UnitMessagesAds").add({
+                "text": managercomment,
+                "AdContent": Ad.Adcontent,
+                "AdTitle": Ad.SubD,
+                "ToMail": Ad.Student.Mail,
+                "createdAt": new Date(),
+                "myComent": Ad.CommentText
+            })
+                .then((docRef) => {
+                    console.log("Document written with ID: ", docRef.id);
+                })
+                .catch((error) => {
+                    console.error("Error adding document: ", error);
+                });
+        }
+
 
         function getSuccessAllsubs(allsubs) {
             console.log(allsubs);
@@ -84,6 +112,7 @@
             for (var i = 0; i < FBarr.length; i++) {
                 for (var j = 0; j < FBarr[i].Fbads.length; j++) {
                     FBarr[i].Fbads[j].SubD = FBarr[i].SubSubject;
+                    FBarr[i].Fbads[j].Adcontent = FBarr[i].AdsText;
                     onlyFB.push(FBarr[i].Fbads[j]);
                 }
 
@@ -160,7 +189,7 @@
 
         function addcomment() {
             idcom = $(this).attr("id");
-
+            Ad = getad(idcom);
 
             swal({
                 content: {
@@ -191,6 +220,14 @@
             console.log(data);
             getallfeed();
 
+        }
+
+        function getad(id) {
+            for (i in onlyFB1) {
+                if (onlyFB1[i].FbAdsNum == id)
+                    return onlyFB1[i];
+            }
+            return null;
         }
 
         function error(err) {

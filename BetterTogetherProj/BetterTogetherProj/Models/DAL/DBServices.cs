@@ -39,7 +39,7 @@ namespace BetterTogetherProj.Models.DAL
             cmd.CommandType = System.Data.CommandType.Text; // the type of the command, can also be stored procedure
             return cmd;
         }
-        public List<Questionnaire> GetQuestionnaire(int statusQR, int modedelete)
+        public List<Questionnaire> GetQuestionnaire(int statusQR, int deleteMode)
         {
             SqlConnection con = null;
             List<Questionnaire> qrList = new List<Questionnaire>();
@@ -47,12 +47,14 @@ namespace BetterTogetherProj.Models.DAL
             try
             {
                 con = connect1("DBConnectionString");
-                if (modedelete == 1)
+                if (deleteMode == 1)
+                    selectSTR += "update questionnaire_P3 set status = 0 where (questionnaire_P3.endPublishDate < GETDATE() or questionnaire_P3.publishDate>GETDATE()) and questionnaire_P3.deleteMode=1";
+                else if(deleteMode==0)
                 {
-                    selectSTR += "update questionnaire_P3 set status = 0 where questionnaire_P3.endPublishDate < GETDATE() or questionnaire_P3.publishDate>GETDATE()";
-                    selectSTR += "update questionnaire_P3 set status = 1 where questionnaire_P3.endPublishDate >= GETDATE() and questionnaire_P3.publishDate <= GETDATE()";
+                    selectSTR += "update questionnaire_P3 set status = 0 where (questionnaire_P3.endPublishDate < GETDATE() or questionnaire_P3.publishDate>GETDATE()) and (questionnaire_P3.deleteMode=0 OR questionnaire_P3.deleteMode IS NULL) ";
+                    selectSTR += "update questionnaire_P3 set status = 1 where questionnaire_P3.endPublishDate >= GETDATE() and questionnaire_P3.publishDate <= GETDATE() and (questionnaire_P3.deleteMode=0 OR questionnaire_P3.deleteMode IS NULL)";
                 }
-                    selectSTR+= "select * from department_P  inner join questionnaire_P3 on questionnaire_P3.departmentCode=department_P.departmentCode where questionnaire_P3.status=" + statusQR+ " order by questionnaire_P3.qrCode";
+                selectSTR += "select * from department_P  inner join questionnaire_P3 on questionnaire_P3.departmentCode=department_P.departmentCode where questionnaire_P3.status=" + statusQR+ " order by questionnaire_P3.qrCode";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
@@ -68,7 +70,9 @@ namespace BetterTogetherProj.Models.DAL
                     qr.Dep.DepartmentCode = Convert.ToInt16(dr["departmentCode"]);
                     qr.NumResponders = GetNumResponders(qr.QuestionnaireNum, qr.Dep.DepartmentCode);
                     qr.QuestionnaireYear = Convert.ToInt16(dr["qrYear"]);                   
-                    qr.Queslist = getQuestionsbyNumqr(qr.QuestionnaireNum);            
+                    qr.Queslist = getQuestionsbyNumqr(qr.QuestionnaireNum);
+                    if (dr["deleteMode"] is null)
+                        qr.DeleteMode = Convert.ToBoolean(dr["deleteMode"]);
                     qrList.Add(qr);
                 }
 
@@ -905,6 +909,7 @@ namespace BetterTogetherProj.Models.DAL
                     ev.EventCode = Convert.ToInt16(dr["eventCode"]);
                     ev.Fbevents = GetFBev(ev.EventCode);
                     ev.Eventname = (string)dr["eventname"];
+                    ev.EventDate= Convert.ToDateTime(dr["eventDate"]);
                     EventList.Add(ev);
                 }
 
@@ -1495,7 +1500,7 @@ namespace BetterTogetherProj.Models.DAL
         {
             String command;
 
-            command = "update questionnaire_P3 set status=0 where qrCode=" + QrId;
+            command = "update questionnaire_P3 set status=0, deleteMode=1 where qrCode=" + QrId;
 
             return command;
 
