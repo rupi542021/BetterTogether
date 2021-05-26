@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BetterTogetherProj.Models.DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -25,6 +26,11 @@ namespace BetterTogetherProj.Models
         public StudLocation()
         {
 
+        }
+        public void Insert()
+        {
+            DBServicesReact dbs = new DBServicesReact();
+            dbs.InsertStudLocation(this);
         }
     }
 }

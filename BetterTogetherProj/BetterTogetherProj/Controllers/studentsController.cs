@@ -315,11 +315,11 @@ namespace BetterTogetherProj.Controllers
         }
         [Route("api/students/PostLocation")]
         [HttpPost]
-        public HttpResponseMessage PostLocation([FromBody] StudentFavorites sf)
+        public HttpResponseMessage PostLocation([FromBody] StudLocation sl)
         {
             try
             {
-                sf.Insert();
+                sl.Insert();
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (Exception ex)
