@@ -313,5 +313,19 @@ namespace BetterTogetherProj.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [Route("api/students/PostLocation")]
+        [HttpPost]
+        public HttpResponseMessage PostLocation([FromBody] StudLocation sl)
+        {
+            try
+            {
+                sl.Insert();
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
+            }
+        }
     }
 }

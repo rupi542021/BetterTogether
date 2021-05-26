@@ -1751,5 +1751,54 @@ namespace BetterTogetherProj.Models.DAL
             }
         }
 
+        public int InsertStudLocation(StudLocation sl)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString");
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+
+            String cStr = BuildInsertStudLocationCommand(sl);
+            cmd = CreateCommand(cStr, con);
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery();
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildInsertStudLocationCommand(StudLocation sl)
+        {
+            String prefix = "DELETE FROM [dbo].[locations_P] where [mail] = '" + sl.Mail + "' ";
+
+                prefix += "INSERT INTO locations_P (mail, x, y) Values('" + sl.Mail + "'," + sl.X + "," + sl.Y + ") ";
+
+            return prefix;
+        }
+
     }
 }
