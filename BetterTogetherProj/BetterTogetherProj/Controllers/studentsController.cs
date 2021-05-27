@@ -162,6 +162,24 @@ namespace BetterTogetherProj.Controllers
             }
         }
 
+
+        [HttpPost]
+        [Route("api/students/addStudent")]
+        
+        public HttpResponseMessage AddToSList([FromBody] AddStudent s)
+        {
+            try
+            {
+                s.InsertSToList();
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
+            }
+        }
+
+
         // PUT api/<controller>/5
         [HttpPut]
         [Route("api/students/updateStudentPtofile")]

@@ -94,6 +94,8 @@ namespace BetterTogetherProj.Models.DAL
 
         }
 
+       
+
         public int GetNumResponders(int QrId, int depcode)
         {
             SqlConnection con = null;
@@ -1619,7 +1621,63 @@ namespace BetterTogetherProj.Models.DAL
             return command;
 
         }
+        public int InsertSToList(AddStudent s)
+        {
 
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect1("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            String cStr = BuildInsertCommand(s);      // helper method to build the insert string
+
+            cmd = CreateCommand1(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        //--------------------------------------------------------------------
+        // Build the Insert command String
+        //--------------------------------------------------------------------
+        private String BuildInsertCommand(AddStudent s)
+        {
+            String command;
+
+            StringBuilder sb = new StringBuilder();
+            // use a string builder to create the dynamic string
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}','{5}')", s.Mail, s.Fname, s.Lname, s.DateOfBirth.ToString("yyyy-MM-dd H:mm:ss"), s.Dep.DepartmentCode, s.StudyingYear );
+            String prefix = "INSERT INTO Ruppin_StudentsData_P" + "(email,firstName,lastName,dateOfBirth,department,studyingYear)";
+            command = prefix + sb.ToString();
+
+            return command;
+        }
 
     }
 }

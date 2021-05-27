@@ -31,7 +31,9 @@
         $(document).ready(function () {
              ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
             $("#StudentForm").submit(f1);
-                       
+                        $(document).on("change", '#department', { 'param': 0 }, function (event) {
+                         getyearbydep(event.data.param);
+            });
 
         });
 
@@ -40,17 +42,97 @@
             Alldep = alldep;
             let str = "";
             
-                for (var i = 0; i < Alldep.length; i++) {
+                for (var i = 0; i < Alldep.length-1; i++) {
                     str += "<option value='" + Alldep[i].DepartmentCode + "'>" + Alldep[i].DepartmentName + "</option></br>"
                 }
 
             
-            document.getElementById("departmentS").innerHTML += str;
+            document.getElementById("department").innerHTML += str;
 
         }
-        function f1() {
+         function getyearbydep() {
+            document.getElementById("yearStudy").innerHTML = "";
+            let stryear = "";
+            //var years = ["",'א','ב','ג','ד'];
+            var years = [0, 1, 2, 3, 4]
+           
+            var nofilter = [];
+           
+            
+
+             let depp = $("#department").val();
+             //alert(depp);
+                if (depp == 1 || depp == 2 || depp == 3 || depp == 6 || depp == 10 || depp == 15) {
+                    for (var j = 0; j < years.length; j++) {
+
+                        nofilter.push(years[j])
+                    }
+                }
+                else {
+                    for (var j = 0; j < years.length - 1; j++) {
+                        nofilter.push(years[j])
+                    }
+
+                }
+
+
+                for (var i = 0; i < nofilter.length; i++) {
+                    switch (nofilter[i]) {
+                      
+                        case 1:
+                            stryear += "<option value=1> א  </option>";
+                            break;
+                        case 2:
+                            stryear += "<option value=2>  ב </option>";
+                            break;
+                        case 3:
+                            stryear += "<option value=3>ג</option>";
+                            break;
+                        case 4:
+                            stryear += "<option value=4>ד</option>";
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            
+
+            document.getElementById("yearStudy").innerHTML = stryear;
 
         }
+       
+        function addS() {
+            
+            depChose = $("#department").val(),
+
+                s = {
+                     Fname: $("#firstName").val(),
+                     Lname: $("#lastName").val(),
+                     Mail: $("#email").val(),
+                     DateOfBirth: $("#dateofBirth").val(),
+                     Dep: {
+                        DepartmentCode: depChose
+                     },
+                     StudyingYear: $("#yearStudy").val(),
+
+                }
+            
+            ajaxCall("POST", "../api/students/addStudent", JSON.stringify(s), Insertsuccess, error)
+            
+              
+        }
+        function Insertsuccess(data) {
+            console.log(data);
+            swal("הסטודנט נוסף בהצלחה!", "Great Job", "success");
+           
+        }
+         function f1() {
+            
+             addS();
+             return false;
+        }
+        
          function error(err) {
             console.log("err");
             swal("Error: " + err);
@@ -64,31 +146,33 @@
             <h2 id="h2">הוספת סטודנט חדש</h2>
 
             <div class="form-group">
-                <label for="firstName" id="SubjNameText">שם פרטי</label>
+                <label for="firstName" id="fname">שם פרטי</label>
                 <input type="text" class="form-control" id="firstName" required />
             </div>
             <div class="form-group">
-                <label for="firstName" id="SubjNameText">שם משפחה</label>
-                <input type="text" class="form-control" id="firstName" required />
+                <label for="lastName" id="lname">שם משפחה</label>
+                <input type="text" class="form-control" id="lastName" required />
             </div>
             <div class="form-group">
-                <label for="datedofBirth" id="datedisText">תאריך לידה</label>
-                <input type="date" class="form-control" id="datedofBirth" required />
+                <label for="dateofBirth" id="dateB">תאריך לידה</label>
+                <input type="date" class="form-control" id="dateofBirth" required />
 
             </div>
             <div class="form-group">
-                <label for="email" id="email">אי-מייל</label>
+                <label for="email" id="Semail">אי-מייל</label>
                 <input type="email" class="form-control" id="email" required />
             </div>
             <div class="form-group">
-                <label for="departmentS" id="department">פקולטה</label>
-                <select class="form-control" id="departmentS" required>
+                <label for="department" id="departmentS">פקולטה</label>
+                <select class="form-control" id="department" required>
                     <option>    </option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="yearStudy" id="yearStudy">שנת לימוד</label>
+                <label for="yearStudy" id="yearStudyTest">שנת לימוד</label>
                 <select class="form-control" id="yearStudy" required>
+                    <option value="">בחירת שנה</option>
+               
                 </select>
             </div>
 
