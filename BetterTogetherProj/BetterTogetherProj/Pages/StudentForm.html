@@ -29,112 +29,127 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <script>
         $(document).ready(function () {
-             ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
+            ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
             $("#StudentForm").submit(f1);
-                        $(document).on("change", '#department', { 'param': 0 }, function (event) {
-                         getyearbydep(event.data.param);
+            $(document).on("change", '#department', { 'param': 0 }, function (event) {
+                getyearbydep(event.data.param);
             });
 
         });
 
-         function getSuccessalldep(alldep) {
+        function getSuccessalldep(alldep) {
             console.log(alldep);
             Alldep = alldep;
             let str = "";
-            
-                for (var i = 0; i < Alldep.length-1; i++) {
-                    str += "<option value='" + Alldep[i].DepartmentCode + "'>" + Alldep[i].DepartmentName + "</option></br>"
-                }
 
-            
+            for (var i = 0; i < Alldep.length - 1; i++) {
+                str += "<option value='" + Alldep[i].DepartmentCode + "'>" + Alldep[i].DepartmentName + "</option></br>"
+            }
+
+
             document.getElementById("department").innerHTML += str;
 
         }
-         function getyearbydep() {
+        function getyearbydep() {
             document.getElementById("yearStudy").innerHTML = "";
             let stryear = "";
             //var years = ["",'א','ב','ג','ד'];
             var years = [0, 1, 2, 3, 4]
-           
+
             var nofilter = [];
-           
-            
 
-             let depp = $("#department").val();
-             //alert(depp);
-                if (depp == 1 || depp == 2 || depp == 3 || depp == 6 || depp == 10 || depp == 15) {
-                    for (var j = 0; j < years.length; j++) {
 
-                        nofilter.push(years[j])
-                    }
+
+            let depp = $("#department").val();
+            //alert(depp);
+            if (depp == 1 || depp == 2 || depp == 3 || depp == 6 || depp == 10 || depp == 15) {
+                for (var j = 0; j < years.length; j++) {
+
+                    nofilter.push(years[j])
                 }
-                else {
-                    for (var j = 0; j < years.length - 1; j++) {
-                        nofilter.push(years[j])
-                    }
-
+            }
+            else {
+                for (var j = 0; j < years.length - 1; j++) {
+                    nofilter.push(years[j])
                 }
 
+            }
 
-                for (var i = 0; i < nofilter.length; i++) {
-                    switch (nofilter[i]) {
-                      
-                        case 1:
-                            stryear += "<option value=1> א  </option>";
-                            break;
-                        case 2:
-                            stryear += "<option value=2>  ב </option>";
-                            break;
-                        case 3:
-                            stryear += "<option value=3>ג</option>";
-                            break;
-                        case 4:
-                            stryear += "<option value=4>ד</option>";
-                            break;
 
-                        default:
-                            break;
-                    }
+            for (var i = 0; i < nofilter.length; i++) {
+                switch (nofilter[i]) {
+
+                    case 1:
+                        stryear += "<option value=1> א  </option>";
+                        break;
+                    case 2:
+                        stryear += "<option value=2>  ב </option>";
+                        break;
+                    case 3:
+                        stryear += "<option value=3>ג</option>";
+                        break;
+                    case 4:
+                        stryear += "<option value=4>ד</option>";
+                        break;
+
+                    default:
+                        break;
                 }
-            
+            }
+
 
             document.getElementById("yearStudy").innerHTML = stryear;
 
         }
-       
+
         function addS() {
-            
+
             depChose = $("#department").val(),
 
                 s = {
-                     Fname: $("#firstName").val(),
-                     Lname: $("#lastName").val(),
-                     Mail: $("#email").val(),
-                     DateOfBirth: $("#dateofBirth").val(),
-                     Dep: {
+                    Fname: $("#firstName").val(),
+                    Lname: $("#lastName").val(),
+                    Mail: $("#email").val(),
+                    DateOfBirth: $("#dateofBirth").val(),
+                    Dep: {
                         DepartmentCode: depChose
-                     },
-                     StudyingYear: $("#yearStudy").val(),
+                    },
+                    StudyingYear: $("#yearStudy").val(),
 
                 }
-            
-            ajaxCall("POST", "../api/students/addStudent", JSON.stringify(s), Insertsuccess, error)
-            
-              
+
+            //ajaxCall("POST", "dataType: 'text'," "../api/students/addStudent", JSON.stringify(s), Insertsuccess, error)
+
+
+            $.ajax({
+                type: "POST",
+               url: '../api/students/addStudent',
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify(s),
+                success: function (response) {
+                    swal("הסטודנט נוסף בהצלחה!", "Great Job", "success");
+                },
+                error: function (response) {
+                     swal("Error: " + err);
+                }
+            });
+
         }
         function Insertsuccess(data) {
             console.log(data);
             swal("הסטודנט נוסף בהצלחה!", "Great Job", "success");
-           
+
         }
-         function f1() {
-            
-             addS();
-             return false;
+        function f1() {
+            debugger
+            addS();
+            return false;
         }
-        
-         function error(err) {
-            console.log("err");
+
+        function error(err) {
+            debugger
+            console.log(err);
             swal("Error: " + err);
         }
 
@@ -172,7 +187,7 @@
                 <label for="yearStudy" id="yearStudyTest">שנת לימוד</label>
                 <select class="form-control" id="yearStudy" required>
                     <option value="">בחירת שנה</option>
-               
+
                 </select>
             </div>
 
@@ -180,7 +195,7 @@
             <input type="submit" value="הוסף סטודנט" class="myButton" id="submitt" />
         </form>
 
-     
+
 
     </div>
 </body>
