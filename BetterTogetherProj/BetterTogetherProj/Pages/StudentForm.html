@@ -118,37 +118,26 @@
 
                 }
 
-            //ajaxCall("POST", "dataType: 'text'," "../api/students/addStudent", JSON.stringify(s), Insertsuccess, error)
+            
+              ajaxCall("POST","../api/students/addStudent", JSON.stringify(s), Insertsuccess, error)
 
 
-            $.ajax({
-                type: "POST",
-               url: '../api/students/addStudent',
-                contentType: "application/json",
-                dataType: "json",
-                data: JSON.stringify(s),
-                success: function (response) {
-                    swal("הסטודנט נוסף בהצלחה!", "Great Job", "success");
-                },
-                error: function (response) {
-                     swal("Error: " + err);
-                }
-            });
+            
 
         }
         function Insertsuccess(data) {
             console.log(data);
             swal("הסטודנט נוסף בהצלחה!", "Great Job", "success");
-
+            alert("אש עליך");
         }
         function f1() {
-            debugger
+            
             addS();
             return false;
         }
 
         function error(err) {
-            debugger
+            
             console.log(err);
             swal("Error: " + err);
         }
