@@ -95,6 +95,7 @@ namespace BetterTogetherProj.Models.DAL
         //    }
         //}
 
+
         public Student checkStudentRuppin(string email)
         {
             SqlConnection con = null;
