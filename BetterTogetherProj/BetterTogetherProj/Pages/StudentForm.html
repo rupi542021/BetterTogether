@@ -147,15 +147,12 @@
             date1 = new Date(DateOfBirth);
             date2 = new Date(today);
             var difference = Math.abs(date2 - date1);
-            
-            years = Math.floor((difference / (1000 * 3600 * 24 * 365)));
-            //alert(years);
-            if (years < 18)
-               swal("Attention", "תאריך הלידה שהזנת לא הגיוני!", "error");
-            $("#dateofBirth").val("");
-            alert("nesssyyyyyyyyyy")
 
-                
+            years = Math.floor((difference / (1000 * 3600 * 24 * 365)));
+            if (years < 18) {
+                swal("Attention", "תאריך הלידה שהזנת לא הגיוני!", "error");
+                $("#dateofBirth").val("");
+            }
         }
 
         function f1() {
@@ -167,7 +164,8 @@
         function error(err) {
             
             console.log(err);
-            swal("Error: " + err);
+            $("#email").val("");
+            swal("!המייל כבר קיים במערכת");
         }
 
     </script>
