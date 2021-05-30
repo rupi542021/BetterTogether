@@ -176,7 +176,7 @@ namespace BetterTogetherProj.Controllers
             try
             {
                 s.InsertSToList();
-                return Request.CreateResponse(HttpStatusCode.OK, "OK");
+                return Request.CreateResponse(HttpStatusCode.OK, "הסטודנט נכנס בהצלחה");
             }
             catch (Exception ex)
             {
