@@ -218,7 +218,7 @@ namespace BetterTogetherProj.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                String selectSTR = "SELECT * FROM student_P where mail='" + email + "'";
+                String selectSTR = "SELECT * FROM student_P where mail='" + email + "' and active = 'true'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 if (dr.HasRows == true)
@@ -1128,7 +1128,7 @@ namespace BetterTogetherProj.Models.DAL
             {
                 con = connect("DBConnectionString");
 
-                String selectSTR = "SELECT * FROM student_P where mail<> '" + mail + "'";
+                String selectSTR = "SELECT * FROM student_P where mail<> '" + mail + "' and active = 'true'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
