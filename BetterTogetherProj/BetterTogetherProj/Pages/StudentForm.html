@@ -128,8 +128,14 @@
         function Insertsuccess(data) {
             console.log(data);
             swal("הסטודנט נוסף בהצלחה!", "Great Job", "success");
-            alert("אש עליך");
+            $("#firstName").val("");
+            $("#lastName").val("");
+            $("#email").val("");
+            $("#dateofBirth").val("");
+            $("#yearStudy").val("");
+            $("#department").val("");
         }
+
         function f1() {
             
             addS();
@@ -150,30 +156,33 @@
             <h2 id="h2">הוספת סטודנט חדש</h2>
 
             <div class="form-group">
-                <label for="firstName" id="fname">שם פרטי</label>
+                <label for="firstName" id="fname"><span class="red-star">★ </span>שם פרטי</label>
                 <input type="text" class="form-control" id="firstName" required />
             </div>
             <div class="form-group">
-                <label for="lastName" id="lname">שם משפחה</label>
+                <label for="lastName" id="lname"><span class="red-star">★ </span>שם משפחה</label>
                 <input type="text" class="form-control" id="lastName" required />
             </div>
             <div class="form-group">
-                <label for="dateofBirth" id="dateB">תאריך לידה</label>
+                <label for="dateofBirth" id="dateB"><span class="red-star">★ </span>תאריך לידה</label>
                 <input type="date" class="form-control" id="dateofBirth" required />
 
             </div>
             <div class="form-group">
-                <label for="email" id="Semail">אי-מייל</label>
-                <input type="email" class="form-control" id="email" required />
+                <label for="email" id="Semail"><span class="red-star">★ </span>אי-מייל</label>
+                <input type="email" class="form-control" id="email" 
+                 pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,9})$"
+                 oninvalid="this.setCustomValidity('בבקשה הכנס מייל כגון: name@gmail.com')"
+                 oninput="this.setCustomValidity('')" required />
             </div>
             <div class="form-group">
-                <label for="department" id="departmentS">פקולטה</label>
+                <label for="department" id="departmentS"><span class="red-star">★ </span>פקולטה</label>
                 <select class="form-control" id="department" required>
                     <option>    </option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="yearStudy" id="yearStudyTest">שנת לימוד</label>
+                <label for="yearStudy" id="yearStudyTest"><span class="red-star">★ </span>שנת לימוד</label>
                 <select class="form-control" id="yearStudy" required>
                     <option value="">בחירת שנה</option>
 
