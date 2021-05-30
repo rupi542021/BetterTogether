@@ -493,7 +493,10 @@ namespace BetterTogetherProj.Models.DAL
                 while (dr.Read())
                 {
                     stud = GetStudentDetails((string)dr["student2Mail"]);
-                    userFriendsList.Add(stud);
+                    if (stud!=null)
+                    {
+                        userFriendsList.Add(stud);
+                    }
                 }
                 var OrdereduserFriendsList = userFriendsList.OrderBy(x => x.Fname).ToList();
                 return OrdereduserFriendsList;
@@ -521,33 +524,38 @@ namespace BetterTogetherProj.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                String selectSTR = "SELECT * FROM student_P where mail='" + email + "'";
+                String selectSTR = "SELECT * FROM student_P where mail='" + email + "' and active = 'true'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
-                while (dr.Read())
+                if (dr.HasRows)
                 {
-                    stud.Mail = (string)dr["mail"];
-                    stud.Password = (string)dr["password"];
-                    stud.Fname = (string)(dr["firstName"]);
-                    stud.Lname = (string)(dr["lastName"]);
-                    stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
-                    stud.Dep = getStudDep(Convert.ToInt32(dr["departmentCode"]));
-                    stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
-                    stud.HomeTown = getResidenceH((string)(dr["homeTown"]));
-                    stud.AddressStudying = getResidenceS((string)(dr["adrressStudying"]));
-                    stud.PersonalStatus = (string)(dr["personalStatus"]);
-                    stud.IsAvailableCar = Convert.ToBoolean(dr["isAvailableCar"]);
-                    stud.IntrestedInCarPool = Convert.ToBoolean(dr["intrestedInCarPool"]);
-                    stud.Photo = (string)(dr["photo"]);
-                    stud.Gender = (string)(dr["gender"]);
-                    stud.RegistrationDate = Convert.ToDateTime(dr["registrationDate"]);
-                    stud.ActiveStatus = Convert.ToBoolean(dr["active"]);
-                    stud.Plist = GetPlistByUser((string)dr["mail"]);
-                    stud.Hlist = GetHlistByUser((string)dr["mail"]);
-                    stud.Friendslist = GetFriendsListByUser(((string)dr["mail"]));
+                    while (dr.Read())
+                    {
+                        stud.Mail = (string)dr["mail"];
+                        stud.Password = (string)dr["password"];
+                        stud.Fname = (string)(dr["firstName"]);
+                        stud.Lname = (string)(dr["lastName"]);
+                        stud.DateOfBirth = Convert.ToDateTime(dr["dateOfBirth"]);
+                        stud.Dep = getStudDep(Convert.ToInt32(dr["departmentCode"]));
+                        stud.StudyingYear = Convert.ToInt32(dr["studyingYear"]);
+                        stud.HomeTown = getResidenceH((string)(dr["homeTown"]));
+                        stud.AddressStudying = getResidenceS((string)(dr["adrressStudying"]));
+                        stud.PersonalStatus = (string)(dr["personalStatus"]);
+                        stud.IsAvailableCar = Convert.ToBoolean(dr["isAvailableCar"]);
+                        stud.IntrestedInCarPool = Convert.ToBoolean(dr["intrestedInCarPool"]);
+                        stud.Photo = (string)(dr["photo"]);
+                        stud.Gender = (string)(dr["gender"]);
+                        stud.RegistrationDate = Convert.ToDateTime(dr["registrationDate"]);
+                        stud.ActiveStatus = Convert.ToBoolean(dr["active"]);
+                        stud.Plist = GetPlistByUser((string)dr["mail"]);
+                        stud.Hlist = GetHlistByUser((string)dr["mail"]);
+                        stud.Friendslist = GetFriendsListByUser(((string)dr["mail"]));
+                    }
+                    return stud;
                 }
-                return stud;
+                return null;
+          
             }
 
             catch (Exception ex)
