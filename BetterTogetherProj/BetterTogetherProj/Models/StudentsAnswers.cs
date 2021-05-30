@@ -32,10 +32,10 @@ namespace project_classes.Models
         public int Questionnum { get => questionnum; set => questionnum = value; }
         public string OpenAnswer { get => openAnswer; set => openAnswer = value; }
 
-        public List<StudentsAnswers> GetStudentAns(int numQr,int depcode)
+        public List<StudentsAnswers> GetStudentAns(int numQr,int depcode, int depyear)
         {
             DBServices db = new DBServices();
-            List<StudentsAnswers> SAns = db.GetStudentAns(numQr, depcode);
+            List<StudentsAnswers> SAns = db.GetStudentAns(numQr, depcode, depyear);
             return SAns;
         }
         public void InsertQuestionnairAns()

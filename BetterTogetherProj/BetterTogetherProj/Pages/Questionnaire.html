@@ -601,7 +601,7 @@
                 }
 
                 numQr = Qr.QuestionnaireNum;               
-                let api = "../api/Questionnaire/analyze?numQr=" + numQr + "&depcode=" + depcode;
+                let api = "../api/Questionnaire/analyze?numQr=" + numQr + "&depcode=" + depcode + "&depyear=" + depyear;
                 ajaxCall("GET", api, "", getSuccessallStudAns, error);                
 
             }

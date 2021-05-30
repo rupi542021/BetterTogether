@@ -68,8 +68,8 @@ namespace BetterTogetherProj.Models.DAL
                     qr.Status = Convert.ToBoolean(dr["status"]);
                     qr.Dep = (new Department { DepartmentName = (string)dr["departmentName"] });
                     qr.Dep.DepartmentCode = Convert.ToInt16(dr["departmentCode"]);
-                    qr.NumResponders = GetNumResponders(qr.QuestionnaireNum, qr.Dep.DepartmentCode);
-                    qr.QuestionnaireYear = Convert.ToInt16(dr["qrYear"]);                   
+                    qr.QuestionnaireYear = Convert.ToInt16(dr["qrYear"]);
+                    qr.NumResponders = GetNumResponders(qr.QuestionnaireNum, qr.Dep.DepartmentCode, qr.QuestionnaireYear);
                     qr.Queslist = getQuestionsbyNumqr(qr.QuestionnaireNum);
                     if (dr["deleteMode"] is null)
                         qr.DeleteMode = Convert.ToBoolean(dr["deleteMode"]);
@@ -96,7 +96,7 @@ namespace BetterTogetherProj.Models.DAL
 
        
 
-        public int GetNumResponders(int QrId, int depcode)
+        public int GetNumResponders(int QrId, int depcode, int Qryear)
         {
             SqlConnection con = null;
             int Numres = 0;
@@ -104,15 +104,26 @@ namespace BetterTogetherProj.Models.DAL
             try
             {
                 con = connect1("DBConnectionString");
-                if (depcode == 15)
+                if (depcode == 15 && Qryear == 0)
                 {
                     selectSTR += "SELECT COUNT(distinct studentmail) as 'numResponders' from studentanswers_P3 INNER JOIN questionnaire_P3 on studentanswers_P3.qrCode = questionnaire_P3.qrCode where studentanswers_P3.qrCode =" + QrId;
-                      
+
                 }
-                else
+                else if (depcode != 15 && Qryear != 0)
                 {
                     selectSTR += "SELECT COUNT(distinct studentmail) as 'numResponders' from studentanswers_P3 INNER JOIN questionnaire_P3 on studentanswers_P3.qrCode = questionnaire_P3.qrCode where studentanswers_P3.qrCode =" + QrId +
-                       "and studentanswers_P3.studentmail in(select student_P.mail from student_P inner join department_P on student_P.departmentCode = department_P.departmentCode where department_P.departmentCode =" + depcode + ")";
+                                 "and studentanswers_P3.studentmail in(select student_P.mail from student_P inner join department_P on student_P.departmentCode = department_P.departmentCode where department_P.departmentCode =" + depcode +
+                                 ")and studentanswers_P3.studentmail in(select  student_P.mail from student_P inner join questionnaire_P3 on student_P.studyingYear = questionnaire_P3.qrYear where student_P.studyingYear = " + Qryear + ")";
+                }
+                else if (depcode == 15 && Qryear != 0)
+                {
+                    selectSTR += "SELECT COUNT(distinct studentmail) as 'numResponders' from studentanswers_P3 INNER JOIN questionnaire_P3 on studentanswers_P3.qrCode = questionnaire_P3.qrCode where studentanswers_P3.qrCode =" + QrId +
+                                 "and studentanswers_P3.studentmail in(select  student_P.mail from student_P inner join questionnaire_P3 on student_P.studyingYear = questionnaire_P3.qrYear where student_P.studyingYear = " + Qryear + ")";
+                }
+                else if (depcode != 15 && Qryear == 0)
+                {
+                    selectSTR += "SELECT COUNT(distinct studentmail) as 'numResponders' from studentanswers_P3 INNER JOIN questionnaire_P3 on studentanswers_P3.qrCode = questionnaire_P3.qrCode where studentanswers_P3.qrCode =" + QrId +
+                                 "and studentanswers_P3.studentmail in(select student_P.mail from student_P inner join department_P on student_P.departmentCode = department_P.departmentCode where department_P.departmentCode =" + depcode+ ")";
                 }
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
@@ -1365,7 +1376,7 @@ namespace BetterTogetherProj.Models.DAL
             return command;
 
         }
-        public List<StudentsAnswers> GetStudentAns(int numQr, int depcode)
+        public List<StudentsAnswers> GetStudentAns(int numQr, int depcode, int depyear)
         {
             SqlConnection con = null;
             List<StudentsAnswers> SAnsList = new List<StudentsAnswers>();
@@ -1373,17 +1384,28 @@ namespace BetterTogetherProj.Models.DAL
             try
             {
                 con = connect1("DBConnectionString");
-                if (depcode == 15)
+                if (depcode == 15 && depyear!=0)
                 {
-                    selectSTR += "select * from studentanswers_P3 INNER JOIN question_P3 on studentanswers_P3.qCode = question_P3.qCode and studentanswers_P3.qrCode = question_P3.qrCode where studentanswers_P3.qrCode =" + numQr;
+                    selectSTR += "select * from studentanswers_P3 INNER JOIN questionnaire_P3 on studentanswers_P3.qrCode = questionnaire_P3.qrCode where studentanswers_P3.qrCode =" + numQr +
+                                 "and studentanswers_P3.studentmail in(select  student_P.mail from student_P inner join questionnaire_P3 on student_P.studyingYear = questionnaire_P3.qrYear where student_P.studyingYear =" + depyear + ")";
 
                 }
-                else
+                else if(depcode == 15 && depyear == 0)
                 {
-                    selectSTR += "select * from studentanswers_P3 INNER JOIN question_P3 on studentanswers_P3.qCode = question_P3.qCode and studentanswers_P3.qrCode = question_P3.qrCode where studentanswers_P3.qrCode =" + numQr +
-                       " and studentanswers_P3.studentmail in(select student_P.mail from student_P inner join department_P on student_P.departmentCode = department_P.departmentCode where department_P.departmentCode="+ depcode+")";
+                    selectSTR += "select * from studentanswers_P3 INNER JOIN question_P3 on studentanswers_P3.qCode = question_P3.qCode and studentanswers_P3.qrCode = question_P3.qrCode where studentanswers_P3.qrCode =" + numQr;
+                      
                 }
-                
+                else if(depcode != 15 && depyear != 0)
+                {
+                    selectSTR += "select * from studentanswers_P3 INNER JOIN questionnaire_P3 on studentanswers_P3.qrCode = questionnaire_P3.qrCode where studentanswers_P3.qrCode ="+ numQr +
+                                 "and studentanswers_P3.studentmail in(select student_P.mail from student_P inner join department_P on student_P.departmentCode = department_P.departmentCode where department_P.departmentCode ="+ depcode+
+                                 ")and studentanswers_P3.studentmail in(select  student_P.mail from student_P inner join questionnaire_P3 on student_P.studyingYear = questionnaire_P3.qrYear where student_P.studyingYear = "+ depyear+")";
+                }
+                else if(depcode != 15 && depyear == 0)
+                {
+                    selectSTR += "select * from studentanswers_P3 INNER JOIN questionnaire_P3 on studentanswers_P3.qrCode = questionnaire_P3.qrCode where studentanswers_P3.qrCode =" + numQr +
+                                 "and studentanswers_P3.studentmail in(select student_P.mail from student_P inner join department_P on student_P.departmentCode = department_P.departmentCode where department_P.departmentCode =" + depcode + ")";
+                }
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
@@ -1681,5 +1703,40 @@ namespace BetterTogetherProj.Models.DAL
             return command;
         }
 
+        //public float getRatio(int statusQR, int deleteMode)
+        //{
+        //    float ratio = 0;
+        //    SqlConnection con = null;
+        //    try
+        //    {
+        //        con = connect1("DBConnectionString");
+        //        String selectSTR = "SELECT COUNT(distinct studentmail) as 'numResponders' from studentanswers_P3 INNER JOIN questionnaire_P3 on studentanswers_P3.qrCode = questionnaire_P3.qrCode where studentanswers_P3.qrCode = " + QrId +
+        //                         "and studentanswers_P3.studentmail in(select student_P.mail from student_P inner join department_P on student_P.departmentCode = department_P.departmentCode where department_P.departmentCode =" + depcode +
+        //                         ")and studentanswers_P3.studentmail in(select  student_P.mail from student_P inner join questionnaire_P3 on student_P.studyingYear = questionnaire_P3.qrYear where student_P.studyingYear = " + Qryear + ")"; ";
+        //        SqlCommand cmd = new SqlCommand(selectSTR, con);
+        //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+        //        while (dr.Read())
+        //        {   // Read till the end of the data into a row
+
+        //            ratio = Convert.ToInt16(dr[""]);
+
+        //        }
+        //        return ratio;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // write to log
+        //        throw (ex);
+        //    }
+        //    finally
+        //    {
+        //        if (con != null)
+        //        {
+        //            con.Close();
+        //        }
+
+        //    }
+
+        //}
     }
 }

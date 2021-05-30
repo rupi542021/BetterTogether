@@ -91,5 +91,13 @@ namespace project_classes.Models
             dbs.UpdateStatusQr(QrId);
             
         }
+
+        //public float getRatio(int statusQR, int deleteMode)
+        //{
+        //    DBServices dbs = new DBServices();
+        //    float ratio = dbs.getRatio(statusQR, deleteMode);
+        //    return ratio;
+
+        //}
     }
 }

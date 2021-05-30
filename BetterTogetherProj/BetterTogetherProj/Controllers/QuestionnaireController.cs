@@ -71,10 +71,10 @@ namespace BetterTogetherProj.Controllers
         }
         [HttpGet]
         [Route("api/Questionnaire/analyze")]
-        public List<StudentsAnswers> GetStudentAns(int numQr, int depcode)
+        public List<StudentsAnswers> GetStudentAns(int numQr, int depcode, int depyear)
         {
             StudentsAnswers SAns = new StudentsAnswers();
-            return SAns.GetStudentAns(numQr, depcode);
+            return SAns.GetStudentAns(numQr, depcode, depyear);
 
         }
 
@@ -95,5 +95,14 @@ namespace BetterTogetherProj.Controllers
             Questionnaire qr = new Questionnaire();
             qr.UpdateStatusQr(QrId);
         }
+
+        //[HttpGet]
+        //[Route("api/Questionnaire/getRatio")]
+        //public float getRatio(int statusQR, int deleteMode)
+        //{
+        //    Questionnaire qr = new Questionnaire();
+        //    return qr.getRatio(statusQR, deleteMode);
+
+        //}
     }
 }
