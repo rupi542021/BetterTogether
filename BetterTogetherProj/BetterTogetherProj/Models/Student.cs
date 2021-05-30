@@ -203,5 +203,11 @@ namespace project_classes.Models
             DBServicesReact dbs = new DBServicesReact();
             dbs.deleteUserProfile(mail);
         }
+        public void InsertSToList()
+        {
+            DBServices dbs = new DBServices();
+            dbs.InsertSToList(this);
+
+        }
     }
 }

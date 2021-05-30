@@ -166,7 +166,7 @@ namespace BetterTogetherProj.Controllers
         [HttpPost]
         [Route("api/students/addStudent")]
         
-        public HttpResponseMessage AddToSList([FromBody] AddStudent s)
+        public HttpResponseMessage AddToSList([FromBody] Student s)
         {
             try
             {

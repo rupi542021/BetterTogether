@@ -230,6 +230,8 @@ namespace BetterTogetherProj.Models.DAL
 
         }
 
+       
+
         //--------------------------------------------------------------------
         // Build the Insert command String
         //--------------------------------------------------------------------
@@ -1621,7 +1623,7 @@ namespace BetterTogetherProj.Models.DAL
             return command;
 
         }
-        public int InsertSToList(AddStudent s)
+        public int InsertSToList(Student student)
         {
 
             SqlConnection con;
@@ -1637,7 +1639,7 @@ namespace BetterTogetherProj.Models.DAL
                 throw (ex);
             }
 
-            String cStr = BuildInsertCommand(s);      // helper method to build the insert string
+            String cStr = BuildInsertCommand(student);      // helper method to build the insert string
 
             cmd = CreateCommand1(cStr, con);             // create the command
 
@@ -1666,13 +1668,13 @@ namespace BetterTogetherProj.Models.DAL
         //--------------------------------------------------------------------
         // Build the Insert command String
         //--------------------------------------------------------------------
-        private String BuildInsertCommand(AddStudent s)
+        private String BuildInsertCommand(Student student)
         {
             String command;
 
             StringBuilder sb = new StringBuilder();
             // use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}','{5}')", s.Mail, s.Fname, s.Lname, s.DateOfBirth.ToString("yyyy-MM-dd H:mm:ss"), s.Dep.DepartmentCode, s.StudyingYear );
+            sb.AppendFormat("Values('{0}', '{1}', '{2}', '{3}', '{4}','{5}')", student.Mail, student.Fname, student.Lname, student.DateOfBirth.ToString("yyyy-MM-dd H:mm:ss"), student.Dep.DepartmentCode, student.StudyingYear );
             String prefix = "INSERT INTO Ruppin_StudentsData_P" + "(email,firstName,lastName,dateOfBirth,department,studyingYear)";
             command = prefix + sb.ToString();
 
