@@ -17,6 +17,11 @@ namespace BetterTogetherProj.Controllers
 {
     public class studentsController : ApiController
     {
+
+
+
+
+
         public HttpResponseMessage GetStudentFromRuppin(string email)
         {
             Student student = new Student();
