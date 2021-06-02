@@ -351,13 +351,6 @@ namespace BetterTogetherProj.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("api/students/getStudentbyDepAndYear")]
-        public List<Student> getStudentbyDepAndYear()
-        {
-            Student stu = new Student();
-            return stu.getStudentbyDepAndYear();
-
-        }
+  
     }
 }
