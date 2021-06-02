@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+
+    <script src="../Scripts/jquery-3.4.1.min.js"></script>
+    <link href="MyStyleSheet.css" rel="stylesheet" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
+
+    <style type="text/css">
+    </style>
+    <title></title>
+    <script>
+        if (!firebase.apps.length) {
+            firebase.initializeApp({
+                apiKey: "AIzaSyCSHnFe2MHnBKhRHQrwACoNLo5cerY5W74",
+                authDomain: "chat-firebase-6a710.firebaseapp.com",
+                projectId: "chat-firebase-6a710",
+            });
+        }
+        var db = firebase.firestore();
+
+        $(document).ready(function () {
+
+            $(document).on("click", "#btn", InsertAlert);
+
+        })
+
+        function InsertAlert() {
+            ajaxCall("GET", "../api/students/GetCloseStudents", "", getSuccessCloseStudents, error);
+
+
+            //    db.collection("users").add({
+            //        //mail1
+            //        //mail2
+            //        //createAt
+
+            //        first: "Ada",
+            //        last: "Lovelace",
+            //        born: 1815
+            //    })
+            //        .then((docRef) => {
+            //            console.log("Document written with ID: ", docRef.id);
+            //        })
+            //        .catch((error) => {
+            //            console.error("Error adding document: ", error);
+            //        });
+        }
+        function getSuccessCloseStudents(list2students) {
+            console.log(list2students)
+        }
+        function error(err) {
+            console.log(err);
+            alert(err);
+        }
+    </script>
+</head>
+<body>
+    <button type="button" id="btn">Click Me!</button>
+</body>
+</html>

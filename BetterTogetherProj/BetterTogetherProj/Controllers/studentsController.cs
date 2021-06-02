@@ -350,7 +350,21 @@ namespace BetterTogetherProj.Controllers
                 return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
             }
         }
-
-  
+        [HttpGet]
+        [Route("API/students/GetCloseStudents")]
+        public IHttpActionResult GetCloseStudents()
+        {
+            try
+            {
+                StudentFavorites s = new StudentFavorites();
+                List<StudentFavorites> studentsList = s.GetCloseStudents();
+                return Ok(studentsList);
+            }
+            catch (Exception e)
+            {
+                //return badrequest(e.message);
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
     }
 }

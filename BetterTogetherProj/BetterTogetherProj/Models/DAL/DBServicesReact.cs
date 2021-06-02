@@ -1809,5 +1809,92 @@ namespace BetterTogetherProj.Models.DAL
             return prefix;
         }
 
+        public List<StudentFavorites> GetCloseStudents()
+        {
+            SqlConnection con = null;
+            List<StudentFavorites> TwoStudentsList = new List<StudentFavorites>();
+
+            try
+            {
+                con = connect("DBConnectionString");
+
+                String selectSTR = "SELECT * FROM locations_P";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                while (dr.Read())
+                {
+
+                    StudentFavorites TwoStudents = new StudentFavorites();
+                    TwoStudents.Student1mail = (string)dr["mail"];
+                    TwoStudents.Student2mail = checkIfClose((string)dr["mail"],Convert.ToDouble(dr["x"]), Convert.ToDouble(dr["y"]));
+                    if (TwoStudents.Student2mail!="")
+                        if(TwoStudentsList.FindIndex(s => (s.Student1mail == s.Student2mail)&&(s.Student2mail == s.Student1mail))==-1)
+                            TwoStudentsList.Add(TwoStudents);
+                }
+
+                
+                return TwoStudentsList;
+
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
+        public string checkIfClose(string mail1,double x, double y)
+        {
+            SqlConnection con = null;
+ 
+
+            try
+            {
+                con = connect("DBConnectionString");
+
+                string mail2 = "";
+                double xLocation = 0;
+                double yLocation = 0;
+                String selectSTR = "SELECT * FROM locations_P where mail<> '" + mail1 + "'";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                while (dr.Read())
+                {
+                    xLocation = (x / 1000) - (Convert.ToDouble(dr["x"]) / 1000);
+                    yLocation = (y / 1000) - (Convert.ToDouble(dr["y"]) / 1000);
+                    if (Math.Sqrt(Math.Pow(xLocation, 2) + Math.Pow(yLocation, 2)) < 1)
+                        return mail2 = (string)dr["mail"];
+                }
+                return "";
+
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
+
     }
 }
