@@ -184,6 +184,22 @@ namespace BetterTogetherProj.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("API/students/{mail}/updateToken")]
+        public IHttpActionResult updateToken(string mail, [FromBody] string token)
+        {
+            try
+            {
+                Student s = new Student();
+                s.updateToken(mail, token);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e.Message);
+            }
+        }
+
 
         // PUT api/<controller>/5
         [HttpPut]

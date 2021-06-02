@@ -1896,5 +1896,52 @@ namespace BetterTogetherProj.Models.DAL
 
         }
 
+        public int updateToken(string mail , string token)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString");
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+
+            String cStr = BuildUpdateUserTokenCommand(mail,token);
+            cmd = CreateCommand(cStr, con);
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery();
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                writeToLog(ex);
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+
+        }
+
+        private String BuildUpdateUserTokenCommand(string mail, string token)
+        {
+            String prefix = "UPDATE[dbo].[student_P] SET ";
+            prefix += "[token] = '" + token + "'";
+            prefix += " WHERE [mail] = '" + mail + "'";
+            return prefix;
+        }
+
     }
 }

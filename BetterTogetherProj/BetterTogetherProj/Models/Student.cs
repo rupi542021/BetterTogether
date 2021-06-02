@@ -34,6 +34,7 @@ namespace project_classes.Models
         int homeDist;
         int studyingDist;
         int agesRange;
+        string token;
 
         public string Mail { get => mail; set => mail = value; }
         public string Password { get => password; set => password = value; }
@@ -60,10 +61,11 @@ namespace project_classes.Models
         public int HomeDist { get => homeDist; set => homeDist = value; }
         public int StudyingDist { get => studyingDist; set => studyingDist = value; }
         public int AgesRange { get => agesRange; set => agesRange = value; }
+        public string Token { get => token; set => token = value; }
 
         public Student() { }
 
-        public Student(string mail, string password, string fname, string lname, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, bool isAvailableCar, bool intrestedInCarPool, string photo, string gender, DateTime registrationDate, bool activeStatus, List<Hobby> hlist, List<Pleasure> plist, List<string> friendslist, List<StudentInCourse> studInCourse, double match, List<Preferences> preflist, int homeDist, int studyingDist, int agesRange)
+        public Student(string mail, string password, string fname, string lname, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, bool isAvailableCar, bool intrestedInCarPool, string photo, string gender, DateTime registrationDate, bool activeStatus, List<Hobby> hlist, List<Pleasure> plist, List<string> friendslist, List<StudentInCourse> studInCourse, double match, List<Preferences> preflist, int homeDist, int studyingDist, int agesRange, string token)
         {
             Mail = mail;
             Password = password;
@@ -90,9 +92,10 @@ namespace project_classes.Models
             HomeDist = homeDist;
             StudyingDist = studyingDist;
             AgesRange = agesRange;
+            Token = token;
         }
 
-        //public Student(string mail, string password, string fname, string lname, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, bool isAvailableCar, bool intrestedInCarPool, string photo, string gender, DateTime registrationDate, bool activeStatus, List<Hobby> hlist, List<Pleasure> plist, List<string> friendslist, List<StudentInCourse> studInCourse, double match, List<Preferences> preflist)
+        //public Student(string mail, string password, string fname, string lname, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, bool isAvailableCar, bool intrestedInCarPool, string photo, string gender, DateTime registrationDate, bool activeStatus, List<Hobby> hlist, List<Pleasure> plist, List<string> friendslist, List<StudentInCourse> studInCourse, double match, List<Preferences> preflist, int homeDist, int studyingDist, int agesRange)
         //{
         //    Mail = mail;
         //    Password = password;
@@ -116,7 +119,11 @@ namespace project_classes.Models
         //    StudInCourse = studInCourse;
         //    Match = match;
         //    Preflist = preflist;
+        //    HomeDist = homeDist;
+        //    StudyingDist = studyingDist;
+        //    AgesRange = agesRange;
         //}
+
 
         public Student getCurrentStudent(string mail)
         {
@@ -209,7 +216,12 @@ namespace project_classes.Models
             dbs.InsertSToList(this);
 
         }
+        public void updateToken(string mail, string token)
+        {
+            DBServicesReact dbs = new DBServicesReact();
+            dbs.updateToken(mail, token);
 
+        }
 
         //public List<Student> getStudentbyDepAndYear()
         //{
