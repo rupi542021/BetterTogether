@@ -400,5 +400,23 @@ namespace BetterTogetherProj.Controllers
             return stu.getpercentregistered();
 
         }
+
+        [HttpGet]
+        [Route("api/students/getpercentregiByDep")]
+        public IEnumerable<List<int>> getpercentregiByDep()
+        {
+            Student stu = new Student();
+            return stu.getpercentregiByDep();
+
+        }
+
+        [HttpGet]
+        [Route("api/students/getpercentregiByYear")]
+        public IEnumerable<List<int>> getpercentregiByYear()
+        {
+            Student stu = new Student();
+            return stu.getpercentregiByYear();
+
+        }
     }
 }

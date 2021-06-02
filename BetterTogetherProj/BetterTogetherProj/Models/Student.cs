@@ -236,5 +236,19 @@ namespace project_classes.Models
             List<double> StuRatio = dbs.getpercentregistered();
             return StuRatio;
         }
+
+        public IEnumerable<List<int>> getpercentregiByDep()
+        {
+            DBServices dbs = new DBServices();
+            IEnumerable<List<int>> StuRatioDep = dbs.getpercentregiByDep();
+            return StuRatioDep;
+        }
+
+        public IEnumerable<List<int>> getpercentregiByYear()
+        {
+            DBServices dbs = new DBServices();
+            IEnumerable<List<int>> StuRatioDep = dbs.getpercentregiByYear();
+            return StuRatioDep;
+        }
     }
 }

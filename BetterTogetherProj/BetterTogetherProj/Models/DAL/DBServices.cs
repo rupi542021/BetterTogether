@@ -1909,5 +1909,135 @@ namespace BetterTogetherProj.Models.DAL
             }
 
         }
+
+        public IEnumerable<List<int>> getpercentregiByDep()
+        {
+
+            List<int> stuListReg = new List<int>();
+            List<int> stuList = new List<int>();
+
+            SqlConnection con1 = null;
+            SqlConnection con2 = null;
+            String selectSTR1 = "";
+            String selectSTR2 = "";
+            int stuRegistered = 0;
+            int stu = 0;
+            try
+            {
+                con1 = connect1("DBConnectionString");
+                selectSTR1 += "select count (mail) as 'numregistered',student_P.departmentCode from student_P group by student_P.departmentCode";
+
+
+                SqlCommand cmd1 = new SqlCommand(selectSTR1, con1);
+                SqlDataReader dr1 = cmd1.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr1.Read())
+                {   // Read till the end of the data into a row
+
+                    stuRegistered = Convert.ToInt16(dr1["numregistered"]);
+                    stuListReg.Add(stuRegistered);
+
+
+                }
+                con2 = connect1("DBConnectionString");
+                selectSTR2 += "select count(email) as 'numstudents', Ruppin_StudentsData_P.department from Ruppin_StudentsData_P group by Ruppin_StudentsData_P.department ";
+
+
+                SqlCommand cmd2 = new SqlCommand(selectSTR2, con2);
+                SqlDataReader dr2 = cmd2.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr2.Read())
+                {   // Read till the end of the data into a row
+
+
+                    stu = Convert.ToInt16(dr2["numstudents"]);
+                    stuList.Add(stu);
+
+                }
+
+                return new List<List<int>> { stuList, stuListReg };
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con1 != null)
+                {
+                    con1.Close();
+                }
+                if (con2 != null)
+                {
+                    con2.Close();
+                }
+
+            }
+
+        }
+
+        public IEnumerable<List<int>> getpercentregiByYear()
+        {
+
+            List<int> stuListReg = new List<int>();
+            List<int> stuList = new List<int>();
+
+            SqlConnection con1 = null;
+            SqlConnection con2 = null;
+            String selectSTR1 = "";
+            String selectSTR2 = "";
+            int stuRegistered = 0;
+            int stu = 0;
+            try
+            {
+                con1 = connect1("DBConnectionString");
+                selectSTR1 += "select count (mail) as 'numregistered', student_P.studyingYear from student_P group by student_P.studyingYear";
+
+
+                SqlCommand cmd1 = new SqlCommand(selectSTR1, con1);
+                SqlDataReader dr1 = cmd1.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr1.Read())
+                {   // Read till the end of the data into a row
+
+                    stuRegistered = Convert.ToInt16(dr1["numregistered"]);
+                    stuListReg.Add(stuRegistered);
+
+
+                }
+                con2 = connect1("DBConnectionString");
+                selectSTR2 += "select count(email) as 'numstudents', Ruppin_StudentsData_P.studyingYear from Ruppin_StudentsData_P group by Ruppin_StudentsData_P.studyingYear";
+
+
+                SqlCommand cmd2 = new SqlCommand(selectSTR2, con2);
+                SqlDataReader dr2 = cmd2.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr2.Read())
+                {   // Read till the end of the data into a row
+
+
+                    stu = Convert.ToInt16(dr2["numstudents"]);
+                    stuList.Add(stu);
+
+                }
+
+                return new List<List<int>> { stuList, stuListReg };
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con1 != null)
+                {
+                    con1.Close();
+                }
+                if (con2 != null)
+                {
+                    con2.Close();
+                }
+
+            }
+
+        }
     }
 }
