@@ -45,18 +45,25 @@
 
         $(document).ready(function () {
           
-            ajaxCall("GET", "../api/Questionnaire/getRespondersbyDepAndYear", "", getRespondersbyDepAndYear, error); 
+            //ajaxCall("GET", "../api/Questionnaire/getRespondersbyDepAndYear", "", getRespondersbyDepAndYear, error); 
             
-            ajaxCall("GET","../api/students/getStudentbyDepAndYear", "", getStudentbyDepAndYear, error);
+            //ajaxCall("GET","../api/students/getStudentbyDepAndYear", "", getStudentbyDepAndYear, error);
+
+            ajaxCall("GET", "../api/Questionnaire/getpercentregistered", "", getpercentregistered, error);
         })
-        function getRespondersbyDepAndYear(ResData) {
-            console.log(ResData)
+
+        function getpercentregistered(ratio) {
+            console.log(ratio)
         }
 
-        function getStudentbyDepAndYear(StuData) {
-            console.log(StuData)
+        //function getRespondersbyDepAndYear(ResData) {
+        //    console.log(ResData)
+        //}
 
-        }
+        //function getStudentbyDepAndYear(StuData) {
+        //    console.log(StuData)
+
+        //}
         //function getSuccess(Qr) {
         //    console.log(Qr)
         //    db.collection("QrResponPercent").add({

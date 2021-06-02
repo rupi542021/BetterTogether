@@ -211,11 +211,11 @@ namespace project_classes.Models
         }
 
 
-        public List<Student> getStudentbyDepAndYear()
-        {
-            DBServices dbs = new DBServices();
-            List<Student> StuList = dbs.getStudentbyDepAndYear();
-            return StuList;
-        }
+        //public List<Student> getStudentbyDepAndYear()
+        //{
+        //    DBServices dbs = new DBServices();
+        //    List<Student> StuList = dbs.getStudentbyDepAndYear();
+        //    return StuList;
+        //}
     }
 }

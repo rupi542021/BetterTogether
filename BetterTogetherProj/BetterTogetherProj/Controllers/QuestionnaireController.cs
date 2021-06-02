@@ -96,12 +96,21 @@ namespace BetterTogetherProj.Controllers
             qr.UpdateStatusQr(QrId);
         }
 
+        //[HttpGet]
+        //[Route("api/Questionnaire/getRespondersbyDepAndYear")]
+        //public List<Questionnaire> GetRespondersbyDepAndYear()
+        //{
+        //    Questionnaire qr = new Questionnaire();
+        //    return qr.GetRespondersbyDepAndYear();
+
+        //}
+
         [HttpGet]
-        [Route("api/Questionnaire/getRespondersbyDepAndYear")]
-        public List<Questionnaire> GetRespondersbyDepAndYear()
+        [Route("api/Questionnaire/getpercentregistered")]
+        public float getpercentregistered()
         {
             Questionnaire qr = new Questionnaire();
-            return qr.GetRespondersbyDepAndYear();
+            return qr.getpercentregistered();
 
         }
 

@@ -92,11 +92,19 @@ namespace project_classes.Models
             
         }
 
-        public List<Questionnaire> GetRespondersbyDepAndYear()
+        //public List<Questionnaire> GetRespondersbyDepAndYear()
+        //{
+        //    DBServices dbs = new DBServices();
+        //    List<Questionnaire> qList = dbs.GetRespondersbyDepAndYear();
+        //    return qList;
+        //}
+
+
+        public float getpercentregistered()
         {
             DBServices dbs = new DBServices();
-            List<Questionnaire> qList = dbs.GetRespondersbyDepAndYear();
-            return qList;
+            float Ratio = dbs.getpercentregistered();
+            return Ratio;
         }
     }
 }
