@@ -391,5 +391,14 @@ namespace BetterTogetherProj.Controllers
         //    return qr.getStudentbyDepAndYear();
 
         //}
+
+        [HttpGet]
+        [Route("api/students/getpercentregistered")]
+        public List<double> getpercentregistered()
+        {
+            Student stu = new Student();
+            return stu.getpercentregistered();
+
+        }
     }
 }

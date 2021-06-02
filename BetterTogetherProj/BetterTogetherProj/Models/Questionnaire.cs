@@ -99,12 +99,12 @@ namespace project_classes.Models
         //    return qList;
         //}
 
-
-        public float getpercentregistered()
+        public List<int> GetpercentActiveQr()
         {
             DBServices dbs = new DBServices();
-            float Ratio = dbs.getpercentregistered();
-            return Ratio;
+            List<int> QrRatio = dbs.GetpercentActiveQr();
+            return QrRatio;
+
         }
     }
 }

@@ -1782,29 +1782,49 @@ namespace BetterTogetherProj.Models.DAL
 
         //}
 
-        public float getpercentregistered()
+        public List<double> getpercentregistered()
         {
-            SqlConnection con = null;
-            String selectSTR = "";
-            int stuRegistered = 0;
-            int stu = 0;
-            float Ratio = 0;
+
+            List<double> stuList = new List<double>();
+
+            SqlConnection con1 = null;
+            SqlConnection con2 = null;
+            String selectSTR1 = "";
+            String selectSTR2 = "";
+            double stuRegistered =0.0;
+            double stu = 0.0;
             try
             {
-                con = connect1("DBConnectionString");
-                selectSTR += "select count (mail) as 'numstudentsreg' from student_P ";
-                selectSTR += "select count (email) as 'numstudents' from Ruppin_StudentsData_P";
+                con1 = connect1("DBConnectionString");
+                selectSTR1 += "select count (mail) as 'numstudentsreg' from student_P ";
+                
 
-                SqlCommand cmd = new SqlCommand(selectSTR, con);
-                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-                while (dr.Read())
+                SqlCommand cmd1 = new SqlCommand(selectSTR1, con1);
+                SqlDataReader dr1 = cmd1.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr1.Read())
                 {   // Read till the end of the data into a row
 
-                    stuRegistered= Convert.ToInt16(dr["numstudentsreg"]);
-                    stu = Convert.ToInt32(dr["numstudents"]);
-                    Ratio = stuRegistered / stu;
+                    stuRegistered= Convert.ToDouble(dr1["numstudentsreg"]);
+                    stuList.Add(stuRegistered);
+
+
                 }
-                return Ratio;
+                con2 = connect1("DBConnectionString");
+                selectSTR2 += "select count(email) as 'numstudents' from Ruppin_StudentsData_P ";
+
+
+                SqlCommand cmd2 = new SqlCommand(selectSTR2, con2);
+                SqlDataReader dr2 = cmd2.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr2.Read())
+                {   // Read till the end of the data into a row
+
+                  
+                    stu = Convert.ToDouble(dr2["numstudents"]);
+                    stuList.Add(stu);
+
+                }
+
+                return stuList;
             }
             catch (Exception ex)
             {
@@ -1813,9 +1833,77 @@ namespace BetterTogetherProj.Models.DAL
             }
             finally
             {
-                if (con != null)
+                if (con1 != null)
                 {
-                    con.Close();
+                    con1.Close();
+                }
+                if (con2 != null)
+                {
+                    con2.Close();
+                }
+
+            }
+
+        }
+
+
+        public List<int> GetpercentActiveQr()
+        {
+
+            List<int> QrList = new List<int>();
+
+            SqlConnection con1 = null;
+            SqlConnection con2 = null;
+            String selectSTR1 = "";
+            String selectSTR2 = "";
+            int ActiveNum = 0;
+            int TotalNum = 0;
+            try
+            {
+                con1 = connect1("DBConnectionString");
+                selectSTR1 += "select count (qrCode) as 'ActiveNum' from questionnaire_P3 where status=1 and DATEDIFF(day,questionnaire_P3.publishDate , GETDATE())<=30 ";
+
+                SqlCommand cmd1 = new SqlCommand(selectSTR1, con1);
+                SqlDataReader dr1 = cmd1.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr1.Read())
+                {   // Read till the end of the data into a row
+
+                    ActiveNum = Convert.ToInt16(dr1["ActiveNum"]);
+                    QrList.Add(ActiveNum);
+
+
+                }
+                con2 = connect1("DBConnectionString");
+                selectSTR2 += "select count (qrCode) as 'TotalNum' from questionnaire_P3";
+
+
+                SqlCommand cmd2 = new SqlCommand(selectSTR2, con2);
+                SqlDataReader dr2 = cmd2.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr2.Read())
+                {   // Read till the end of the data into a row
+
+
+                    TotalNum = Convert.ToInt16(dr2["TotalNum"]);
+                    QrList.Add(TotalNum);
+
+                }
+
+                return QrList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con1 != null)
+                {
+                    con1.Close();
+                }
+                if (con2 != null)
+                {
+                    con2.Close();
                 }
 
             }

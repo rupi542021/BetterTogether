@@ -106,13 +106,12 @@ namespace BetterTogetherProj.Controllers
         //}
 
         [HttpGet]
-        [Route("api/Questionnaire/getpercentregistered")]
-        public float getpercentregistered()
+        [Route("api/Questionnaire/getpercentActiveQr")]
+        public List<int> GetpercentActiveQr()
         {
             Questionnaire qr = new Questionnaire();
-            return qr.getpercentregistered();
+            return qr.GetpercentActiveQr();
 
         }
-
     }
 }

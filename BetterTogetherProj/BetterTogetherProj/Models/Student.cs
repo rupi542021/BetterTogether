@@ -229,5 +229,12 @@ namespace project_classes.Models
         //    List<Student> StuList = dbs.getStudentbyDepAndYear();
         //    return StuList;
         //}
+
+        public List<double> getpercentregistered()
+        {
+            DBServices dbs = new DBServices();
+            List<double> StuRatio = dbs.getpercentregistered();
+            return StuRatio;
+        }
     }
 }
