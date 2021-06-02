@@ -16,6 +16,10 @@ namespace project_classes.Models
             Student1mail = student1mail;
             Student2mail = student2mail;
         }
+        public StudentFavorites()
+        {
+
+        }
 
         public string Student1mail { get => student1mail; set => student1mail = value; }
         public string Student2mail { get => student2mail; set => student2mail = value; }
@@ -30,6 +34,12 @@ namespace project_classes.Models
         {
             DBServicesReact dbs = new DBServicesReact();
             dbs.DeleteFavorite(this);
+        }
+        public List<StudentFavorites> GetCloseStudents()
+        {
+            DBServicesReact db = new DBServicesReact();
+            List<StudentFavorites> studentsList = db.GetCloseStudents();
+            return studentsList;
         }
     }
 }

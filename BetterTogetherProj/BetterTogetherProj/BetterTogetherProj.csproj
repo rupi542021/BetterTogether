@@ -352,6 +352,7 @@
     <Content Include="Pages\Home.html" />
     <Content Include="Pages\imageedit1.png" />
     <Content Include="Pages\KERENMACABI_web_hands_white.jpg" />
+    <Content Include="Pages\LocationTest.html" />
     <Content Include="Pages\MyStyleSheet.css" />
     <Content Include="Pages\Questionnaire.html" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
