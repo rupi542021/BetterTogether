@@ -1703,40 +1703,83 @@ namespace BetterTogetherProj.Models.DAL
             return command;
         }
 
-        //public float getRatio(int statusQR, int deleteMode)
-        //{
-        //    float ratio = 0;
-        //    SqlConnection con = null;
-        //    try
-        //    {
-        //        con = connect1("DBConnectionString");
-        //        String selectSTR = "SELECT COUNT(distinct studentmail) as 'numResponders' from studentanswers_P3 INNER JOIN questionnaire_P3 on studentanswers_P3.qrCode = questionnaire_P3.qrCode where studentanswers_P3.qrCode = " + QrId +
-        //                         "and studentanswers_P3.studentmail in(select student_P.mail from student_P inner join department_P on student_P.departmentCode = department_P.departmentCode where department_P.departmentCode =" + depcode +
-        //                         ")and studentanswers_P3.studentmail in(select  student_P.mail from student_P inner join questionnaire_P3 on student_P.studyingYear = questionnaire_P3.qrYear where student_P.studyingYear = " + Qryear + ")"; ";
-        //        SqlCommand cmd = new SqlCommand(selectSTR, con);
-        //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-        //        while (dr.Read())
-        //        {   // Read till the end of the data into a row
 
-        //            ratio = Convert.ToInt16(dr[""]);
+        public List<Questionnaire> GetRespondersbyDepAndYear()
+        {
+            SqlConnection con = null;
+            List<Questionnaire> qrList = new List<Questionnaire>();
+            String selectSTR = "";
+            try
+            {
+                con = connect1("DBConnectionString");
+             
+                selectSTR += "SELECT COUNT(distinct studentmail) as 'numResponders', questionnaire_P3.departmentCode, questionnaire_P3.qrYear from studentanswers_P3 INNER JOIN questionnaire_P3 on studentanswers_P3.qrCode = questionnaire_P3.qrCode group by questionnaire_P3.departmentCode, questionnaire_P3.qrYear";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Questionnaire qr = new Questionnaire();
+                    qr.NumResponders = Convert.ToInt16(dr["numResponders"]);
+                    qr.Dep = (new Department { DepartmentCode = Convert.ToInt16(dr["departmentCode"]) });             
+                    qr.QuestionnaireYear= Convert.ToInt16(dr["qrYear"]);
+                    qrList.Add(qr);
+                }
 
-        //        }
-        //        return ratio;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // write to log
-        //        throw (ex);
-        //    }
-        //    finally
-        //    {
-        //        if (con != null)
-        //        {
-        //            con.Close();
-        //        }
+                return qrList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
 
-        //    }
+            }
 
-        //}
+        }
+        public List<Student> getStudentbyDepAndYear()
+        {
+            SqlConnection con = null;
+            List<Student> stuList = new List<Student>();
+            String selectSTR = "";
+            try
+            {
+                con = connect1("DBConnectionString");
+
+                selectSTR += "select count (mail) as 'numstudents', student_P.departmentCode, student_P.studyingYear from student_P inner join department_P on student_P.departmentCode=department_P.departmentCode group by student_P.departmentCode, student_P.studyingYear";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Student stu = new Student();
+                    
+                    stu.Dep = (new Department { DepartmentCode = Convert.ToInt16(dr["departmentCode"]) });
+                    stu.Dep.Numstudents= Convert.ToInt16(dr["numstudents"]);
+                    stu.StudyingYear = Convert.ToInt16(dr["studyingYear"]);
+                    stuList.Add(stu);
+                }
+
+                return stuList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
     }
 }

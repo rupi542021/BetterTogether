@@ -96,13 +96,14 @@ namespace BetterTogetherProj.Controllers
             qr.UpdateStatusQr(QrId);
         }
 
-        //[HttpGet]
-        //[Route("api/Questionnaire/getRatio")]
-        //public float getRatio(int statusQR, int deleteMode)
-        //{
-        //    Questionnaire qr = new Questionnaire();
-        //    return qr.getRatio(statusQR, deleteMode);
+        [HttpGet]
+        [Route("api/Questionnaire/getRespondersbyDepAndYear")]
+        public List<Questionnaire> GetRespondersbyDepAndYear()
+        {
+            Questionnaire qr = new Questionnaire();
+            return qr.GetRespondersbyDepAndYear();
 
-        //}
+        }
+
     }
 }

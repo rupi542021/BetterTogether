@@ -19,36 +19,44 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
 
-    <script src="https://static.fusioncharts.com/code/latest/fusioncharts.js"></script>
+    <!--<script src="https://static.fusioncharts.com/code/latest/fusioncharts.js"></script>
     <link href="MyStyleSheet.css" rel="stylesheet" />
 
     <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase-database.js"></script>-->
 
-    <script src="../Scripts/config.js"></script>
+    <!--<script src="../Scripts/config.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>-->
 
 
     <script>
 
-        var statusQR = 1;
+        //var statusQR = 1;
 
-        if (!firebase.apps.length) {
-            firebase.initializeApp({
-                apiKey: "AIzaSyCSHnFe2MHnBKhRHQrwACoNLo5cerY5W74",
-                authDomain: "chat-firebase-6a710.firebaseapp.com",
-                projectId: "chat-firebase-6a710",
-            });
-        }
-        var db = firebase.firestore();
+        //if (!firebase.apps.length) {
+        //    firebase.initializeApp({
+        //        apiKey: "AIzaSyCSHnFe2MHnBKhRHQrwACoNLo5cerY5W74",
+        //        authDomain: "chat-firebase-6a710.firebaseapp.com",
+        //        projectId: "chat-firebase-6a710",
+        //    });
+        //}
+        //var db = firebase.firestore();
 
         $(document).ready(function () {
-            //let api = "../api/Questionnaire/getRatio?statusQR=" + statusQR + "&deleteMode=0";
-            //ajaxCall("GET", api, "", getSuccess, error);
-
+          
+            ajaxCall("GET", "../api/Questionnaire/getRespondersbyDepAndYear", "", getRespondersbyDepAndYear, error); 
+            
+            ajaxCall("GET","../api/students/getStudentbyDepAndYear", "", getStudentbyDepAndYear, error);
         })
+        function getRespondersbyDepAndYear(ResData) {
+            console.log(ResData)
+        }
 
+        function getStudentbyDepAndYear(StuData) {
+            console.log(StuData)
+
+        }
         //function getSuccess(Qr) {
         //    console.log(Qr)
         //    db.collection("QrResponPercent").add({
@@ -118,9 +126,9 @@
         //        firebaseChart.render();
         //}
 
-        //function error(err) {
-        //    console.log(err)
-        //}
+        function error(err) {
+            console.log(err)
+        }
 
     </script>
 </head>

@@ -547,7 +547,6 @@
         // fill the form fields
         function populateFields(qrId) {
             $("#question1").html("");
-
             Qr = getQ(qrId);
             ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
 
@@ -600,7 +599,7 @@
                     }
                 }
 
-                numQr = Qr.QuestionnaireNum;               
+                numQr = Qr.QuestionnaireNum;                 
                 let api = "../api/Questionnaire/analyze?numQr=" + numQr + "&depcode=" + depcode + "&depyear=" + depyear;
                 ajaxCall("GET", api, "", getSuccessallStudAns, error);                
 
@@ -763,7 +762,7 @@
         }
         // this function is activated in case of a success
         function getSuccess(questionnaireData) {
-
+      
             console.log(questionnaireData);
             questionnaires = questionnaireData; // keep the cars array in a global variable;
             if ($.fn.dataTable.isDataTable('#QTable')) {//destroy the old table on existence and then create new instance of jQuery DataTable

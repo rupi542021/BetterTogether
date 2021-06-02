@@ -350,5 +350,14 @@ namespace BetterTogetherProj.Controllers
                 return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("api/students/getStudentbyDepAndYear")]
+        public List<Student> getStudentbyDepAndYear()
+        {
+            Student stu = new Student();
+            return stu.getStudentbyDepAndYear();
+
+        }
     }
 }

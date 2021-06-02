@@ -209,5 +209,13 @@ namespace project_classes.Models
             dbs.InsertSToList(this);
 
         }
+
+
+        public List<Student> getStudentbyDepAndYear()
+        {
+            DBServices dbs = new DBServices();
+            List<Student> StuList = dbs.getStudentbyDepAndYear();
+            return StuList;
+        }
     }
 }

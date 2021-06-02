@@ -92,12 +92,11 @@ namespace project_classes.Models
             
         }
 
-        //public float getRatio(int statusQR, int deleteMode)
-        //{
-        //    DBServices dbs = new DBServices();
-        //    float ratio = dbs.getRatio(statusQR, deleteMode);
-        //    return ratio;
-
-        //}
+        public List<Questionnaire> GetRespondersbyDepAndYear()
+        {
+            DBServices dbs = new DBServices();
+            List<Questionnaire> qList = dbs.GetRespondersbyDepAndYear();
+            return qList;
+        }
     }
 }
