@@ -366,5 +366,14 @@ namespace BetterTogetherProj.Controllers
                 return Content(HttpStatusCode.BadRequest, e);
             }
         }
+
+        [HttpGet]
+        [Route("api/students/getStudentbyDepAndYear")]
+        public List<Student> getStudentbyDepAndYear()
+        {
+            Student qr = new Student();
+            return qr.getStudentbyDepAndYear();
+
+        }
     }
 }
