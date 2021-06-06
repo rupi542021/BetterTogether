@@ -1861,7 +1861,7 @@ namespace BetterTogetherProj.Models.DAL
             try
             {
                 con1 = connect1("DBConnectionString");
-                selectSTR1 += "select count (qrCode) as 'ActiveNum' from questionnaire_P3 where status=1 and DATEDIFF(day,questionnaire_P3.publishDate , GETDATE())<=30 ";
+                selectSTR1 += "select count (qrCode) as 'ActiveNum' from questionnaire_P3 where status=1";
 
                 SqlCommand cmd1 = new SqlCommand(selectSTR1, con1);
                 SqlDataReader dr1 = cmd1.ExecuteReader(CommandBehavior.CloseConnection);

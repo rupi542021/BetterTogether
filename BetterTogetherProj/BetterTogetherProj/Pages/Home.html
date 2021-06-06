@@ -20,8 +20,9 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
 
-    <!--<script src="https://static.fusioncharts.com/code/latest/fusioncharts.js"></script>-->
     <link href="MyStyleSheet.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
 
 
 
@@ -30,17 +31,17 @@
         $(document).ready(function () {
 
             ajaxCall("GET", "../api/students/getpercentregistered", "", getpercentregistered, error);
-          
+
 
         })
 
         function getpercentregistered(StuRatio) {
             console.log(StuRatio);
-            Ratio = (StuRatio[0] / StuRatio[1])*100;
-            Ratio=Math.round((Ratio + Number.EPSILON) * 100)/100 ;
+            Ratio = (StuRatio[0] / StuRatio[1]) * 100;
+            Ratio = Math.round((Ratio + Number.EPSILON) * 100) / 100;
 
-            $("#ratioStu").append("<b>" + Ratio+"%"+"</b></br>"+"סטודנטים המשתמשים באפליקציה");
-            $("#quantitystu").append("<b>"+ StuRatio[0]+"</b></br>"+" סטודנטים רשומים לאפליקציה ");
+            $("#ratioStu").append("<b>" + Ratio + "%" + "</b></br>" + "סטודנטים המשתמשים באפליקציה");
+            $("#quantitystu").append("<b>" + StuRatio[0] + "</b></br>" + " סטודנטים רשומים לאפליקציה ");
 
             ajaxCall("GET", "../api/Questionnaire/getpercentActiveQr", "", getpercentActiveQr, error);
         }
@@ -50,15 +51,87 @@
             Ratio = (Qrratio[0] / Qrratio[1]) * 100;
             Ratio = Math.round((Ratio + Number.EPSILON) * 100) / 100;
 
-            $("#ratioQr").append("<b>"+ Ratio+"%"+"</b></br>" +"שאלונים פעילים בחודש האחרון " );
+            $("#ratioQr").append("<b>" + Ratio + "%" + "</b></br>" + "שאלונים פעילים");
             $("#quantityQr").append("<b>" + Qrratio[1] + "</b></br>" + "כמות השאלונים שפורסמו עד כה");
             ajaxCall("GET", "../api/students/getpercentregiByDep", "", getpercentregiByDep, error);
 
         }
 
-        function getpercentregiByDep(StuRatioDep) {
-            console.log(StuRatioDep);
-           
+        function getpercentregiByDep(StuByDep) {
+            console.log(StuByDep);
+            StudentByDep = StuByDep;
+            AllStudents = [];
+            RegisteredOnly = []
+
+            for (var i = 0; i < StudentByDep.length; i++) {
+                for (var j = 0; j < StudentByDep[i].length; j++) {
+                    if (StudentByDep[i] == StudentByDep[0])
+                        AllStudents.push(StudentByDep[i][j])
+                    else
+                        RegisteredOnly.push(StudentByDep[i][j])
+                }
+            }
+            console.log(AllStudents);
+            console.log(RegisteredOnly)
+            var barChartData = {
+                labels: [
+                    "הנדסת חשמל",
+                    "הנדסת מחשבים",
+                    "הנדסת תעשייה וניהול",
+                    "מדעי המחשב והמידע",
+                    "כלכלה ומנהל",
+                    "כלכלה וחשבונאות",
+                    "מנהל עסקים",
+                    "פסיכולוגיה",
+                    "עבודה סוציאלית",
+                    "סיעוד"
+                ],
+                datasets: [
+                    {
+                        label: "רשומים לאפליקציה",
+                        backgroundColor: "pink",
+                        borderColor: "red",
+                        borderWidth: 1,
+                        data: RegisteredOnly
+                    },
+                    {
+                        label: "לומדים ברופין",
+                        backgroundColor: "lightblue",
+                        borderColor: "blue",
+                        borderWidth: 1,
+                        data: AllStudents
+                     },
+
+                ]
+            };
+
+            var chartOptions = {
+                responsive: true,
+                legend: {
+                    position: "top"
+                },
+                title: {
+                    display: true,
+                    text: "כמות הסטודנטים הרשומים לאפליקציה ביחס לסך הסטודנטים"
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+
+
+            var ctx = document.getElementById("canvas").getContext("2d");
+            new Chart(ctx, {
+                type: "bar",
+                data: barChartData,
+                options: chartOptions
+            });
+
+
             ajaxCall("GET", "../api/students/getpercentregiByYear", "", getpercentregiByYear, error);
 
 
@@ -69,7 +142,7 @@
 
 
         }
- 
+
         function error(err) {
             console.log(err)
         }
@@ -80,7 +153,7 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <ul class="nav navbar-nav">
-                <li class="active"><a  href="Home.html">דף הבית</a></li>
+                <li class="active"><a href="Home.html">דף הבית</a></li>
                 <li><a href="AdsTB.html">פרסומים</a></li>
                 <li><a href="EventTB.html">אירועים</a></li>
                 <li><a href="Questionnaire.html">שאלונים</a></li>
@@ -88,60 +161,59 @@
             </ul>
         </div>
     </nav>
-    <div class="flip-card " id="student">
-
-        <div class="flip-card-inner">
-            <div class="flip-card-front">
-
-
-                <h2 id="ratioStu"></h2>
+    <div class="row">
+        <div class="flip-card col-sm-3 ">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <h2 id="ratioStu"></h2>
+                </div>
+                <div class="flip-card-back">
+                    <h2 id="quantitystu"></h2>
+                </div>
             </div>
-            <div class="flip-card-back">
-                <h2 id="quantitystu"></h2>
+        </div>
 
+        <div class="flip-card col-sm-3">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <h2 id="ratioQr"></h2>
+                </div>
+                <div class="flip-card-back">
+                    <h2 id="quantityQr"></h2>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="flip-card col-sm-3">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <h2 id="ratioDep"></h2>
+                </div>
+                <div class="flip-card-back">
+                    <h2 id="quantityDep"></h2>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="flip-card col-sm-3">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <h2 id="ratioYear"></h2>
+                </div>
+                <div class="flip-card-back">
+                    <h2 id="quantityYear"></h2>
+
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="flip-card" id="qr">
-        <div class="flip-card-inner">
-            <div class="flip-card-front">
-                <h2 id="ratioQr"></h2>
-            </div>
-            <div class="flip-card-back">
-                <h2 id="quantityQr"></h2>
-
-                r"
-
-            </div>
+    <div class="row" id="container">
+        <div class="col-sm-6">
+            <canvas id="canvas"></canvas>
         </div>
-        </
-        di
-    </div>
-
-
-    <div class="flip-card" id="qr">
-        <div class="flip-card-inner">
-            <div class="flip-card-front">
-                <h2 id="ratioDep"></h2>
-            </div>
-            <div class="flip-card-back">
-                <h2 id="quantityDep"></h2>
-
-            </div>
         </div>
-    </div>
-
-    <div class="flip-card" id="qr">
-        <div class="flip-card-inner">
-            <div class="flip-card-front">
-                <h2 id="ratioYear"></h2>
-            </div>
-            <div class="flip-card-back">
-                <h2 id="quantityYear"></h2>
-
-            </div>
-        </div>
-    </div>
 </body>
 </html>
