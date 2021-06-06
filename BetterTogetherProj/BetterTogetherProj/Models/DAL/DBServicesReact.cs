@@ -191,6 +191,7 @@ namespace BetterTogetherProj.Models.DAL
                     stud.HomeDist = Convert.ToInt32(dr["homeDist"]);
                     stud.StudyingDist = Convert.ToInt32(dr["studyingDist"]);
                     stud.AgesRange = Convert.ToInt32(dr["agesRange"]);
+                    stud.Token = dr.IsDBNull(27) ? "no token" : (string)(dr["token"]);
 
                 }
                 return stud;
@@ -251,6 +252,7 @@ namespace BetterTogetherProj.Models.DAL
                             stud.HomeDist = Convert.ToInt32(dr["homeDist"]);
                             stud.StudyingDist = Convert.ToInt32(dr["studyingDist"]);
                             stud.AgesRange = Convert.ToInt32(dr["agesRange"]);
+                            stud.Token = dr.IsDBNull(27) ? "no token" : (string)(dr["token"]);
                             return stud;
                         }
                         stud.Mail = (string)dr["mail"];
@@ -1164,6 +1166,7 @@ namespace BetterTogetherProj.Models.DAL
                     stud.Plist = GetPlistByUser((string)dr["mail"]);
                     stud.Hlist = GetHlistByUser((string)dr["mail"]);
                     stud.Friendslist = GetFriendsListByUser(((string)dr["mail"]));
+                    stud.Token= dr.IsDBNull(27)?"no token": (string)(dr["token"]);
                     stud.Match = calMatch(mail, stud.Friendslist, stud.DateOfBirth, stud.Dep, stud.StudyingYear, stud.HomeTown, stud.AddressStudying, stud.PersonalStatus, stud.Hlist, stud.Plist);
                     studList.Add(stud);
                 }
