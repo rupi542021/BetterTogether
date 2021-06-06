@@ -23,36 +23,14 @@
     <!--<script src="https://static.fusioncharts.com/code/latest/fusioncharts.js"></script>-->
     <link href="MyStyleSheet.css" rel="stylesheet" />
 
-    <!--<script src="https://www.gstatic.com/firebasejs/4.6.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase-database.js"></script>-->
-    <!--<script src="../Scripts/config.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>-->
 
 
     <script>
 
-        //var statusQR = 1;
-
-        //if (!firebase.apps.length) {
-        //    firebase.initializeApp({
-        //        apiKey: "AIzaSyCSHnFe2MHnBKhRHQrwACoNLo5cerY5W74",
-        //        authDomain: "chat-firebase-6a710.firebaseapp.com",
-        //        projectId: "chat-firebase-6a710",
-        //    });
-        //}
-        //var db = firebase.firestore();
-
         $(document).ready(function () {
 
-            //ajaxCall("GET", "../api/Questionnaire/getRespondersbyDepAndYear", "", getRespondersbyDepAndYear, error);
-
-            //ajaxCall("GET","../api/students/getStudentbyDepAndYear", "", getStudentbyDepAndYear, error);
-
             ajaxCall("GET", "../api/students/getpercentregistered", "", getpercentregistered, error);
-            ajaxCall("GET", "../api/Questionnaire/getpercentActiveQr", "", getpercentActiveQr, error);
-            ajaxCall("GET", "../api/students/getpercentregiByDep", "", getpercentregiByDep, error);
-            ajaxCall("GET", "../api/students/getpercentregiByYear", "", getpercentregiByYear, error);
+          
 
         })
 
@@ -64,7 +42,7 @@
             $("#ratioStu").append("<b>" + Ratio+"%"+"</b></br>"+"סטודנטים המשתמשים באפליקציה");
             $("#quantitystu").append("<b>"+ StuRatio[0]+"</b></br>"+" סטודנטים רשומים לאפליקציה ");
 
-
+            ajaxCall("GET", "../api/Questionnaire/getpercentActiveQr", "", getpercentActiveQr, error);
         }
 
         function getpercentActiveQr(Qrratio) {
@@ -73,12 +51,15 @@
             Ratio = Math.round((Ratio + Number.EPSILON) * 100) / 100;
 
             $("#ratioQr").append("<b>"+ Ratio+"%"+"</b></br>" +"שאלונים פעילים בחודש האחרון " );
-            $("#quantityQr").append("<b>"+ Qrratio[1]+"</b></br>"+"כמות השאלונים שפורסמו עד כה");
+            $("#quantityQr").append("<b>" + Qrratio[1] + "</b></br>" + "כמות השאלונים שפורסמו עד כה");
+            ajaxCall("GET", "../api/students/getpercentregiByDep", "", getpercentregiByDep, error);
+
         }
 
         function getpercentregiByDep(StuRatioDep) {
             console.log(StuRatioDep);
            
+            ajaxCall("GET", "../api/students/getpercentregiByYear", "", getpercentregiByYear, error);
 
 
         }
@@ -88,83 +69,7 @@
 
 
         }
-        //function getRespondersbyDepAndYear(ResData) {
-        //    console.log(ResData)
-        //}
-
-        //function getStudentbyDepAndYear(StuData) {
-        //    console.log(StuData)
-
-        //}
-        //function getSuccess(Qr) {
-        //    console.log(Qr)
-        //    db.collection("QrResponPercent").add({
-        //        "Qauntity": 2
-        //    })
-        //        .then((docRef) => {
-        //            console.log("Document written with ID: ", docRef.id);
-        //        })
-        //        .catch((error) => {
-        //            console.error("Error adding document: ", error);
-        //        });
-
-
-
-        //        var firebaseChart = new FusionCharts({
-        //            type: 'area2d',
-        //            renderAt: 'chart-container',
-        //            width: '650',
-        //            height: '400',
-        //            dataFormat: 'json',
-        //            dataSource: {
-        //                "chart": {
-        //                    "caption": "Website Visitors Trend",
-        //                    "subCaption": "Last 7 Days{br}ACME Inc.",
-        //                    "subCaptionFontBold": "0",
-        //                    "captionFontSize": "20",
-        //                    "subCaptionFontSize": "17",
-        //                    "captionPadding": "15",
-        //                    "captionFontColor": "#8C8C8C",
-        //                    "baseFontSize": "14",
-        //                    "baseFont": "Barlow",
-        //                    "canvasBgAlpha": "0",
-        //                    "bgColor": "#FFFFFF",
-        //                    "bgAlpha": "100",
-        //                    "showBorder": "0",
-        //                    "showCanvasBorder": "0",
-        //                    "showPlotBorder": "0",
-        //                    "showAlternateHGridColor": "0",
-        //                    "usePlotGradientColor": "0",
-        //                    "paletteColors": "#6AC1A5",
-        //                    "showValues": "0",
-        //                    "divLineAlpha": "5",
-        //                    "showAxisLines": "1",
-        //                    "drawAnchors": "0",
-        //                    "xAxisLineColor": "#8C8C8C",
-        //                    "xAxisLineThickness": "0.7",
-        //                    "xAxisLineAlpha": "50",
-        //                    "yAxisLineColor": "#8C8C8C",
-        //                    "yAxisLineThickness": "0.7",
-        //                    "yAxisLineAlpha": "50",
-        //                    "baseFontColor": "#8C8C8C",
-        //                    "toolTipBgColor": "#FA8D67",
-        //                    "toolTipPadding": "10",
-        //                    "toolTipColor": "#FFFFFF",
-        //                    "toolTipBorderRadius": "3",
-        //                    "toolTipBorderAlpha": "0",
-        //                    "drawCrossLine": "1",
-        //                    "crossLineColor": "#8C8C8C",
-        //                    "crossLineAlpha": "60",
-        //                    "crossLineThickness": "0.7",
-        //                    "alignCaptionWithCanvas": "1"
-        //                },
-        //                "data": Qr.length
-        //            }
-        //        });
-
-        //        firebaseChart.render();
-        //}
-
+ 
         function error(err) {
             console.log(err)
         }
@@ -172,8 +77,17 @@
     </script>
 </head>
 <body>
-    <!--<div id="chart-container"><svg width="90px" height="90px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-rolling" style="background: none;"><circle cx="50" cy="50" fill="none" ng-attr-stroke="{{config.color}}" ng-attr-stroke-width="{{config.width}}" ng-attr-r="{{config.radius}}" ng-attr-stroke-dasharray="{{config.dasharray}}" stroke="#6ac1a5" stroke-width="9" r="33" stroke-dasharray="155.50883635269477 53.83627878423159" transform="rotate(324 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="1s" begin="0s" repeatCount="indefinite"></animateTransform></circle></svg></div>-->
-
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                <li class="active"><a  href="Home.html">דף הבית</a></li>
+                <li><a href="AdsTB.html">פרסומים</a></li>
+                <li><a href="EventTB.html">אירועים</a></li>
+                <li><a href="Questionnaire.html">שאלונים</a></li>
+                <li id="titleNav"><a id="navT">היחידת ליזמות חברתית</a></li>
+            </ul>
+        </div>
+    </nav>
     <div class="flip-card " id="student">
 
         <div class="flip-card-inner">
