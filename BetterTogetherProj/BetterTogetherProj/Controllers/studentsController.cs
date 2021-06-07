@@ -418,5 +418,23 @@ namespace BetterTogetherProj.Controllers
             return stu.getpercentregiByYear();
 
         }
+
+        [HttpGet]
+        [Route("api/students/getnumOfEntries")]
+        public int  getnumOfEntries()
+        {
+            Student stu = new Student();
+            return stu.getnumOfEntries();
+
+        }
+
+        [HttpGet]
+        [Route("api/students/getstudentsAns")]
+        public List<StudentsAnswers> getstudentsAns()
+        {
+            StudentsAnswers s = new StudentsAnswers();
+            return s.getstudentsAns();
+
+        }
     }
 }

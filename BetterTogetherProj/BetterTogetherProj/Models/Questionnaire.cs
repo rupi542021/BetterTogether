@@ -106,5 +106,7 @@ namespace project_classes.Models
             return QrRatio;
 
         }
+
+       
     }
 }

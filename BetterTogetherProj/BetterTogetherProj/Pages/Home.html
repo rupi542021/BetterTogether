@@ -40,7 +40,7 @@
             Ratio = (StuRatio[0] / StuRatio[1]) * 100;
             Ratio = Math.round((Ratio + Number.EPSILON) * 100) / 100;
 
-            $("#ratioStu").append("<b>" + Ratio + "%" + "</b></br>" + "סטודנטים המשתמשים באפליקציה");
+            $("#ratioStu").append("<b>" + Ratio + "%" + "</b></br>" + "סטודנטים רשומים לאפליקציה");
             $("#quantitystu").append("<b>" + StuRatio[0] + "</b></br>" + " סטודנטים רשומים לאפליקציה ");
 
             ajaxCall("GET", "../api/Questionnaire/getpercentActiveQr", "", getpercentActiveQr, error);
@@ -89,15 +89,15 @@
                 datasets: [
                     {
                         label: "רשומים לאפליקציה",
-                        backgroundColor: "pink",
-                        borderColor: "red",
+                        backgroundColor: "#F5E686",
+                        borderColor: "black",
                         borderWidth: 1,
                         data: RegisteredOnly
                     },
                     {
                         label: "לומדים ברופין",
-                        backgroundColor: "lightblue",
-                        borderColor: "blue",
+                        backgroundColor: "#8b939b",
+                        borderColor: "black",
                         borderWidth: 1,
                         data: AllStudents
                      },
@@ -112,7 +112,7 @@
                 },
                 title: {
                     display: true,
-                    text: "כמות הסטודנטים הרשומים לאפליקציה ביחס לסך הסטודנטים"
+                    text: "סטודנטים הרשומים לאפליקציה מסך הסטודנטים לפי מחלקות"
                 },
                 scales: {
                     yAxes: [{
@@ -122,9 +122,9 @@
                     }]
                 }
             }
+             
 
-
-            var ctx = document.getElementById("canvas").getContext("2d");
+            var ctx = document.getElementById('canvasdep').getContext('2d');
             new Chart(ctx, {
                 type: "bar",
                 data: barChartData,
@@ -137,10 +137,98 @@
 
         }
 
-        function getpercentregiByYear(StuRatioYear) {
-            console.log(StuRatioYear);
+        function getpercentregiByYear(StuByYear) {
+            console.log(StuByYear);
+            AllStudents = [];
+            RegisteredOnly = []
+
+            for (var i = 0; i < StuByYear.length; i++) {
+                for (var j = 0; j < StuByYear[i].length; j++) {
+                    if (StuByYear[i] == StuByYear[0])
+                        AllStudents.push(StuByYear[i][j])
+                    else
+                        RegisteredOnly.push(StuByYear[i][j])
+                }
+            }
+            console.log(AllStudents);
+            console.log(RegisteredOnly)
+            var barChartData = {
+                labels: [
+                    "א",
+                    "ב",
+                    "ג",
+                    "ד",              
+                ],
+                datasets: [
+                    {
+                        label: "רשומים לאפליקציה",
+                        backgroundColor: "#F5E686",
+                        borderColor: "black",
+                        borderWidth: 1,
+                        data: RegisteredOnly
+                    },
+                    {
+                        label: "לומדים ברופין",
+                        backgroundColor: "#8b939b",
+                        borderColor: "black",
+                        borderWidth: 1,
+                        data: AllStudents
+                    },
+
+                ]
+            };
+
+            var chartOptions = {
+                responsive: true,
+                legend: {
+                    position: "top"
+                },
+                title: {
+                    display: true,
+                    text: "סטודנטים הרשומים לאפליקציה מסך הסטודנטים לפי שנה"
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
 
 
+            var ctx = document.getElementById('canvasyear').getContext('2d');
+            new Chart(ctx, {
+                type: "bar",
+                data: barChartData,
+                options: chartOptions
+            });
+
+            ajaxCall("GET", "../api/students/getnumOfEntries", "", getnumOfEntries, error);
+
+
+        }
+
+
+        function getnumOfEntries(numOfEntries) {
+            console.log(numOfEntries)
+            $("#entrynum").append("<b>" + numOfEntries + "</b></br>" + "כניסות לאפליקציה עד כה");
+
+            ajaxCall("GET", "../api/Questionnaire/getAnsList", "", getAnsList, error);
+
+
+        }
+
+        function getAnsList(AnsList) {
+            console.log(AnsList);
+            ansList = AnsList;
+            ajaxCall("GET", "../api/students/getstudentsAns", "", getstudentsans, error);
+
+        }
+
+        function getstudentsans(studentsAns) {
+            console.log(studentsAns);
+            StudentsAns = studentsAns;
         }
 
         function error(err) {
@@ -189,7 +277,7 @@
         <div class="flip-card col-sm-3">
             <div class="flip-card-inner">
                 <div class="flip-card-front">
-                    <h2 id="ratioDep"></h2>
+                    <h2 id="entrynum"></h2>
                 </div>
                 <div class="flip-card-back">
                     <h2 id="quantityDep"></h2>
@@ -212,8 +300,11 @@
     </div>
     <div class="row" id="container">
         <div class="col-sm-6">
-            <canvas id="canvas"></canvas>
+            <canvas id="canvasdep"></canvas>
         </div>
+        <div class="col-sm-6">
+            <canvas id="canvasyear"></canvas>
         </div>
+    </div>
 </body>
 </html>

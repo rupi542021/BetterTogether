@@ -38,11 +38,13 @@ namespace project_classes.Models
             List<Question> qList = dbs.getQuestionsbyNumqr(Qcode);
             return qList;
         }
-        //public void Insertquestion()
-        //{
-        //    DBServices dbs = new DBServices();
-        //    dbs.Insertquestion(this);
 
-        //}
+        public List<Question> getAnsList()
+        {
+            DBServices dbs = new DBServices();
+            List<Question> SumStuAns = dbs.getAnsList();
+            return SumStuAns;
+
+        }
     }
 }

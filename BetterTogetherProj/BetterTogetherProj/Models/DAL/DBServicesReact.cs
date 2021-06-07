@@ -216,11 +216,11 @@ namespace BetterTogetherProj.Models.DAL
         {
             SqlConnection con = null;
             Student stud = new Student();
-
             try
             {
                 con = connect("DBConnectionString");
                 String selectSTR = "SELECT * FROM student_P where mail='" + email + "' and active = 'true'";
+                selectSTR += "update student_P set student_P.entryCounter=student_P.entryCounter+1 where student_P.mail='" + email + "' and student_P.active='true'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 if (dr.HasRows == true)
@@ -253,6 +253,8 @@ namespace BetterTogetherProj.Models.DAL
                             stud.StudyingDist = Convert.ToInt32(dr["studyingDist"]);
                             stud.AgesRange = Convert.ToInt32(dr["agesRange"]);
                             stud.Token = dr.IsDBNull(27) ? "no token" : (string)(dr["token"]);
+                            stud.EntryCounter = Convert.ToInt16(dr["entryCounter"]);
+
                             return stud;
                         }
                         stud.Mail = (string)dr["mail"];
@@ -830,8 +832,8 @@ namespace BetterTogetherProj.Models.DAL
         {
             String command;
             StringBuilder sb = new StringBuilder();
-            String prefix = "INSERT INTO Student_P" + "(mail, password, firstName, lastName, dateOfBirth, departmentCode, studyingYear, homeTown, adrressStudying, personalStatus, isAvailableCar, intrestedInCarpool, photo, gender, registrationDate, active,pref1,pref2,pref3,pref4,pref5,pref6,pref7,pref8,homeDist,studyingDist,agesRange,token) ";
-            sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}','{4}', '{5}','{6}', '{7}','{8}', '{9}','{10}', '{11}','{12}', '{13}','{14}', '{15}', '{16}', '{17}', '{18}', '{19}', '{20}', '{21}', '{22}', '{23}', '{24}', '{25}', '{26}', '{27}')", student.Mail, student.Password, student.Fname, student.Lname, student.DateOfBirth.ToString("yyyy-MM-dd H:mm:ss"), student.Dep.DepartmentCode, student.StudyingYear, student.HomeTown.Name, student.AddressStudying.Name, student.PersonalStatus, student.IsAvailableCar, student.IntrestedInCarPool, student.Photo, student.Gender, student.RegistrationDate.ToString("yyyy-MM-dd H:mm:ss"), true, 1, 2, 3, 4, 5, 6, 7, 8,15,15,3, student.Token);
+            String prefix = "INSERT INTO Student_P" + "(mail, password, firstName, lastName, dateOfBirth, departmentCode, studyingYear, homeTown, adrressStudying, personalStatus, isAvailableCar, intrestedInCarpool, photo, gender, registrationDate, active,pref1,pref2,pref3,pref4,pref5,pref6,pref7,pref8,homeDist,studyingDist,agesRange,token,entryCounter) ";
+            sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}','{4}', '{5}','{6}', '{7}','{8}', '{9}','{10}', '{11}','{12}', '{13}','{14}', '{15}', '{16}', '{17}', '{18}', '{19}', '{20}', '{21}', '{22}', '{23}', '{24}', '{25}', '{26}', '{27}','{28}')", student.Mail, student.Password, student.Fname, student.Lname, student.DateOfBirth.ToString("yyyy-MM-dd H:mm:ss"), student.Dep.DepartmentCode, student.StudyingYear, student.HomeTown.Name, student.AddressStudying.Name, student.PersonalStatus, student.IsAvailableCar, student.IntrestedInCarPool, student.Photo, student.Gender, student.RegistrationDate.ToString("yyyy-MM-dd H:mm:ss"), true, 1, 2, 3, 4, 5, 6, 7, 8,15,15,3, student.Token,0);
             command = prefix + sb.ToString();
             return command;
         }

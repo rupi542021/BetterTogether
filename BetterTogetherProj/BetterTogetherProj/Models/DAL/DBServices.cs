@@ -2039,5 +2039,140 @@ namespace BetterTogetherProj.Models.DAL
             }
 
         }
+
+        public int getnumOfEntries()
+        {
+            int sumEntries = 0;
+            SqlConnection con = null;
+            try
+            {
+                con = connect1("DBConnectionString");
+                String selectSTR = "select sum (entryCounter) as 'entryCounter' from  student_P";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+
+                    sumEntries = Convert.ToInt16(dr["entryCounter"]);
+
+                }
+                return sumEntries;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+        }
+
+
+        public List<Question> getAnsList()
+        {
+
+            List<Question> QuestionList = new List<Question>();
+
+            SqlConnection con = null;
+            String selectSTR = "";
+
+            try
+            {
+               
+                con = connect1("DBConnectionString");
+                selectSTR += "select* from question_P3 INNER JOIN questionnaire_P3 on question_P3.qrCode = questionnaire_P3.qrCode  where questionnaire_P3.subQ = 'שביעות רצון מהאפליקציה'";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+
+                    Question q = new Question();
+                    q.Anslist = new List<string>();
+                    for (int i = 1; i < 7; i++)
+                    {
+                        q.Anslist.Add((string)dr["ansText" + i]);
+                    }
+
+                    QuestionList.Add(q);
+
+                }
+
+                return QuestionList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+              
+
+            }
+
+        }
+
+
+        public List<StudentsAnswers> getstudentsAns()
+        {
+
+            List<StudentsAnswers> StudentsAnswersList = new List<StudentsAnswers>();
+
+            SqlConnection con = null;
+            String selectSTR = "";
+
+            try
+            {
+                con = connect1("DBConnectionString");
+                selectSTR += " select* from studentanswers_P3 INNER JOIN questionnaire_P3 on studentanswers_P3.qrCode = questionnaire_P3.qrCode  where questionnaire_P3.subQ = 'שביעות רצון מהאפליקציה'";
+
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    StudentsAnswers SAns = new StudentsAnswers();
+                    SAns.StudAns = new List<bool>();
+                    for (int i = 1; i < 7; i++)
+                    {
+                        SAns.StudAns.Add(Convert.ToBoolean(dr["ansText" + i]));
+                    }
+
+                    StudentsAnswersList.Add(SAns);
+
+
+                }
+
+
+                return StudentsAnswersList;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+
+            }
+
+        }
+
+
     }
 }

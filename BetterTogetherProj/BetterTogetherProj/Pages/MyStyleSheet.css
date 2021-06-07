@@ -416,8 +416,11 @@ body {
 h2{
     line-height:2;
 }
-   #canvas{
+   #canvasdep,#canvasyear{
        margin-top:40px;
    }
+#canvasyear{
+    padding-bottom:58px
+}
 
 

@@ -113,5 +113,14 @@ namespace BetterTogetherProj.Controllers
             return qr.GetpercentActiveQr();
 
         }
+
+        [HttpGet]
+        [Route("api/Questionnaire/getAnsList")]
+        public List<Question> getAnsList()
+        {
+            Question q = new Question();
+            return q.getAnsList();
+
+        }
     }
 }

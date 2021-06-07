@@ -43,6 +43,13 @@ namespace project_classes.Models
             DBServicesUnit dbs = new DBServicesUnit();
             dbs.InsertQuestionnairAns(this);
         }
+
+        public List<StudentsAnswers> getstudentsAns()
+        {
+            DBServices db = new DBServices();
+            List<StudentsAnswers> SAns = db.getstudentsAns();
+            return SAns;
+        }
     }
 
 }
