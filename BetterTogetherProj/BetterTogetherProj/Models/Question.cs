@@ -39,10 +39,10 @@ namespace project_classes.Models
             return qList;
         }
 
-        public List<Question> getAnsList()
+        public Question getAnsList()
         {
             DBServices dbs = new DBServices();
-            List<Question> SumStuAns = dbs.getAnsList();
+            Question SumStuAns = dbs.getAnsList();
             return SumStuAns;
 
         }

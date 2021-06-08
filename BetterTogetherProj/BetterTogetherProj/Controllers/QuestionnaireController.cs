@@ -116,7 +116,7 @@ namespace BetterTogetherProj.Controllers
 
         [HttpGet]
         [Route("api/Questionnaire/getAnsList")]
-        public List<Question> getAnsList()
+        public Question getAnsList()
         {
             Question q = new Question();
             return q.getAnsList();

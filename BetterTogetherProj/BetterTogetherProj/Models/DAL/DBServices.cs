@@ -2075,10 +2075,11 @@ namespace BetterTogetherProj.Models.DAL
         }
 
 
-        public List<Question> getAnsList()
+        public Question getAnsList()
         {
 
-            List<Question> QuestionList = new List<Question>();
+            //List<Question> QuestionList = new List<Question>();
+            Question q = new Question();
 
             SqlConnection con = null;
             String selectSTR = "";
@@ -2093,18 +2094,17 @@ namespace BetterTogetherProj.Models.DAL
                 while (dr.Read())
                 {   // Read till the end of the data into a row
 
-                    Question q = new Question();
                     q.Anslist = new List<string>();
                     for (int i = 1; i < 7; i++)
                     {
                         q.Anslist.Add((string)dr["ansText" + i]);
                     }
 
-                    QuestionList.Add(q);
+                    //QuestionList.Add(q);
 
                 }
 
-                return QuestionList;
+                return q;
             }
             catch (Exception ex)
             {

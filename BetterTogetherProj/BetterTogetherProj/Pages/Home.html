@@ -229,6 +229,16 @@
         function getstudentsans(studentsAns) {
             console.log(studentsAns);
             StudentsAns = studentsAns;
+            arrAns = [0, 0, 0, 0, 0, 0];
+            for (var i = 0; i < StudentsAns.length; i++) {
+                for (var j = 0; j < StudentsAns[i].StudAns.length; j++) {
+                    if (StudentsAns[i].StudAns[j] == true) {
+                            arrAns[j]++;
+                        
+                    }
+                }
+            }
+            console.log(arrAns)
         }
 
         function error(err) {
