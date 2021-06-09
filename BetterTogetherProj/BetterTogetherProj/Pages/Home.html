@@ -29,16 +29,32 @@
 
 
     <script>
-
+        statusEvent = 1;
         $(document).ready(function () {
 
             ajaxCall("GET", "../api/students/getpercentregistered", "", getpercentregistered, error);
              $("#newBtnS").on("click", function () {
            
                window.location = "StudentForm.html"
-              });
+             });
+             ajaxCall("GET", "../api/Events/geteventdetail?statusEvent=" + statusEvent, "", getSuccessAlleventdetail, error);
     
         })
+        function getSuccessAlleventdetail(eventdetail) {
+            console.log(eventdetail);
+            events = eventdetail;
+            s = 0;
+            for (var i = 0; i < events.length; i++) {
+                for (var j = 0; j < events[i].Studentsinevent.length; j++) {
+                    gal = events[i].Studentsinevent[j];
+                
+                }
+                    s += events[i].Studentsinevent.length;
+                   
+            }
+             $("#evenetP").append("<b>" + s  + "</b></br>" + "משתתפים באירועי היחידה למוערבות חברתית");
+            
+        }
 
         function getpercentregistered(StuRatio) {
             console.log(StuRatio);
@@ -262,7 +278,7 @@
                         data: [arrAnsPercent[0], arrAnsPercent[1], arrAnsPercent[2], arrAnsPercent[3], arrAnsPercent[4]],
                         backgroundColor: [
                             "#e4e4d1",
-                            "#e7e7b1",
+                            "#ebeb39",
                             "grey",
                             "#ffffe6",
                             "#ffffcc"
@@ -329,6 +345,7 @@
         </div>
     </nav>
     <div class="row graphs">
+
         <div class="flip-card col-sm-3 ">
             <div class="flip-card-inner">
                 <div class="flip-card-front">
@@ -340,6 +357,18 @@
             </div>
         </div>
 
+
+        <div class="flip-card col-sm-3">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <h2 id="entrynum"></h2>
+                </div>
+                <div class="flip-card-back">
+                    <h2 id="quantityDep"></h2>
+
+                </div>
+            </div>
+        </div>
         <div class="flip-card col-sm-3">
             <div class="flip-card-inner">
                 <div class="flip-card-front">
@@ -354,22 +383,20 @@
         <div class="flip-card col-sm-3">
             <div class="flip-card-inner">
                 <div class="flip-card-front">
-                    <h2 id="entrynum"></h2>
+                    <h2 id="evenetP"></h2>
                 </div>
                 <div class="flip-card-back">
-                    <h2 id="quantityDep"></h2>
+                    <h2 id="gal"></h2>
 
                 </div>
             </div>
         </div>
-        <div class="col-sm-3"><button class="newBTN myButton" id="newBtnS"> הוספת סטודנט חדש <span class="glyphicon glyphicon-plus"></span></button></div>
 
-
-
+        <div class="col-sm-12"><button class="newBTN myButton" id="newBtnS"> הוספת סטודנט חדש <span class="glyphicon glyphicon-plus"></span></button></div>
 
 
     </div>
-    <div class="row graphs" >
+    <div class="row graphs">
         <div class="col-sm-4">
             <canvas id="canvasdep"></canvas>
         </div>
@@ -382,6 +409,6 @@
             <canvas id="canvasyear"></canvas>
         </div>
     </div>
-   
+
 </body>
 </html>
