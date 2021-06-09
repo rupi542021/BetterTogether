@@ -20,6 +20,7 @@ namespace project_classes.Models
         List<Question> queslist;
         List<string> studentsAns;
         bool deleteMode;
+        bool duplicateMode;
 
         public int QuestionnaireNum { get => questionnaireNum; set => questionnaireNum = value; }
         public DateTime QuestionnairePublish { get => questionnairePublish; set => questionnairePublish = value; }
@@ -32,10 +33,11 @@ namespace project_classes.Models
         public List<Question> Queslist { get => queslist; set => queslist = value; }
         public List<string> StudentsAns { get => studentsAns; set => studentsAns = value; }
         public bool DeleteMode { get => deleteMode; set => deleteMode = value; }
+        public bool DuplicateMode { get => duplicateMode; set => duplicateMode = value; }
 
         public Questionnaire() { }
 
-        public Questionnaire(int questionnaireNum, DateTime questionnairePublish, DateTime endPublishDate, string subQr, Department dep, int numResponders, bool status, int questionnaireYear, List<Question> queslist, List<string> studentsAns, bool deleteMode)
+        public Questionnaire(int questionnaireNum, DateTime questionnairePublish, DateTime endPublishDate, string subQr, Department dep, int numResponders, bool status, int questionnaireYear, List<Question> queslist, List<string> studentsAns, bool deleteMode, bool doplicateMode)
         {
             QuestionnaireNum = questionnaireNum;
             QuestionnairePublish = questionnairePublish;
@@ -48,6 +50,7 @@ namespace project_classes.Models
             Queslist = queslist;
             StudentsAns = studentsAns;
             DeleteMode = deleteMode;
+            DuplicateMode = duplicateMode;
         }
 
         public List<Questionnaire> GetQuestionnaire(int statusQR, int deleteMode)

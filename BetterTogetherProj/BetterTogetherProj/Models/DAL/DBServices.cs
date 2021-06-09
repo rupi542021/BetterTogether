@@ -72,7 +72,8 @@ namespace BetterTogetherProj.Models.DAL
                     qr.NumResponders = GetNumResponders(qr.QuestionnaireNum, qr.Dep.DepartmentCode, qr.QuestionnaireYear);
                     qr.Queslist = getQuestionsbyNumqr(qr.QuestionnaireNum);
                     if (dr["deleteMode"] is null)
-                        qr.DeleteMode = Convert.ToBoolean(dr["deleteMode"]);
+                    { qr.DeleteMode = Convert.ToBoolean(dr["deleteMode"]); }
+                    qr.DuplicateMode = Convert.ToBoolean(dr["doplicateMode"]);
                     qrList.Add(qr);
                 }
 
@@ -250,17 +251,27 @@ namespace BetterTogetherProj.Models.DAL
         {
             String command;
             StringBuilder sb = new StringBuilder();
-            if (qr.Status == true)
-                    sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}','{5}', '{6}')", qr.QuestionnairePublish.ToString("yyyy-MM-dd"), qr.SubQr, 1, qr.NumResponders, qr.EndPublishDate.ToString("yyyy-MM-dd"), qr.Dep.DepartmentCode, qr.QuestionnaireYear);
+            if (qr.DuplicateMode == true)
+            {
+                if (qr.Status == true)
+                    sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}','{5}', '{6}','{7}')", qr.QuestionnairePublish.ToString("yyyy-MM-dd"), qr.SubQr, 1, qr.NumResponders, qr.EndPublishDate.ToString("yyyy-MM-dd"), qr.Dep.DepartmentCode, qr.QuestionnaireYear, 1);
                 else
-                    sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}','{5}', '{6}')", qr.QuestionnairePublish.ToString("yyyy-MM-dd"), qr.SubQr, 0, qr.NumResponders, qr.EndPublishDate.ToString("yyyy-MM-dd"), qr.Dep.DepartmentCode, qr.QuestionnaireYear);
-           
-            String prefix = "INSERT INTO questionnaire_P3 " + "(publishDate,subQ,status,numResponders,endPublishDate,departmentCode, qrYear)";
+                    sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}','{5}', '{6}','{7}')", qr.QuestionnairePublish.ToString("yyyy-MM-dd"), qr.SubQr, 0, qr.NumResponders, qr.EndPublishDate.ToString("yyyy-MM-dd"), qr.Dep.DepartmentCode, qr.QuestionnaireYear, 1);
+            }
+            else
+            {
+                if (qr.Status == true)
+                    sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}','{5}', '{6}','{7}')", qr.QuestionnairePublish.ToString("yyyy-MM-dd"), qr.SubQr, 1, qr.NumResponders, qr.EndPublishDate.ToString("yyyy-MM-dd"), qr.Dep.DepartmentCode, qr.QuestionnaireYear, qr.DuplicateMode);
+                else
+                    sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}','{5}', '{6}','{7}')", qr.QuestionnairePublish.ToString("yyyy-MM-dd"), qr.SubQr, 0, qr.NumResponders, qr.EndPublishDate.ToString("yyyy-MM-dd"), qr.Dep.DepartmentCode, qr.QuestionnaireYear, qr.DuplicateMode);
+            }
+
+            String prefix = "INSERT INTO questionnaire_P3 " + "(publishDate,subQ,status,numResponders,endPublishDate,departmentCode, qrYear,doplicateMode)";
             command = prefix + sb.ToString();
             foreach (var question in qr.Queslist)
             {
               String prefix1 = "INSERT INTO question_P3" + "(qCode, qText, questionType, qrCode, ansText1, ansText2, ansText3, ansText4, ansText5, ansText6) Values('" + question.Questionnum + "','" + question.QuestionText + "','" + question.QuestionType + "','" + qr.QuestionnaireNum + "','" + question.Anslist[0] + "','" + question.Anslist[1] + "','" + question.Anslist[2] + "','" + question.Anslist[3] + "','" + question.Anslist[4] + "','" + question.Anslist[5] + "')";
-               command += prefix1;
+                     command += prefix1;
             }                        
             
             return command;    
@@ -1300,12 +1311,12 @@ namespace BetterTogetherProj.Models.DAL
             if (Qr.Status == true)// השמת הסטטוס TRUE=1 והפוך  
             {
 
-                command = "update questionnaire_P3 set publishDate='" + Qr.QuestionnairePublish.ToString("yyyy-MM-dd") + "',endPublishDate='" + Qr.EndPublishDate.ToString("yyyy-MM-dd") + "',subQ='"+Qr.SubQr+"' ,status=1 where qrCode=" + Qr.QuestionnaireNum;
+                command = "update questionnaire_P3 set publishDate='" + Qr.QuestionnairePublish.ToString("yyyy-MM-dd") + "',endPublishDate='" + Qr.EndPublishDate.ToString("yyyy-MM-dd") + "',subQ='"+Qr.SubQr+"' ,status=1, departmentCode='"+Qr.Dep.DepartmentCode+"',qrYear='"+Qr.QuestionnaireYear+"' where qrCode=" + Qr.QuestionnaireNum;
             }
             else
             {
 
-                command = "update questionnaire_P3 set publishDate='" + Qr.QuestionnairePublish.ToString("yyyy-MM-dd") + "',endPublishDate='" + Qr.EndPublishDate.ToString("yyyy-MM-dd") + "',subQ='" + Qr.SubQr + "',status=0 where qrCode=" + Qr.QuestionnaireNum;
+                command = "update questionnaire_P3 set publishDate='" + Qr.QuestionnairePublish.ToString("yyyy-MM-dd") + "',endPublishDate='" + Qr.EndPublishDate.ToString("yyyy-MM-dd") + "',subQ='" + Qr.SubQr + "',status=0, departmentCode='" + Qr.Dep.DepartmentCode + "',qrYear='" + Qr.QuestionnaireYear + "' where qrCode=" + Qr.QuestionnaireNum;
 
             }
             return command;
