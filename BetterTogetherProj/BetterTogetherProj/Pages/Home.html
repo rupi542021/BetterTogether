@@ -33,28 +33,15 @@
         $(document).ready(function () {
 
             ajaxCall("GET", "../api/students/getpercentregistered", "", getpercentregistered, error);
+
              $("#newBtnS").on("click", function () {
            
                window.location = "StudentForm.html"
              });
-             ajaxCall("GET", "../api/Events/geteventdetail?statusEvent=" + statusEvent, "", getSuccessAlleventdetail, error);
+
     
         })
-        function getSuccessAlleventdetail(eventdetail) {
-            console.log(eventdetail);
-            events = eventdetail;
-            s = 0;
-            for (var i = 0; i < events.length; i++) {
-                for (var j = 0; j < events[i].Studentsinevent.length; j++) {
-                    gal = events[i].Studentsinevent[j];
-                
-                }
-                    s += events[i].Studentsinevent.length;
-                   
-            }
-             $("#evenetP").append("<b>" + s  + "</b></br>" + "משתתפים באירועי היחידה למוערבות חברתית");
-            
-        }
+      
 
         function getpercentregistered(StuRatio) {
             console.log(StuRatio);
@@ -323,6 +310,20 @@
                 data: data,
                 options: options
             });
+
+            ajaxCall("GET", "../api/Events/geteventdetail?statusEvent=" + statusEvent, "", getSuccessAlleventdetail, error);
+
+        }
+
+        function getSuccessAlleventdetail(eventdetail) {
+            console.log(eventdetail);
+            events = eventdetail;
+            sumOfPar = 0;
+            for (var i = 0; i < events.length; i++) {
+                    sumOfPar += events[i].Studentsinevent.length;
+
+            }
+            $("#evenetP").append("<b>" + sumOfPar + "</b></br>" + "משתתפים באירועי היחידה למעורבות חברתית");
 
         }
         
