@@ -14,6 +14,9 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
     <link href="MyStyleSheet.css" rel="stylesheet" />
+    <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
     <script>
 
@@ -51,7 +54,7 @@
                     }
                     data.append("Imagename", new Date()); // append what ever data you want to send along with the files. See how you extract it in the controller.
                 }
-                
+
 
                 // Ajax upload
                 $.ajax({
@@ -62,8 +65,8 @@
                     data: data,
                     success: showImages,
                     error: error
-                });      
-               
+                });
+
             });
 
 
@@ -81,8 +84,8 @@
         }
 
         function AddAd() {
-                    
-            Ad = { 
+
+            Ad = {
 
 
                 Subject: $("#SubjName :selected").text(),
@@ -187,6 +190,11 @@
 
             }
 
+        }
+
+        function showlabel() {
+            
+            $(this).tooltip();
         }
 
         function Insertsubtolist() {
@@ -321,12 +329,12 @@
         </form>
 
         <div id="addS">
-            <i type="button" id="addsubject" onclick="Addbutton(1)" class="fas fa-plus-circle"></i>
+            <i type="button" id="addsubject" title="לחץ כאן כדי להוסיף נושא" onclick="Addbutton(1)" onmouseover="showlabel()" class="fas fa-plus-circle"></i>
             <input type="text" id="addsubjecttext" />
             <input type="button" value="הוספת נושא" id="buttonaddsubject" onclick="Insertsubtolist()" />
         </div>
         <div id="addSS">
-            <i type="button" id="AddSubsub" onclick="Addbutton(0)" class="fas fa-plus-circle"></i>
+            <i type="button" id="AddSubsub" title="לחץ כאן כדי להוסיף תת נושא" onclick="Addbutton(0)" onmouseover="showlabel()" class="fas fa-plus-circle"></i>
             <input type="text" id="addsubsubtext" />
             <input type="button" value="הוספת תת נושא" id="buttonaddsubsub" onclick="Insertsubsubtolist()" />
         </div>

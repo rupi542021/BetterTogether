@@ -207,11 +207,15 @@ div#addEN, #addSS {
     margin-left: 750px;
     margin-top: 63px;
 }
-#addET, div#addS {
+div#addS {
     margin-left: 750px;
-    margin-top: -484px;
+    margin-top: -520px;
 }
-.quesplus{
+#addET {
+    margin-left: 750px;
+    margin-top: -449px;
+}
+.quesplus {
     position: relative;
     right: 120px;
 }
@@ -438,3 +442,5 @@ h2{
 .graphs {
     margin-bottom: 10%;
 }
+
+
