@@ -23,7 +23,9 @@
     <link href="MyStyleSheet.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
-
+    <!--<script src="js/jquery.min.js"></script>
+    <script src="js/Chart.min.js"></script>-->
+    <!--<script src="js/doughnut.js"></script>-->
 
 
     <script>
@@ -100,7 +102,7 @@
                         borderColor: "black",
                         borderWidth: 1,
                         data: AllStudents
-                     },
+                    },
 
                 ]
             };
@@ -112,7 +114,7 @@
                 },
                 title: {
                     display: true,
-                    text: "סטודנטים הרשומים לאפליקציה מסך הסטודנטים לפי מחלקות"
+                    text: "סטודנטים הרשומים לאפליקציה מסך הסטודנטים לפי מחלקות",
                 },
                 scales: {
                     yAxes: [{
@@ -122,7 +124,7 @@
                     }]
                 }
             }
-             
+
 
             var ctx = document.getElementById('canvasdep').getContext('2d');
             new Chart(ctx, {
@@ -157,7 +159,7 @@
                     "א",
                     "ב",
                     "ג",
-                    "ד",              
+                    "ד",
                 ],
                 datasets: [
                     {
@@ -233,21 +235,85 @@
             for (var i = 0; i < StudentsAns.length; i++) {
                 for (var j = 0; j < StudentsAns[i].StudAns.length; j++) {
                     if (StudentsAns[i].StudAns[j] == true) {
-                            arrAns[j]++;
-                        
+                        arrAns[j]++;
+
                     }
                 }
             }
             console.log(arrAns)
-        }
 
+            sumArrAns = [arrAns[0], arrAns[1], arrAns[2], arrAns[3], arrAns[4], arrAns[5]].reduce((a, b) => a + b, 0)
+            arrAnsPercent = [];
+            for (var i = 0; i < arrAns.length; i++) {
+                arrAnsPercent.push(arrAns[i] / sumArrAns * 100)
+            }
+            var ctx = $("#doughnut-chartcanvas-1");
+          
+
+            //doughnut chart data
+            var data = {
+                labels: [ansList.Anslist[0], ansList.Anslist[1], ansList.Anslist[2], ansList.Anslist[3], ansList.Anslist[4]],
+                datasets: [
+                    {
+                        label: "TeamA Score",
+                        data: [arrAnsPercent[0], arrAnsPercent[1], arrAnsPercent[2], arrAnsPercent[3], arrAnsPercent[4]],
+                        backgroundColor: [
+                            "#DEB887",
+                            "#A9A9A9",
+                            "#DC143C",
+                            "#F4A460",
+                            "#2E8B57"
+                        ],
+                        borderColor: [
+                            "#CDA776",
+                            "#989898",
+                            "#CB252B",
+                            "#E39371",
+                            "#1D7A46"
+                        ],
+                        borderWidth: [1, 1, 1, 1, 1]
+                    }
+                ]
+            };
+
+            
+
+            //options
+            var options = {
+                responsive: true,
+                title: {
+                    display: true,
+                    position: "top",
+                    text: "אחוז המשיבים לסקר שביעות רצון",
+                    fontSize: 18,
+                    fontColor: "#111"
+                },
+                legend: {
+                    display: true,
+                    position: "bottom",
+                    labels: {
+                        fontColor: "#333",
+                        fontSize: 16
+                    }
+                }
+            };
+
+            //create Chart class object
+            var chart1 = new Chart(ctx, {
+                type: "doughnut",
+                data: data,
+                options: options
+            });
+
+        }
+        
         function error(err) {
             console.log(err)
         }
 
     </script>
 </head>
-<body>
+<body id="container">
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <ul class="nav navbar-nav">
@@ -259,7 +325,7 @@
             </ul>
         </div>
     </nav>
-    <div class="row">
+    <div class="row graphs">
         <div class="flip-card col-sm-3 ">
             <div class="flip-card-inner">
                 <div class="flip-card-front">
@@ -308,13 +374,19 @@
             </div>
         </div>
     </div>
-    <div class="row" id="container">
-        <div class="col-sm-6">
+    <div class="row graphs" >
+        <div class="col-sm-4">
             <canvas id="canvasdep"></canvas>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4 chart-container">
+            <div class="doughnut-chart-container">
+                <canvas id="doughnut-chartcanvas-1"></canvas>
+            </div>
+        </div>
+        <div class="col-sm-4">
             <canvas id="canvasyear"></canvas>
         </div>
     </div>
+   
 </body>
 </html>

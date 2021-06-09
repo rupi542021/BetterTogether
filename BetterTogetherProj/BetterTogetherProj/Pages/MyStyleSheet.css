@@ -5,13 +5,14 @@
     background-attachment: fixed;
     font-family: 'Segoe UI';
     color: #3D3D3D;
-    
 }
 
-h2{
-    text-align:center;
-    margin-top:0px;
-    
+#container {
+    overflow: hidden;
+}
+h2 {
+    text-align: center;
+    margin-top: 0px;
 }
 .btn-success {
     color: #fff;
@@ -416,11 +417,24 @@ body {
 h2{
     line-height:2;
 }
-   #canvasdep,#canvasyear{
-       margin-top:40px;
-   }
+#canvasdep, #canvasyear {
+    margin-top: 40px;
+    margin: 0 auto;
+}
 #canvasyear{
     padding-bottom:58px
 }
+.chart-container {
+     height: 480px;
+    margin: 0 auto;
+}
 
-
+.pie-chart-container,
+.doughnut-chart-container {
+    height: 360px;
+    width: 360px;
+    margin-left:120px
+}
+.graphs {
+    margin-bottom: 10%;
+}

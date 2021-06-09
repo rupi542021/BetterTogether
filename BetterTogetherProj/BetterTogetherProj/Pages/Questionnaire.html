@@ -438,18 +438,23 @@
 
         }
         function getanswersbyqu(Qnum) {
-            ansList = [];
-            for (var J = 1; J <= AnsNum; J++) {
+           var ansList = [];
+            for (var J = 1; J <= 6; J++) {
                 Anslist = $("#" + Qnum + "answer" + J).val();
                 ansList.push(Anslist);
             }
-            for (var i = AnsNum; i < 6; i++) {
-                ansList.push("");
-            }
+            //for (var i = AnsNum; i < 6; i++) {
+            //    for (var m = 0; m < ansList.length; m++) {
+            //        if (ansList[m] == "")
+            //            ansList[m].push("");
 
+            //    }
+            //}
+           
             return ansList;
             console.log(ansList)
         }
+
         function onSubmitFunc() {
 
             if (mode == "edit") {
