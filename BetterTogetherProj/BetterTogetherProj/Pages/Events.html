@@ -13,7 +13,11 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
     <link href="MyStyleSheet.css" rel="stylesheet" />
-   
+
+    <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
     <script>
 
         var today = new Date();
@@ -93,14 +97,14 @@
 
         }
 
- 
+
         function checkdate() {
             if ($("#datedis").val() < today) {
                 swal("Attention", "תאריך האירוע צריך להיות עתידי!", "error");
                 $("#datedis").val("");
             }
         }
-     
+
         // This function is called in case of a success
         function inserteventsuccess(data) {
             console.log(data);
@@ -180,8 +184,13 @@
                 $("#addnameventtext").show();
                 $('#buttoneventname').show();
 
-            }           
+            }
 
+        }
+
+        function showlabel() {
+
+            $(this).tooltip();
         }
 
         function Inserteventtypetolist() {
@@ -211,7 +220,7 @@
         }
 
 
-  
+
         function Inserteventnametolist() {
             if ($("#addnameventtext").val() == "")
                 swal({ icon: 'error', title: 'Sorry', text: "!יש להזין שם אירוע" })
@@ -307,12 +316,12 @@
         </form>
 
         <div id="addET">
-            <i type="button" id="addeventtype" onclick="addbutton(1)" class="fas fa-plus-circle"></i>
+            <i type="button" id="addeventtype" title="לחץ כאן כדי להוסיף סוג אירוע " onclick="addbutton(1)" onmouseover="showlabel()" class="fas fa-plus-circle"></i>
             <input type="text" id="addtypeeventtext" />
             <input type="button" value="הוספת סוג אירוע" id="buttoneventtype" onclick="Inserteventtypetolist()" />
         </div>
         <div id="addEN">
-            <i type="button" id="addeventname" onclick="addbutton(0)" class="fas fa-plus-circle"></i>
+            <i type="button" id="addeventname" title="לחץ כאן כדי להוסיף שם אירוע " onclick="addbutton(0)" onmouseover="showlabel()" class="fas fa-plus-circle"></i>
             <input type="text" id="addnameventtext" />
             <input type="button" value="הוספת שם אירוע" id="buttoneventname" onclick="Inserteventnametolist()" />
         </div>
