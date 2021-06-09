@@ -380,8 +380,8 @@ body {
     float: left;
     margin-top: 30px;
     margin-left: 7%;
-    /border-radius: 40px;
-    /
+    /*/border-radius: 40px;
+    /*/
 }
 
 
@@ -392,8 +392,8 @@ body {
     text-align: center;
     transition: transform 1.0s;
     transform-style: preserve-3d;
-    /box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    /
+    /*/box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    /*/
 }
 
 .flip-card:hover .flip-card-inner {
@@ -446,6 +446,10 @@ h2 {
 }
 .graphs {
     margin-bottom: 10%;
+}
+#newBtnS {
+    margin-top: 20px;
+    margin-right:50%;
 }
 
 
