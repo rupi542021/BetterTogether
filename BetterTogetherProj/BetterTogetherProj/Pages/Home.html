@@ -33,8 +33,11 @@
         $(document).ready(function () {
 
             ajaxCall("GET", "../api/students/getpercentregistered", "", getpercentregistered, error);
-
-
+             $("#newBtnS").on("click", function () {
+           
+               window.location = "StudentForm.html"
+              });
+    
         })
 
         function getpercentregistered(StuRatio) {
@@ -54,7 +57,7 @@
             Ratio = Math.round((Ratio + Number.EPSILON) * 100) / 100;
 
             $("#ratioQr").append("<b>" + Ratio + "%" + "</b></br>" + "שאלונים פעילים");
-            $("#quantityQr").append("<b>" + Qrratio[1] + "</b></br>" + "כמות השאלונים שפורסמו עד כה");
+            $("#quantityQr").append("<b>" + Qrratio[1] + "</b></br>" + " שאלונים פורסמו עד כה");
             ajaxCall("GET", "../api/students/getpercentregiByDep", "", getpercentregiByDep, error);
 
         }
@@ -258,20 +261,20 @@
                         label: "TeamA Score",
                         data: [arrAnsPercent[0], arrAnsPercent[1], arrAnsPercent[2], arrAnsPercent[3], arrAnsPercent[4]],
                         backgroundColor: [
-                            "#DEB887",
-                            "#A9A9A9",
-                            "#DC143C",
-                            "#F4A460",
-                            "#2E8B57"
+                            "#e4e4d1",
+                            "#e7e7b1",
+                            "#bfbfaf",
+                            "#c4c494",
+                            "#ffffcc"
                         ],
-                        borderColor: [
-                            "#CDA776",
-                            "#989898",
-                            "#CB252B",
-                            "#E39371",
-                            "#1D7A46"
-                        ],
-                        borderWidth: [1, 1, 1, 1, 1]
+                        //borderColor: [
+                        //    "#CDA776",
+                        //    "#989898",
+                        //    "#CB252B",
+                        //    "#E39371",
+                        //    "#1D7A46"
+                        //],
+                        //borderWidth: [1, 1, 1, 1, 1]
                     }
                 ]
             };
@@ -348,8 +351,6 @@
                 </div>
             </div>
         </div>
-
-
         <div class="flip-card col-sm-3">
             <div class="flip-card-inner">
                 <div class="flip-card-front">
@@ -361,18 +362,12 @@
                 </div>
             </div>
         </div>
+        <div class="col-sm-3"><button class="newBTN myButton" id="newBtnS"> הוספת סטודנט חדש <span class="glyphicon glyphicon-plus"></span></button></div>
 
-        <div class="flip-card col-sm-3">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h2 id="ratioYear"></h2>
-                </div>
-                <div class="flip-card-back">
-                    <h2 id="quantityYear"></h2>
 
-                </div>
-            </div>
-        </div>
+
+
+
     </div>
     <div class="row graphs" >
         <div class="col-sm-4">
