@@ -160,7 +160,7 @@ namespace BetterTogetherProj.Models.DAL
             try
             {
                 con = connect1("DBConnectionString");
-                String selectSTR = "select * from question_P3 where qrCode=" + questionnaireNum;
+                String selectSTR = "select * from question_P3 inner join questionnaire_P3 on question_P3.qrCode=questionnaire_P3.qrCode where question_P3.qrCode="+ questionnaireNum;
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 
