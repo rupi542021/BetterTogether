@@ -38,7 +38,7 @@
         var statusAd = 1;
 
         $(document).ready(function () {
-            $("#cancelBTN").on("click", function () { //מבטל טופס חדש ומחזיר לטבלה
+            $("#cancelSaveBTN").on("click", function () { //מבטל טופס חדש ומחזיר לטבלה
                 $("#editDiv").hide();
 
             });
@@ -360,16 +360,18 @@
                 </div>
 
                 <!--<div class="form-group col-sm-4">
-                    <label for="Status"><span class="red-star">★ </span>סטטוס</label>
-                    <input type="checkbox" class="form-control" id="Status" checked />
-                </div>-->
+            <label for="Status"><span class="red-star">★ </span>סטטוס</label>
+            <input type="checkbox" class="form-control" id="Status" checked />
+        </div>-->
 
             </div>
 
 
-
-            <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">Save</button>
-            <input type="button" class="btn btn-warning btn-lg" id="cancelBTN" value="Cancel" />
+            <div class="row">
+                <div class="col-xs-6">  <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">שמירה</button></div>
+                <div class="col-xs-6">    <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN" value="ביטול" /></div>
+            </div>
+          
         </form>
     </div>
 
