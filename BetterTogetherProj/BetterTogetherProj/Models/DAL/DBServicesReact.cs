@@ -142,7 +142,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -199,7 +199,7 @@ namespace BetterTogetherProj.Models.DAL
 
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -275,7 +275,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -307,7 +307,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -346,7 +346,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -370,7 +370,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -393,7 +393,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -431,7 +431,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -467,7 +467,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -508,7 +508,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -565,7 +565,7 @@ namespace BetterTogetherProj.Models.DAL
 
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -603,7 +603,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -664,7 +664,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -697,7 +697,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -814,7 +814,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -850,7 +850,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -864,7 +864,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -900,7 +900,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -914,7 +914,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -951,7 +951,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -965,7 +965,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -1003,7 +1003,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -1017,7 +1017,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -1053,7 +1053,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -1067,7 +1067,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -1104,7 +1104,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -1118,7 +1118,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -1179,7 +1179,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -1351,7 +1351,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -1492,7 +1492,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -1525,7 +1525,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -1541,7 +1541,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -1572,7 +1572,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -1586,7 +1586,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -1621,7 +1621,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -1635,7 +1635,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -1668,7 +1668,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -1682,7 +1682,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -1715,7 +1715,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -1729,7 +1729,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -1749,21 +1749,21 @@ namespace BetterTogetherProj.Models.DAL
             prefix += "' WHERE [mail] = '" + mail + "'";
             return prefix;
         }
-        public void writeToLog(Exception ex)
-        {
-            // Create a string array with the lines of text
-            string line = ex.Message;
+        //public void writeToLog(Exception ex)
+        //{
+        //    // Create a string array with the lines of text
+        //    string line = ex.Message;
 
-            // Set a variable to the Documents path.
-            string docPath =
-              Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        //    // Set a variable to the Documents path.
+        //    string docPath =
+        //      Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-            // Write the string array to a new file named "Exceptions.txt".
-            using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "Exceptions.txt"), true))
-            {
-                outputFile.WriteLine(line);
-            }
-        }
+        //    // Write the string array to a new file named "Exceptions.txt".
+        //    using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "Exceptions.txt"), true))
+        //    {
+        //        outputFile.WriteLine(line);
+        //    }
+        //}
 
         public int InsertStudLocation(StudLocation sl)
         {
@@ -1777,7 +1777,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -1791,7 +1791,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
@@ -1845,7 +1845,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -1887,7 +1887,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
             finally
@@ -1926,7 +1926,7 @@ namespace BetterTogetherProj.Models.DAL
             }
             catch (Exception ex)
             {
-                writeToLog(ex);
+                //writeToLog(ex);
                 throw (ex);
             }
 
