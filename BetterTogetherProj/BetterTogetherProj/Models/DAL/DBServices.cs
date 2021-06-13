@@ -71,7 +71,7 @@ namespace BetterTogetherProj.Models.DAL
                     qr.QuestionnaireYear = Convert.ToInt16(dr["qrYear"]);
                     qr.NumResponders = GetNumResponders(qr.QuestionnaireNum, qr.Dep.DepartmentCode, qr.QuestionnaireYear);
                     qr.Queslist = getQuestionsbyNumqr(qr.QuestionnaireNum);
-                    if (dr["deleteMode"] is null)
+                    if (dr["deleteMode"] is null || dr["deleteMode"] is false || dr["deleteMode"] is true)
                     { qr.DeleteMode = Convert.ToBoolean(dr["deleteMode"]); }
                     qr.DuplicateMode = Convert.ToBoolean(dr["doplicateMode"]);
                     qrList.Add(qr);

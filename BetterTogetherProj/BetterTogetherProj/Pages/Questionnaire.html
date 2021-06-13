@@ -263,7 +263,7 @@
                 $("#addinput").hide();
                 $("#inserth3").hide();
                 $(".divareaque.form-group.row").hide();
-                $("#subQr").prop("disabled", false);             
+                $("#subQr").prop("disabled", false);
                 $("#openanswer").hide();
 
                 populateFields(this.getAttribute('data-QuestionnaireId'));
@@ -272,14 +272,26 @@
                     $("#yearList").prop("disabled", false);
                     $("#publishDate").prop("disabled", false);
                     $("#EndpublishDate").prop("disabled", false);
-                    $("#subQr").prop("disabled", true);             
+                    $("#subQr").prop("disabled", true);
 
                 }
                 else {
                     $("#publishList").prop("disabled", true);
                     $("#yearList").prop("disabled", true);
-                }// fill the form fields according to the selected row
+                    $("#publishDate").prop("disabled", false);
+                    $("#EndpublishDate").prop("disabled", false);
+                    $("#subQr").prop("disabled", false);
+                }
 
+                if (Qr.Status == 0 && Qr.EndPublishDate < today) {
+                    swal("Attention", "לא ניתן לערוך שאלון שכבר הסתיים!", "error");
+                    $("#editDiv").hide();
+                }
+
+                if (Qr.DeleteMode == 1) {
+                    swal("Attention", "לא ניתן לערוך שאלון שנמחק!", "error");
+                    $("#editDiv").hide();
+                }
             });
 
             $(document).on("click", ".viewBtn", function () {
@@ -382,19 +394,20 @@
         function getQuestionType(flag) {
             AnsNum++;
             console.log(q)
-
             QuestionType = $("#QuestionType" + q).val();
             str = "";
 
             if (QuestionType == 1 || QuestionType == 2) {
-
+               
                 if (flag == 0) {
-
+                    $("#" + q + "Qans").html(str);
+                    AnsNum = 1;
                     str += `<input type='text' class='answertext' id='` + q + `answer` + AnsNum + `'required/>
                                                 <i type ='button' onclick='getQuestionType(1)' id ='add`+ q + `' class='quesplus fas fa-plus-circle'> </i>`;
                 }
 
                 else {
+
                     str += `<input type='text' class='answertext' id='` + q + `answer` + AnsNum + `'required/>`;
                 }
 
@@ -406,6 +419,8 @@
             if (QuestionType == 3) {
                 $("#" + q + "Qans").hide();
             }
+            else
+                $("#" + q + "Qans").show();
 
             $("#" + q + "Qans").append(str);
         }
@@ -580,12 +595,7 @@
             var month = ("0" + (dateEndPub.getMonth() + 1)).slice(-2);
             var dateQrfinal = dateEndPub.getFullYear() + "-" + (month) + "-" + (day);
             $("#EndpublishDate").val(dateQrfinal);
-            //if (mode == "edit") {
-            //    if ($("#EndpublishDate").val() < today) {
-            //        swal({ icon: 'error', title: 'Sorry', text: "!לא ניתן לערוך שאלון שכבר הסתיים" })
-            //        $("#editDiv").hide();
-            //    }
-            //}
+           
             $("#subQr").val(Qr.SubQr);
        
             if (mode == "view") {
@@ -801,7 +811,7 @@
                                 if ($("#filter").val() == 1)
                                     return editBtn + viewBtn + duplicateBtn;
                                 else 
-                                    return viewBtn + editBtn;           
+                                    return editBtn+viewBtn ;           
 
                             }
                         },
@@ -985,8 +995,8 @@
             </div>
 
             <div id="openanswer"></div>
-            <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">Save</button>
-            <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN" value="Cancel" />
+            <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">שמירה</button>
+            <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN" value="ביטול" />
         </form>
     </div>
 

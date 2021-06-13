@@ -14,9 +14,9 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
     <link href="MyStyleSheet.css" rel="stylesheet" />
-    <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <!--<link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
     <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>-->
 
     <script>
 
@@ -240,18 +240,14 @@
 
             var SubSubjectt= $("#addsubsubtext").val();
             var subsubbname = SubSubjectt.replace(/'/g, "''")
-            SubName = $("#SubjName :selected").text();
-            subname = SubName.replace(/'/g, "''");
+            var SubName = $("#SubjName :selected").text();
+            var subname = SubName.replace(/'/g, "''");
 
             if ($("#addsubsubtext").val() == "")
                 swal({ icon: 'error', title: 'Sorry', text: "!יש להזין תת נושא" })
-            else if (Allsubsub.length > 0)
-                Allsubsub.push(subsubbname);
-            else if (Allsubsub.length == 0) {
-                Allsubsub = [];
-                Allsubsub.push(subsubbname);
-
-            }
+        
+            Allsubsub = (typeof Allsubsub != 'undefined' && Allsubsub instanceof Array) ? Allsubsub : []  //check whether an array exists and create it if it doesn't
+            Allsubsub.push(subsubbname);
                 let addsubsub = {
                     SubName: subname,
                     SubSubject: Allsubsub,

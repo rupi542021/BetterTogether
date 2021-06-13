@@ -68,7 +68,7 @@ namespace BetterTogetherProj.Controllers
             {
                 ev.InsertEvent();
 
-                return Request.CreateResponse(HttpStatusCode.OK, "Added successfully");
+                return Request.CreateResponse(HttpStatusCode.OK, "האירוע נוסף בהצלחה");
             }
             catch (Exception ex)
             {
@@ -84,7 +84,7 @@ namespace BetterTogetherProj.Controllers
             {
                  evtype.InsertEventtype();
 
-                 return  Request.CreateResponse(HttpStatusCode.OK, "Added successfully");
+                 return  Request.CreateResponse(HttpStatusCode.OK, "סוג האירוע נוסף בהצלחה");
             }
             catch (Exception ex)
             {
@@ -102,7 +102,7 @@ namespace BetterTogetherProj.Controllers
             {
                 evname.InsertEventname();
 
-                return Request.CreateResponse(HttpStatusCode.OK, "Added successfully");
+                return Request.CreateResponse(HttpStatusCode.OK, "שם האירוע נוסף בהצלחה");
             }
             catch (Exception ex)
             {

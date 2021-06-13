@@ -1,3 +1,3 @@
-﻿select * from ads_P3
-select * from subject_P3
-select * from subSubject_P3
+﻿select * from events_P3
+select * from eventName_P3
+select * from eventType_P3

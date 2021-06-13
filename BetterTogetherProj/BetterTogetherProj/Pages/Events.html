@@ -82,13 +82,19 @@
 
 
         function AddEvent() {
-            // createa a JSON object called customer
+
+            var textevent = $("#content").val();
+            var texteventt = textevent.replace(/'/g, "''");
+            var Eventtypee = $("#EventType :selected").text();
+            var evtype = Eventtypee.replace(/'/g, "''")
+            var Eventnamee = $("#EventName :selected").text();
+            var evnamee = Eventnamee.replace(/'/g, "''")
             Event = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
 
-                Eventtype: $("#EventType :selected").text(),
-                Eventname: $("#EventName :selected").text(),
+                Eventtype: evtype,
+                Eventname: evnamee,
                 EventDate: $("#datedis").val(),
-                EventText: $("#content").val(),
+                EventText: texteventt,
                 EventImage: picName,
                 Status: true,
             }
@@ -106,8 +112,8 @@
         }
 
         // This function is called in case of a success
-        function inserteventsuccess(data) {
-            console.log(data);
+        function inserteventsuccess(message) {
+            console.log(message);
             swal({ title: "!האירוע נוסף בהצלחה", icon: "success" })
             $("#EventType").val("");
             $("#EventName").val("");
@@ -151,7 +157,9 @@
         function getevname() {
             $("#addeventname").show();
 
-            evtypename = $("#EventType :selected").text();
+            var evtypenamee = $("#EventType :selected").text();
+            var evtypename = evtypenamee.replace(/'/g, "''")
+
             let api = "../api/Events/getsametype?evtypename=" + evtypename;
             ajaxCall("GET", api, "", getSuccessevname, error);
         }
@@ -194,22 +202,27 @@
         }
 
         function Inserteventtypetolist() {
+
+            var Eventtypee = $("#addtypeeventtext").val();
+            var eventtypee = Eventtypee.replace(/'/g, "''")
+
             if ($("#addtypeeventtext").val() == "")
                 swal({ icon: 'error', title: 'Sorry', text: "!יש להזין סוג אירוע" })
             else {
                 let addeventtypee = {
-                    Eventtype: $("#addtypeeventtext").val()
+                    Eventtype: eventtypee
                 }
                 ajaxCall("POST", "../api/Events/addeventtype", JSON.stringify(addeventtypee), inserteventtypesuccess, erroreventtype);
             }
         }
 
-        function inserteventtypesuccess(data) {
-            console.log(data);
+        function inserteventtypesuccess(message) {
+            console.log(message);
             ajaxCall("GET", "../api/Events/getevent", "", getSuccessAllneweventstypee, error);
         }
 
         function getSuccessAllneweventstypee(allevtype) {
+            $("#addeventname").show();
             console.log(allevtype);
             $("#EventType").empty();
             getSuccessAlleventstype(allevtype);
@@ -222,21 +235,28 @@
 
 
         function Inserteventnametolist() {
+
+            var evnamee = $("#addnameventtext").val();
+            var evname = evnamee.replace(/'/g, "''")
+            var evtypee = $("#EventType :selected").text();
+            var EventTypee = evtypee.replace(/'/g, "''");
+
             if ($("#addnameventtext").val() == "")
                 swal({ icon: 'error', title: 'Sorry', text: "!יש להזין שם אירוע" })
-            else {
-                Allevname.push($("#addnameventtext").val());
+
+            Allevname = (typeof Allevname != 'undefined' && Allevname instanceof Array) ? Allevname : []  //check whether an array exists and create it if it doesn't
+            Allevname.push(evname);
                 let addeventnamee = {
-                    Eventtype: $("#EventType :selected").text(),
+                    Eventtype: EventTypee,
                     EventName: Allevname
                 }
                 ajaxCall("POST", "../api/Events/addeventname", JSON.stringify(addeventnamee), inserteventnamesuccess, erroreventname);
             }
-        }
+        
 
-        function inserteventnamesuccess(data) {
+        function inserteventnamesuccess(message) {
 
-            console.log(data);
+            console.log(message);
             getevname();
             swal({ title: "!שם האירוע נוסף בהצלחה", icon: "success" });
             $("#addnameventtext").hide();
