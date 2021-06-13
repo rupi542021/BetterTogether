@@ -68,19 +68,19 @@
         function getpercentregiByDep(StuByDep) {
             console.log(StuByDep);
             StudentByDep = StuByDep;
-            AllStudents = [];
-            RegisteredOnly = []
+            AllStudentsByDep = [];
+            RegisteredOnlyByDep = []
 
             for (var i = 0; i < StudentByDep.length; i++) {
                 for (var j = 0; j < StudentByDep[i].length; j++) {
                     if (StudentByDep[i] == StudentByDep[0])
-                        AllStudents.push(StudentByDep[i][j])
+                        AllStudentsByDep.push(StudentByDep[i][j])
                     else
-                        RegisteredOnly.push(StudentByDep[i][j])
+                        RegisteredOnlyByDep.push(StudentByDep[i][j])
                 }
             }
-            console.log(AllStudents);
-            console.log(RegisteredOnly)
+            console.log(AllStudentsByDep);
+            console.log(RegisteredOnlyByDep)
             var barChartData = {
                 labels: [
                     "הנדסת חשמל",
@@ -100,14 +100,14 @@
                         backgroundColor: "#F5E686",
                         borderColor: "black",
                         borderWidth: 1,
-                        data: RegisteredOnly
+                        data: RegisteredOnlyByDep
                     },
                     {
                         label: "לומדים ברופין",
                         backgroundColor: "#8b939b",
                         borderColor: "black",
                         borderWidth: 1,
-                        data: AllStudents
+                        data: AllStudentsByDep
                     },
 
                 ]
@@ -167,19 +167,19 @@
 
         function getpercentregiByYear(StuByYear) {
             console.log(StuByYear);
-            AllStudents = [];
-            RegisteredOnly = []
+            AllStudentsByYear = [];
+            RegisteredOnlyByYear = []
 
             for (var i = 0; i < StuByYear.length; i++) {
                 for (var j = 0; j < StuByYear[i].length; j++) {
                     if (StuByYear[i] == StuByYear[0])
-                        AllStudents.push(StuByYear[i][j])
+                        AllStudentsByYear.push(StuByYear[i][j])
                     else
-                        RegisteredOnly.push(StuByYear[i][j])
+                        RegisteredOnlyByYear.push(StuByYear[i][j])
                 }
             }
-            console.log(AllStudents);
-            console.log(RegisteredOnly)
+            console.log(AllStudentsByYear);
+            console.log(RegisteredOnlyByYear)
             var barChartData = {
                 labels: [
                     "א",
@@ -193,14 +193,14 @@
                         backgroundColor: "#F5E686",
                         borderColor: "black",
                         borderWidth: 1,
-                        data: RegisteredOnly
+                        data: RegisteredOnlyByYear
                     },
                     {
                         label: "לומדים ברופין",
                         backgroundColor: "#8b939b",
                         borderColor: "black",
                         borderWidth: 1,
-                        data: AllStudents
+                        data: AllStudentsByYear
                     },
 
                 ]
