@@ -1,0 +1,1 @@
+﻿select * from ads_P3

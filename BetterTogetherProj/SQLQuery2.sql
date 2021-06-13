@@ -1,0 +1,1 @@
+﻿select * from questionnaire_P3 where deleteMode=1
