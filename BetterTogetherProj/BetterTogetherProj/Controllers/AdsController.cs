@@ -66,7 +66,7 @@ namespace BetterTogetherProj.Controllers
             {
                 ad.InsertToTable();
 
-                return Request.CreateResponse(HttpStatusCode.OK, "Added successfully");
+                return Request.CreateResponse(HttpStatusCode.OK, "הפרסום נוסף בהצלחה");
             }
             catch (Exception ex)
             {
@@ -82,7 +82,7 @@ namespace BetterTogetherProj.Controllers
             {
                 sub.InsertSubject();
 
-                return Request.CreateResponse(HttpStatusCode.OK, "Added successfully");
+                return Request.CreateResponse(HttpStatusCode.OK, "הנושא נוסף בהצלחה");
             }
             catch (Exception ex)
             {
@@ -100,7 +100,7 @@ namespace BetterTogetherProj.Controllers
             {
                 subsub.InsertSubsub();
 
-                return Request.CreateResponse(HttpStatusCode.OK, "Added successfully");
+                return Request.CreateResponse(HttpStatusCode.OK, "תת הנושא נוסף בהצלחה");
             }
             catch (Exception ex)
             {
@@ -127,7 +127,7 @@ namespace BetterTogetherProj.Controllers
             {
                 addmngcom.Insertcomment();
 
-                return Request.CreateResponse(HttpStatusCode.OK, "Comment added successfully");
+                return Request.CreateResponse(HttpStatusCode.OK, "התגובה נוספה בהצלחה");
             }
             catch (Exception ex)
             {

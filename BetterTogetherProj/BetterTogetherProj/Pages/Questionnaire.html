@@ -264,15 +264,16 @@
                 $("#inserth3").hide();
                 $(".divareaque.form-group.row").hide();
                 $("#subQr").prop("disabled", false);             
-                $("#publishDate").prop("disabled", false);
-                $("#EndpublishDate").prop("disabled", false);
-                //$('#Status').prop("disabled", false)
                 $("#openanswer").hide();
 
                 populateFields(this.getAttribute('data-QuestionnaireId'));
                 if (Qr.DuplicateMode == true) {
                     $("#publishList").prop("disabled", false);
                     $("#yearList").prop("disabled", false);
+                    $("#publishDate").prop("disabled", false);
+                    $("#EndpublishDate").prop("disabled", false);
+                    $("#subQr").prop("disabled", true);             
+
                 }
                 else {
                     $("#publishList").prop("disabled", true);
@@ -799,8 +800,9 @@
                                 duplicateBtn = "<button type='button' class = 'duplicateBtn btn btn-success' " + dataQ + "> שכפול שאלון </button>";
                                 if ($("#filter").val() == 1)
                                     return editBtn + viewBtn + duplicateBtn;
-                                else
-                                    return viewBtn + editBtn;
+                                else 
+                                    return viewBtn + editBtn;           
+
                             }
                         },
                         { data: "QuestionnaireNum" },

@@ -85,19 +85,23 @@
 
         function AddAd() {
 
+            var textAds = $("#content").val();     
+            var textAdss = textAds.replace(/'/g, "''");
+            var SubNamee = $("#SubjName :selected").text();
+            var subname = SubNamee.replace(/'/g, "''")
+            var SubSubjectt = $("#SubsubjName :selected").text();
+            var subsubbname = SubSubjectt.replace(/'/g, "''")
             Ad = {
 
-
-                Subject: $("#SubjName :selected").text(),
-                SubSubject: $("#SubsubjName :selected").text(),
+                Subject: subname,
+                SubSubject: subsubbname,
                 AdsDate: $("#datedis").val(),
-                AdsText: $("#content").val(),
+                AdsText: textAdss,
                 AdsImage: picName,
                 AdsDuring: $("#adsDuring").val(),
                 Status: true,
             }
             ajaxCall("POST", "../api/Ads/addad", JSON.stringify(Ad), success, errorr);
-
 
         }
 
@@ -108,9 +112,9 @@
             }
         }
         // This function is called in case of a success
-        function success(data) {
-            console.log(data);
-            swal({ title: "!הפרסום נוסף בהצלחה", icon: "success" })
+        function success(message) {
+            console.log(message);
+            swal({ title: message, icon: "success" })
             $("#SubjName").val("");
             $("#SubsubjName").val("");
             $("#datedis").val("");
@@ -129,7 +133,7 @@
         // This function is called in case of an error
         function errorr(err) {
             console.log(err.responseJSON);
-            alert("Something is wrong");
+            swal({ title: "!הפרסום אינו נוסף ", icon: "error" })
 
         }
 
@@ -156,13 +160,14 @@
         function getsubsub() {
             $("#AddSubsub").show();
 
-            subname = $("#SubjName :selected").text()
+            var SubNamee = $("#SubjName :selected").text();
+            var subname = SubNamee.replace(/'/g, "''")
+
             let api = "../api/Ads/getsamename?subname=" + subname;
             ajaxCall("GET", api, "", getSuccessSubsubs, error);
         }
 
         function getSuccessSubsubs(allsubsub) {
-
             console.log(allsubsub);
             Allsubsub = allsubsub;
             let str = "";
@@ -199,23 +204,29 @@
 
         function Insertsubtolist() {
 
+            var SubNamee=$("#addsubjecttext").val();
+            var subname = SubNamee.replace(/'/g, "''")
+
             if ($("#addsubjecttext").val() == "")
                 swal({ icon: 'error', title: 'Sorry', text: "!יש להזין נושא" })
 
             else {
                 let addsubject = {
-                    SubName: $("#addsubjecttext").val()
+                    SubName: subname
+
                 }
                 ajaxCall("POST", "../api/Ads/addsub", JSON.stringify(addsubject), insertsubsuccess, errorsubject);
             }
         }
 
-        function insertsubsuccess(data) {
-            console.log(data);
+        function insertsubsuccess(message) {
+            console.log(message);
             ajaxCall("GET", "../api/Ads/getsub", "", getSuccessAllnewsub, error);
         }
 
         function getSuccessAllnewsub(allsub) {
+            $("#AddSubsub").show();
+
             console.log(allsub);
             $("#SubjName").empty();
             getSuccessAllsubs(allsub);
@@ -226,19 +237,29 @@
 
 
         function Insertsubsubtolist() {
+
+            var SubSubjectt= $("#addsubsubtext").val();
+            var subsubbname = SubSubjectt.replace(/'/g, "''")
+            SubName = $("#SubjName :selected").text();
+            subname = SubName.replace(/'/g, "''");
+
             if ($("#addsubsubtext").val() == "")
                 swal({ icon: 'error', title: 'Sorry', text: "!יש להזין תת נושא" })
-            else {
-                Allsubsub.push($("#addsubsubtext").val());
+            else if (Allsubsub.length > 0)
+                Allsubsub.push(subsubbname);
+            else if (Allsubsub.length == 0) {
+                Allsubsub = [];
+                Allsubsub.push(subsubbname);
 
+            }
                 let addsubsub = {
-                    SubName: $("#SubjName :selected").text(),
+                    SubName: subname,
                     SubSubject: Allsubsub,
                 }
 
                 ajaxCall("POST", "../api/Ads/addsubsub", JSON.stringify(addsubsub), insertsubsubsuccess, errorsubsubject);
             }
-        }
+        
 
         function insertsubsubsuccess(data) {
 
@@ -265,7 +286,6 @@
 
         function error(err) {
             console.log(err);
-            alert(err);
         }
 
 
