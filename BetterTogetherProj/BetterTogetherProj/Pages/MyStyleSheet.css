@@ -233,35 +233,7 @@ input#files-upload-button{
     visibility: hidden;
 }
 
-/*.custom-file-input::before {
-    content: 'בחרי תמונה';
-    display: inline-block;
-    background: linear-gradient(top, #f9f9f9, #e3e3e3);
-    border: 3px solid #999;
-    border-radius: 10px;
-    padding: 5px 20px;
-    outline: none;
-    white-space: nowrap;
-    -webkit-user-select: none;
-    cursor: pointer;
-    text-shadow: 1px 1px #fff;
-    font-weight: 700;
-    font-size: 10pt;
-}
 
-.custom-file-input:hover::before {
-    border-color: black;
-}
-
-.custom-file-input:active::before {
-    background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
-}*/
-/*.custom-file-input {
-    opacity: 0;
-    width: 0.1px;
-    height: 0.1px;
-    position: absolute;
-}*/
 .file {
     opacity: 0;
     width: 0.1px;
@@ -299,16 +271,7 @@ input#files-upload-button{
     color: #555;
 }
 
-/*input:hover + label,
-input:focus + label {
-    transform: scale(1.02);
-}*/
 
-/*/* Adding an outline to the label on focus */
-/*input:focus + label {
-    outline: 1px solid #000;
-    outline: -webkit-focus-ring-color auto 2px;
-}*/
 
 h4 {
     direction: rtl;
@@ -329,27 +292,9 @@ margin-left:46.5%
     padding: 10px;
 }
 
-.item1 {
-    grid-area: header;
-}
 
-.item2 {
-    grid-area: menu;
-    text-align:center;
-}
 
-.item3 {
-    grid-area: main;
-}
 
-.item4 {
-    grid-area: right;
-    text-align: center;
-}
-
-.item5 {
-    grid-area: footer;
-}
 
 .grid-container {
     display: grid;
@@ -373,13 +318,11 @@ margin-left:46.5%
 .flip-card {
     background-color: transparent;
     width: 300px;
-    height: 200px;
+    height: 300px;
     perspective: 1000px;
     float: left;
     margin-top: 30px;
-    margin-left: 7%;
-    /*/border-radius: 40px;
-    /*/
+    margin-left: 8%;
 }
 
 
@@ -390,8 +333,8 @@ margin-left:46.5%
     text-align: center;
     transition: transform 1.0s;
     transform-style: preserve-3d;
-    /*/box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    /*/
+   
+    
 }
 
 .flip-card:hover .flip-card-inner {
@@ -404,14 +347,15 @@ margin-left:46.5%
     height: 70%;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    /border-radius: 40px;
-    /
+    border-radius: 40px;
+    
 }
 
 .flip-card-front {
     background-color: #96a2aa;
     width: 100%;
     color: black;
+    padding-top:15px;
 }
 
 .flip-card-back {
@@ -422,7 +366,9 @@ margin-left:46.5%
 }
 
 h2 {
-    line-height: 1.5;
+    line-height: 1.6;
+   
+    font-size: 25px;
 }
 #canvasdep, #canvasyear {
     margin-top: 40px;
@@ -439,15 +385,28 @@ h2 {
 .pie-chart-container,
 .doughnut-chart-container {
     height: 360px;
-    width: 360px;
-    margin-left:120px
+    width: 350px;
+    margin-left: 140px; 
+   
 }
 .graphs {
-    margin-bottom: 10%;
+    margin-bottom: 5%;
+    margin-right: 20px;
 }
 #newBtnS {
     margin-top: 20px;
     margin-right:50%;
 }
+.num {
+    color: #FAE8BE;
+    font-size: 35px;
+    margin-top: 10px;
+    line-height: 2.1;
+}
+.numBack {
+    color: #96a2aa;
+    font-size: 35px
+}
+    
 
 

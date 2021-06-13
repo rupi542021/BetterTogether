@@ -48,8 +48,8 @@
             Ratio = (StuRatio[0] / StuRatio[1]) * 100;
             Ratio = Math.round((Ratio + Number.EPSILON) * 100) / 100;
 
-            $("#ratioStu").append("<b>" + Ratio + "%" + "</b></br>" + "סטודנטים רשומים לאפליקציה");
-            $("#quantitystu").append("<b>" + StuRatio[0] + "</b></br>" + " סטודנטים רשומים לאפליקציה ");
+            $("#ratioStu").append("<b class='num'>" + Ratio + "%" + "</b></br>" + "סטודנטים רשומים לאפליקציה");
+            $("#quantitystu").append("<b class='numBack'>" + StuRatio[0] + "</b></br>" + " סטודנטים רשומים לאפליקציה ");
 
             ajaxCall("GET", "../api/Questionnaire/getpercentActiveQr", "", getpercentActiveQr, error);
         }
@@ -59,8 +59,8 @@
             Ratio = (Qrratio[0] / Qrratio[1]) * 100;
             Ratio = Math.round((Ratio + Number.EPSILON) * 100) / 100;
 
-            $("#ratioQr").append("<b>" + Ratio + "%" + "</b></br>" + "שאלונים פעילים");
-            $("#quantityQr").append("<b>" + Qrratio[1] + "</b></br>" + " שאלונים פורסמו עד כה");
+            $("#ratioQr").append("<b class='num'>" + Ratio + "%" + "</b></br>" + "שאלונים פעילים");
+            $("#quantityQr").append("<b class='numBack'>" + Qrratio[1] + "</b></br>" + " שאלונים פורסמו עד כה");
             ajaxCall("GET", "../api/students/getpercentregiByDep", "", getpercentregiByDep, error);
 
         }
@@ -119,7 +119,7 @@
                     position: "top",
                     labels: {
                         fontSize: 17,
-                        fontFamily: 'Arial'
+                        fontFamily: 'Segoe UI'
 
                     }
                 },
@@ -127,7 +127,7 @@
                     display: true,
                     text: "סטודנטים הרשומים לאפליקציה מסך הסטודנטים לפי מחלקות",
                     fontSize: 20,
-                    fontFamily: 'Arial'
+                     fontFamily: 'Segoe UI'
                     
                 },
                 scales: {
@@ -135,6 +135,7 @@
                         ticks: {
                             beginAtZero: true,
                             fontSize: 14,
+                            fontFamily: 'Segoe UI'
 
                         }
                     }],
@@ -143,6 +144,7 @@
                         ticks: {
                             beginAtZero: true,
                             fontSize: 16,
+                            fontFamily: 'Segoe UI'
 
                         }
                     }]
@@ -206,10 +208,13 @@
 
             var chartOptions = {
                 responsive: true,
+               
                 legend: {
                     position: "top",
                     labels: {
-                        fontSize: 17,
+                        fontSize: 19,
+                        fontFamily: 'Segoe UI'
+                         
 
                     }
                 },
@@ -217,6 +222,7 @@
                     display: true,
                     text: "סטודנטים הרשומים לאפליקציה מסך הסטודנטים לפי שנה",
                     fontSize: 22,
+                    fontFamily: 'Segoe UI'
                 },
                 scales: {
                     yAxes: [{
@@ -224,6 +230,7 @@
                         ticks: {
                             beginAtZero: true,
                             fontSize: 14,
+                             fontFamily: 'Segoe UI'
 
                         }
                     }],
@@ -233,7 +240,7 @@
                         ticks: {
                             beginAtZero: true,
                             fontSize: 16,
-
+                            fontFamily: 'Segoe UI'
                         }
                     }]
                 }
@@ -255,7 +262,7 @@
 
         function getnumOfEntries(numOfEntries) {
             console.log(numOfEntries)
-            $("#entrynum").append("<b>" + numOfEntries + "</b></br>" + "כניסות לאפליקציה עד כה");
+            $("#entrynum").append("<b class='num'>" + numOfEntries + "</b></br>" + "כניסות לאפליקציה עד כה");
 
             ajaxCall("GET", "../api/Questionnaire/getAnsList", "", getAnsList, error);
 
@@ -320,7 +327,8 @@
                     position: "top",
                     text: "אחוז המשיבים לסקר שביעות רצון",
                     fontSize: 20,
-                    fontColor: "#5A5A5A"
+                    fontColor: "#5A5A5A",
+                    fontFamily: 'Segoe UI'
                 },
                 legend: {
                     display: true,
@@ -328,6 +336,7 @@
                     labels: {
                         fontColor: "#333",
                         fontSize: 17,
+                        fontFamily: 'Segoe UI'
 
                     }
                 }
@@ -352,7 +361,7 @@
                     sumOfPar += events[i].Studentsinevent.length;
 
             }
-            $("#evenetP").append("<b>" + sumOfPar + "</b></br>" + "משתתפים באירועי היחידה למעורבות חברתית");
+            $("#evenetP").append("<b class='num'>" + sumOfPar + "</b></br>" + "משתתפים באירועי היחידה למעורבות חברתית");
 
         }
         
@@ -380,10 +389,10 @@
         <div class="flip-card col-sm-3 ">
             <div class="flip-card-inner">
                 <div class="flip-card-front">
-                    <h2 id="ratioStu"></h2>
+                    <h2 id="ratioStu" ></h2>
                 </div>
                 <div class="flip-card-back">
-                    <h2 id="quantitystu"></h2>
+                    <h2 id="quantitystu" ></h2>
                 </div>
             </div>
         </div>
@@ -392,10 +401,10 @@
         <div class="flip-card col-sm-3">
             <div class="flip-card-inner">
                 <div class="flip-card-front">
-                    <h2 id="entrynum"></h2>
+                    <h2 id="entrynum" ></h2>
                 </div>
                 <div class="flip-card-back">
-                    <h2 id="quantityDep"></h2>
+                    <h2 id="quantityDep" ></h2>
 
                 </div>
             </div>
@@ -403,10 +412,10 @@
         <div class="flip-card col-sm-3">
             <div class="flip-card-inner">
                 <div class="flip-card-front">
-                    <h2 id="ratioQr"></h2>
+                    <h2 id="ratioQr" ></h2>
                 </div>
                 <div class="flip-card-back">
-                    <h2 id="quantityQr"></h2>
+                    <h2 id="quantityQr" ></h2>
 
                 </div>
             </div>
@@ -414,7 +423,7 @@
         <div class="flip-card col-sm-3">
             <div class="flip-card-inner">
                 <div class="flip-card-front">
-                    <h2 id="evenetP"></h2>
+                    <h2 id="evenetP" ></h2>
                 </div>
                 <div class="flip-card-back">
                     <h2 id="gal"></h2>
