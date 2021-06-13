@@ -116,16 +116,34 @@
             var chartOptions = {
                 responsive: true,
                 legend: {
-                    position: "top"
+                    position: "top",
+                    labels: {
+                        fontSize: 17,
+                        fontFamily: 'Arial'
+
+                    }
                 },
                 title: {
                     display: true,
                     text: "סטודנטים הרשומים לאפליקציה מסך הסטודנטים לפי מחלקות",
+                    fontSize: 20,
+                    fontFamily: 'Arial'
+                    
                 },
                 scales: {
                     yAxes: [{
                         ticks: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            fontSize: 14,
+
+                        }
+                    }],
+                    xAxes: [{
+
+                        ticks: {
+                            beginAtZero: true,
+                            fontSize: 16,
+
                         }
                     }]
                 }
@@ -189,16 +207,33 @@
             var chartOptions = {
                 responsive: true,
                 legend: {
-                    position: "top"
+                    position: "top",
+                    labels: {
+                        fontSize: 17,
+
+                    }
                 },
                 title: {
                     display: true,
-                    text: "סטודנטים הרשומים לאפליקציה מסך הסטודנטים לפי שנה"
+                    text: "סטודנטים הרשומים לאפליקציה מסך הסטודנטים לפי שנה",
+                    fontSize: 22,
                 },
                 scales: {
                     yAxes: [{
+
                         ticks: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            fontSize: 14,
+
+                        }
+                    }],
+
+                        xAxes: [{
+
+                        ticks: {
+                            beginAtZero: true,
+                            fontSize: 16,
+
                         }
                     }]
                 }
@@ -270,14 +305,7 @@
                             "#ffffe6",
                             "#ffffcc"
                         ],
-                        //borderColor: [
-                        //    "#CDA776",
-                        //    "#989898",
-                        //    "#CB252B",
-                        //    "#E39371",
-                        //    "#1D7A46"
-                        //],
-                        //borderWidth: [1, 1, 1, 1, 1]
+          
                     }
                 ]
             };
@@ -291,15 +319,16 @@
                     display: true,
                     position: "top",
                     text: "אחוז המשיבים לסקר שביעות רצון",
-                    fontSize: 18,
-                    fontColor: "#111"
+                    fontSize: 20,
+                    fontColor: "#5A5A5A"
                 },
                 legend: {
                     display: true,
                     position: "bottom",
                     labels: {
                         fontColor: "#333",
-                        fontSize: 16
+                        fontSize: 17,
+
                     }
                 }
             };
@@ -329,6 +358,7 @@
         
         function error(err) {
             console.log(err)
+
         }
 
     </script>
@@ -392,11 +422,10 @@
                 </div>
             </div>
         </div>
-
-        <div class="col-sm-12"><button class="newBTN myButton" id="newBtnS"> הוספת סטודנט חדש <span class="glyphicon glyphicon-plus"></span></button></div>
-
-
     </div>
+
+
+
     <div class="row graphs">
         <div class="col-sm-4">
             <canvas id="canvasdep"></canvas>
@@ -410,6 +439,7 @@
             <canvas id="canvasyear"></canvas>
         </div>
     </div>
+
 
 </body>
 </html>
