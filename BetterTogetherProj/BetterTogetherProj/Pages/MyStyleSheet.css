@@ -14,7 +14,7 @@ h2 {
     text-align: center;
     margin-top: 0px;
 }
-.btn-success {
+.btn-success{
     color: #fff;
     margin-right: 5px;
     background-color: #96a2aa;
@@ -155,8 +155,51 @@ nav.navbar.navbar-default {
         background: linear-gradient(to bottom, #f6d78f 5%, #f6d78f 100%);
         background-color: #FAE8BE;
     }
+#saveBTN {
+    box-shadow: inset 0px 1px 0px 0px #d9fbbe;
+    background: linear-gradient(to bottom, #f6d78f 100%);
+    background-color: #FAE8BE;
+    color:#96a2aa;
+    border-radius: 21px;
+    border: 2px solid #3D3D3D;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 9px 9px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #f6d78f;
+    display: block;
+    margin-left: 80%;
+}
+#cancelSaveBTN {
+    box-shadow: inset 0px 1px 0px 0px #d9fbbe;
+    background: linear-gradient(to bottom, #96a2aa 100%, #f6d78f 100%);
+    background-color: #96a2aa;
+    border-radius: 21px;
+    border: 2px solid #3D3D3D;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 9px 9px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #f6d78f;
+    margin-right: 80%;
+}
+#addinput {
+    box-shadow: inset 0px 1px 0px 0px #d9fbbe;
+    background: linear-gradient(to bottom, #96a2aa 5%, #f6d78f 100%);
+    background-color: #96a2aa;
+    border-radius: 21px;
+    border: 2px solid #3D3D3D;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 9px 9px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #f6d78f;
+}
 
-.newBTN{
+.newBTN {
     margin-bottom: 0px;
     font-size: 14px;
     float: left;
