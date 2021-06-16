@@ -126,7 +126,7 @@
                 title: {
                     display: true,
                     text: "סטודנטים הרשומים לאפליקציה מסך הסטודנטים לפי מחלקות",
-                    fontSize: 20,
+                    fontSize: 18,
                      fontFamily: 'Segoe UI'
                     
                 },
@@ -221,7 +221,7 @@
                 title: {
                     display: true,
                     text: "סטודנטים הרשומים לאפליקציה מסך הסטודנטים לפי שנה",
-                    fontSize: 22,
+                    fontSize: 18,
                     fontFamily: 'Segoe UI'
                 },
                 scales: {
@@ -436,16 +436,24 @@
 
 
     <div class="row graphs">
-        <div class="col-sm-4">
+        <div class="col-sm-6 canvasdepcl">
             <canvas id="canvasdep"></canvas>
         </div>
-        <div class="col-sm-4 chart-container">
+        <!--<div class="col-sm-1 chart-container">
             <div class="doughnut-chart-container">
                 <canvas id="doughnut-chartcanvas-1"></canvas>
             </div>
-        </div>
-        <div class="col-sm-4">
+        </div>-->
+        <div class="col-sm-6">
             <canvas id="canvasyear"></canvas>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6 chart-container">
+            <div class="doughnut-chart-container">
+                <canvas id="doughnut-chartcanvas-1"></canvas>
+            </div>
         </div>
     </div>
 
