@@ -80,7 +80,7 @@
                 $("#pForm").hide();
                 $("#editDiv").show();
                 $("#addinput").show();
-                $("#inserth3").show();
+                //$("#inserth3").show();
                 //$("#EditViewDiv").hide();
                 $("#saveBTN").show();
 
@@ -261,7 +261,7 @@
                 //$(".statuss").show();
                 $("#editDiv").show();
                 $("#addinput").hide();
-                $("#inserth3").hide();
+                //$("#inserth3").hide();
                 $(".divareaque.form-group.row").hide();
                 $("#subQr").prop("disabled", false);
                 $("#openanswer").hide();
@@ -303,7 +303,7 @@
 
                 $("#editDiv").show();
                 $("#addinput").hide();
-                $("#inserth3").hide();
+                //$("#inserth3").hide();
                 $("#subQr").prop("disabled", true);
                 $("#publishList").prop("disabled", true);
                 $("#yearList").prop("disabled", true);
@@ -451,7 +451,7 @@
                                                             <option value="3">שאלה פתוחה</option>
                                                         </select>
                                                   </div>
-                                                    <div class="form-group col-sm-3" >
+                                                    <div class="form-group col-sm-3"  >
                                                         <label for="QuestionText`+ q + `"><span class="red-star">★ </span>תוכן שאלה</label>
                                                         <textarea class="form-control Qtext" id="QuestionText`+ q + `"  required></textarea>
                                                     </div></div></div></div>`
@@ -983,15 +983,15 @@
                     <label for="Status"><span class="red-star">★ </span>סטטוס</label>
                     <input type="checkbox" class="form-control" id="Status" checked />
                 </div>-->
-                <div class="insertque form-group col-sm-12">
+                <!--<div class="insertque form-group col-sm-12">
                     <h3 id="inserth3">הכנסת שאלות:</h3>
-                </div>
-                <div class="questionn1 form-group col-sm-12">
-                    <div id="question1"></div>
-                </div>
-                <div class="addqubutton form-group col-sm-12">
-                    <input type="button" value="הוספת שאלה" id="addinput" onclick="addquestion()" />
-                </div>
+                </div>-->
+                    <div class="questionn1 form-group col-sm-12">
+                        <div id="question1"></div>
+                    </div>
+                    <div class="addqubutton form-group col-sm-12">
+                        <input type="button" value="הוספת שאלה" id="addinput" onclick="addquestion()" />
+                    </div>
             </div>
 
             <div id="openanswer"></div>
