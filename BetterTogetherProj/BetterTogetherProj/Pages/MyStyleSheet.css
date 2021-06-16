@@ -412,31 +412,36 @@ h2 {
     font-size: 20px;
 }
 #canvasdep, #canvasyear {
-/*    margin-top: 40px;
-*/    /*margin: 0 auto;*/
-/*    padding-bottom: 58px
-*//**/}
-/*#canvasyear{
+    margin-top: 40px;
+    margin: 0 auto;
+    padding-bottom: 58px
+}
+#canvasyear{
     padding-bottom:58px
-}*/
+}
+#canvasdep{
+    margin-left:-45px;
+}
 
 .chart-container {
-    height: 400px;
+    height: 200px;
     margin: 0 auto;
+    font-family: 'Segoe UI';
 }
 
 .pie-chart-container,
 .doughnut-chart-container {
-    height: 330px;
-    width: 330px;
-    margin-left: 140px; 
-   
+    height: 290px;
+    width: 290px;
+    margin-left: -85px;
+    margin-top: -5px;
+    font-family:'Segoe UI';
 }
 .graphs {
-/*    margin-bottom: 1%;
-*/    margin-right: 20px;
-/*    height:300px
-*//**/}
+    margin-bottom: 3%;
+    /*margin-left: 0px;*/
+   
+}
 #newBtnS {
     margin-top: 20px;
     margin-right:50%;
@@ -450,8 +455,7 @@ h2 {
 .numBack {
     line-height: 1.8;
     color: #96a2aa;
-    font-size: 25px
-}
+    font-size: 25px;
     
 
 
