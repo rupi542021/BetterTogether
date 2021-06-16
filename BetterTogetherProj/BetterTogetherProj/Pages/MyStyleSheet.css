@@ -82,9 +82,9 @@ form#ManagerForm {
     font-size: 20px;
     font-weight: bold
 }
-
-
-
+#navT{
+    color:white 
+}
 
 #content {
     width: 600px;
@@ -131,32 +131,10 @@ input#files {
     margin-right: auto;
     margin-left: auto;
     float: right;
-    overflow: hidden;
 }
-div#navbarCollapse {
-    overflow: hidden;
-}
-    nav .navbar.navbar-default, .bg-light {
-    background-color: #FAE8BE!important;
-    overflow:hidden;
-}
-a.nav-item.nav-link {
-    text-align: center;
-   
-}
-    a.nav-item.nav-link,.navbar-nav > li > a {
-        padding-top: 5px;
-        padding-bottom: 5px;
-        line-height: 10px;
-        font-size:14px;
-    }
-#navT {
-    color: white;
-    font-size: 20px;
-    margin-left: 40%;
-    font-weight: bold;
-    padding-top: 5px;
-    padding-bottom: 5px;
+
+nav.navbar.navbar-default {
+    background-color: #FAE8BE;
 }
 .myButton{
     box-shadow: inset 0px 1px 0px 0px #d9fbbe;
@@ -359,7 +337,7 @@ margin-left:46.5%
 
 
 
-/*.grid-container {
+.grid-container {
     display: grid;
     grid-template-areas: 'header header header header header header' 'menu main main main right right' 'menu footer footer footer footer footer';
     grid-gap: 10px;
@@ -372,7 +350,7 @@ margin-left:46.5%
         text-align: center;
         padding: 50px 0;
         font-size: 30px;
-    }*/
+    }
 
 @import url('https://fonts.googleapis.com/css?family=Barlow:500');
 
@@ -480,15 +458,6 @@ h2 {
     font-size: 25px;
 }
 
-.navbar-toggler {
-    padding: .25rem .75rem;
-    font-size: 1.25rem;
-    line-height: 1;
-    background-color: transparent;
-    border: 1px solid transparent;
-    border-radius: .25rem;
-   margin-left:48%;
-}
 
 
 
