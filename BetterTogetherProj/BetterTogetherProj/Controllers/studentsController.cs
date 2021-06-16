@@ -378,13 +378,8 @@ namespace BetterTogetherProj.Controllers
             }
             catch (Exception e)
             {
-                switch (e.Message)
-                {
-                    case "there are no close users":
-                        return Content(HttpStatusCode.NotFound, e);
-                    default:
-                        return Content(HttpStatusCode.BadRequest, e);
-                }
+                //return badrequest(e.message);
+                return Content(HttpStatusCode.BadRequest, e);
             }
         }
 

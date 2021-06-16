@@ -302,64 +302,60 @@
             </ul>
         </div>
     </nav>
-    <div class="container" >
-    <form id="pForm">
-        <h2 id="h2">הוספת פרסום חדש</h2>
-        <div class="form-group addAdId ">
-            <label for="SubjName" id="SubjNameText">בחירת נושא</label>
-            <select class="form-control" id="SubjName" required>
-                <option>    </option>
-            </select>
-        </div>
+    <div class="container">
+        <form id="pForm">
+            <h2 id="h2">הוספת פרסום חדש</h2>
 
-        <div class="form-group addAdId">
-            <label for="SubsubjName" id="SubsubjNameText">בחירת תת נושא</label>
-            <select class="form-control" id="SubsubjName" required>
-            </select>
-        </div>
-
-        <div class="form-group addAdId">
-            <label for="datedis" id="datedisText">בחירת תאריך פרסום</label>
-            <input type="date" class="form-control" id="datedis" onchange="checkdate()" required />
-
-        </div>
-        <div class="form-group addAdId">
-            <label for="adsDuring" id="duringNum">(פרסם למשך(בימים</label>
-            <input type="number" class="form-control" id="adsDuring" min="0" required />
-
-        </div>
-        <div class="form-group addAdId">
-            <label for="content" id="contentText"></label>
-            <textarea class="form-control" id="content" placeholder="תוכן הפרסום..." required></textarea>
-        </div>
-
-        <div class="addAdId" id="uploadddiv">
-            <div id="uploadd" class="file-input">
-
-                <label for="files">בחירת תמונה </label><p class="file-name"></p>
-
-                <input type="file" id="files" name="files" class="file" />
+            <div class="form-group">
+                <label for="SubjName" id="SubjNameText">בחירת נושא</label>
+                <select class="form-control" id="SubjName" required>
+                    <option>    </option>
+                </select>
             </div>
-            <br />
+            <div class="form-group">
+                <label for="SubsubjName" id="SubsubjNameText">בחירת תת נושא</label>
+                <select class="form-control" id="SubsubjName" required>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="datedis" id="datedisText">בחירת תאריך פרסום</label>
+                <input type="date" class="form-control" id="datedis" onchange="checkdate()" required />
+
+            </div>
+            <div class="form-group">
+                <label for="adsDuring" id="duringNum">(פרסם למשך(בימים</label>
+                <input type="number" class="form-control" id="adsDuring" min="0" required />
+
+            </div>
+            <div class="form-group">
+                <label for="content" id="contentText"></label>
+                <textarea class="form-control" id="content" placeholder="תוכן הפרסום..." required></textarea>
+            </div>
+
+            <div id="uploadddiv">
+                <div id="uploadd" class="file-input" >
+
+                    <label for="files">בחירת תמונה </label><p class="file-name"></p>
+
+                 <input type="file" id="files" name="files" class="file" />
+                </div>
+                <br />
+            </div>
+            <input type="submit" value="הפצת פרסום" class="myButton" id="submitt" />
+        </form>
+
+        <div id="addS">
+            <i type="button" id="addsubject" title="לחץ כאן כדי להוסיף נושא" onclick="Addbutton(1)" onmouseover="showlabel()" class="fas fa-plus-circle"></i>
+            <input type="text" id="addsubjecttext" />
+            <input type="button" value="הוספת נושא" id="buttonaddsubject" onclick="Insertsubtolist()" />
+        </div>
+        <div id="addSS">
+            <i type="button" id="AddSubsub" title="לחץ כאן כדי להוסיף תת נושא" onclick="Addbutton(0)" onmouseover="showlabel()" class="fas fa-plus-circle"></i>
+            <input type="text" id="addsubsubtext" />
+            <input type="button" value="הוספת תת נושא" id="buttonaddsubsub" onclick="Insertsubsubtolist()" />
         </div>
 
-
-        <input type="submit" value="הפצת פרסום" class="myButton" id="submitt" />
-    </form>
-
-    <div id="addS">
-        <i type="button" id="addsubject" title="לחץ כאן כדי להוסיף נושא" onclick="Addbutton(1)" onmouseover="showlabel()" class="fas fa-plus-circle"></i>
-        <input type="text" id="addsubjecttext" />
-        <input type="button" value="הוספת נושא" id="buttonaddsubject" onclick="Insertsubtolist()" />
     </div>
-    <div id="addSS">
-        <i type="button" id="AddSubsub" title="לחץ כאן כדי להוסיף תת נושא" onclick="Addbutton(0)" onmouseover="showlabel()" class="fas fa-plus-circle"></i>
-        <input type="text" id="addsubsubtext" />
-        <input type="button" value="הוספת תת נושא" id="buttonaddsubsub" onclick="Insertsubsubtolist()" />
-    </div>
-
-    </div>
-
     <div id="ph"></div>
 
 </body>
