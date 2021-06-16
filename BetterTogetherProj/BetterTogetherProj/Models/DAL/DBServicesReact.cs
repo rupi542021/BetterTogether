@@ -1839,8 +1839,13 @@ namespace BetterTogetherProj.Models.DAL
                             TwoStudentsList.Add(TwoStudents);
                 }
 
-                
-                return TwoStudentsList;
+                if (TwoStudentsList.Count > 0)
+                {
+                    return TwoStudentsList;
+                }
+
+                else
+                    throw new Exception("there are no close users");
 
             }
             catch (Exception ex)
