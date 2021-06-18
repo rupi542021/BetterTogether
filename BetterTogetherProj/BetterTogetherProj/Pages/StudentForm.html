@@ -131,10 +131,9 @@
             
 
         }
-        function Insertsuccess(data) {
-            console.log(data);
-            alert("GAL")
-            swal("הסטודנט נוסף בהצלחה!", "Great Job", "success");
+        function Insertsuccess(message) {
+            console.log(message);
+            swal(message, "Great Job", "success");
             $("#firstName").val("");
             $("#lastName").val("");
             $("#email").val("");
@@ -165,7 +164,7 @@
             
             console.log(err);
             $("#email").val("");
-            swal("!המייל כבר קיים במערכת");
+            swal({ icon: 'error', title: 'Sorry', text: "!כתובת המייל כבר קיימת במערכת" })
         }
 
     </script>

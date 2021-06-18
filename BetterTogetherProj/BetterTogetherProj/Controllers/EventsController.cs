@@ -129,7 +129,7 @@ namespace BetterTogetherProj.Controllers
             {
                 addmngcom.Insertcomment();
 
-                return Request.CreateResponse(HttpStatusCode.OK, "Comment added successfully");
+                return Request.CreateResponse(HttpStatusCode.OK, "התגובה נוספה בהצלחה");
             }
             catch (Exception ex)
             {

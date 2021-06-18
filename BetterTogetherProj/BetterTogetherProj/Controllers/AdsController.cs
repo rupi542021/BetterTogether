@@ -29,10 +29,19 @@ namespace BetterTogetherProj.Controllers
         }
 
         // PUT api/<controller>/5
-        public void Put( [FromBody] Ads adss)
+        public HttpResponseMessage Put( [FromBody] Ads adss)
         {
-            adss.UpdateAd();
+            try
+            {
+                adss.UpdateAd();
+                return Request.CreateResponse(HttpStatusCode.OK, "!הפרסום עודכן בהצלחה");
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
+            }
         }
+        
 
         // DELETE api/<controller>/5
         public void Delete(int id)

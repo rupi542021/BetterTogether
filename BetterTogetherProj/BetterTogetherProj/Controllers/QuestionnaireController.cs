@@ -51,7 +51,7 @@ namespace BetterTogetherProj.Controllers
             {
                 qr.InsertQuestionnaire();
 
-                return Request.CreateResponse(HttpStatusCode.OK, "Added to questionnaire table successfully");
+                return Request.CreateResponse(HttpStatusCode.OK, "השאלון נכנס בהצלחה לטבלת השאלונים");
             }
             catch (Exception ex)
             {
