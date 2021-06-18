@@ -232,7 +232,7 @@ rect {
     background-color: aqua;
 }
 
-input#submitt {
+input#submitt:not(.addstuBTN) {
     margin-left: 45%;
     margin-top: -20px;
 }
@@ -563,4 +563,6 @@ table.dataTable tbody th, table.dataTable tbody td {
 }
 
 
-
+.addstuBTN {
+    margin-left: 45%;
+}
