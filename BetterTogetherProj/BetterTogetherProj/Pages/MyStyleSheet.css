@@ -468,8 +468,8 @@ h2 {
 
 .graphs {
     margin-bottom: 3%;
-    /margin-left: 0px;
-    /
+    margin-left: 0px;
+    
 }
 
 #newBtnS {
@@ -499,16 +499,16 @@ table.dataTable tbody th, table.dataTable tbody td {
     padding: 4px;
 }
 
-./*container-fluid {
+.container-fluid {
     padding-right: 15px;
     padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
     float: right;
     overflow: hidden;
-}
+}*/
 
-div#navbarCollapse {
+/*div#navbarCollapse {
     overflow: hidden;
 }
 
@@ -545,7 +545,7 @@ a.nav-item.nav-link, .navbar-nav > li > a {
     border: 1px solid transparent;
     border-radius: .25rem;
     margin-left: 48%;
-}
-.navbar{
+}*/
+/*.navbar{
     min-height:50px;
 }*/
