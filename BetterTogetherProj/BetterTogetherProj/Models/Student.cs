@@ -36,37 +36,7 @@ namespace project_classes.Models
         int agesRange;
         string token;
         int entryCounter;
-
-        public Student(string mail, string password, string fname, string lname, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, bool isAvailableCar, bool intrestedInCarPool, string photo, string gender, DateTime registrationDate, bool activeStatus, List<Hobby> hlist, List<Pleasure> plist, List<string> friendslist, List<StudentInCourse> studInCourse, double match, List<Preferences> preflist, int homeDist, int studyingDist, int agesRange, string token, int entryCounter)
-        {
-            Mail = mail;
-            Password = password;
-            Fname = fname;
-            Lname = lname;
-            DateOfBirth = dateOfBirth;
-            Dep = dep;
-            StudyingYear = studyingYear;
-            HomeTown = homeTown;
-            AddressStudying = addressStudying;
-            PersonalStatus = personalStatus;
-            IsAvailableCar = isAvailableCar;
-            IntrestedInCarPool = intrestedInCarPool;
-            Photo = photo;
-            Gender = gender;
-            RegistrationDate = registrationDate;
-            ActiveStatus = activeStatus;
-            Hlist = hlist;
-            Plist = plist;
-            Friendslist = friendslist;
-            StudInCourse = studInCourse;
-            Match = match;
-            Preflist = preflist;
-            HomeDist = homeDist;
-            StudyingDist = studyingDist;
-            AgesRange = agesRange;
-            Token = token;
-            EntryCounter = entryCounter;
-        }
+        DateTime timeStep;
 
         public string Mail { get => mail; set => mail = value; }
         public string Password { get => password; set => password = value; }
@@ -95,8 +65,41 @@ namespace project_classes.Models
         public int AgesRange { get => agesRange; set => agesRange = value; }
         public string Token { get => token; set => token = value; }
         public int EntryCounter { get => entryCounter; set => entryCounter = value; }
+        public DateTime TimeStep { get => timeStep; set => timeStep = value; }
 
         public Student() { }
+
+        public Student(string mail, string password, string fname, string lname, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, bool isAvailableCar, bool intrestedInCarPool, string photo, string gender, DateTime registrationDate, bool activeStatus, List<Hobby> hlist, List<Pleasure> plist, List<string> friendslist, List<StudentInCourse> studInCourse, double match, List<Preferences> preflist, int homeDist, int studyingDist, int agesRange, string token, int entryCounter, DateTime timeStep)
+        {
+            this.mail = mail;
+            this.password = password;
+            this.fname = fname;
+            this.lname = lname;
+            this.dateOfBirth = dateOfBirth;
+            this.dep = dep;
+            this.studyingYear = studyingYear;
+            this.homeTown = homeTown;
+            this.addressStudying = addressStudying;
+            this.personalStatus = personalStatus;
+            this.isAvailableCar = isAvailableCar;
+            this.intrestedInCarPool = intrestedInCarPool;
+            this.photo = photo;
+            this.gender = gender;
+            this.registrationDate = registrationDate;
+            this.activeStatus = activeStatus;
+            this.hlist = hlist;
+            this.plist = plist;
+            this.friendslist = friendslist;
+            this.studInCourse = studInCourse;
+            this.match = match;
+            this.preflist = preflist;
+            this.homeDist = homeDist;
+            this.studyingDist = studyingDist;
+            this.agesRange = agesRange;
+            this.token = token;
+            this.entryCounter = entryCounter;
+            this.timeStep = timeStep;
+        }
 
         //public Student(string mail, string password, string fname, string lname, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, bool isAvailableCar, bool intrestedInCarPool, string photo, string gender, DateTime registrationDate, bool activeStatus, List<Hobby> hlist, List<Pleasure> plist, List<string> friendslist, List<StudentInCourse> studInCourse, double match, List<Preferences> preflist, int homeDist, int studyingDist, int agesRange)
         //{
