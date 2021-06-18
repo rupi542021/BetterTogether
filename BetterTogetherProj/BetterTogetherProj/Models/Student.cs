@@ -257,11 +257,11 @@ namespace project_classes.Models
             return StuRatioDep;
         }
 
-        public int getnumOfEntries()
+        public List<int> getNumOfNewUsers(int numDays)
         {
             DBServices dbs = new DBServices();
-            int StuRatioDep = dbs.getnumOfEntries();
-            return StuRatioDep;
+            List<int> daysandusers = dbs.getNumOfNewUsers(numDays);
+            return daysandusers;
         }
     }
 }

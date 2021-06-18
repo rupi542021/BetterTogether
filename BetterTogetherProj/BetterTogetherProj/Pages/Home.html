@@ -21,6 +21,9 @@
     <script src="../Scripts/ajaxCalls.js"></script>
     <link href="MyStyleSheet.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
 
     <script>
@@ -251,20 +254,10 @@
                 options: chartOptions
             });
 
-            ajaxCall("GET", "../api/students/getnumOfEntries", "", getnumOfEntries, error);
-
-
-        }
-
-
-        function getnumOfEntries(numOfEntries) {
-            console.log(numOfEntries)
-            $("#entrynum").append("<b class='num'>" + numOfEntries + "</b></br>" + "כניסות לאפליקציה עד כה");
-
             ajaxCall("GET", "../api/Questionnaire/getAnsList", "", getAnsList, error);
 
-
         }
+
 
         function getAnsList(AnsList) {
             console.log(AnsList);
@@ -359,10 +352,35 @@
                 sumOfPar += events[i].Studentsinevent.length;
 
             }
+
             $("#evenetP").append("<b class='num'>" + sumOfPar + "</b></br>" + "משתתפים באירועי היחידה למעורבות חברתית");
-            console.log("test");
+
+            numDays = document.getElementById('rangee').value;
+            ajaxCall("GET", "../api/students/getNumOfNewUsers?numDays=" + numDays, "", getNumOfNewUsers, error);
         }
 
+        function getNumOfNewUsers(NumOfNewUsers) {
+            console.log(NumOfNewUsers)
+            $("#entrynum").html("<b class='num'>" + NumOfNewUsers[0] + "</b></br>" + "מצטרפים חדשים ב-" + NumOfNewUsers[1] + " ימים אחרונים");
+            document.getElementById("rangee").oninput = function () {
+                var value = (this.value - this.min) / (this.max - this.min) * 100
+                this.style.background = 'linear-gradient(to right, #FAE8BE 0%, #FAE8BE ' + value + '%, #fff ' + value + '%, white 100%)'
+            };
+
+
+        }
+
+        function showvalue(numDays) {
+            document.getElementById('showvalue').innerHTML = numDays;
+            ajaxCall("GET", "../api/students/getNumOfNewUsers?numDays=" + numDays, "", getNumOfNewUsers, error);
+
+        }
+
+        function showtitle() {
+            $(this).tooltip();
+
+        }
+     
         function error(err) {
             console.log(err)
 
@@ -371,7 +389,7 @@
     </script>
 </head>
 
-<body>
+<body id="container">
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <ul class="nav navbar-nav">
@@ -399,9 +417,11 @@
 
 
         <div class="flip-card col-xs-3">
-            <div class="flip-card-inner">
+            <div class="flip-card-inner rangeEX" >
                 <div class="flip-card-front">
                     <h2 id="entrynum"></h2>
+                    <input type="range" id="rangee" value="7"  name="rangeInput"  min="0" max="365" onchange="showvalue(this.value)" title="הזז לשינוי מספר הימים" onmouseover="showtitle()">
+                    <div id="showvalue"></div>
                 </div>
                 <div class="flip-card-back">
                     <h2 id="quantityDep"></h2>
@@ -421,7 +441,7 @@
             </div>
         </div>
         <div class="flip-card col-xs-3">
-            <div class="flip-card-inner">
+            <div class="flip-card-inner rangeEX">
                 <div class="flip-card-front">
                     <h2 id="evenetP"></h2>
                 </div>

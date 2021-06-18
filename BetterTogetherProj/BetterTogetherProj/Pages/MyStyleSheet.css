@@ -405,7 +405,7 @@ h4 {
     transform-style: preserve-3d;
 }
 
-.flip-card:hover .flip-card-inner {
+.flip-card:hover:not(.rangeEX) .flip-card-inner:not(.rangeEX) {
     transform: rotateY(180deg);
 }
 
@@ -480,8 +480,7 @@ h2 {
 .num {
     color: #FAE8BE;
     font-size: 25px;
-    margin-top: 10px;
-    line-height: 1.8;
+    line-height: 1.4;
 }
 
 .numBack {
@@ -509,3 +508,15 @@ table.dataTable tbody th, table.dataTable tbody td {
 }
 
 */
+
+#rangee {
+    margin-left: 10%;
+    width: 80%;
+    background: linear-gradient(to right, #FAE8BE 1.91%%, #FAE8BE 1.91%, #fff 50%, #fff 100%);
+    border: solid 1px #82CFD0;
+    border-radius: 8px;
+    height: 7px;
+    outline: none;
+    transition: background 450ms ease-in;
+    -webkit-appearance: none;
+}

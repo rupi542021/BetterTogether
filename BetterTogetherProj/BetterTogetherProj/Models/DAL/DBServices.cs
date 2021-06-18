@@ -73,7 +73,7 @@ namespace BetterTogetherProj.Models.DAL
                     qr.Queslist = getQuestionsbyNumqr(qr.QuestionnaireNum);
                     if (dr["deleteMode"] is null || dr["deleteMode"] is false || dr["deleteMode"] is true)
                     { qr.DeleteMode = Convert.ToBoolean(dr["deleteMode"]); }
-                    qr.DuplicateMode = Convert.ToBoolean(dr["doplicateMode"]);
+                    qr.DuplicateMode = Convert.ToBoolean(dr["duplicateMode"]);
                     qrList.Add(qr);
                 }
 
@@ -266,7 +266,7 @@ namespace BetterTogetherProj.Models.DAL
                     sb.AppendFormat("Values('{0}','{1}','{2}','{3}','{4}','{5}', '{6}','{7}')", qr.QuestionnairePublish.ToString("yyyy-MM-dd"), qr.SubQr, 0, qr.NumResponders, qr.EndPublishDate.ToString("yyyy-MM-dd"), qr.Dep.DepartmentCode, qr.QuestionnaireYear, qr.DuplicateMode);
             }
 
-            String prefix = "INSERT INTO questionnaire_P3 " + "(publishDate,subQ,status,numResponders,endPublishDate,departmentCode, qrYear,doplicateMode)";
+            String prefix = "INSERT INTO questionnaire_P3 " + "(publishDate,subQ,status,numResponders,endPublishDate,departmentCode, qrYear,duplicateMode)";
             command = prefix + sb.ToString();
             foreach (var question in qr.Queslist)
             {
@@ -2051,23 +2051,27 @@ namespace BetterTogetherProj.Models.DAL
 
         }
 
-        public int getnumOfEntries()
+        public List<int> getNumOfNewUsers(int numDays)
         {
-            int sumEntries = 0;
+            int newUsers = 0;
             SqlConnection con = null;
+            List<int> daysandusers = new List<int>();
+
             try
             {
                 con = connect1("DBConnectionString");
-                String selectSTR = "select sum (entryCounter) as 'entryCounter' from  student_P";
+                String selectSTR = "select count (mail) as newUsers from student_P where DATEDIFF(day,registrationDate,GETDATE())<"+ numDays;
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
                 {   // Read till the end of the data into a row
 
-                    sumEntries = Convert.ToInt16(dr["entryCounter"]);
+                    newUsers = Convert.ToInt16(dr["newUsers"]);
+                    daysandusers.Add(newUsers);
+                    daysandusers.Add(numDays);
 
                 }
-                return sumEntries;
+                return daysandusers;
             }
             catch (Exception ex)
             {

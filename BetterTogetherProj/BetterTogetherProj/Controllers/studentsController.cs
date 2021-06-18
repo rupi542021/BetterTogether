@@ -427,11 +427,11 @@ namespace BetterTogetherProj.Controllers
         }
 
         [HttpGet]
-        [Route("api/students/getnumOfEntries")]
-        public int  getnumOfEntries()
+        [Route("api/students/getNumOfNewUsers")]
+        public List<int> getNumOfNewUsers(int numDays)
         {
             Student stu = new Student();
-            return stu.getnumOfEntries();
+            return stu.getNumOfNewUsers(numDays);
 
         }
 
