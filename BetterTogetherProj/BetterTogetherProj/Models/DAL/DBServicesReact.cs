@@ -1972,13 +1972,17 @@ namespace BetterTogetherProj.Models.DAL
 
                 while (dr.Read())
                 {
-                    xLocation = (x / 1000) - (Convert.ToDouble(dr["x"]) / 1000);
-                    yLocation = (y / 1000) - (Convert.ToDouble(dr["y"]) / 1000);
+                    //xLocation = (x / 1000) - (Convert.ToDouble(dr["x"]) / 1000);
+                    //yLocation = (y / 1000) - (Convert.ToDouble(dr["y"]) / 1000);
+                    xLocation = x - (Convert.ToDouble(dr["x"]));
+                    yLocation = y - (Convert.ToDouble(dr["y"]));
                     timeS2 = Convert.ToDateTime(dr["timeS"]);
+                    double dist = 100 * Math.Sqrt(Math.Pow(xLocation, 2) + Math.Pow(yLocation, 2));
                     Double diff = Math.Abs((timeS1 - timeS2).TotalDays);
-                    if (Math.Sqrt(Math.Pow(xLocation, 2) + Math.Pow(yLocation, 2)) < 1 && diff <= 1)
+                    if (dist <= 1 && diff <= 1)
                     {
                         Student s = getCurrentStudent((string)dr["mail"]);
+                        s.Distance = 100 * Math.Sqrt(Math.Pow(xLocation, 2) + Math.Pow(yLocation, 2));
                         closedUsersList.Add(s);
                     }
                 }
