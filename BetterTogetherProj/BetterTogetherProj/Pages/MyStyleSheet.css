@@ -582,3 +582,7 @@ input, select, textarea {
     border-radius: 18px;
     background-color:transparent;
 }
+
+.blockS, .releaseS {
+    padding-left: 250px
+}
