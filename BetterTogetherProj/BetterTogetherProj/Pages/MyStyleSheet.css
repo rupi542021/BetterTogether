@@ -512,7 +512,7 @@ table.dataTable tbody th, table.dataTable tbody td {
 #rangee {
     margin-left: 10%;
     width: 80%;
-    background: linear-gradient(to right, #FAE8BE 1.91%%, #FAE8BE 1.91%, #fff 50%, #fff 100%);
+    background: linear-gradient(to right, #FAE8BE 1.91%, #FAE8BE 1.91%, #fff 50%, #fff 100%);
     border: solid 1px #82CFD0;
     border-radius: 8px;
     height: 7px;
@@ -555,4 +555,9 @@ table.dataTable tbody th, table.dataTable tbody td {
 
 .addstuBTN {
     margin-left: 45%;
+}
+.Qtext {
+    width: 80%;
+    margin-left: 10px;
+   text-align:right;
 }
