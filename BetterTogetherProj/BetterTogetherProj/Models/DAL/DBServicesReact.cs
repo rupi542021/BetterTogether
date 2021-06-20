@@ -1809,7 +1809,7 @@ namespace BetterTogetherProj.Models.DAL
         {
             String prefix = "DELETE FROM [dbo].[locations_P] where [mail] = '" + sl.Mail + "' ";
 
-                prefix += "INSERT INTO locations_P (mail, x, y) Values('" + sl.Mail + "'," + sl.X + "," + sl.Y + ") ";
+                prefix += "INSERT INTO locations_P (mail, x, y,timeS) Values('" + sl.Mail + "'," + sl.X + "," + sl.Y + ",GETDATE()) ";
 
             return prefix;
         }
