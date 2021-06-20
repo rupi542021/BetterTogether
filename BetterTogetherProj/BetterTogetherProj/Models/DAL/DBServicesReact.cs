@@ -1144,6 +1144,7 @@ namespace BetterTogetherProj.Models.DAL
                 con = connect("DBConnectionString");
 
                 String selectSTR = "SELECT * FROM student_P where mail<> '" + mail + "' and active = 'true'";
+                selectSTR += "update student_P set active='false' where DATEDIFF(day,finalDate,GETDATE())>0";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
@@ -2047,5 +2048,39 @@ namespace BetterTogetherProj.Models.DAL
             return prefix;
         }
 
+        public Links ReadLinks(int dep,int year)
+        {
+            SqlConnection con = null;
+            Links link = new Links();
+
+            try
+            {
+                con = connect("DBConnectionString");
+                String selectSTR = "SELECT * FROM links_P where depCode=" + dep + " and yearCode ="+year;
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                while (dr.Read())
+                {
+                    link.WhatsappLink = (string)dr["link"];
+                    link.DriveLink = (string)dr["driveLink"];
+                }
+                return link;
+            }
+
+            catch (Exception ex)
+            {
+                //writeToLog(ex);
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+        }
     }
 }

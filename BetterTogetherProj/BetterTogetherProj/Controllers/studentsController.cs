@@ -464,5 +464,21 @@ namespace BetterTogetherProj.Controllers
             return s.getstudentsAns();
 
         }
+        [HttpGet]
+        [Route("api/students/{dep}/{year}/links")]
+        public HttpResponseMessage ReadLinks(int dep,int year)
+        {
+            Links l = new Links();
+            try
+            {
+                l = l.ReadLinks(dep, year);
+                return Request.CreateResponse(HttpStatusCode.OK, l);
+            }
+           
+            catch (Exception e)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e);
+            }
+        }
     }
 }
