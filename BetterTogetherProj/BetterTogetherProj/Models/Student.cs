@@ -35,8 +35,6 @@ namespace project_classes.Models
         int studyingDist;
         int agesRange;
         string token;
-        int entryCounter;
-        DateTime timeStep;
 
         public string Mail { get => mail; set => mail = value; }
         public string Password { get => password; set => password = value; }
@@ -64,8 +62,6 @@ namespace project_classes.Models
         public int StudyingDist { get => studyingDist; set => studyingDist = value; }
         public int AgesRange { get => agesRange; set => agesRange = value; }
         public string Token { get => token; set => token = value; }
-        public int EntryCounter { get => entryCounter; set => entryCounter = value; }
-        public DateTime TimeStep { get => timeStep; set => timeStep = value; }
 
         public Student() { }
 
@@ -97,8 +93,6 @@ namespace project_classes.Models
             this.studyingDist = studyingDist;
             this.agesRange = agesRange;
             this.token = token;
-            this.entryCounter = entryCounter;
-            this.timeStep = timeStep;
         }
 
         //public Student(string mail, string password, string fname, string lname, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, bool isAvailableCar, bool intrestedInCarPool, string photo, string gender, DateTime registrationDate, bool activeStatus, List<Hobby> hlist, List<Pleasure> plist, List<string> friendslist, List<StudentInCourse> studInCourse, double match, List<Preferences> preflist, int homeDist, int studyingDist, int agesRange)
