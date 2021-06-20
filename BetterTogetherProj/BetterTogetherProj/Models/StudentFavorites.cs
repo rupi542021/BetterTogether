@@ -35,11 +35,11 @@ namespace project_classes.Models
             DBServicesReact dbs = new DBServicesReact();
             dbs.DeleteFavorite(this);
         }
-        public List<StudentFavorites> GetCloseStudents()
-        {
-            DBServicesReact db = new DBServicesReact();
-            List<StudentFavorites> studentsList = db.GetCloseStudents();
-            return studentsList;
-        }
+        //public List<StudentFavorites> GetCloseStudents()
+        //{
+        //    DBServicesReact db = new DBServicesReact();
+        //    List<StudentFavorites> studentsList = db.GetCloseStudents();
+        //    return studentsList;
+        //}
     }
 }

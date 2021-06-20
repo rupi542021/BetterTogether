@@ -35,6 +35,9 @@ namespace project_classes.Models
         int studyingDist;
         int agesRange;
         string token;
+        DateTime beginingDate;
+        DateTime finalDate;
+        double distance;
 
         public string Mail { get => mail; set => mail = value; }
         public string Password { get => password; set => password = value; }
@@ -62,10 +65,13 @@ namespace project_classes.Models
         public int StudyingDist { get => studyingDist; set => studyingDist = value; }
         public int AgesRange { get => agesRange; set => agesRange = value; }
         public string Token { get => token; set => token = value; }
+        public DateTime FinalDate { get => finalDate; set => finalDate = value; }
+        public DateTime BeginingDate { get => beginingDate; set => beginingDate = value; }
+        public double Distance { get => distance; set => distance = value; }
 
         public Student() { }
 
-        public Student(string mail, string password, string fname, string lname, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, bool isAvailableCar, bool intrestedInCarPool, string photo, string gender, DateTime registrationDate, bool activeStatus, List<Hobby> hlist, List<Pleasure> plist, List<string> friendslist, List<StudentInCourse> studInCourse, double match, List<Preferences> preflist, int homeDist, int studyingDist, int agesRange, string token, int entryCounter, DateTime timeStep)
+        public Student(string mail, string password, string fname, string lname, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, bool isAvailableCar, bool intrestedInCarPool, string photo, string gender, DateTime registrationDate, bool activeStatus, List<Hobby> hlist, List<Pleasure> plist, List<string> friendslist, List<StudentInCourse> studInCourse, double match, List<Preferences> preflist, int homeDist, int studyingDist, int agesRange, string token, int entryCounter, DateTime timeStep, DateTime beginingDate,DateTime finalDate, double distance)
         {
             this.mail = mail;
             this.password = password;
@@ -93,37 +99,10 @@ namespace project_classes.Models
             this.studyingDist = studyingDist;
             this.agesRange = agesRange;
             this.token = token;
+            this.beginingDate = beginingDate;
+            this.finalDate = finalDate;
+            this.distance = distance;
         }
-
-        //public Student(string mail, string password, string fname, string lname, DateTime dateOfBirth, Department dep, int studyingYear, Residence homeTown, Residence addressStudying, string personalStatus, bool isAvailableCar, bool intrestedInCarPool, string photo, string gender, DateTime registrationDate, bool activeStatus, List<Hobby> hlist, List<Pleasure> plist, List<string> friendslist, List<StudentInCourse> studInCourse, double match, List<Preferences> preflist, int homeDist, int studyingDist, int agesRange)
-        //{
-        //    Mail = mail;
-        //    Password = password;
-        //    Fname = fname;
-        //    Lname = lname;
-        //    DateOfBirth = dateOfBirth;
-        //    Dep = dep;
-        //    StudyingYear = studyingYear;
-        //    HomeTown = homeTown;
-        //    AddressStudying = addressStudying;
-        //    PersonalStatus = personalStatus;
-        //    IsAvailableCar = isAvailableCar;
-        //    IntrestedInCarPool = intrestedInCarPool;
-        //    Photo = photo;
-        //    Gender = gender;
-        //    RegistrationDate = registrationDate;
-        //    ActiveStatus = activeStatus;
-        //    Hlist = hlist;
-        //    Plist = plist;
-        //    Friendslist = friendslist;
-        //    StudInCourse = studInCourse;
-        //    Match = match;
-        //    Preflist = preflist;
-        //    HomeDist = homeDist;
-        //    StudyingDist = studyingDist;
-        //    AgesRange = agesRange;
-        //}
-
 
         public Student getCurrentStudent(string mail)
         {
@@ -256,6 +235,13 @@ namespace project_classes.Models
             DBServices dbs = new DBServices();
             List<int> daysandusers = dbs.getNumOfNewUsers(numDays);
             return daysandusers;
+        }
+
+        public List<Student> GetCloseStudents(string mail)
+        {
+            DBServicesReact db = new DBServicesReact();
+            List<Student> studentsList = db.GetCloseStudents(mail);
+            return studentsList;
         }
     }
 }

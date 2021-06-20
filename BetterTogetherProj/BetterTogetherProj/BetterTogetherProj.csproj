@@ -240,6 +240,7 @@
     <Compile Include="Models\ExternalGroups.cs" />
     <Compile Include="Models\Hobby.cs" />
     <Compile Include="Models\IHostedService.cs" />
+    <Compile Include="Models\Links.cs" />
     <Compile Include="Models\Program.cs" />
     <Compile Include="Models\StudLocation.cs" />
     <Compile Include="Models\Pleasure.cs" />

@@ -162,7 +162,7 @@ namespace BetterTogetherProj.Models.DAL
             try
             {
                 con = connect("DBConnectionString");
-                String selectSTR = "SELECT * FROM student_P where mail='" + mail + "'";
+                String selectSTR = "SELECT * FROM student_P where mail='" + mail + "' and active = 'true'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
@@ -243,7 +243,7 @@ namespace BetterTogetherProj.Models.DAL
                             stud.Photo = (string)(dr["photo"]);
                             stud.Gender = (string)(dr["gender"]);
                             stud.RegistrationDate = Convert.ToDateTime(dr["registrationDate"]);
-                            stud.ActiveStatus = Convert.ToBoolean(dr["active"]);
+                            //stud.ActiveStatus = Convert.ToBoolean(dr["active"]);
                             stud.Plist = GetPlistByUser((string)dr["mail"]);
                             stud.Hlist = GetHlistByUser((string)dr["mail"]);
                             stud.Friendslist = GetFriendsListByUser(((string)dr["mail"]));
@@ -252,6 +252,7 @@ namespace BetterTogetherProj.Models.DAL
                             stud.StudyingDist = Convert.ToInt32(dr["studyingDist"]);
                             stud.AgesRange = Convert.ToInt32(dr["agesRange"]);
                             stud.Token = dr.IsDBNull(27) ? "no token" : (string)(dr["token"]);
+                           
 
                             return stud;
                         }
@@ -451,7 +452,8 @@ namespace BetterTogetherProj.Models.DAL
             {
                 con = connect("DBConnectionString");
 
-                String selectSTR = "SELECT sf.student2Mail FROM student_favorites_P sf where sf.Student1Mail ='" + email + "'";
+                //String selectSTR = "SELECT sf.student2Mail FROM student_favorites_P sf where sf.Student1Mail ='" + email + "' and active = 'true'";
+                String selectSTR = "SELECT sf.student2Mail FROM student_favorites_P sf INNER JOIN student_P sp ON sf.student2Mail = sp.mail where sf.Student1Mail ='" + email + "' and sp.active = 'true'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
 
@@ -487,7 +489,9 @@ namespace BetterTogetherProj.Models.DAL
             {
                 con = connect("DBConnectionString");
 
-                String selectSTR = "SELECT sf.student2Mail FROM student_favorites_P sf where sf.Student1Mail ='" + email + "'";
+                //String selectSTR = "SELECT sf.student2Mail FROM student_favorites_P sf where sf.Student1Mail ='" + email + "' and active = 'true'";
+                String selectSTR = "SELECT sf.student2Mail FROM student_favorites_P sf INNER JOIN student_P sp ON sf.student2Mail = sp.mail where sf.Student1Mail ='" + email + "' and sp.active = 'true'";
+
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
 
@@ -830,8 +834,8 @@ namespace BetterTogetherProj.Models.DAL
         {
             String command;
             StringBuilder sb = new StringBuilder();
-            String prefix = "INSERT INTO Student_P" + "(mail, password, firstName, lastName, dateOfBirth, departmentCode, studyingYear, homeTown, adrressStudying, personalStatus, isAvailableCar, intrestedInCarpool, photo, gender, registrationDate, active,pref1,pref2,pref3,pref4,pref5,pref6,pref7,pref8,homeDist,studyingDist,agesRange,token) ";
-            sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}','{4}', '{5}','{6}', '{7}','{8}', '{9}','{10}', '{11}','{12}', '{13}','{14}', '{15}', '{16}', '{17}', '{18}', '{19}', '{20}', '{21}', '{22}', '{23}', '{24}', '{25}', '{26}', '{27}')", student.Mail, student.Password, student.Fname, student.Lname, student.DateOfBirth.ToString("yyyy-MM-dd H:mm:ss"), student.Dep.DepartmentCode, student.StudyingYear, student.HomeTown.Name, student.AddressStudying.Name, student.PersonalStatus, student.IsAvailableCar, student.IntrestedInCarPool, student.Photo, student.Gender, student.RegistrationDate.ToString("yyyy-MM-dd H:mm:ss"), true, 1, 2, 3, 4, 5, 6, 7, 8,15,15,3, student.Token);
+            String prefix = "INSERT INTO Student_P" + "(mail, password, firstName, lastName, dateOfBirth, departmentCode, studyingYear, homeTown, adrressStudying, personalStatus, isAvailableCar, intrestedInCarpool, photo, gender, registrationDate, active,pref1,pref2,pref3,pref4,pref5,pref6,pref7,pref8,homeDist,studyingDist,agesRange,token,entryCounter) ";
+            sb.AppendFormat("Values('{0}', '{1}','{2}', '{3}','{4}', '{5}','{6}', '{7}','{8}', '{9}','{10}', '{11}','{12}', '{13}','{14}', '{15}', '{16}', '{17}', '{18}', '{19}', '{20}', '{21}', '{22}', '{23}', '{24}', '{25}', '{26}', '{27}','{28}')", student.Mail, student.Password, student.Fname, student.Lname, student.DateOfBirth.ToString("yyyy-MM-dd H:mm:ss"), student.Dep.DepartmentCode, student.StudyingYear, student.HomeTown.Name, student.AddressStudying.Name, student.PersonalStatus, student.IsAvailableCar, student.IntrestedInCarPool, student.Photo, student.Gender, student.RegistrationDate.ToString("yyyy-MM-dd H:mm:ss"), true, 1, 2, 3, 4, 5, 6, 7, 8,15,15,3, student.Token,0);
             command = prefix + sb.ToString();
             return command;
         }
@@ -1140,6 +1144,7 @@ namespace BetterTogetherProj.Models.DAL
                 con = connect("DBConnectionString");
 
                 String selectSTR = "SELECT * FROM student_P where mail<> '" + mail + "' and active = 'true'";
+                selectSTR += "update student_P set active='false' where DATEDIFF(day,finalDate,GETDATE())>0";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
@@ -1743,7 +1748,7 @@ namespace BetterTogetherProj.Models.DAL
 
         private String BuildDeleteUserProfileCommand(string mail)
         {
-            String prefix = "UPDATE[dbo].[student_P] SET [active] ='" + true;
+            String prefix = "UPDATE[dbo].[student_P] SET [active] ='" + false;
             prefix += "' WHERE [mail] = '" + mail + "'";
             return prefix;
         }
@@ -1807,45 +1812,129 @@ namespace BetterTogetherProj.Models.DAL
         {
             String prefix = "DELETE FROM [dbo].[locations_P] where [mail] = '" + sl.Mail + "' ";
 
-                prefix += "INSERT INTO locations_P (mail, x, y) Values('" + sl.Mail + "'," + sl.X + "," + sl.Y + ") ";
+                prefix += "INSERT INTO locations_P (mail, x, y,timeS) Values('" + sl.Mail + "'," + sl.X + "," + sl.Y + ",GETDATE()) ";
 
             return prefix;
         }
 
-        public List<StudentFavorites> GetCloseStudents()
+        //public List<StudentFavorites> GetCloseStudents()
+        //{
+        //    SqlConnection con = null;
+        //    List<StudentFavorites> TwoStudentsList = new List<StudentFavorites>();
+
+        //    try
+        //    {
+        //        con = connect("DBConnectionString");
+
+        //        String selectSTR = "SELECT * FROM locations_P";
+        //        SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+        //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+        //        while (dr.Read())
+        //        {
+
+        //            StudentFavorites TwoStudents = new StudentFavorites();
+        //            TwoStudents.Student1mail = (string)dr["mail"];
+        //            TwoStudents.Student2mail = checkIfClose((string)dr["mail"],Convert.ToDouble(dr["x"]), Convert.ToDouble(dr["y"]));
+        //            if (TwoStudents.Student2mail!="")
+        //                if(TwoStudentsList.FindIndex(s => (s.Student1mail == s.Student2mail)&&(s.Student2mail == s.Student1mail))==-1)
+        //                    TwoStudentsList.Add(TwoStudents);
+        //        }
+
+        //        if (TwoStudentsList.Count > 0)
+        //        {
+        //            return TwoStudentsList;
+        //        }
+
+        //        else
+        //            throw new Exception("there are no close users");
+
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //writeToLog(ex);
+        //        throw (ex);
+        //    }
+        //    finally
+        //    {
+        //        if (con != null)
+        //        {
+        //            con.Close();
+        //        }
+
+        //    }
+
+        //}
+        //public string checkIfClose(string mail1,double x, double y)
+        //{
+        //    SqlConnection con = null;
+
+
+        //    try
+        //    {
+        //        con = connect("DBConnectionString");
+
+        //        string mail2 = "";
+        //        double xLocation = 0;
+        //        double yLocation = 0;
+        //        String selectSTR = "SELECT * FROM locations_P where mail<> '" + mail1 + "'";
+        //        SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+        //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+        //        while (dr.Read())
+        //        {
+        //            xLocation = (x / 1000) - (Convert.ToDouble(dr["x"]) / 1000);
+        //            yLocation = (y / 1000) - (Convert.ToDouble(dr["y"]) / 1000);
+        //            if (Math.Sqrt(Math.Pow(xLocation, 2) + Math.Pow(yLocation, 2)) < 1)
+        //                return mail2 = (string)dr["mail"];
+        //        }
+        //        return "";
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //writeToLog(ex);
+        //        throw (ex);
+        //    }
+        //    finally
+        //    {
+        //        if (con != null)
+        //        {
+        //            con.Close();
+        //        }
+
+        //    }
+
+        //}
+
+        public List<Student> GetCloseStudents(string mail)
         {
             SqlConnection con = null;
-            List<StudentFavorites> TwoStudentsList = new List<StudentFavorites>();
+            List<Student> closedUsers = new List<Student>();
 
             try
             {
                 con = connect("DBConnectionString");
 
-                String selectSTR = "SELECT * FROM locations_P";
+                String selectSTR = "SELECT * FROM locations_P where mail = '" + mail +"'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
-
-                    StudentFavorites TwoStudents = new StudentFavorites();
-                    TwoStudents.Student1mail = (string)dr["mail"];
-                    TwoStudents.Student2mail = checkIfClose((string)dr["mail"],Convert.ToDouble(dr["x"]), Convert.ToDouble(dr["y"]));
-                    if (TwoStudents.Student2mail!="")
-                        if(TwoStudentsList.FindIndex(s => (s.Student1mail == s.Student2mail)&&(s.Student2mail == s.Student1mail))==-1)
-                            TwoStudentsList.Add(TwoStudents);
+                    closedUsers = checkClosedUsers((string)dr["mail"], Convert.ToDouble(dr["x"]), Convert.ToDouble(dr["y"]), Convert.ToDateTime(dr["timeS"]));
                 }
 
-                if (TwoStudentsList.Count > 0)
+                if (closedUsers.Count == 0)
                 {
-                    return TwoStudentsList;
-                }
-
-                else
                     throw new Exception("there are no close users");
-
-
+                }
+                return closedUsers;
 
             }
             catch (Exception ex)
@@ -1863,19 +1952,20 @@ namespace BetterTogetherProj.Models.DAL
             }
 
         }
-        public string checkIfClose(string mail1,double x, double y)
+        public List<Student> checkClosedUsers(string mail1, double x, double y, DateTime timeS1)
         {
             SqlConnection con = null;
- 
+            List<Student> closedUsersList = new List<Student>();
 
             try
             {
                 con = connect("DBConnectionString");
 
-                string mail2 = "";
                 double xLocation = 0;
                 double yLocation = 0;
-                String selectSTR = "SELECT * FROM locations_P where mail<> '" + mail1 + "'";
+                DateTime timeS2 = new DateTime();
+               // String selectSTR = "SELECT * FROM locations_P where mail<> '" + mail1 + "'";
+                String selectSTR = "SELECT l.* FROM [dbo].[locations_P] l INNER JOIN student_P sp ON l.mail = sp.mail where l.mail <> '" + mail1 + "' and sp.active = 'true'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
@@ -1884,10 +1974,15 @@ namespace BetterTogetherProj.Models.DAL
                 {
                     xLocation = (x / 1000) - (Convert.ToDouble(dr["x"]) / 1000);
                     yLocation = (y / 1000) - (Convert.ToDouble(dr["y"]) / 1000);
-                    if (Math.Sqrt(Math.Pow(xLocation, 2) + Math.Pow(yLocation, 2)) < 1)
-                        return mail2 = (string)dr["mail"];
+                    timeS2 = Convert.ToDateTime(dr["timeS"]);
+                    Double diff = Math.Abs((timeS1 - timeS2).TotalDays);
+                    if (Math.Sqrt(Math.Pow(xLocation, 2) + Math.Pow(yLocation, 2)) < 1 && diff <= 1)
+                    {
+                        Student s = getCurrentStudent((string)dr["mail"]);
+                        closedUsersList.Add(s);
+                    }
                 }
-                return "";
+                return closedUsersList;
 
             }
             catch (Exception ex)
@@ -1905,7 +2000,6 @@ namespace BetterTogetherProj.Models.DAL
             }
 
         }
-
         public int updateToken(string mail , string token)
         {
 
@@ -1945,6 +2039,7 @@ namespace BetterTogetherProj.Models.DAL
 
         }
 
+
         private String BuildUpdateUserTokenCommand(string mail, string token)
         {
             String prefix = "UPDATE[dbo].[student_P] SET ";
@@ -1953,5 +2048,39 @@ namespace BetterTogetherProj.Models.DAL
             return prefix;
         }
 
+        public Links ReadLinks(int dep,int year)
+        {
+            SqlConnection con = null;
+            Links link = new Links();
+
+            try
+            {
+                con = connect("DBConnectionString");
+                String selectSTR = "SELECT * FROM links_P where depCode=" + dep + " and yearCode ="+year;
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                while (dr.Read())
+                {
+                    link.WhatsappLink = (string)dr["link"];
+                    link.DriveLink = (string)dr["driveLink"];
+                }
+                return link;
+            }
+
+            catch (Exception ex)
+            {
+                //writeToLog(ex);
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+        }
     }
 }
