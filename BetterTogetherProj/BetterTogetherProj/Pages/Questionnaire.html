@@ -83,7 +83,7 @@
                 $("#inserth3").show();
                 //$("#EditViewDiv").hide();
                 $("#saveBTN").show();
-
+               
                 clearFields();
                 $("#editDiv :input").prop("disabled", false); // new mode: enable all controls in the form
 
@@ -370,7 +370,8 @@
 
         }
 
-        function updateStatusSuccess() {
+        function updateStatusSuccess(message) {
+            console.log(message);
             ajaxCall("GET", "../api/Questionnaire/qr?statusQR=" + statusQR + "&deleteMode=1" , "", updatestatus, error);
          
         }
@@ -602,6 +603,7 @@
             if (mode == "view") {
                 $("#" + q + "Qans").html("");
                 $(".divareaque").html("");
+             
                 q = 0;
                 for (var i = 0; i < Qr.Queslist.length; i++) {
                     addquestion();
@@ -902,15 +904,16 @@
 
 <body>
     <nav class="navbar navbar-default">
-        <div class="container-fluid dropdown">
+        <div class="container-fluid">
             <ul class="nav navbar-nav">
                 <li><a href="AdsTB.html">פרסומים</a></li>
                 <li><a href="EventTB.html">אירועים</a></li>
                 <li class="active"><a href="Questionnaire.html">שאלונים</a></li>
-                <li>
+                <li class="dropdown">
                     <a class="dropbtn" href="Home.html">דף הבית  <i class="fa fa-caret-down"></i></a>
-                    <div class="dropdown-content nodrop">
-                        <a class="dropdown-item" href="StudentForm.html">ניהול משתמשים</a>
+                    <div class="dropdown-content">
+                        <a class="dropdown-item" href="BlockandReleaseStudent.html">ניהול משתמשים</a>
+                        <a class="dropdown-item" href="StudentForm.html">הוספת משתמש</a>
                     </div>
                 </li>
                 <li id="titleNav"><a id="navT">היחידת ליזמות חברתית</a></li>
@@ -920,8 +923,8 @@
     <h2>שאלוני סטודנטים</h2>
 
     <button class="newBTN myButton" id="newBTNQr"> יצירת שאלון חדש <span class="glyphicon glyphicon-plus"></span></button>
-    
-    <div class="form-group col-sm-12">      
+
+    <div class="form-group col-sm-12">
         <select class="form-control" id="filter">
             <option value="1">שאלונים פעילים</option>
             <option value="0">שאלונים לא פעילים</option>

@@ -1,4 +1,5 @@
 ﻿using BetterTogetherProj.Models.DAL;
+using project_classes.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,6 +77,21 @@ namespace BetterTogetherProj.Models
         {
             DBServices dbs = new DBServices();
             dbs.UpdateStatusAd(AdId);
+
+        }
+
+        public IEnumerable<List<Student>> GetStudentsByActivity()
+        {
+            DBServices dbs = new DBServices();
+            IEnumerable<List<Student>> StudentsList = dbs.GetStudentsByActivity();
+            return StudentsList;
+
+        }
+
+        public void UpdateActivity(string StudentMail, bool active)
+        {
+            DBServices dbs = new DBServices();
+            dbs.UpdateActivity(StudentMail, active);
 
         }
     }

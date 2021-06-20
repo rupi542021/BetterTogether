@@ -345,6 +345,7 @@
     <Content Include="Pages\Ads.html" />
     <Content Include="Pages\AdsFeedBack.html" />
     <Content Include="Pages\AdsTB.html" />
+    <Content Include="Pages\BlockandReleaseStudent.html" />
     <Content Include="Pages\Events.html" />
     <Content Include="Pages\EventsFeedBack.html" />
     <Content Include="Pages\EventTB.html" />

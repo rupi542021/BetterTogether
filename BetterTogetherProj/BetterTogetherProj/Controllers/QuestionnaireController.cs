@@ -24,9 +24,18 @@ namespace BetterTogetherProj.Controllers
 
 
         // PUT api/<controller>/5
-        public void Put( [FromBody] Questionnaire Qr)
+        public HttpResponseMessage Put( [FromBody] Questionnaire Qr)
         {
-            Qr.UpdateQr();
+            try
+            {
+                Qr.UpdateQr();
+                return Request.CreateResponse(HttpStatusCode.OK, "השאלון עודכן בהצלחה ");
+
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
+            }
         }
 
         // DELETE api/<controller>/5
@@ -90,20 +99,21 @@ namespace BetterTogetherProj.Controllers
 
         [HttpPut]
         [Route("api/Questionnaire/updatestatus")]
-        public void UpdateStatusQr( int QrId)
+        public HttpResponseMessage UpdateStatusQr( int QrId)
         {
-            Questionnaire qr = new Questionnaire();
-            qr.UpdateStatusQr(QrId);
+            try
+            {
+                Questionnaire qr = new Questionnaire();
+                qr.UpdateStatusQr(QrId);
+                return Request.CreateResponse(HttpStatusCode.OK, "הסטטוס עודכן בהצלחה");
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
+            }
+
         }
 
-        //[HttpGet]
-        //[Route("api/Questionnaire/getRespondersbyDepAndYear")]
-        //public List<Questionnaire> GetRespondersbyDepAndYear()
-        //{
-        //    Questionnaire qr = new Questionnaire();
-        //    return qr.GetRespondersbyDepAndYear();
-
-        //}
 
         [HttpGet]
         [Route("api/Questionnaire/getpercentActiveQr")]

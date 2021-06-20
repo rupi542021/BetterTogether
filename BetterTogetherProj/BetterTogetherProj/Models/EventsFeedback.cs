@@ -36,18 +36,6 @@ namespace BetterTogetherProj.Models
 
 
 
-
-
-
-
-        //public List<StudentFeedToEvents> GetFBEvents(string evtypeFB)
-        //{
-        //    DBServices dbs = new DBServices();
-        //    List<StudentFeedToEvents> studentFBList = dbs.GetFBEvents(evtypeFB);
-        //    return studentFBList;
-
-        //}
-
         public void Insertcomment()
         {
             DBServices dbs = new DBServices();
