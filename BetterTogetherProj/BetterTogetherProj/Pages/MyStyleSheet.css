@@ -562,3 +562,7 @@ table.dataTable tbody th, table.dataTable tbody td {
     margin-left: 10px;
    text-align:right;
 }
+
+.blockS,.releaseS{
+    padding-left:20%
+}
