@@ -220,7 +220,6 @@ namespace BetterTogetherProj.Models.DAL
             {
                 con = connect("DBConnectionString");
                 String selectSTR = "SELECT * FROM student_P where mail='" + email + "' and active = 'true'";
-                selectSTR += "update student_P set student_P.entryCounter=student_P.entryCounter+1 where student_P.mail='" + email + "' and student_P.active='true'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 if (dr.HasRows == true)
@@ -1817,40 +1816,124 @@ namespace BetterTogetherProj.Models.DAL
             return prefix;
         }
 
-        public List<StudentFavorites> GetCloseStudents()
+        //public List<StudentFavorites> GetCloseStudents()
+        //{
+        //    SqlConnection con = null;
+        //    List<StudentFavorites> TwoStudentsList = new List<StudentFavorites>();
+
+        //    try
+        //    {
+        //        con = connect("DBConnectionString");
+
+        //        String selectSTR = "SELECT * FROM locations_P";
+        //        SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+        //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+        //        while (dr.Read())
+        //        {
+
+        //            StudentFavorites TwoStudents = new StudentFavorites();
+        //            TwoStudents.Student1mail = (string)dr["mail"];
+        //            TwoStudents.Student2mail = checkIfClose((string)dr["mail"],Convert.ToDouble(dr["x"]), Convert.ToDouble(dr["y"]));
+        //            if (TwoStudents.Student2mail!="")
+        //                if(TwoStudentsList.FindIndex(s => (s.Student1mail == s.Student2mail)&&(s.Student2mail == s.Student1mail))==-1)
+        //                    TwoStudentsList.Add(TwoStudents);
+        //        }
+
+        //        if (TwoStudentsList.Count > 0)
+        //        {
+        //            return TwoStudentsList;
+        //        }
+
+        //        else
+        //            throw new Exception("there are no close users");
+
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //writeToLog(ex);
+        //        throw (ex);
+        //    }
+        //    finally
+        //    {
+        //        if (con != null)
+        //        {
+        //            con.Close();
+        //        }
+
+        //    }
+
+        //}
+        //public string checkIfClose(string mail1,double x, double y)
+        //{
+        //    SqlConnection con = null;
+
+
+        //    try
+        //    {
+        //        con = connect("DBConnectionString");
+
+        //        string mail2 = "";
+        //        double xLocation = 0;
+        //        double yLocation = 0;
+        //        String selectSTR = "SELECT * FROM locations_P where mail<> '" + mail1 + "'";
+        //        SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+        //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+        //        while (dr.Read())
+        //        {
+        //            xLocation = (x / 1000) - (Convert.ToDouble(dr["x"]) / 1000);
+        //            yLocation = (y / 1000) - (Convert.ToDouble(dr["y"]) / 1000);
+        //            if (Math.Sqrt(Math.Pow(xLocation, 2) + Math.Pow(yLocation, 2)) < 1)
+        //                return mail2 = (string)dr["mail"];
+        //        }
+        //        return "";
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //writeToLog(ex);
+        //        throw (ex);
+        //    }
+        //    finally
+        //    {
+        //        if (con != null)
+        //        {
+        //            con.Close();
+        //        }
+
+        //    }
+
+        //}
+
+        public List<Student> GetCloseStudents(string mail)
         {
             SqlConnection con = null;
-            List<StudentFavorites> TwoStudentsList = new List<StudentFavorites>();
+            List<Student> closedUsers = new List<Student>();
 
             try
             {
                 con = connect("DBConnectionString");
 
-                String selectSTR = "SELECT * FROM locations_P";
+                String selectSTR = "SELECT * FROM locations_P where mail = '" + mail +"'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
-
-                    StudentFavorites TwoStudents = new StudentFavorites();
-                    TwoStudents.Student1mail = (string)dr["mail"];
-                    TwoStudents.Student2mail = checkIfClose((string)dr["mail"],Convert.ToDouble(dr["x"]), Convert.ToDouble(dr["y"]));
-                    if (TwoStudents.Student2mail!="")
-                        if(TwoStudentsList.FindIndex(s => (s.Student1mail == s.Student2mail)&&(s.Student2mail == s.Student1mail))==-1)
-                            TwoStudentsList.Add(TwoStudents);
+                    closedUsers = checkClosedUsers((string)dr["mail"], Convert.ToDouble(dr["x"]), Convert.ToDouble(dr["y"]), Convert.ToDateTime(dr["timeS"]));
                 }
 
-                if (TwoStudentsList.Count > 0)
+                if (closedUsers.Count == 0)
                 {
-                    return TwoStudentsList;
-                }
-
-                else
                     throw new Exception("there are no close users");
-
-
+                }
+                return closedUsers;
 
             }
             catch (Exception ex)
@@ -1868,19 +1951,20 @@ namespace BetterTogetherProj.Models.DAL
             }
 
         }
-        public string checkIfClose(string mail1,double x, double y)
+        public List<Student> checkClosedUsers(string mail1, double x, double y, DateTime timeS1)
         {
             SqlConnection con = null;
- 
+            List<Student> closedUsersList = new List<Student>();
 
             try
             {
                 con = connect("DBConnectionString");
 
-                string mail2 = "";
                 double xLocation = 0;
                 double yLocation = 0;
-                String selectSTR = "SELECT * FROM locations_P where mail<> '" + mail1 + "'";
+                DateTime timeS2 = new DateTime();
+               // String selectSTR = "SELECT * FROM locations_P where mail<> '" + mail1 + "'";
+                String selectSTR = "SELECT l.* FROM [dbo].[locations_P] l INNER JOIN student_P sp ON l.mail = sp.mail where l.mail <> '" + mail1 + "' and sp.active = 'true'";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
@@ -1889,10 +1973,15 @@ namespace BetterTogetherProj.Models.DAL
                 {
                     xLocation = (x / 1000) - (Convert.ToDouble(dr["x"]) / 1000);
                     yLocation = (y / 1000) - (Convert.ToDouble(dr["y"]) / 1000);
-                    if (Math.Sqrt(Math.Pow(xLocation, 2) + Math.Pow(yLocation, 2)) < 1)
-                        return mail2 = (string)dr["mail"];
+                    timeS2 = Convert.ToDateTime(dr["timeS"]);
+                    Double diff = Math.Abs((timeS1 - timeS2).TotalDays);
+                    if (Math.Sqrt(Math.Pow(xLocation, 2) + Math.Pow(yLocation, 2)) < 1 && diff <= 1)
+                    {
+                        Student s = getCurrentStudent((string)dr["mail"]);
+                        closedUsersList.Add(s);
+                    }
                 }
-                return "";
+                return closedUsersList;
 
             }
             catch (Exception ex)
@@ -1910,7 +1999,6 @@ namespace BetterTogetherProj.Models.DAL
             }
 
         }
-
         public int updateToken(string mail , string token)
         {
 
@@ -1949,6 +2037,7 @@ namespace BetterTogetherProj.Models.DAL
             }
 
         }
+
 
         private String BuildUpdateUserTokenCommand(string mail, string token)
         {

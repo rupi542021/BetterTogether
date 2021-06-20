@@ -257,5 +257,12 @@ namespace project_classes.Models
             List<int> daysandusers = dbs.getNumOfNewUsers(numDays);
             return daysandusers;
         }
+
+        public List<Student> GetCloseStudents(string mail)
+        {
+            DBServicesReact db = new DBServicesReact();
+            List<Student> studentsList = db.GetCloseStudents(mail);
+            return studentsList;
+        }
     }
 }

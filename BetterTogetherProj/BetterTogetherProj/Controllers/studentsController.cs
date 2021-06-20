@@ -367,13 +367,13 @@ namespace BetterTogetherProj.Controllers
             }
         }
         [HttpGet]
-        [Route("API/students/GetCloseStudents")]
-        public IHttpActionResult GetCloseStudents()
+        [Route("API/students/{mail}/GetCloseStudents")]
+        public IHttpActionResult GetCloseStudents(string mail)
         {
             try
             {
-                StudentFavorites s = new StudentFavorites();
-                List<StudentFavorites> studentsList = s.GetCloseStudents();
+                Student s = new Student();
+                List<Student> studentsList = s.GetCloseStudents(mail);
                 return Ok(studentsList);
             }
             catch (Exception e)
@@ -387,6 +387,27 @@ namespace BetterTogetherProj.Controllers
                 }
             }
         }
+        //[HttpGet]
+        //[Route("API/students/GetCloseStudents")]
+        //public IHttpActionResult GetCloseStudents()
+        //{
+        //    try
+        //    {
+        //        StudentFavorites s = new StudentFavorites();
+        //        List<StudentFavorites> studentsList = s.GetCloseStudents();
+        //        return Ok(studentsList);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        switch (e.Message)
+        //        {
+        //            case "there are no close users":
+        //                return Content(HttpStatusCode.NotFound, e);
+        //            default:
+        //                return Content(HttpStatusCode.BadRequest, e);
+        //        }
+        //    }
+        //}
             
         
 
