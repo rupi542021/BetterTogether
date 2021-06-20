@@ -34,9 +34,18 @@ namespace BetterTogetherProj.Controllers
         }
 
         // PUT api/<controller>/5
-        public void Put( [FromBody] Events eventt)
+        public HttpResponseMessage Put( [FromBody] Events eventt)
         {
-            eventt.UpdateEvent();
+            try
+            {
+                eventt.UpdateEvent();
+                return Request.CreateResponse(HttpStatusCode.OK, "האירוע עודכן בהצלחה");
+
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
+            }
         }
 
 
@@ -129,7 +138,7 @@ namespace BetterTogetherProj.Controllers
             {
                 addmngcom.Insertcomment();
 
-                return Request.CreateResponse(HttpStatusCode.OK, "התגובה נוספה בהצלחה");
+                return Request.CreateResponse(HttpStatusCode.OK, "התגובה עודכנה בהצלחה");
             }
             catch (Exception ex)
             {
@@ -150,10 +159,19 @@ namespace BetterTogetherProj.Controllers
 
         [HttpPut]
         [Route("api/Events/updatestatus")]
-        public void Put(int EventId)
+        public HttpResponseMessage Put(int EventId)
         {
-            Events ev = new Events();
-            ev.UpdateStatusEvent(EventId);
+            try
+            {
+                Events ev = new Events();
+                ev.UpdateStatusEvent(EventId);
+                return Request.CreateResponse(HttpStatusCode.OK, "הסטטוס עודכן בהצלחה");
+
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
     }
 }

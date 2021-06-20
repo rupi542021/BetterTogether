@@ -186,7 +186,8 @@
 
         }
 
-        function updateStatusSuccess() {
+        function updateStatusSuccess(message) {
+            console.log(message);
             ajaxCall("GET", "../api/Ads/getFB?statusAd=" + statusAd + "&subnameFB=''" , "", updatestatus, error);
 
         }
@@ -297,15 +298,16 @@
 </head>
 <body>
     <nav class="navbar navbar-default">
-        <div class="container-fluid dropdown">
+        <div class="container-fluid">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="AdsTB.html">פרסומים</a></li>
                 <li><a href="EventTB.html">אירועים</a></li>
                 <li><a href="Questionnaire.html">שאלונים</a></li>
-                <li>
+                <li class="dropdown">
                     <a class="dropbtn" href="Home.html">דף הבית  <i class="fa fa-caret-down"></i></a>
-                    <div class="dropdown-content nodrop">
-                        <a class="dropdown-item" href="StudentForm.html">ניהול משתמשים</a>
+                    <div class="dropdown-content">
+                        <a class="dropdown-item" href="BlockandReleaseStudent.html">ניהול משתמשים</a>
+                        <a class="dropdown-item" href="StudentForm.html">הוספת משתמש</a>
                     </div>
                 </li>
                 <li id="titleNav"><a id="navT">היחידת ליזמות חברתית</a></li>
@@ -366,9 +368,9 @@
                 </div>
 
                 <!--<div class="form-group col-sm-4">
-            <label for="Status"><span class="red-star">★ </span>סטטוס</label>
-            <input type="checkbox" class="form-control" id="Status" checked />
-        </div>-->
+                    <label for="Status"><span class="red-star">★ </span>סטטוס</label>
+                    <input type="checkbox" class="form-control" id="Status" checked />
+                </div>-->
 
             </div>
 
@@ -377,7 +379,7 @@
                 <div class="col-xs-6">  <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">שמירה</button></div>
                 <div class="col-xs-6">    <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN" value="ביטול" /></div>
             </div>
-          
+
         </form>
     </div>
 

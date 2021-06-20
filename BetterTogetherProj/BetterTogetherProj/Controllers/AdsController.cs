@@ -24,12 +24,12 @@ namespace BetterTogetherProj.Controllers
         }
 
         // POST api/<controller>
-        public void Post([FromBody]string value)
+        public void Post([FromBody] string value)
         {
         }
 
         // PUT api/<controller>/5
-        public HttpResponseMessage Put( [FromBody] Ads adss)
+        public HttpResponseMessage Put([FromBody] Ads adss)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace BetterTogetherProj.Controllers
                 return Request.CreateResponse(HttpStatusCode.NotFound, ex.Message);
             }
         }
-        
+
 
         // DELETE api/<controller>/5
         public void Delete(int id)
@@ -124,7 +124,7 @@ namespace BetterTogetherProj.Controllers
         public List<Ads> GetAdBySub(int statusAd, string subnameFB)
         {
             Ads ad = new Ads();
-            return ad.GetAdBySub(statusAd,subnameFB);
+            return ad.GetAdBySub(statusAd, subnameFB);
 
         }
 
@@ -136,7 +136,7 @@ namespace BetterTogetherProj.Controllers
             {
                 addmngcom.Insertcomment();
 
-                return Request.CreateResponse(HttpStatusCode.OK, "התגובה נוספה בהצלחה");
+                return Request.CreateResponse(HttpStatusCode.OK, "התגובה עודכנה בהצלחה");
             }
             catch (Exception ex)
             {
@@ -148,10 +148,51 @@ namespace BetterTogetherProj.Controllers
 
         [HttpPut]
         [Route("api/Ads/updatestatus")]
-        public void Put(int AdId)
+        public HttpResponseMessage Put(int AdId)
         {
-            Ads ad = new Ads();
-            ad.UpdateStatusAd(AdId);
+            try
+            {
+                Ads ad = new Ads();
+                ad.UpdateStatusAd(AdId);
+                return Request.CreateResponse(HttpStatusCode.OK, "הסטטוס עודכן בהצלחה");
+
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/Ads/getStudentsByActivity")]
+        public IEnumerable<List<Student>> GetStudentsByActivity()
+        {
+            Ads stu = new Ads();
+            return stu.GetStudentsByActivity();
+
+        }
+
+
+
+        [HttpPut]
+        [Route("api/Ads/blockS")]
+        public HttpResponseMessage Put(string StudentMail, bool active)
+        {
+            try
+            {
+                Ads stud = new Ads();
+                stud.UpdateActivity(StudentMail, active);
+                if(active==true)
+                return Request.CreateResponse(HttpStatusCode.OK, "המשתמש נחסם בהצלחה");
+                else
+                    return Request.CreateResponse(HttpStatusCode.OK, "המשתמש שוחרר בהצלחה");
+
+
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
     }
 }

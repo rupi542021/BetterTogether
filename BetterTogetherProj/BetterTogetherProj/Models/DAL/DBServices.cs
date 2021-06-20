@@ -2189,5 +2189,141 @@ namespace BetterTogetherProj.Models.DAL
         }
 
 
+        public IEnumerable<List<Student>> GetStudentsByActivity()
+        {
+
+            List<Student> ActiveStuList = new List<Student>();
+            List<Student> NoActiveStuList = new List<Student>();
+
+            SqlConnection con1 = null;
+            SqlConnection con2 = null;
+            String selectSTR1 = "";
+            String selectSTR2 = "";
+            try
+            {
+                con1 = connect1("DBConnectionString");
+                selectSTR1 += "select * from student_P inner join department_P on student_P.departmentCode=department_P.departmentCode where active=1";
+
+
+                SqlCommand cmd1 = new SqlCommand(selectSTR1, con1);
+                SqlDataReader dr1 = cmd1.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr1.Read())
+                {   // Read till the end of the data into a row
+
+                    Student stud = new Student();
+                    stud.Mail = (string)dr1["mail"];                   
+                    stud.Fname = (string)(dr1["firstName"]);
+                    stud.Lname = (string)(dr1["lastName"]);
+                    stud.DateOfBirth = Convert.ToDateTime(dr1["dateOfBirth"]);
+                    stud.Dep = (new Department { DepartmentName = (string)dr1["departmentName"] });
+                    stud.Dep.DepartmentCode= Convert.ToInt16(dr1["departmentCode"]);
+                    stud.StudyingYear = Convert.ToInt32(dr1["studyingYear"]);                  
+                    stud.ActiveStatus = Convert.ToBoolean(dr1["active"]);                   
+                    ActiveStuList.Add(stud);
+
+
+                }
+                con2 = connect1("DBConnectionString");
+                selectSTR2 += "select * from student_P inner join department_P on student_P.departmentCode=department_P.departmentCode where active=0";
+
+                SqlCommand cmd2 = new SqlCommand(selectSTR2, con2);
+                SqlDataReader dr2 = cmd2.ExecuteReader(CommandBehavior.CloseConnection);
+                while (dr2.Read())
+                {   // Read till the end of the data into a row
+
+                    Student stud = new Student();
+                    stud.Mail = (string)dr2["mail"];
+                    stud.Fname = (string)(dr2["firstName"]);
+                    stud.Lname = (string)(dr2["lastName"]);
+                    stud.DateOfBirth = Convert.ToDateTime(dr2["dateOfBirth"]);
+                    stud.Dep = (new Department { DepartmentName = (string)dr2["departmentName"] });
+                    stud.Dep.DepartmentCode = Convert.ToInt16(dr2["departmentCode"]);
+                    stud.StudyingYear = Convert.ToInt32(dr2["studyingYear"]);
+                    stud.ActiveStatus = Convert.ToBoolean(dr2["active"]);
+                    NoActiveStuList.Add(stud);
+
+                }
+
+                return new List<List<Student>> { ActiveStuList, NoActiveStuList };
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con1 != null)
+                {
+                    con1.Close();
+                }
+                if (con2 != null)
+                {
+                    con2.Close();
+                }
+
+            }
+
+        }
+
+        public int UpdateActivity(string StudentMail, bool active)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect1("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            String cStr = BuildUpdatestadCommand(StudentMail, active);      // helper method to build the insert string
+
+            cmd = CreateCommand1(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+        //--------------------------------------------------------------------
+        // Build the Update command String
+        //--------------------------------------------------------------------
+
+        private String BuildUpdatestadCommand(string StudentMail, bool active)
+        {
+            String command;
+
+            if(active==true)
+            command = "update student_P set active='false' where mail='"+ StudentMail+"'";
+            else
+            command = "update student_P set active='true' where mail='" + StudentMail + "'";
+
+            return command;
+
+        }
+
     }
 }
