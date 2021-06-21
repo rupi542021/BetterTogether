@@ -31,7 +31,7 @@
     <script>
         $(document).ready(function () {
 
-
+            mode = "";
             ajaxCall("GET", "../api/Ads/getStudentsByActivity", "", getSuccessallstudents, error);
            
             $("#block").change(blockReleaseStudent);
@@ -48,22 +48,23 @@
             strl = "<option>בחר סטודנט לשחרור</option>";
             for (var i = 0; i < studentsDataa[0].length; i++) {
              
-                str += "<option value="+studentsDataa[0][i].Mail+">" + studentsDataa[0][i].Fname +" "+ studentsDataa[0][i].Lname+"</option>"
+                str += "<option value='" + studentsDataa[0][i].Mail + "'name='" + studentsDataa[0][i].Fname +" "+ studentsDataa[0][i].Lname+"'>" + studentsDataa[0][i].Fname +" "+ studentsDataa[0][i].Lname+"</option>"
             }
             $("#block").html(str);
             
             for (var j = 0; j < studentsDataa[1].length; j++) {
 
-                strl += "<option value=" + studentsDataa[1][j].Mail +">" + studentsDataa[1][j].Fname + " " + studentsDataa[1][j].Lname + "</option>"
+                strl += "<option value='" + studentsDataa[1][j].Mail + "'name='" + studentsDataa[1][j].Fname + " " + studentsDataa[1][j].Lname+"' > " + studentsDataa[1][j].Fname + " " + studentsDataa[1][j].Lname + "</option > "
             }
             $("#release").html(strl);
         }
 
         function blockReleaseStudent() {
             StudentMail = $(this).val();
-
+            name = $(this).find('option:selected').attr('name');
+            console.log(name)
             $(document).on("click", "#blockBTN", function () {
-
+                mode = "block";
                 swal({
                     title: "האם אתה בטוח ?",
                     text: "",
@@ -79,7 +80,7 @@
             });
 
             $(document).on("click", "#releaseBTN", function () {
-
+                mode = "release";
                 ajaxCall("PUT", "../api/Ads/blockS?StudentMail=" + StudentMail + "&active=false", "", updateActivitySuccess, error);
         
             });
@@ -94,7 +95,16 @@
 
         function updateActivitySuccess(message) {
             console.log(message);
-            ajaxCall("GET", "../api/Ads/getStudentsByActivity", "", getSuccessallstudents, error);
+            ajaxCall("GET", "../api/Ads/getStudentsByActivity", "", getSuccessallNewstudents, error);
+
+        }
+
+        function getSuccessallNewstudents(NewstudentsData) {
+            getSuccessallstudents(NewstudentsData)
+            if (mode == "release")
+                swal({ title:"!" +name+" שוחרר בהצלחה", icon: "success" });
+            else
+                swal({ title:"!" +name+ " נחסם בהצלחה", icon: "success" });
 
         }
 
