@@ -36,7 +36,7 @@
            
             $("#block").change(blockReleaseStudent);
             $("#release").change(blockReleaseStudent);
-
+            $("#sData").hide();
 
 
         });
@@ -60,7 +60,10 @@
         }
 
         function blockReleaseStudent() {
+            $("#sData").show();
             StudentMail = $(this).val();
+             $("#email").val(StudentMail);
+
             name = $(this).find('option:selected').attr('name');
             console.log(name)
             $(document).on("click", "#blockBTN", function () {
@@ -135,9 +138,36 @@
     <div class="row">
         <div class="col-sm-6 blockS">
             <h3>חסימת סטודנט</h3>
+            
             <select id="block">
             </select>
+
             <button id="blockBTN">חסום סטודנט </button>
+            <div class="form-group row" id="sData">
+                <div class="form-group col-sm-6">
+                    <label for="dateofBirth" id="dateB">תאריך לידה</label>
+                    <input type="date" class="form-control" />
+
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="email" id="Semail">מייל</label>
+                    <input type="email" class="form-control" id="email" />
+
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="department" id="departmentS">פקולטה</label>
+                    <select class="form-control" id="department">
+                        <option>    </option>
+                    </select>
+                </div>
+                <div class="form-group co-sm-6">
+                    <label for="yearStudy" id="yearStudyTest">שנת לימוד</label>
+                    <select class="form-control" id="yearStudy">
+                        <option value="">בחירת שנה</option>
+
+                    </select>
+                </div>
+            </div>
         </div>
 
         <div class="col-sm-6 releaseS">
