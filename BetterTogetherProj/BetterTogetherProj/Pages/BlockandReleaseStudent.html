@@ -48,7 +48,7 @@
             strl = "<option>בחר סטודנט לשחרור</option>";
             for (var i = 0; i < studentsDataa[0].length; i++) {
              
-                str += "<option value='" + studentsDataa[0][i].Mail + "'name='" + studentsDataa[0][i].Fname +" "+ studentsDataa[0][i].Lname+"'>" + studentsDataa[0][i].Fname +" "+ studentsDataa[0][i].Lname+"</option>"
+                str += "<option value='" + studentsDataa[0][i].Mail + "'name='" + studentsDataa[0][i].Fname +" "+ studentsDataa[0][i].Lname+"'BirthDate='"+studentsDataa[0][i].DateOfBirth+"'dep='"+studentsDataa[0][i].Dep.DepartmentName+"'Syear='"+studentsDataa[0][i].StudyingYear+"'>" + studentsDataa[0][i].Fname +" "+ studentsDataa[0][i].Lname+"</option>"
             }
             $("#block").html(str);
             
@@ -60,10 +60,34 @@
         }
 
         function blockReleaseStudent() {
+           var studingYear = "";
             $("#sData").show();
             StudentMail = $(this).val();
-             $("#email").val(StudentMail);
+           
+           
+            dateOfBirth = $(this).find('option:selected').attr('BirthDate');
+            department = $(this).find('option:selected').attr('dep');
+            
+            sYear = $(this).find('option:selected').attr('Syear');
+            if (sYear == 1)
+                studingYear = 'א';
+           
+           else if (sYear == 2)
+                studingYear = 'ב';
+            else if (sYear == 3)
+                studingYear = 'ג';
 
+            else  { studingYear = 'ד'; }
+
+             var dateOfBirthShort = new Date(dateOfBirth);
+             var dd = String(dateOfBirthShort.getDate()).padStart(2, '0');
+             var mm = String(dateOfBirthShort.getMonth() + 1).padStart(2, '0'); //January is 0!
+             var yyyy = dateOfBirthShort.getFullYear();
+            dateOfBirthShort = dd+ '/'+ mm+ '/'  +yyyy ;
+             $("#birthDate").val(dateOfBirthShort);
+            $("#departmant").val(department);
+            $("#email").val(StudentMail);
+            $("#sYear").val(studingYear);
             name = $(this).find('option:selected').attr('name');
             console.log(name)
             $(document).on("click", "#blockBTN", function () {
@@ -144,28 +168,26 @@
 
             <button id="blockBTN">חסום סטודנט </button>
             <div class="form-group row" id="sData">
-                <div class="form-group col-sm-6">
+                <div class="form-group col-sm-6 blockRelase">
                     <label for="dateofBirth" id="dateB">תאריך לידה</label>
-                    <input type="date" class="form-control" />
+                    <input type="text" class="form-control sDATA" id="birthDate" />
 
                 </div>
-                <div class="form-group col-sm-6">
+                <div class="form-group col-sm-6 blockRelase">
                     <label for="email" id="Semail">מייל</label>
-                    <input type="email" class="form-control" id="email" />
+                    <input type="email" class="form-control sDATA" id="email" />
 
                 </div>
-                <div class="form-group col-sm-6">
-                    <label for="department" id="departmentS">פקולטה</label>
-                    <select class="form-control" id="department">
-                        <option>    </option>
-                    </select>
+                <div class="form-group col-sm-6 blockRelase">
+
+                    <label for="department" id="departmentS">מחלקה</label>
+                    <input type="text" class="form-control sDATA" id="departmant" />
+        
                 </div>
-                <div class="form-group co-sm-6">
+                <div class="form-group co-sm-6 blockRelase">
                     <label for="yearStudy" id="yearStudyTest">שנת לימוד</label>
-                    <select class="form-control" id="yearStudy">
-                        <option value="">בחירת שנה</option>
-
-                    </select>
+                    <input type="text" class="form-control sDATA" id="sYear" />
+                  
                 </div>
             </div>
         </div>

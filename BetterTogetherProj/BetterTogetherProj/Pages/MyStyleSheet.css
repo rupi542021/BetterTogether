@@ -586,3 +586,14 @@ input, select, textarea {
 .blockS, .releaseS {
     padding-left: 250px
 }
+.sDATA {
+    background-color: transparent;
+    border-radius: 18px;
+    text-align:center;
+  
+}
+
+#sData {
+    margin-top: 50px;
+  
+}
