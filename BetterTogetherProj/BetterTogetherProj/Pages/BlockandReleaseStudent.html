@@ -34,8 +34,8 @@
             mode = "";
             ajaxCall("GET", "../api/Ads/getStudentsByActivity", "", getSuccessallstudents, error);
            
-            $("#block").change(blockReleaseStudent);
-            $("#release").change(blockReleaseStudent);
+            $("#block").change(blockStudent);
+            $("#release").change(ReleaseStudent);
             $("#sData").hide();
 
 
@@ -44,7 +44,7 @@
         function getSuccessallstudents(studentsData) {
             console.log(studentsData)
             studentsDataa = studentsData;
-            str = "<option>בחר סטודנט לחסימה</option>";
+            str = "<option value=''>בחר סטודנט לחסימה</option>";
             strl = "<option>בחר סטודנט לשחרור</option>";
             for (var i = 0; i < studentsDataa[0].length; i++) {
              
@@ -59,12 +59,69 @@
             $("#release").html(strl);
         }
 
-        function blockReleaseStudent() {
-           var studingYear = "";
+        function blockStudent() {
+            var studingYear = "";
             $("#sData").show();
-            StudentMail = $(this).val();
-           
-           
+            nameB = $(this).find('option:selected').attr('name');
+            var StudentMail = $(this).val();
+             
+            dateOfBirth = $(this).find('option:selected').attr('BirthDate');
+            department = $(this).find('option:selected').attr('dep');
+            sYear = $(this).find('option:selected').attr('Syear');
+            if (sYear == 1)
+                studingYear = 'א';
+            else if (sYear == 2)
+                studingYear = 'ב';
+            else if (sYear == 3)
+                studingYear = 'ג';
+            else { studingYear = 'ד'; }
+            var dateOfBirthShort = new Date(dateOfBirth);
+            var dd = String(dateOfBirthShort.getDate()).padStart(2, '0');
+            var mm = String(dateOfBirthShort.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = dateOfBirthShort.getFullYear();
+            dateOfBirthShort = dd + '/' + mm + '/' + yyyy;
+            $("#birthDate").val(dateOfBirthShort);
+            $("#departmant").val(department);
+            $("#email").val(StudentMail);
+            $("#sYear").val(studingYear);
+
+            console.log(nameB)
+            if (StudentMail == '') {
+                 $("#blockBTN").prop("disabled",true);
+                alert("יש לבחור סטודנט לחסימה")
+                $("#birthDate").val("");
+                $("#departmant").val("");
+                $("#email").val("");
+                $("#sYear").val("");
+               
+                //$("#blockBTN").hide();
+            }
+            else {
+                $("#blockBTN").prop("disabled",false);
+                $(document).on("click", "#blockBTN", function () {
+                    mode = "block";
+
+
+                    swal({
+                        title: "האם אתה בטוח ?",
+                        text: "",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+
+                    })
+                        .then(function (willDelete) {
+                            if (willDelete) block(StudentMail);
+
+                            else swal("Not Deleted!");
+                        });
+                });
+            }
+        }
+        function ReleaseStudent() {
+           var studingYear = "";
+            $("#sData").hide();
+           var StudentMail = $(this).val();
             dateOfBirth = $(this).find('option:selected').attr('BirthDate');
             department = $(this).find('option:selected').attr('dep');
             
@@ -90,21 +147,7 @@
             $("#sYear").val(studingYear);
             name = $(this).find('option:selected').attr('name');
             console.log(name)
-            $(document).on("click", "#blockBTN", function () {
-                mode = "block";
-                swal({
-                    title: "האם אתה בטוח ?",
-                    text: "",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true
-                })
-                    .then(function (willDelete) {
-                        if (willDelete) block(StudentMail);
-                        else swal("Not Deleted!");
-                    });
-
-            });
+           
 
             $(document).on("click", "#releaseBTN", function () {
                 mode = "release";
@@ -114,6 +157,13 @@
         }
 
         function block(StudentMail) {
+           
+            
+                $("#birthDate").val("");
+                $("#departmant").val("");
+                $("#email").val("");
+                $("#sYear").val("");
+            
             ajaxCall("PUT", "../api/Ads/blockS?StudentMail=" + StudentMail + "&active=true", "", updateActivitySuccess, error);
            
         }
@@ -131,7 +181,7 @@
             if (mode == "release")
                 swal({ title:"!" +name+" שוחרר בהצלחה", icon: "success" });
             else
-                swal({ title:"!" +name+ " נחסם בהצלחה", icon: "success" });
+                swal({ title:"!" +nameB+ " נחסם בהצלחה", icon: "success" });
 
         }
 
