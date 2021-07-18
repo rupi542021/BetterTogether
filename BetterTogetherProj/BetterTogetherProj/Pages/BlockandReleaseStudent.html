@@ -37,6 +37,9 @@
             $("#block").change(blockStudent);
             $("#release").change(ReleaseStudent);
             $("#sData").hide();
+            $("#blockBTN").prop("disabled", true);
+            $("#releseBTN").prop("disabled",true);
+
 
 
         });
@@ -60,6 +63,8 @@
         }
 
         function blockStudent() {
+           $("#blockBTN").prop("disabled",false);
+
             var studingYear = "";
             $("#sData").show();
             nameB = $(this).find('option:selected').attr('name');
@@ -87,14 +92,9 @@
 
             console.log(nameB)
             if (StudentMail == '') {
-                 $("#blockBTN").prop("disabled",true);
-                alert("יש לבחור סטודנט לחסימה")
-                $("#birthDate").val("");
-                $("#departmant").val("");
-                $("#email").val("");
-                $("#sYear").val("");
-               
-                //$("#blockBTN").hide();
+                $("#blockBTN").prop("disabled", true);
+                $("#sData").hide();
+
             }
             else {
                 $("#blockBTN").prop("disabled",false);
@@ -119,6 +119,8 @@
             }
         }
         function ReleaseStudent() {
+            $("#releaseBTN").prop("disabled", false);
+
            var studingYear = "";
             $("#sData").hide();
            var StudentMail = $(this).val();
@@ -148,7 +150,10 @@
             name = $(this).find('option:selected').attr('name');
             console.log(name)
            
-
+            if (StudentMail == '') {
+                $("#releaseBTN").prop("disabled", true);
+             
+            }
             $(document).on("click", "#releaseBTN", function () {
                 mode = "release";
                 ajaxCall("PUT", "../api/Ads/blockS?StudentMail=" + StudentMail + "&active=false", "", updateActivitySuccess, error);
@@ -178,6 +183,9 @@
 
         function getSuccessallNewstudents(NewstudentsData) {
             getSuccessallstudents(NewstudentsData)
+            $("#releaseBTN").prop("disabled", true);
+            $("#blockBTN").prop("disabled", true);
+
             if (mode == "release")
                 swal({ title:"!" +name+" שוחרר בהצלחה", icon: "success" });
             else
