@@ -58,13 +58,15 @@
 
                 mode = "";
             });
-       
+
+            ajaxCall("GET", "../api/Questionnaire/GetQNum", "", getQrNum, error);
+
             
             $("#newBTNQr").on("click", function () {
                
                 $("#openanswer").hide();
                 $("#filter").hide();
-                ajaxCall("GET", "../api/Questionnaire/GetQNum", "", getQrNum, error);
+                //ajaxCall("GET", "../api/Questionnaire/GetQNum", "", getQrNum, error);
 
                 ajaxCall("GET", "../api/Questionnaire/dep", "", getSuccessalldep, error);
                 AnsNum = 0;
@@ -337,7 +339,7 @@
                     Status: Qr.Status,
                     QuestionnaireYear: Qr.QuestionnaireYear,
                     Queslist: Qr.Queslist,
-                    QuestionnaireNum: questionnaires[questionnaires["length"] - 1].QuestionnaireNum + 1,
+                    QuestionnaireNum: QrNumm+1, /*questionnaires[questionnaires["length"] - 1].QuestionnaireNum + 1*/
                     DuplicateMode:1
                 }
                 ajaxCall("POST", "../api/Questionnaire/postqr", JSON.stringify(Qrtoduplicate), insertSuccess, error);
@@ -531,7 +533,7 @@
                     Status: true,
                     QuestionnaireYear: QuestionnaireYear,
                     Queslist: questionList,
-                     QuestionnaireNum: QrNumm,
+                     QuestionnaireNum: QrNumm+1,
                      DuplicateMode:0
                     
                 }
@@ -763,6 +765,8 @@
                 swal("השאלון שוכפל בהצלחה!", "Great Job", "success");
          
             }
+
+            QrNumm++;
             $("#filter").show();
             mode = "";
 

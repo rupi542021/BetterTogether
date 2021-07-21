@@ -1460,7 +1460,7 @@ namespace BetterTogetherProj.Models.DAL
             try
             {
                 con = connect1("DBConnectionString");
-                String selectSTR = "SELECT max(qrCode+1) as 'qrCode' from questionnaire_P3";
+                String selectSTR = "SELECT max(qrCode) as 'qrCode' from questionnaire_P3";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
