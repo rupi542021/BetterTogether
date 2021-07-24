@@ -8,7 +8,7 @@
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src='https://kit.fontawesome.com/50636d98f5.js' crossorigin='anonymous'></script>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -38,11 +38,11 @@
         var statusEvent = 1;
 
         $(document).ready(function () {
-            $("#cancelSaveBTN").on("click", function () { //מבטל טופס חדש ומחזיר לטבלה                
+            $("#cancelSaveBTN").on("click", function () { //מבטל טופס חדש ומחזיר לטבלה
                 $("#editDiv").hide();
 
             });
-        
+
             ajaxCall("GET", "../api/Events/geteventdetail?statusEvent=" + statusEvent, "", getSuccessAlleventdetail, error);
             google.charts.load('current', { 'packages': ['corechart'] });
             $(document).on("click", ".view", addpiechart);
@@ -66,10 +66,10 @@
         });
 
         function EditEvent() {
-             $("#piechart_3d").hide();
+            $("#piechart_3d").hide();
             $("#editDiv").show();
             markSelected(this);
-           
+
             $("#datedis").prop("disabled", false);
             $("#EventType").prop("disabled", true);
             $("#EventName").prop("disabled", true);
@@ -80,7 +80,7 @@
 
         }
 
-       
+
 
         function markSelected(btn) {
             $("#detaileventtable tr").removeClass("selected"); // remove seleced class from rows that were selected before
@@ -90,7 +90,7 @@
 
         function populateFields(eventid) {
             event = getEvent(eventid); //מחזיר את האובייקט שבשורה שלחצנו לפי ID
-       
+
             var dateEventcur = new Date(event.EventDate);
             var day = ("0" + dateEventcur.getDate()).slice(-2);
             var month = ("0" + (dateEventcur.getMonth() + 1)).slice(-2);
@@ -100,13 +100,13 @@
             $("#EventName").val(event.Eventname);
             $("#contentText").val(event.EventText);
             //$("#Status").prop('checked', event.Status);
-       
-        if ($("#datedis").val() < today) {
-            swal({ icon: 'error', title: 'Sorry', text: "!לא ניתן לערוך אירוע שכבר התרחש" })
-            $("#editDiv").hide();
-            } 
-          }
-       
+
+            if ($("#datedis").val() < today) {
+                swal({ icon: 'error', title: 'Sorry', text: "!לא ניתן לערוך אירוע שכבר התרחש" })
+                $("#editDiv").hide();
+            }
+        }
+
         function getEvent(id) {
             for (i in events) {
                 if (events[i].EventCode == id)
@@ -148,7 +148,7 @@
         }
         function getSuccessupdate(eventdetail) {
             events = eventdetail;
-            redrawTable(tbl, events); 
+            redrawTable(tbl, events);
             $("#editDiv").hide();
             swal({ title: " !האירוע עודכן בהצלחה", icon: "success" });
 
@@ -249,7 +249,7 @@
                                 return row.Studentsinevent.length;
                             }
                         },
-              
+
                         {
                             render: function (data, type, row, meta) {
                                 if ($("#filter").val() == 1) {
@@ -274,22 +274,22 @@
         }
 
         function addpiechart() {
-               markSelected(this);
+            markSelected(this);
             $("#editDiv").hide();
-              $("#piechart_3d").show();
+            $("#piechart_3d").show();
             participant = $(this).attr("par");
             eventName = $(this).attr("name");
             evcode = $(this).attr("evcode");
-            countdep1 =0
-            countdep2 =0
-            countdep3 =0
-            countdep4 =0
-            countdep5 =0
-            countdep6 =0
-            countdep7 =0
-            countdep8 =0
-            countdep9 =0
-            countdep10 =0 
+            countdep1 = 0
+            countdep2 = 0
+            countdep3 = 0
+            countdep4 = 0
+            countdep5 = 0
+            countdep6 = 0
+            countdep7 = 0
+            countdep8 = 0
+            countdep9 = 0
+            countdep10 = 0
             for (var i = 0; i < events.length; i++) {
                 if (events[i].EventCode == evcode) {
                     for (var j = 0; j < events[i].Studentsinevent.length; j++) {
@@ -332,8 +332,8 @@
                     }
                 }
             }
-                
-                
+
+
             google.charts.setOnLoadCallback(drawChart);
 
         }
@@ -343,7 +343,7 @@
 
             var data = google.visualization.arrayToDataTable([
                 ['מחלקה', 'משתתפים באירוע'],
-                ['הנדסת חשמל', countdep1 ],
+                ['הנדסת חשמל', countdep1],
                 ['הנדסת מחשבים', countdep2],
                 ['הנדסת תעשייה וניהול', countdep3],
                 ['מדעי המחשב והמידע', countdep4],
@@ -383,7 +383,7 @@
                 }
             }
             else if (participant == 0) {
-                swal({icon:"warning", text: "! טרם אישרו הגעה לאירוע זה" })
+                swal({ icon: "warning", text: "! טרם אישרו הגעה לאירוע זה" })
                 var options = {
                     backgroundColor: 'transparent',
                 }
@@ -391,7 +391,7 @@
 
             var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
             chart.draw(data, options);
-          
+
         }
 
 

@@ -7,7 +7,7 @@
 
 
 
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src='https://kit.fontawesome.com/50636d98f5.js' crossorigin='anonymous'></script>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -33,7 +33,7 @@
 
     <script>
 
-  
+
         if (!firebase.apps.length) {
             firebase.initializeApp({
                 apiKey: "AIzaSyCSHnFe2MHnBKhRHQrwACoNLo5cerY5W74",
@@ -43,7 +43,7 @@
         }
         var db = firebase.firestore();
 
-    
+
         $(document).ready(function () {
 
             let evtypeFB = $("#EventType :selected").text();
@@ -79,7 +79,7 @@
                 "EventDate": today,
                 "EventTitle": Ev.Eventn,
                 "ToMail": Ev.Student.Mail,
-                "createdAt":new Date(),
+                "createdAt": new Date(),
                 "myComent": Ev.CommentText
             })
                 .then((docRef) => {

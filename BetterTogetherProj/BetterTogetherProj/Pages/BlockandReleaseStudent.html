@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src='https://kit.fontawesome.com/50636d98f5.js' crossorigin='anonymous'></script>
 
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
@@ -33,12 +33,12 @@
 
             mode = "";
             ajaxCall("GET", "../api/Ads/getStudentsByActivity", "", getSuccessallstudents, error);
-           
+
             $("#block").change(blockStudent);
             $("#release").change(ReleaseStudent);
             $("#sData").hide();
             $("#blockBTN").prop("disabled", true);
-            $("#releseBTN").prop("disabled",true);
+            $("#releseBTN").prop("disabled", true);
 
 
 
@@ -50,26 +50,26 @@
             str = "<option value=''>בחר סטודנט לחסימה</option>";
             strl = "<option>בחר סטודנט לשחרור</option>";
             for (var i = 0; i < studentsDataa[0].length; i++) {
-             
-                str += "<option value='" + studentsDataa[0][i].Mail + "'name='" + studentsDataa[0][i].Fname +" "+ studentsDataa[0][i].Lname+"'BirthDate='"+studentsDataa[0][i].DateOfBirth+"'dep='"+studentsDataa[0][i].Dep.DepartmentName+"'Syear='"+studentsDataa[0][i].StudyingYear+"'>" + studentsDataa[0][i].Fname +" "+ studentsDataa[0][i].Lname+"</option>"
+
+                str += "<option value='" + studentsDataa[0][i].Mail + "'name='" + studentsDataa[0][i].Fname + " " + studentsDataa[0][i].Lname + "'BirthDate='" + studentsDataa[0][i].DateOfBirth + "'dep='" + studentsDataa[0][i].Dep.DepartmentName + "'Syear='" + studentsDataa[0][i].StudyingYear + "'>" + studentsDataa[0][i].Fname + " " + studentsDataa[0][i].Lname + "</option>"
             }
             $("#block").html(str);
-            
+
             for (var j = 0; j < studentsDataa[1].length; j++) {
 
-                strl += "<option value='" + studentsDataa[1][j].Mail + "'name='" + studentsDataa[1][j].Fname + " " + studentsDataa[1][j].Lname+"' > " + studentsDataa[1][j].Fname + " " + studentsDataa[1][j].Lname + "</option > "
+                strl += "<option value='" + studentsDataa[1][j].Mail + "'name='" + studentsDataa[1][j].Fname + " " + studentsDataa[1][j].Lname + "' > " + studentsDataa[1][j].Fname + " " + studentsDataa[1][j].Lname + "</option > "
             }
             $("#release").html(strl);
         }
 
         function blockStudent() {
-           $("#blockBTN").prop("disabled",false);
+            $("#blockBTN").prop("disabled", false);
 
             var studingYear = "";
             $("#sData").show();
             nameB = $(this).find('option:selected').attr('name');
             var StudentMail = $(this).val();
-             
+
             dateOfBirth = $(this).find('option:selected').attr('BirthDate');
             department = $(this).find('option:selected').attr('dep');
             sYear = $(this).find('option:selected').attr('Syear');
@@ -97,7 +97,7 @@
 
             }
             else {
-                $("#blockBTN").prop("disabled",false);
+                $("#blockBTN").prop("disabled", false);
                 $(document).on("click", "#blockBTN", function () {
                     mode = "block";
 
@@ -121,59 +121,59 @@
         function ReleaseStudent() {
             $("#releaseBTN").prop("disabled", false);
 
-           var studingYear = "";
+            var studingYear = "";
             $("#sData").hide();
-           var StudentMail = $(this).val();
+            var StudentMail = $(this).val();
             dateOfBirth = $(this).find('option:selected').attr('BirthDate');
             department = $(this).find('option:selected').attr('dep');
-            
+
             sYear = $(this).find('option:selected').attr('Syear');
             if (sYear == 1)
                 studingYear = 'א';
-           
-           else if (sYear == 2)
+
+            else if (sYear == 2)
                 studingYear = 'ב';
             else if (sYear == 3)
                 studingYear = 'ג';
 
-            else  { studingYear = 'ד'; }
+            else { studingYear = 'ד'; }
 
-             var dateOfBirthShort = new Date(dateOfBirth);
-             var dd = String(dateOfBirthShort.getDate()).padStart(2, '0');
-             var mm = String(dateOfBirthShort.getMonth() + 1).padStart(2, '0'); //January is 0!
-             var yyyy = dateOfBirthShort.getFullYear();
-            dateOfBirthShort = dd+ '/'+ mm+ '/'  +yyyy ;
-             $("#birthDate").val(dateOfBirthShort);
+            var dateOfBirthShort = new Date(dateOfBirth);
+            var dd = String(dateOfBirthShort.getDate()).padStart(2, '0');
+            var mm = String(dateOfBirthShort.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = dateOfBirthShort.getFullYear();
+            dateOfBirthShort = dd + '/' + mm + '/' + yyyy;
+            $("#birthDate").val(dateOfBirthShort);
             $("#departmant").val(department);
             $("#email").val(StudentMail);
             $("#sYear").val(studingYear);
             name = $(this).find('option:selected').attr('name');
             console.log(name)
-           
+
             if (StudentMail == '') {
                 $("#releaseBTN").prop("disabled", true);
-             
+
             }
             $(document).on("click", "#releaseBTN", function () {
                 mode = "release";
                 ajaxCall("PUT", "../api/Ads/blockS?StudentMail=" + StudentMail + "&active=false", "", updateActivitySuccess, error);
-        
+
             });
         }
 
         function block(StudentMail) {
-           
-            
-                $("#birthDate").val("");
-                $("#departmant").val("");
-                $("#email").val("");
-                $("#sYear").val("");
-            
+
+
+            $("#birthDate").val("");
+            $("#departmant").val("");
+            $("#email").val("");
+            $("#sYear").val("");
+
             ajaxCall("PUT", "../api/Ads/blockS?StudentMail=" + StudentMail + "&active=true", "", updateActivitySuccess, error);
-           
+
         }
 
-           
+
 
         function updateActivitySuccess(message) {
             console.log(message);
@@ -187,9 +187,9 @@
             $("#blockBTN").prop("disabled", true);
 
             if (mode == "release")
-                swal({ title:"!" +name+" שוחרר בהצלחה", icon: "success" });
+                swal({ title: "!" + name + " שוחרר בהצלחה", icon: "success" });
             else
-                swal({ title:"!" +nameB+ " נחסם בהצלחה", icon: "success" });
+                swal({ title: "!" + nameB + " נחסם בהצלחה", icon: "success" });
 
         }
 

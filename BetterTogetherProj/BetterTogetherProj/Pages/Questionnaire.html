@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <title></title>
 
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src='https://kit.fontawesome.com/50636d98f5.js' crossorigin='anonymous'></script>
 
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
@@ -29,8 +29,6 @@
     <script src="https://cdn.anychart.com/releases/8.7.1/themes/dark_turquoise.min.js"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <style type="text/css">
-
- 
     </style>
     <script>
 
@@ -49,7 +47,7 @@
             Maxqsquantity = 0
             mode = "";
 
-            $("#cancelSaveBTN").on("click", function () { 
+            $("#cancelSaveBTN").on("click", function () {
                 qrId = null;
                 $("#editDiv").hide();
 
@@ -61,9 +59,9 @@
 
             ajaxCall("GET", "../api/Questionnaire/GetQNum", "", getQrNum, error);
 
-            
+
             $("#newBTNQr").on("click", function () {
-               
+
                 $("#openanswer").hide();
                 $("#filter").hide();
                 //ajaxCall("GET", "../api/Questionnaire/GetQNum", "", getQrNum, error);
@@ -72,25 +70,25 @@
                 AnsNum = 0;
                 //$(".statuss").hide();
                 q = 0;
-               
+
                 $("#question1").html("");
                 mode = "new";
                 addquestion();
 
                 qrId = null;
-               
+
                 $("#pForm").hide();
                 $("#editDiv").show();
                 $("#addinput").show();
                 $("#inserth3").show();
                 //$("#EditViewDiv").hide();
                 $("#saveBTN").show();
-               
+
                 clearFields();
                 $("#editDiv :input").prop("disabled", false); // new mode: enable all controls in the form
 
             });
-;
+            ;
             $("#ManagerForm").submit(onSubmitFunc);// wire the submit event to a function called f1
 
             $("#editDiv").hide();
@@ -99,11 +97,11 @@
             $(document).on("change", '#publishList', { 'param': 0 }, function (event) {
                 getyearbydep(event.data.param);
             });
-            let api = "../api/Questionnaire/qr?statusQR=" + statusQR+"&deleteMode=0";
+            let api = "../api/Questionnaire/qr?statusQR=" + statusQR + "&deleteMode=0";
             ajaxCall("GET", api, "", getSuccess, error);
             $("#filter").change(filterQr);
 
-        
+
         });
 
         function getQrNum(QrNum) {
@@ -326,7 +324,7 @@
                 $("#editDiv").hide();
 
                 Qr = getQ(this.getAttribute('data-QuestionnaireId'));
-               
+
                 let Qrtoduplicate = {
 
                     QuestionnairePublish: Qr.QuestionnairePublish,
@@ -339,19 +337,19 @@
                     Status: Qr.Status,
                     QuestionnaireYear: Qr.QuestionnaireYear,
                     Queslist: Qr.Queslist,
-                    QuestionnaireNum: QrNumm+1, /*questionnaires[questionnaires["length"] - 1].QuestionnaireNum + 1*/
-                    DuplicateMode:1
+                    QuestionnaireNum: QrNumm + 1, /*questionnaires[questionnaires["length"] - 1].QuestionnaireNum + 1*/
+                    DuplicateMode: 1
                 }
                 ajaxCall("POST", "../api/Questionnaire/postqr", JSON.stringify(Qrtoduplicate), insertSuccess, error);
-                    return false;
+                return false;
             });
 
             $(document).on("click", ".deleteBtn", function () {
-                mode = "delete";     
+                mode = "delete";
                 markSelected(this);
                 Qr = getQ(this.getAttribute('data-QuestionnaireId'));
                 var QrId = this.getAttribute('data-QuestionnaireId');
-                swal({ 
+                swal({
                     title: "האם אתה בטוח ?",
                     text: "",
                     icon: "warning",
@@ -363,19 +361,19 @@
                         else swal("Not Deleted!");
                     });
             });
-            
+
         }
 
         function DeleteQr(QrId) {
-          
-            ajaxCall("PUT", "../api/Questionnaire/updatestatus?QrId=" + QrId  ,"", updateStatusSuccess, error);
+
+            ajaxCall("PUT", "../api/Questionnaire/updatestatus?QrId=" + QrId, "", updateStatusSuccess, error);
 
         }
 
         function updateStatusSuccess(message) {
             console.log(message);
-            ajaxCall("GET", "../api/Questionnaire/qr?statusQR=" + statusQR + "&deleteMode=1" , "", updatestatus, error);
-         
+            ajaxCall("GET", "../api/Questionnaire/qr?statusQR=" + statusQR + "&deleteMode=1", "", updatestatus, error);
+
         }
         function updatestatus(questionnaireData) {
             tbl.clear();
@@ -401,12 +399,12 @@
             str = "";
 
             if (QuestionType == 1 || QuestionType == 2) {
-               
+
                 if (flag == 0) {
                     $("#" + q + "Qans").html(str);
                     AnsNum = 1;
                     str += `<input type='text' class='answertext' id='` + q + `answer` + AnsNum + `'required/>
-                                                <i type ='button' onclick='getQuestionType(1)' id ='add`+ q + `' class='quesplus fas fa-plus-circle'> </i>`;
+                                                    <i type ='button' onclick='getQuestionType(1)' id ='add`+ q + `' class='quesplus fas fa-plus-circle'> </i>`;
                 }
 
                 else {
@@ -435,36 +433,36 @@
             q++;
 
             var Questionstring = `<div id="` + q + `">
-                                                <div class="questionn">
-                                                         <div class="divareaque form-group row">`
+                                                    <div class="questionn">
+                                                             <div class="divareaque form-group row">`
             if (mode == "view") {
                 Questionstring += `<div class="form-group col-sm-4"><canvas id="myChart` + q + `" class="canvas"></canvas></div>`;
 
             }
-            Questionstring+=`<div class="ansdiv form-group col-sm-2" id="`+ q + `Qans">
-                                                           <label for="QuestionText"><span class="red-star">★ </span>תשובות</label>
-                                                        </div>
+            Questionstring += `<div class="ansdiv form-group col-sm-2" id="` + q + `Qans">
+                                                               <label for="QuestionText"><span class="red-star">★ </span>תשובות</label>
+                                                            </div>
 
-                                                  <div class="form-group col-sm-3">
-                                                        <label for="QuestionType`+ q + `"><span class="red-star">★ </span>סוג שאלה</label>
-                                                        <select class="form-control Qtype" onchange='getQuestionType(0)' id="QuestionType`+ q + `"required>
-                                                            <option value="">בחרי סוג שאלה</option>
-                                                            <option value="1">שאלת עם תשובה אחת לבחירה</option>
-                                                            <option value="2">שאלה עם מספר תשובות לבחירה</option>
-                                                            <option value="3">שאלה פתוחה</option>
-                                                        </select>
-                                                  </div>
-                                                    <div class="form-group col-sm-3" >
-                                                        <label for="QuestionText`+ q + `"><span class="red-star">★ </span>תוכן שאלה</label>
-                                                        <textarea class="form-control Qtext" id="QuestionText`+ q + `"  required></textarea>
-                                                    </div></div></div></div>`
-      
-                                                         
+                                                      <div class="form-group col-sm-3">
+                                                            <label for="QuestionType`+ q + `"><span class="red-star">★ </span>סוג שאלה</label>
+                                                            <select class="form-control Qtype" onchange='getQuestionType(0)' id="QuestionType`+ q + `"required>
+                                                                <option value="">בחרי סוג שאלה</option>
+                                                                <option value="1">שאלת עם תשובה אחת לבחירה</option>
+                                                                <option value="2">שאלה עם מספר תשובות לבחירה</option>
+                                                                <option value="3">שאלה פתוחה</option>
+                                                            </select>
+                                                      </div>
+                                                        <div class="form-group col-sm-3" >
+                                                            <label for="QuestionText`+ q + `"><span class="red-star">★ </span>תוכן שאלה</label>
+                                                            <textarea class="form-control Qtext" id="QuestionText`+ q + `"  required></textarea>
+                                                        </div></div></div></div>`
+
+
             $("#question1").append(Questionstring);
 
         }
         function getanswersbyqu(Qnum) {
-           var ansList = [];
+            var ansList = [];
             for (var J = 1; J <= 6; J++) {
                 Anslist = $("#" + Qnum + "answer" + J).val();
                 ansList.push(Anslist);
@@ -476,7 +474,7 @@
 
             //    }
             //}
-           
+
             return ansList;
             console.log(ansList)
         }
@@ -521,7 +519,7 @@
                     questionList.push(Questionn);
                 }
                 console.log(questionList);
-                 QrtoSave   = {
+                QrtoSave = {
 
                     QuestionnairePublish: QuestionnairePublish,
                     EndPublishDate: EndPublishDate,
@@ -533,9 +531,9 @@
                     Status: true,
                     QuestionnaireYear: QuestionnaireYear,
                     Queslist: questionList,
-                     QuestionnaireNum: QrNumm+1,
-                     DuplicateMode:0
-                    
+                    QuestionnaireNum: QrNumm + 1,
+                    DuplicateMode: 0
+
                 }
 
             }
@@ -570,7 +568,7 @@
                     $("#publishDate").val("");
 
                 }
-               
+
             }
         }
 
@@ -596,13 +594,13 @@
             var month = ("0" + (dateEndPub.getMonth() + 1)).slice(-2);
             var dateQrfinal = dateEndPub.getFullYear() + "-" + (month) + "-" + (day);
             $("#EndpublishDate").val(dateQrfinal);
-           
+
             $("#subQr").val(Qr.SubQr);
-       
+
             if (mode == "view") {
                 $("#" + q + "Qans").html("");
                 $(".divareaque").html("");
-             
+
                 q = 0;
                 for (var i = 0; i < Qr.Queslist.length; i++) {
                     addquestion();
@@ -625,9 +623,9 @@
                     }
                 }
 
-                numQr = Qr.QuestionnaireNum;                 
+                numQr = Qr.QuestionnaireNum;
                 let api = "../api/Questionnaire/analyze?numQr=" + numQr + "&depcode=" + depcode + "&depyear=" + depyear;
-                ajaxCall("GET", api, "", getSuccessallStudAns, error);                
+                ajaxCall("GET", api, "", getSuccessallStudAns, error);
 
             }
 
@@ -635,7 +633,7 @@
         function getSuccessallStudAns(studentAns) {
             $("#openanswer").html("");
 
-            sAns = studentAns;    
+            sAns = studentAns;
             R = 1;
             console.log(studentAns);
             let str = "<h3>תשובות הסטודנטים</h3>";
@@ -663,50 +661,50 @@
                 k = i + 1;
 
                 if (isAllZero == true) {
-                    $("#myChart"+k).hide();
+                    $("#myChart" + k).hide();
                 }
-               else if (Qr.Queslist[i].QuestionType != 3 && isAllZero==false ) {
+                else if (Qr.Queslist[i].QuestionType != 3 && isAllZero == false) {
                     var xValues = [Qr.Queslist[i].Anslist[0], Qr.Queslist[i].Anslist[1], Qr.Queslist[i].Anslist[2], Qr.Queslist[i].Anslist[3], Qr.Queslist[i].Anslist[4], Qr.Queslist[i].Anslist[5]];
                     var yValues = [arrAns[0], arrAns[1], arrAns[2], arrAns[3], arrAns[4], arrAns[5]];
                     var barColors = ["red", "green", "blue", "orange", "brown", "pink"];
 
                     const canvas = document.getElementById('myChart' + k);
                     const ctx = canvas.getContext('2d');
-               
-                        new Chart(ctx, {
-                            type: "bar",
-                            data: {
-                                labels: xValues,
 
-                                datasets: [{
-                                    backgroundColor: barColors,                                   
-                                    data: yValues,
+                    new Chart(ctx, {
+                        type: "bar",
+                        data: {
+                            labels: xValues,
 
-                                }
+                            datasets: [{
+                                backgroundColor: barColors,
+                                data: yValues,
 
-                                ]
-                            },
-                            options: {
-                                legend: { display: false },
-                                title: {
-                                    display: true,
-                                    text: "ניתוח תוצאות שאלה" + " " + Qr.Queslist[i].Questionnum,
+                            }
 
-                                },
+                            ]
+                        },
+                        options: {
+                            legend: { display: false },
+                            title: {
+                                display: true,
+                                text: "ניתוח תוצאות שאלה" + " " + Qr.Queslist[i].Questionnum,
 
                             },
 
-                        });
-                  
-                    }
+                        },
+
+                    });
+
+                }
 
             }
-            
-        }
-       
-            
 
-        
+        }
+
+
+
+
         // clear the form fields
         function clearFields() {
             $("#publishDate").val("");
@@ -763,7 +761,7 @@
                 swal("השאלון הוכנס בהצלחה!", "Great Job", "success");
             else if (mode == "duplicate") {
                 swal("השאלון שוכפל בהצלחה!", "Great Job", "success");
-         
+
             }
 
             QrNumm++;
@@ -781,16 +779,16 @@
             }
             tbl.draw();
         }
-        
+
 
         function filterQr() {
             let statusQR = $(this).val();
-            let api = "../api/Questionnaire/qr?statusQR=" + statusQR + "&deleteMode=1" ;
+            let api = "../api/Questionnaire/qr?statusQR=" + statusQR + "&deleteMode=1";
             ajaxCall("GET", api, "", getSuccess, error);
         }
         // this function is activated in case of a success
         function getSuccess(questionnaireData) {
-      
+
             console.log(questionnaireData);
             questionnaires = questionnaireData; // keep the cars array in a global variable;
             if ($.fn.dataTable.isDataTable('#QTable')) {//destroy the old table on existence and then create new instance of jQuery DataTable
@@ -814,8 +812,8 @@
                                 duplicateBtn = "<button type='button' class = 'duplicateBtn btn btn-success' " + dataQ + "> שכפול שאלון </button>";
                                 if ($("#filter").val() == 1)
                                     return editBtn + viewBtn + duplicateBtn;
-                                else 
-                                    return editBtn+viewBtn ;           
+                                else
+                                    return editBtn + viewBtn;
 
                             }
                         },
@@ -881,8 +879,8 @@
                                 }
                                 else
                                     return null;
-                    }
-                }
+                            }
+                        }
 
 
                     ],

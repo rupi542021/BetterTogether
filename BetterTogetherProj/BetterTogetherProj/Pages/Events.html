@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <title></title>
 
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src='https://kit.fontawesome.com/50636d98f5.js' crossorigin='anonymous'></script>
     <script src="../Scripts/jquery-3.4.1.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -246,13 +246,13 @@
 
             Allevname = (typeof Allevname != 'undefined' && Allevname instanceof Array) ? Allevname : []  //check whether an array exists and create it if it doesn't
             Allevname.push(evname);
-                let addeventnamee = {
-                    Eventtype: EventTypee,
-                    EventName: Allevname
-                }
-                ajaxCall("POST", "../api/Events/addeventname", JSON.stringify(addeventnamee), inserteventnamesuccess, erroreventname);
+            let addeventnamee = {
+                Eventtype: EventTypee,
+                EventName: Allevname
             }
-        
+            ajaxCall("POST", "../api/Events/addeventname", JSON.stringify(addeventnamee), inserteventnamesuccess, erroreventname);
+        }
+
 
         function inserteventnamesuccess(message) {
 

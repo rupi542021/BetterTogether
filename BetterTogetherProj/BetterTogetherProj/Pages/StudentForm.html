@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src='https://kit.fontawesome.com/50636d98f5.js' crossorigin='anonymous'></script>
 
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
@@ -68,7 +68,7 @@
 
             let depp = $("#department").val();
             //alert(depp);
-            if (depp == 1 || depp == 2 || depp == 3 || depp == 6 || depp == 10 ) {
+            if (depp == 1 || depp == 2 || depp == 3 || depp == 6 || depp == 10) {
                 for (var j = 0; j < years.length; j++) {
 
                     nofilter.push(years[j])
@@ -124,11 +124,11 @@
 
                 }
 
-            
-              ajaxCall("POST","../api/students/addStudent", JSON.stringify(s), Insertsuccess, error)
+
+            ajaxCall("POST", "../api/students/addStudent", JSON.stringify(s), Insertsuccess, error)
 
 
-            
+
 
         }
         function Insertsuccess(message) {
@@ -155,13 +155,13 @@
         }
 
         function f1() {
-            
+
             addS();
             return false;
         }
 
         function error(err) {
-            
+
             console.log(err);
             $("#email").val("");
             swal({ icon: 'error', title: 'Sorry', text: "!כתובת המייל כבר קיימת במערכת" })

@@ -8,7 +8,7 @@
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src='https://kit.fontawesome.com/50636d98f5.js' crossorigin='anonymous'></script>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -42,7 +42,7 @@
                 $("#editDiv").hide();
 
             });
-            let api = "../api/Ads/getFB?statusAd=" +statusAd+"&subnameFB=''";
+            let api = "../api/Ads/getFB?statusAd=" + statusAd + "&subnameFB=''";
             ajaxCall("GET", api, "", getSuccessAllAds, error);
             $("#editDiv").hide();
             $(document).on("click", ".editbtn", EditAd);
@@ -51,25 +51,25 @@
             $("#filter").change(filterAd);
 
             $(document).on("click", ".deleteBtn", DeleteAd);
-            
-              $("#newBTNAd").on("click", function () {
-           
-               window.location = "Ads.html"
-              });
+
+            $("#newBTNAd").on("click", function () {
+
+                window.location = "Ads.html"
+            });
 
             $("#feedbackTBBTN").on("click", function () {
-           
-               window.location = "AdsFeedBack.html"
-              });
+
+                window.location = "AdsFeedBack.html"
+            });
 
         });
 
 
         function feedback() {
 
-             window.location = "AdsFeedBack.html"
+            window.location = "AdsFeedBack.html"
         }
-      
+
 
         function EditAd() {
             $("#editDiv").show();
@@ -105,9 +105,9 @@
             $("#Subject").val(ad.Subject);
             $("#SubSubject").val(ad.SubSubject);
             $("#contentText").val(ad.AdsText);
-            $("#adsDuring").val(ad. AdsDuring);
+            $("#adsDuring").val(ad.AdsDuring);
             //$("#Status").prop('checked', ad.Status);
-            
+
 
             if ($("#datedis").val() < today) {
                 swal({ icon: 'error', title: 'Sorry', text: "!לא ניתן לערוך פרסום שכבר פורסם" })
@@ -176,9 +176,9 @@
                     if (willDelete) DeleteAdd(AdId);
                     else swal("Not Deleted!");
                 });
-            }
-            
-       
+        }
+
+
 
         function DeleteAdd(AdId) {
 
@@ -188,7 +188,7 @@
 
         function updateStatusSuccess(message) {
             console.log(message);
-            ajaxCall("GET", "../api/Ads/getFB?statusAd=" + statusAd + "&subnameFB=''" , "", updatestatus, error);
+            ajaxCall("GET", "../api/Ads/getFB?statusAd=" + statusAd + "&subnameFB=''", "", updatestatus, error);
 
         }
         function updatestatus(adsData) {
@@ -234,7 +234,8 @@
                                 if ($("#filter").val() == 1)
                                     return EditBtn;
                                 else
-                                    return null;                            }
+                                    return null;
+                            }
                         },
                         { data: "Subject" },
                         { data: "SubSubject" },
@@ -256,14 +257,14 @@
                                 shortDateEnd = new Date(data);
                                 shortDateEnd.setDate(shortDateEnd.getDate() + row.AdsDuring)
                                 var dd = String(shortDateEnd.getDate()).padStart(2, '0');
-                                var mm = String(shortDateEnd.getMonth() + 1).padStart(2, '0'); 
+                                var mm = String(shortDateEnd.getMonth() + 1).padStart(2, '0');
                                 var yyyy = shortDateEnd.getFullYear();
                                 shortDateEnd = dd + '-' + mm + '-' + yyyy;
-                                return shortDateEnd ;
+                                return shortDateEnd;
                             }
-                            
+
                         },
-               
+
                         {
                             render: function (data, type, row, meta) {
                                 if ($("#filter").val() == 1) {
@@ -287,7 +288,7 @@
 
         }
 
-       
+
 
         function error(err) {
             console.log(err);

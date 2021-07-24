@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <title></title>
 
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src='https://kit.fontawesome.com/50636d98f5.js' crossorigin='anonymous'></script>
     <script src="../Scripts/jquery-3.4.1.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -85,7 +85,7 @@
 
         function AddAd() {
 
-            var textAds = $("#content").val();     
+            var textAds = $("#content").val();
             var textAdss = textAds.replace(/'/g, "''");
             var SubNamee = $("#SubjName :selected").text();
             var subname = SubNamee.replace(/'/g, "''")
@@ -198,13 +198,13 @@
         }
 
         function showlabel() {
-            
+
             $(this).tooltip();
         }
 
         function Insertsubtolist() {
 
-            var SubNamee=$("#addsubjecttext").val();
+            var SubNamee = $("#addsubjecttext").val();
             var subname = SubNamee.replace(/'/g, "''")
 
             if ($("#addsubjecttext").val() == "")
@@ -238,24 +238,24 @@
 
         function Insertsubsubtolist() {
 
-            var SubSubjectt= $("#addsubsubtext").val();
+            var SubSubjectt = $("#addsubsubtext").val();
             var subsubbname = SubSubjectt.replace(/'/g, "''")
             var SubName = $("#SubjName :selected").text();
             var subname = SubName.replace(/'/g, "''");
 
             if ($("#addsubsubtext").val() == "")
                 swal({ icon: 'error', title: 'Sorry', text: "!יש להזין תת נושא" })
-        
+
             Allsubsub = (typeof Allsubsub != 'undefined' && Allsubsub instanceof Array) ? Allsubsub : []  //check whether an array exists and create it if it doesn't
             Allsubsub.push(subsubbname);
-                let addsubsub = {
-                    SubName: subname,
-                    SubSubject: Allsubsub,
-                }
-
-                ajaxCall("POST", "../api/Ads/addsubsub", JSON.stringify(addsubsub), insertsubsubsuccess, errorsubsubject);
+            let addsubsub = {
+                SubName: subname,
+                SubSubject: Allsubsub,
             }
-        
+
+            ajaxCall("POST", "../api/Ads/addsubsub", JSON.stringify(addsubsub), insertsubsubsuccess, errorsubsubject);
+        }
+
 
         function insertsubsubsuccess(message) {
 
