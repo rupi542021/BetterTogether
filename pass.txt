@@ -1,0 +1,11 @@
+משתמשים שכבר רשומים:
+
+doron@gmail.com - Aa123456
+ziv@gmail.com - Aa1234566
+yuval@gmail.com - Doron611
+
+משתמשים שלא רשומים:
+
+Kfir@gmail.com
+Koren@gmail.com
+Oz@gmail.com
